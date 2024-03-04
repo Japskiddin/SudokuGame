@@ -1,32 +1,51 @@
 [versions]
+minSdk = "21"
+compileSdk = "34"
+targetSdk = "34"
+buildToolsVersion = "34.0.0"
+ndkVersion = "25.1.8937393"
+composeVersion = "1.5.10"
+
+versionName = "1.0.0"
+versionCode = "1"
+
 agp = "8.3.0"
+androidxCoreKtx = "1.12.0"
+androidxLifecycle = "2.7.0"
+androidxActivityCompose = "1.8.2"
+androidxComposeBom = "2024.02.01"
+androidxRoom = "2.6.1"
 kotlinAndroid = "1.9.22"
-coreKtx = "1.12.0"
-lifecycle = "2.7.0"
-activityCompose = "1.8.2"
-composeBom = "2024.02.01"
 bundletool = "1.15.6"
+ksp = "1.9.22-1.0.17"
 
 [libraries]
-androidx-core-ktx = { module = "androidx.core:core-ktx",  version.ref = "coreKtx" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-androidx-ui = { module = "androidx.compose.ui:ui" }
-androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics"  }
-androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-androidx-material3 = { module = "androidx.compose.material3:material3" }
-androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
+androidx-core-ktx = { module = "androidx.core:core-ktx",  version.ref = "androidxCoreKtx" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
+
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics"  }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
+
 bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bundletool" }
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinAndroid" }
-androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinAndroid" }
+
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroid" }
-
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
