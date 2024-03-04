@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -19,6 +20,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "sudoku-${applicationId}-${versionCode}")
     }
 
@@ -58,6 +60,13 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
+    }
+
+    kotlinOptions {
+        allWarningsAsErrors = false
+        freeCompilerArgs += listOf(
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        )
     }
 
     lint {
@@ -121,6 +130,13 @@ tasks.withType<JavaCompile> {
 }
 
 dependencies {
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation(libs.jetbrains.kotlin.stdlib)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
 
@@ -133,14 +149,21 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    implementation(libs.jetbrains.kotlin.stdlib)
-
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime.livedata)
+
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }
