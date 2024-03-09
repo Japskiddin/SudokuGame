@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku
+package io.github.japskiddin.sudoku.game
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

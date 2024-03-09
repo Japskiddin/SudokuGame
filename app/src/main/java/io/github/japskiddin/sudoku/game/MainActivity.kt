@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku
+package io.github.japskiddin.sudoku.game
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.japskiddin.sudoku.ui.theme.SudokuTheme
+import io.github.japskiddin.sudoku.game.ui.theme.SudokuTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

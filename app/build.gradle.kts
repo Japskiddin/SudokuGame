@@ -5,14 +5,18 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 android {
-    namespace = "io.github.japskiddin.sudoku"
+    namespace = "io.github.japskiddin.sudoku.game"
     compileSdk = libs.versions.compileSdk.get().toInt()
     ndkVersion = libs.versions.ndkVersion.get()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
-        applicationId = "io.github.japskiddin.sudoku"
+        applicationId = "io.github.japskiddin.sudoku.game"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()

@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku
+package io.github.japskiddin.sudoku.game
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.ui.theme
+package io.github.japskiddin.sudoku.game.ui.theme
 
 import android.app.Activity
 import android.os.Build
