@@ -1,18 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.google.ksp)
-}
-
-kotlin {
-    jvmToolchain(17)
 }
 
 android {
-    namespace = "io.github.japskiddin.sudoku.database"
+    namespace = "io.github.japskiddin.sudoku.game_data"
     compileSdk = libs.versions.compileSdk.get().toInt()
-    ndkVersion = libs.versions.ndkVersion.get()
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -43,10 +36,10 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
+    implementation(project(":database"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

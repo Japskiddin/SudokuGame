@@ -23,4 +23,6 @@ rootProject.name = "Sudoku"
 include(
     ":app",
     ":database",
+    ":game-data",
+    ":features:game-main",
 )
