@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "io.github.japskiddin.sudoku.game_data"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -36,8 +37,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
 
     implementation(project(":database"))
 

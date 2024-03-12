@@ -12,7 +12,6 @@ kotlin {
 android {
     namespace = "io.github.japskiddin.sudoku.game"
     compileSdk = libs.versions.compileSdk.get().toInt()
-    ndkVersion = libs.versions.ndkVersion.get()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
@@ -21,9 +20,6 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
-        vectorDrawables {
-            useSupportLibrary = true
-        }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "sudoku-${applicationId}-${versionCode}")
     }
@@ -148,10 +144,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)

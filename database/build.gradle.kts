@@ -11,7 +11,6 @@ kotlin {
 android {
     namespace = "io.github.japskiddin.sudoku.database"
     compileSdk = libs.versions.compileSdk.get().toInt()
-    ndkVersion = libs.versions.ndkVersion.get()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
