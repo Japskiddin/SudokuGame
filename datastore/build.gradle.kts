@@ -1,10 +1,15 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.protobuf)
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 android {
-    namespace = "io.github.japskiddin.sudoku.game_data"
+    namespace = "io.github.japskiddin.game.datastore"
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
@@ -38,10 +43,30 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
 
-    implementation(project(":database"))
-    implementation(project(":datastore"))
+    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.google.protobuf.javalite)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
+}
+
+protobuf {
+    protoc {
+        artifact = libs.google.protobuf.protoc.get().toString()
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins {
+                create("java") {
+                    option("lite")
+                }
+                create("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

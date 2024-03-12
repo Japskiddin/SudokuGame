@@ -26,3 +26,4 @@ include(
     ":game-data",
     ":features:game-main",
 )
+include(":datastore")
