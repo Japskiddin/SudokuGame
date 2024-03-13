@@ -9,7 +9,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.japskiddin.game.datastore"
+    namespace = "io.github.japskiddin.sudoku.datastore"
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
@@ -61,9 +61,6 @@ protobuf {
         all().forEach { task ->
             task.plugins {
                 create("java") {
-                    option("lite")
-                }
-                create("kotlin") {
                     option("lite")
                 }
             }

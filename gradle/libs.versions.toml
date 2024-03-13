@@ -23,9 +23,8 @@ ksp = "1.9.22-1.0.17"
 hiltAndroid = "2.51"
 hilt = "1.2.0"
 junit = "4.13.2"
-googleProtobuf = "0.9.4"
-googleProtobufJavalite = "3.25.3"
-googleProtobufProtoc = "25.3"
+googleProtobufPlugin = "0.9.4"
+googleProtobuf = "3.25.3"
 androidxTestExtJunit = "1.1.5"
 androidxTestEspressoCore = "3.5.1"
 
@@ -60,8 +59,8 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx
 
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidxDatastore" }
-google-protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "googleProtobufJavalite" }
-google-protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "googleProtobufProtoc" }
+google-protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "googleProtobuf" }
+google-protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "googleProtobuf" }
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
@@ -74,5 +73,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroid" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-google-protobuf = { id = "com.google.protobuf", version.ref = "googleProtobuf" }
+google-protobuf = { id = "com.google.protobuf", version.ref = "googleProtobufPlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
