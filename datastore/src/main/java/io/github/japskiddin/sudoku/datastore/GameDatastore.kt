@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 class GameDatastore(applicationContext: Context) {
     private val gameLevelDataStore = applicationContext.gameLevelDatastore
 
-    val gameLevelFlow: Flow<GameLevel>
+    val gameLevelFlow: Flow<GameLevelDSO>
         get() = gameLevelDataStore.data
 
     suspend fun clearGameLevel() {
@@ -24,7 +24,7 @@ class GameDatastore(applicationContext: Context) {
         difficulty: Int? = null
     ) {
         gameLevelDataStore.updateData { gameLevel ->
-            val level = GameLevel.newBuilder()
+            val level = GameLevelDSO.newBuilder()
                 .setActions(actions ?: gameLevel.actions)
                 .setBoard(board ?: gameLevel.board)
                 .setTime(time ?: gameLevel.time)

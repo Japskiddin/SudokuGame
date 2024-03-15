@@ -3,7 +3,7 @@ syntax = "proto3";
 option java_package = "io.github.japskiddin.sudoku.datastore";
 option java_multiple_files = true;
 
-message GameLevel {
+message GameLevelDSO {
     int64 time = 1;
     string board = 2;
     int32 actions = 3;

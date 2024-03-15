@@ -9,23 +9,23 @@ import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream
 
-internal object GameLevelSerializer : Serializer<GameLevel> {
+internal object GameLevelSerializer : Serializer<GameLevelDSO> {
     private val TAG = GameLevelSerializer.javaClass.simpleName
 
-    override val defaultValue: GameLevel
-        get() = GameLevel.getDefaultInstance()
+    override val defaultValue: GameLevelDSO
+        get() = GameLevelDSO.getDefaultInstance()
 
-    override suspend fun readFrom(input: InputStream): GameLevel = try {
-        GameLevel.parseFrom(input)
+    override suspend fun readFrom(input: InputStream): GameLevelDSO = try {
+        GameLevelDSO.parseFrom(input)
     } catch (exception: InvalidProtocolBufferException) {
         Log.e(TAG, "Cannot read proto. Create default.")
         defaultValue
     }
 
-    override suspend fun writeTo(t: GameLevel, output: OutputStream) = t.writeTo(output)
+    override suspend fun writeTo(t: GameLevelDSO, output: OutputStream) = t.writeTo(output)
 }
 
-internal val Context.gameLevelDatastore: DataStore<GameLevel> by dataStore(
+internal val Context.gameLevelDatastore: DataStore<GameLevelDSO> by dataStore(
     fileName = "game_level.pb",
     serializer = GameLevelSerializer
 )

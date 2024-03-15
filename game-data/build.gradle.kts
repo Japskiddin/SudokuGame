@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.jetbrains.kotlin.stdlib)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
 
     implementation(project(":database"))
     implementation(project(":datastore"))
