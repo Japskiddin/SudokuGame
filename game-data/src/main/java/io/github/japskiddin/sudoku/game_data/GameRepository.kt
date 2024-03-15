@@ -7,6 +7,5 @@ class GameRepository(
     private val database: GameDatabase,
     private val datastore: GameDatastore
 ) {
-//    fun getHistory(): Flow<History> {
-//    }
+
 }
