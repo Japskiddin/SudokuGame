@@ -9,16 +9,22 @@ import io.github.japskiddin.sudoku.database.dao.HistoryDao
 import io.github.japskiddin.sudoku.database.models.HistoryDBO
 import io.github.japskiddin.sudoku.database.utils.Converters
 
+class GameDatabase internal constructor(private val database: GameRoomDatabase) {
+    val historyDao: HistoryDao
+        get() = database.historyDao()
+}
+
 @Database(entities = [HistoryDBO::class], version = 1)
 @TypeConverters(Converters::class)
-abstract class GameDatabase : RoomDatabase() {
+internal abstract class GameRoomDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 }
 
 fun GameDatabase(applicationContext: Context): GameDatabase {
-    return Room.databaseBuilder(
+    val gameRoomDatabase = Room.databaseBuilder(
         checkNotNull(applicationContext.applicationContext),
-        GameDatabase::class.java,
+        GameRoomDatabase::class.java,
         "game"
     ).build()
+    return GameDatabase(gameRoomDatabase)
 }
