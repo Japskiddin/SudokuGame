@@ -24,6 +24,6 @@ include(
     ":app",
     ":database",
     ":game-data",
-    ":features:game-main",
+    ":features:game",
 )
 include(":datastore")
