@@ -1,13 +1,15 @@
 package io.github.japskiddin.sudoku.datastore
 
 import android.content.Context
+import io.github.japskiddin.sudoku.datastore.models.GameLevelDO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class GameDatastore(applicationContext: Context) {
     private val gameLevelDataStore = applicationContext.gameLevelDatastore
 
-    val gameLevelFlow: Flow<GameLevelDSO>
-        get() = gameLevelDataStore.data
+    val gameLevelFlow: Flow<GameLevelDO>
+        get() = gameLevelDataStore.data.map { it.toGameLevelDO() }
 
     suspend fun clearGameLevel() {
         gameLevelDataStore.updateData { gameLevel ->
