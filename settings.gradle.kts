@@ -23,7 +23,8 @@ rootProject.name = "Sudoku"
 include(
     ":app",
     ":database",
+    ":datastore",
+    ":game-common",
     ":game-data",
     ":features:game",
 )
-include(":datastore")

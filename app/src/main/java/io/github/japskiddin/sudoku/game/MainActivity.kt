@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.japskiddin.sudoku.game.ui.theme.SudokuTheme
-import io.github.japskiddin.sudoku.game_main.GameScreen
+import io.github.japskiddin.sudoku.main.GameScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
