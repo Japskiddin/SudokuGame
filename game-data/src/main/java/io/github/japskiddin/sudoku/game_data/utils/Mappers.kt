@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.game_data
+package io.github.japskiddin.sudoku.game_data.utils
 
 import io.github.japskiddin.sudoku.datastore.models.GameLevelDO
 import io.github.japskiddin.sudoku.game_data.models.Difficulty
