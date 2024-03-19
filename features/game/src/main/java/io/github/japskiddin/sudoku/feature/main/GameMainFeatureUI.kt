@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.main
+package io.github.japskiddin.sudoku.feature.main
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel

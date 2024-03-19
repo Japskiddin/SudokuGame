@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.main
+package io.github.japskiddin.sudoku.feature.main
 
 import io.github.japskiddin.sudoku.data.GameRepository
 import io.github.japskiddin.sudoku.data.models.GameLevel

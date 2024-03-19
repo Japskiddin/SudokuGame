@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.main
+package io.github.japskiddin.sudoku.feature.main
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
