@@ -27,4 +27,5 @@ include(
     ":game-common",
     ":game-data",
     ":features:game",
+    ":features:menu",
 )

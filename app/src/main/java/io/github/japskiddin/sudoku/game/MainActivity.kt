@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.japskiddin.sudoku.feature.main.GameScreen
+import io.github.japskiddin.sudoku.feature.menu.MenuScreen
 import io.github.japskiddin.sudoku.game.ui.theme.SudokuTheme
 
 @AndroidEntryPoint
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GameScreen()
+                    MenuScreen()
                 }
             }
         }

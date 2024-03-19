@@ -1,40 +1,29 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.hilt)
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 android {
-    namespace = "io.github.japskiddin.sudoku.game"
+    namespace = "io.github.japskiddin.sudoku.feature.menu"
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
-        applicationId = "io.github.japskiddin.sudoku.game"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "sudoku-${applicationId}-${versionCode}")
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        debug {
-            versionNameSuffix = " DEBUG"
         }
     }
 
@@ -45,12 +34,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-    }
-
-    bundle {
-        language {
-            enableSplit = false
-        }
     }
 
     buildFeatures {
@@ -68,65 +51,6 @@ android {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
         )
     }
-
-    lint {
-        abortOnError = false
-    }
-
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
-    }
-
-    packaging {
-        jniLibs {
-            excludes += listOf(
-                "**/kotlin/**",
-                "META-INF/androidx.*",
-                "META-INF/proguard/androidx-*"
-            )
-        }
-        resources {
-            excludes += listOf(
-                "/META-INF/*.kotlin_module",
-                "**/kotlin/**",
-                "**/*.txt",
-                "**/*.xml",
-                "**/*.properties",
-                "META-INF/DEPENDENCIES",
-                "META-INF/LICENSE",
-                "META-INF/LICENSE.txt",
-                "META-INF/license.txt",
-                "META-INF/NOTICE",
-                "META-INF/NOTICE.txt",
-                "META-INF/notice.txt",
-                "META-INF/ASL2.0",
-                "META-INF/*.version",
-                "META-INF/androidx.*",
-                "META-INF/proguard/androidx-*"
-            )
-        }
-    }
-
-    applicationVariants.all {
-        val variant = this
-        variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-            .forEach { output ->
-                val outputFileName =
-                    "sudoku-${variant.flavorName}-${variant.versionName}-${buildType.name}.apk"
-                output.outputFileName = outputFileName
-            }
-    }
-}
-
-tasks.withType<JavaCompile> {
-    val compilerArgs = options.compilerArgs
-    compilerArgs.addAll(
-        listOf(
-            "-Xlint:unchecked",
-            "-Xlint:deprecation"
-        )
-    )
 }
 
 dependencies {
@@ -138,7 +62,6 @@ dependencies {
     implementation(libs.jetbrains.kotlinx.coroutines.android)
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity.compose)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
@@ -154,9 +77,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    implementation(project(":features:game"))
-    implementation(project(":features:menu"))
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
