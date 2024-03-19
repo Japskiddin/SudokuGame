@@ -6,8 +6,9 @@ import io.github.japskiddin.sudoku.game_data.models.GameLevel
 import io.github.japskiddin.sudoku.game_data.utils.toGameLevel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GameRepository(
+class GameRepository @Inject constructor(
     private val database: GameDatabase,
     private val datastore: GameDatastore
 ) {
