@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.japskiddin.sudoku.game_data"
+    namespace = "io.github.japskiddin.sudoku.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
