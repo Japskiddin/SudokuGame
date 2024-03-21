@@ -34,7 +34,7 @@ android {
             )
         }
         debug {
-            versionNameSuffix = " DEBUG"
+            versionNameSuffix = "-DEBUG"
         }
     }
 
@@ -112,8 +112,8 @@ android {
         val variant = this
         variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
             .forEach { output ->
-                val outputFileName =
-                    "sudoku-${variant.flavorName}-${variant.versionName}-${buildType.name}.apk"
+                val outputFileName = "sudoku-${variant.versionName}-${buildType.name}.apk"
+                println(outputFileName)
                 output.outputFileName = outputFileName
             }
     }
