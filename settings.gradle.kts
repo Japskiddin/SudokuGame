@@ -26,6 +26,6 @@ include(
     ":datastore",
     ":game-common",
     ":game-data",
+    ":features:home",
     ":features:game",
-    ":features:menu",
 )
