@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.japskiddin.sudoku.feature.home.HomeScreen
@@ -39,16 +40,21 @@ class MainActivity : ComponentActivity() {
         )
         super.onCreate(savedInstanceState)
         setContent {
-            SudokuTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .safeDrawingPadding(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    HomeScreen()
-                }
+            MainScreen()
+        }
+    }
+
+    @Composable
+    fun MainScreen() {
+        SudokuTheme {
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .safeDrawingPadding(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                HomeScreen()
             }
         }
     }
