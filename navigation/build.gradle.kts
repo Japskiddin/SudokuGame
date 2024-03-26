@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.japskiddin.sudoku.common"
+    namespace = "io.github.japskiddin.sudoku.navigation"
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 

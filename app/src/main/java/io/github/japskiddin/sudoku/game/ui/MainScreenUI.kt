@@ -72,7 +72,7 @@ internal fun NavigationEffects(
             when (intent) {
                 is NavigationIntent.NavigateBack -> {
                     if (intent.route != null) {
-                        navHostController.popBackStack(intent.route, intent.inclusive)
+                        navHostController.popBackStack(intent.route!!, intent.inclusive)
                     } else {
                         navHostController.popBackStack()
                     }
