@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.github.japskiddin.sudoku.game.ui.navigation.AppNavigator
-import io.github.japskiddin.sudoku.game.ui.navigation.AppNavigatorImpl
+import io.github.japskiddin.sudoku.navigation.AppNavigator
+import io.github.japskiddin.sudoku.navigation.AppNavigatorImpl
 import javax.inject.Singleton
 
 @Module

@@ -14,11 +14,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.github.japskiddin.sudoku.feature.home.HomeScreen
 import io.github.japskiddin.sudoku.feature.main.GameScreen
-import io.github.japskiddin.sudoku.game.ui.navigation.Destination
 import io.github.japskiddin.sudoku.game.ui.navigation.NavHost
-import io.github.japskiddin.sudoku.game.ui.navigation.NavigationIntent
 import io.github.japskiddin.sudoku.game.ui.navigation.composable
 import io.github.japskiddin.sudoku.game.ui.theme.SudokuTheme
+import io.github.japskiddin.sudoku.navigation.Destination
+import io.github.japskiddin.sudoku.navigation.NavigationIntent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -86,6 +86,8 @@ internal fun NavigationEffects(
                         }
                     }
                 }
+
+                else -> return@collect
             }
         }
     }

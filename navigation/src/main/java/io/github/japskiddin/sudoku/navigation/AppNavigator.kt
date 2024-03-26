@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.game.ui.navigation
+package io.github.japskiddin.sudoku.navigation
 
 import kotlinx.coroutines.channels.Channel
 

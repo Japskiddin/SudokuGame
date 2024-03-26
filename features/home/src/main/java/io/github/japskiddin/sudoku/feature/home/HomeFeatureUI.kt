@@ -50,7 +50,10 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
             Menu(
                 modifier = Modifier
                     .fillMaxWidth(.5f)
-                    .weight(1f)
+                    .weight(1f),
+                onStartGameClick = { viewModel.navigateToGame() },
+                onSettingsClick = {},
+                onRecordsClick = {},
             )
             Text(text = viewModel.getCurrentYear())
         }
@@ -58,7 +61,12 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun Menu(modifier: Modifier = Modifier) {
+fun Menu(
+    modifier: Modifier = Modifier,
+    onStartGameClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onRecordsClick: () -> Unit,
+) {
     Column(
         modifier = modifier.wrapContentHeight(),
         verticalArrangement = Arrangement.Center,
@@ -66,17 +74,17 @@ fun Menu(modifier: Modifier = Modifier) {
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.start_game),
-            onClick = {}
+            onClick = onStartGameClick,
         )
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.settings),
-            onClick = {}
+            onClick = onSettingsClick,
         )
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.records),
-            onClick = {}
+            onClick = onRecordsClick,
         )
     }
 }

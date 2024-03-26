@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.game.ui.navigation
+package io.github.japskiddin.sudoku.navigation
 
 sealed class Destination(protected val route: String, vararg params: String) {
     val fullRoute: String = if (params.isEmpty()) route else {
