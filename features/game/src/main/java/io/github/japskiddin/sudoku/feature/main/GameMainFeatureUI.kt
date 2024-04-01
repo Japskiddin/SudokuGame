@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.japskiddin.sudoku.data.models.Difficulty
+import io.github.japskiddin.sudoku.data.models.GameLevel
 
 @Composable
 fun GameScreen() {
@@ -25,39 +29,35 @@ fun GameScreen() {
 
 @Composable
 internal fun GameScreen(viewModel: GameViewModel) {
-    Board(
-        values = arrayOf(
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-        )
-    )
+    val state by viewModel.state.collectAsState()
+    when (val currentState = state) {
+        is State.Success -> GameBoard(currentState)
+        is State.Error -> Error(currentState)
+        is State.Loading -> Loading()
+        State.None -> Loading()
+    }
 }
 
 @Composable
-internal fun Board(
-    values: Array<Int>,
+internal fun GameBoard(
+    state: State.Success,
 ) {
-    val size = 9
+    val board = state.gameLevel.board
     Box(
         modifier = Modifier
             .fillMaxSize()
             .border(width = 1.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            for (i in 1..size) {
+            for (i in 1..board.size) {
                 Row {
-                    for (j in 1..size) {
+                    for (j in 1..board.size) {
                         val index = (j * i) - 1
-                        Cell(value = values[index], modifier = Modifier
-                            .aspectRatio(1f)
-                            .weight(1f))
+                        Cell(
+                            value = board[index], modifier = Modifier
+                                .aspectRatio(1f)
+                                .weight(1f)
+                        )
                     }
                 }
             }
@@ -84,13 +84,24 @@ internal fun Cell(
     }
 }
 
+@Composable
+internal fun Loading() {
+
+}
+
+@Composable
+internal fun Error(state: State.Error) {
+
+}
+
 @Preview(
     name = "Game Board",
 )
 @Composable
-fun BoardPreview() {
-    Board(
-        values = arrayOf(
+fun GameBoardPreview() {
+    val gameLevel = GameLevel(
+        time = 0L,
+        board = intArrayOf(
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -100,8 +111,11 @@ fun BoardPreview() {
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             1, 2, 3, 4, 5, 6, 7, 8, 9,
-        )
+        ),
+        actions = 0,
+        difficulty = Difficulty.NORMAL,
     )
+    GameBoard(State.Success(gameLevel))
 }
 
 @Preview(

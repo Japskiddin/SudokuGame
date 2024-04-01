@@ -1,10 +1,10 @@
 package io.github.japskiddin.sudoku.data.models
 
 data class GameLevel(
-    val time: Long,
+    val time: Long = 0,
     val board: IntArray,
-    val actions: Int,
-    val difficulty: Difficulty
+    val actions: Int = 0,
+    val difficulty: Difficulty = Difficulty.NORMAL,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
