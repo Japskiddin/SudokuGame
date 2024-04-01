@@ -5,7 +5,7 @@ import io.github.japskiddin.sudoku.data.models.GameLevel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-internal class GetGameLevelUseCase @Inject constructor(
+internal class GenerateGameLevelUseCase @Inject constructor(
     private val repository: GameRepository
 ) {
     operator fun invoke(): Flow<GameLevel> {

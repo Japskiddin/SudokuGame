@@ -3,7 +3,7 @@ package io.github.japskiddin.sudoku.feature.main
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.data.models.GameLevel
-import io.github.japskiddin.sudoku.feature.main.usecase.GetGameLevelUseCase
+import io.github.japskiddin.sudoku.feature.main.usecase.GenerateGameLevelUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class GameViewModel @Inject constructor(
-    getGameLevelUseCase: Provider<GetGameLevelUseCase>,
+    generateGameLevelUseCase: Provider<GenerateGameLevelUseCase>,
     private val appNavigator: AppNavigator,
 ) : ViewModel() {
     private val _state = MutableStateFlow(State.None)
