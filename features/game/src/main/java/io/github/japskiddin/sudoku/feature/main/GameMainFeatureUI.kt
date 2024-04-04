@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -34,7 +35,7 @@ internal fun GameScreen(viewModel: GameViewModel) {
         is State.Success -> GameBoard(currentState)
         is State.Error -> Error(currentState)
         is State.Loading -> Loading()
-        State.None -> Loading()
+        State.None -> Empty()
     }
 }
 
@@ -42,6 +43,7 @@ internal fun GameScreen(viewModel: GameViewModel) {
 internal fun GameBoard(
     state: State.Success,
 ) {
+    Log.d("TEST", "GameBoard")
     val board = state.gameLevel.board
     Box(
         modifier = Modifier
@@ -49,9 +51,9 @@ internal fun GameBoard(
             .border(width = 1.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            for (i in 1..board.size) {
+            for (i in 1..9) {
                 Row {
-                    for (j in 1..board.size) {
+                    for (j in 1..9) {
                         val index = (j * i) - 1
                         Cell(
                             value = board[index], modifier = Modifier
@@ -78,7 +80,11 @@ internal fun Cell(
             .then(modifier),
     ) {
         Text(
-            text = value.toString(),
+            text = if (value == 0) {
+                ""
+            } else {
+                value.toString()
+            },
             modifier = Modifier.padding(4.dp),
         )
     }
@@ -86,12 +92,17 @@ internal fun Cell(
 
 @Composable
 internal fun Loading() {
-
+    Log.d("TEST", "Loading")
+    Text(text = "Loading")
 }
 
 @Composable
 internal fun Error(state: State.Error) {
+    Log.d("TEST", "Error")
+}
 
+@Composable
+internal fun Empty() {
 }
 
 @Preview(

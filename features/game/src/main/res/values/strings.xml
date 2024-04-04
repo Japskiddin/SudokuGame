@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="err_generate_level">Failed to generate level. Please try again.</string>
+</resources>

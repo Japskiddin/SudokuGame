@@ -7,7 +7,7 @@ internal class SudokuGenerator(
     val N: Int,
     val K: Int,
 ) {
-    private val mat: Array<IntArray> = Array(N) { IntArray(N) }
+    val mat: Array<IntArray> = Array(N) { IntArray(N) }
     private val SRN: Int = sqrt(N.toDouble()).toInt()
 
     fun fillValues() {
