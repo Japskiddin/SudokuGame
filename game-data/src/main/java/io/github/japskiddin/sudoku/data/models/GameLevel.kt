@@ -2,7 +2,7 @@ package io.github.japskiddin.sudoku.data.models
 
 data class GameLevel(
     val time: Long = 0,
-    val board: IntArray,
+    val board: Array<IntArray>,
     val actions: Int = 0,
     val difficulty: Difficulty = Difficulty.NORMAL,
 ) {

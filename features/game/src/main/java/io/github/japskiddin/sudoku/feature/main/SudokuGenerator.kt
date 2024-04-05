@@ -7,13 +7,14 @@ internal class SudokuGenerator(
     val N: Int,
     val K: Int,
 ) {
-    val mat: Array<IntArray> = Array(N) { IntArray(N) }
-    private val SRN: Int = sqrt(N.toDouble()).toInt()
+    private val mat = Array(N) { IntArray(N) }
+    private val SRN = sqrt(N.toDouble()).toInt()
 
-    fun fillValues() {
+    fun fillValues(): Array<IntArray> {
         fillDiagonal()
         fillRemaining(0, SRN)
         removeKDigits()
+        return mat
     }
 
     private fun fillDiagonal() {

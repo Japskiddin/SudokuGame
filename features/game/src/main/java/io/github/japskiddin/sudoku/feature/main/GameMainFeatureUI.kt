@@ -20,8 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.japskiddin.sudoku.data.models.Difficulty
-import io.github.japskiddin.sudoku.data.models.GameLevel
 
 @Composable
 fun GameScreen() {
@@ -51,12 +49,11 @@ internal fun GameBoard(
             .border(width = 1.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            for (i in 1..9) {
+            for (i in 0..8) {
                 Row {
-                    for (j in 1..9) {
-                        val index = (j * i) - 1
+                    for (j in 0..8) {
                         Cell(
-                            value = board[index], modifier = Modifier
+                            value = board[i][j], modifier = Modifier
                                 .aspectRatio(1f)
                                 .weight(1f)
                         )
@@ -110,23 +107,23 @@ internal fun Empty() {
 )
 @Composable
 fun GameBoardPreview() {
-    val gameLevel = GameLevel(
-        time = 0L,
-        board = intArrayOf(
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-        ),
-        actions = 0,
-        difficulty = Difficulty.NORMAL,
-    )
-    GameBoard(State.Success(gameLevel))
+//    val gameLevel = GameLevel(
+//        time = 0L,
+//        board = intArrayOf(
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//            1, 2, 3, 4, 5, 6, 7, 8, 9,
+//        ),
+//        actions = 0,
+//        difficulty = Difficulty.NORMAL,
+//    )
+//    GameBoard(State.Success(gameLevel))
 }
 
 @Preview(

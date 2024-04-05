@@ -4,7 +4,7 @@ import io.github.japskiddin.sudoku.data.models.Difficulty
 import io.github.japskiddin.sudoku.data.models.GameLevel
 import io.github.japskiddin.sudoku.datastore.models.GameLevelDO
 
-internal const val BOARD_SEPARATOR = ""
+internal const val BOARD_SEPARATOR = ";"
 
 internal fun GameLevel.toGameLevelDO(): GameLevelDO {
     return GameLevelDO(
@@ -43,24 +43,24 @@ internal fun Difficulty.toInt(): Int {
     }
 }
 
-internal fun String.toIntArray(): IntArray {
+internal fun String.toIntArray(): Array<IntArray> {
     val items = split(BOARD_SEPARATOR)
-    val array = IntArray(items.size)
+    val size = items.size
+    val array = Array(size) { IntArray(size) }
     items.forEachIndexed { i, item ->
-        val number = try {
-            item.toInt()
-        } catch (ex: NumberFormatException) {
-            -1
-        }
-        array[i] = number
+        array[i] = item
+            .removeSurrounding("[", "]")
+            .split(",")
+            .map { it.toInt() }
+            .toIntArray()
     }
     return array
 }
 
-internal fun IntArray.toBoardString(): String {
+internal fun Array<IntArray>.toBoardString(): String {
     val sb = StringBuilder()
-    forEachIndexed { i, item ->
-        sb.append(item.toString())
+    for (i in indices) {
+        sb.append(this[i].contentToString())
         if (i + 1 < size) {
             sb.append(BOARD_SEPARATOR)
         }
