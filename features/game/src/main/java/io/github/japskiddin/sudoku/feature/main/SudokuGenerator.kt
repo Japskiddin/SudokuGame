@@ -4,29 +4,31 @@ import kotlin.math.floor
 import kotlin.math.sqrt
 
 internal class SudokuGenerator(
-    val N: Int,
-    val K: Int,
+    private val size: Int,
+    private val missingDigits: Int,
 ) {
-    private val mat = Array(N) { IntArray(N) }
-    private val SRN = sqrt(N.toDouble()).toInt()
+    private val items = Array(size) { IntArray(size) }
+    private val squareRootOfSize = sqrt(size.toDouble()).toInt()
 
     fun fillValues(): Array<IntArray> {
         fillDiagonal()
-        fillRemaining(0, SRN)
-        removeKDigits()
-        return mat
+        fillRemaining(0, squareRootOfSize)
+        removeMissingDigits()
+        return items
     }
 
     private fun fillDiagonal() {
-        for (i in 0..<N step SRN) {
+        var i = 0
+        while (i < size) {
             fillBox(i, i)
+            i += squareRootOfSize
         }
     }
 
     private fun unUsedInBox(rowStart: Int, colStart: Int, num: Int): Boolean {
-        for (i in 0..<SRN) {
-            for (j in 0..<SRN) {
-                if (mat[rowStart + i][colStart + j] == num) return false
+        for (i in 0 until squareRootOfSize) {
+            for (j in 0 until squareRootOfSize) {
+                if (items[rowStart + i][colStart + j] == num) return false
             }
         }
         return true
@@ -34,12 +36,12 @@ internal class SudokuGenerator(
 
     private fun fillBox(row: Int, col: Int) {
         var num: Int
-        for (i in 0..<SRN) {
-            for (j in 0..<SRN) {
+        for (i in 0 until squareRootOfSize) {
+            for (j in 0 until squareRootOfSize) {
                 do {
-                    num = randomGenerator(N)
+                    num = randomGenerator(size)
                 } while (!unUsedInBox(row, col, num))
-                mat[row + i][col + j] = num
+                items[row + i][col + j] = num
             }
         }
     }
@@ -51,77 +53,87 @@ internal class SudokuGenerator(
     private fun CheckIfSafe(i: Int, j: Int, num: Int): Boolean {
         return unUsedInRow(i, num)
                 && unUsedInCol(j, num)
-                && unUsedInBox(i - i % SRN, j - j % SRN, num)
+                && unUsedInBox(i - i % squareRootOfSize, j - j % squareRootOfSize, num)
     }
 
     private fun unUsedInRow(i: Int, num: Int): Boolean {
-        for (j in 0..<N) {
-            if (mat[i][j] == num) return false
+        for (j in 0 until size) {
+            if (items[i][j] == num) return false
         }
         return true
     }
 
     private fun unUsedInCol(j: Int, num: Int): Boolean {
-        for (i in 0..<N) {
-            if (mat[i][j] == num) return false
+        for (i in 0 until size) {
+            if (items[i][j] == num) return false
         }
         return true
     }
 
-    private fun fillRemaining(_i: Int, _j: Int): Boolean {
-        var i = _i
-        var j = _j
-        if (j >= N && i < N - 1) {
+    private fun fillRemaining(i: Int, j: Int): Boolean {
+        var i = i
+        var j = j
+        if (j >= size && i < size - 1) {
             i = i + 1
             j = 0
         }
-        if (i >= N && j >= N) {
-            return false
+        if (i >= size && j >= size) {
+            return true
         }
-        if (i < SRN) {
-            if (j < SRN) {
-                j = SRN
+        if (i < squareRootOfSize) {
+            if (j < squareRootOfSize) {
+                j = squareRootOfSize
             }
-        } else if (i < N - SRN) {
-            if (j == (i / SRN) * SRN) {
-                j = j + SRN
+        } else if (i < size - squareRootOfSize) {
+            if (j == (i / squareRootOfSize) * squareRootOfSize) {
+                j = j + squareRootOfSize
             }
         } else {
-            if (j == N - SRN) {
+            if (j == size - squareRootOfSize) {
                 i = i + 1
                 j = 0
-                if (i >= N) {
-                    return false
+                if (i >= size) {
+                    return true
                 }
             }
         }
 
-        for (num in 1..N) {
+        for (num in 1..size) {
             if (CheckIfSafe(i, j, num)) {
-                mat[i][j] = num
+                items[i][j] = num
                 if (fillRemaining(i, j + 1)) {
                     return true
                 }
-                mat[i][j] = 0
+                items[i][j] = 0
             }
         }
 
         return false
     }
 
-    private fun removeKDigits() {
-        var count = K
+    private fun removeMissingDigits() {
+        var count = missingDigits
         while (count != 0) {
-            val cellId = randomGenerator(N * N) - 1
-            val i = cellId / N
-            var j = cellId % N
+            val cellId = randomGenerator(size * size) - 1
+            val i = cellId / size
+            var j = cellId % size
             if (j != 0) {
                 j = j - 1
             }
-            if (mat[i][j] != 0) {
+            if (items[i][j] != 0) {
                 count--
-                mat[i][j] = 0
+                items[i][j] = 0
             }
         }
+    }
+
+    private fun printSudoku() {
+        for (i in 0 until size) {
+            for (j in 0 until size) {
+                print(items[i][j].toString() + " ")
+            }
+            println()
+        }
+        println()
     }
 }

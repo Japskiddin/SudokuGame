@@ -2,7 +2,7 @@ package io.github.japskiddin.sudoku.feature.main.usecase
 
 import io.github.japskiddin.sudoku.data.GameRepository
 import io.github.japskiddin.sudoku.data.models.GameLevel
-import io.github.japskiddin.sudoku.feature.main.utils.generateGameBoard
+import io.github.japskiddin.sudoku.feature.main.SudokuGenerator
 import javax.inject.Inject
 
 internal class GenerateGameLevelUseCase @Inject constructor(
@@ -10,7 +10,8 @@ internal class GenerateGameLevelUseCase @Inject constructor(
 ) {
     operator fun invoke(): GameLevel {
 //        return repository.getGameLevel()
-        val board = generateGameBoard()
+        val generator = SudokuGenerator(9, 40)
+        val board = generator.fillValues()
         return GameLevel(board = board)
     }
 }
