@@ -10,6 +10,16 @@ internal class SudokuGenerator(
     private val items = Array(size) { IntArray(size) }
     private val squareRootOfSize = sqrt(size.toDouble()).toInt()
 
+    fun print() {
+        for (i in 0 until size) {
+            for (j in 0 until size) {
+                print(items[i][j].toString() + " ")
+            }
+            println()
+        }
+        println()
+    }
+
     fun fillValues(): Array<IntArray> {
         fillDiagonal()
         fillRemaining(0, squareRootOfSize)
@@ -20,27 +30,18 @@ internal class SudokuGenerator(
     private fun fillDiagonal() {
         var i = 0
         while (i < size) {
-            fillBox(i, i)
+            fillCell(i, i)
             i += squareRootOfSize
         }
     }
 
-    private fun unUsedInBox(rowStart: Int, colStart: Int, num: Int): Boolean {
-        for (i in 0 until squareRootOfSize) {
-            for (j in 0 until squareRootOfSize) {
-                if (items[rowStart + i][colStart + j] == num) return false
-            }
-        }
-        return true
-    }
-
-    private fun fillBox(row: Int, col: Int) {
+    private fun fillCell(row: Int, col: Int) {
         var num: Int
         for (i in 0 until squareRootOfSize) {
             for (j in 0 until squareRootOfSize) {
                 do {
                     num = randomGenerator(size)
-                } while (!unUsedInBox(row, col, num))
+                } while (!isUnusedInCell(row, col, num))
                 items[row + i][col + j] = num
             }
         }
@@ -50,31 +51,40 @@ internal class SudokuGenerator(
         return floor(Math.random() * num + 1).toInt()
     }
 
-    private fun CheckIfSafe(i: Int, j: Int, num: Int): Boolean {
-        return unUsedInRow(i, num)
-                && unUsedInCol(j, num)
-                && unUsedInBox(i - i % squareRootOfSize, j - j % squareRootOfSize, num)
+    private fun checkIfSafe(i: Int, j: Int, num: Int): Boolean {
+        return isUnusedInRow(i, num)
+                && isUnusedInCol(j, num)
+                && isUnusedInCell(i - i % squareRootOfSize, j - j % squareRootOfSize, num)
     }
 
-    private fun unUsedInRow(i: Int, num: Int): Boolean {
+    private fun isUnusedInCell(rowStart: Int, colStart: Int, num: Int): Boolean {
+        for (i in 0 until squareRootOfSize) {
+            for (j in 0 until squareRootOfSize) {
+                if (items[rowStart + i][colStart + j] == num) return false
+            }
+        }
+        return true
+    }
+
+    private fun isUnusedInRow(i: Int, num: Int): Boolean {
         for (j in 0 until size) {
             if (items[i][j] == num) return false
         }
         return true
     }
 
-    private fun unUsedInCol(j: Int, num: Int): Boolean {
+    private fun isUnusedInCol(j: Int, num: Int): Boolean {
         for (i in 0 until size) {
             if (items[i][j] == num) return false
         }
         return true
     }
 
-    private fun fillRemaining(i: Int, j: Int): Boolean {
-        var i = i
-        var j = j
+    private fun fillRemaining(startI: Int, startJ: Int): Boolean {
+        var i = startI
+        var j = startJ
         if (j >= size && i < size - 1) {
-            i = i + 1
+            i += 1
             j = 0
         }
         if (i >= size && j >= size) {
@@ -86,11 +96,11 @@ internal class SudokuGenerator(
             }
         } else if (i < size - squareRootOfSize) {
             if (j == (i / squareRootOfSize) * squareRootOfSize) {
-                j = j + squareRootOfSize
+                j += squareRootOfSize
             }
         } else {
             if (j == size - squareRootOfSize) {
-                i = i + 1
+                i += 1
                 j = 0
                 if (i >= size) {
                     return true
@@ -99,7 +109,7 @@ internal class SudokuGenerator(
         }
 
         for (num in 1..size) {
-            if (CheckIfSafe(i, j, num)) {
+            if (checkIfSafe(i, j, num)) {
                 items[i][j] = num
                 if (fillRemaining(i, j + 1)) {
                     return true
@@ -118,22 +128,12 @@ internal class SudokuGenerator(
             val i = cellId / size
             var j = cellId % size
             if (j != 0) {
-                j = j - 1
+                j -= 1
             }
             if (items[i][j] != 0) {
                 count--
                 items[i][j] = 0
             }
         }
-    }
-
-    private fun printSudoku() {
-        for (i in 0 until size) {
-            for (j in 0 until size) {
-                print(items[i][j].toString() + " ")
-            }
-            println()
-        }
-        println()
     }
 }
