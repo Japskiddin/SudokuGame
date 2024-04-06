@@ -13,7 +13,6 @@ kotlin {
 android {
     namespace = "io.github.japskiddin.sudoku.datastore"
     compileSdk = libs.versions.compileSdk.get().toInt()
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()

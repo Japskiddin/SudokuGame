@@ -12,7 +12,6 @@ kotlin {
 android {
     namespace = "io.github.japskiddin.sudoku.game"
     compileSdk = libs.versions.compileSdk.get().toInt()
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     defaultConfig {
         applicationId = "io.github.japskiddin.sudoku.game"
