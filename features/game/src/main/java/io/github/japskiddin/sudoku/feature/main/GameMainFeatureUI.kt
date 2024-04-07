@@ -18,8 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.japskiddin.sudoku.data.models.Difficulty
+import io.github.japskiddin.sudoku.data.models.GameLevel
 
 @Composable
 fun GameScreen() {
@@ -30,19 +34,26 @@ fun GameScreen() {
 internal fun GameScreen(viewModel: GameViewModel) {
     val state by viewModel.state.collectAsState()
     when (val currentState = state) {
-        is State.Success -> GameBoard(currentState)
-        is State.Error -> Error(currentState)
+        is State.Success -> Game(gameLevel = currentState.gameLevel)
+        is State.Error -> Error(message = currentState.errorMessage)
         is State.Loading -> Loading()
         State.None -> Empty()
     }
 }
 
 @Composable
+internal fun Game(
+    gameLevel: GameLevel,
+) {
+    GameBoard(gameLevel = gameLevel)
+}
+
+@Composable
 internal fun GameBoard(
-    state: State.Success,
+    gameLevel: GameLevel,
 ) {
     Log.d("TEST", "GameBoard")
-    val board = state.gameLevel.board
+    val board = gameLevel.board
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +105,7 @@ internal fun Loading() {
 }
 
 @Composable
-internal fun Error(state: State.Error) {
+internal fun Error(message: String) {
     Log.d("TEST", "Error")
 }
 
@@ -106,30 +117,36 @@ internal fun Empty() {
     name = "Game Board",
 )
 @Composable
-fun GameBoardPreview() {
-//    val gameLevel = GameLevel(
-//        time = 0L,
-//        board = intArrayOf(
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//            1, 2, 3, 4, 5, 6, 7, 8, 9,
-//        ),
-//        actions = 0,
-//        difficulty = Difficulty.NORMAL,
-//    )
-//    GameBoard(State.Success(gameLevel))
+internal fun GameBoardPreview(
+    @PreviewParameter(GameLevelPreviewProvider::class) gameLevel: GameLevel
+) {
+    GameBoard(gameLevel)
 }
 
 @Preview(
     name = "Game Cell",
 )
 @Composable
-fun CellPreview() {
+internal fun CellPreview() {
     Cell(value = 1)
+}
+
+private class GameLevelPreviewProvider : PreviewParameterProvider<GameLevel> {
+    private val board = Array(9) { IntArray(9) }.apply {
+        for (i in 0..<9) {
+            for (j in 0..<9) {
+                this[i][j] = 1
+            }
+        }
+    }
+
+    override val values: Sequence<GameLevel>
+        get() = sequenceOf(
+            GameLevel(
+                time = 0L,
+                board = board,
+                actions = 0,
+                difficulty = Difficulty.NORMAL,
+            ),
+        )
 }
