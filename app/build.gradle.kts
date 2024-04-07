@@ -155,6 +155,11 @@ dependencies {
 
     implementation(project(":features:home"))
     implementation(project(":features:game"))
+    implementation(project(":game-data"))
+    implementation(project(":game-common"))
+    implementation(project(":datastore"))
+    implementation(project(":database"))
+    implementation(project(":navigation"))
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

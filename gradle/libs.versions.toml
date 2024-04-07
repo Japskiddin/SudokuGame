@@ -21,6 +21,7 @@ bundletool = "1.15.6"
 ksp = "1.9.23-1.0.19"
 hiltAndroid = "2.51"
 hilt = "1.2.0"
+jakatraInject = "2.0.1"
 junit = "4.13.2"
 googleProtobufPlugin = "0.9.4"
 googleProtobuf = "3.25.3"
@@ -64,6 +65,7 @@ google-protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
+jakatra-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakatraInject" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 
