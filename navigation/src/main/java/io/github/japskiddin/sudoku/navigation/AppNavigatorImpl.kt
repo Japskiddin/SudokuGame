@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.navigation
 
+import jakarta.inject.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
-import javax.inject.Inject
 
 class AppNavigatorImpl @Inject constructor() : AppNavigator {
     override val navigationChannel = Channel<NavigationIntent>(
