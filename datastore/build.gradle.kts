@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.protobuf)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.hilt)
 }
 
 kotlin {
@@ -42,13 +40,9 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.google.protobuf.javalite)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 }
 
 protobuf {
