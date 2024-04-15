@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
 import io.github.japskiddin.sudoku.data.models.GameLevel
+import kotlin.random.Random
 
 @Composable
 fun GameScreen() {
@@ -54,21 +59,40 @@ internal fun GameBoard(
 ) {
     Log.d("TEST", "GameBoard")
     val board = gameLevel.board
+    val divider = when (board.size) {
+        9 -> 3
+        6 -> 2
+        else -> 0
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .border(width = 1.dp, color = Color.Black)
+            .border(width = 1f.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            for (i in 0..8) {
+            for (i in board.indices) {
                 Row {
-                    for (j in 0..8) {
+                    val cells = board[i]
+                    for (j in cells.indices) {
                         Cell(
-                            value = board[i][j], modifier = Modifier
+                            value = board[i][j],
+                            modifier = Modifier
                                 .aspectRatio(1f)
                                 .weight(1f)
                         )
+                        if (divider != 0 && ((j + 1) % divider == 0)) {
+                            HorizontalDivider(
+                                modifier = Modifier.width(1.dp),
+                                color = Color.Black
+                            )
+                        }
                     }
+                }
+                if (divider != 0 && ((i + 1) % divider == 0)) {
+                    VerticalDivider(
+                        modifier = Modifier.height(1.dp),
+                        color = Color.Black
+                    )
                 }
             }
         }
@@ -84,7 +108,7 @@ internal fun Cell(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .background(color = Color.White)
-            .border(width = 1.dp, color = Color.Black)
+            .border(width = .1f.dp, color = Color.Black.copy(alpha = .7f))
             .then(modifier),
     ) {
         Text(
@@ -132,10 +156,11 @@ internal fun CellPreview() {
 }
 
 private class GameLevelPreviewProvider : PreviewParameterProvider<GameLevel> {
-    private val board = Array(9) { IntArray(9) }.apply {
-        for (i in 0..<9) {
-            for (j in 0..<9) {
-                this[i][j] = 1
+    private val size = 9
+    private val board = Array(size) { IntArray(size) }.apply {
+        for (element in this) {
+            for (j in indices) {
+                element[j] = Random.nextInt(0, size)
             }
         }
     }

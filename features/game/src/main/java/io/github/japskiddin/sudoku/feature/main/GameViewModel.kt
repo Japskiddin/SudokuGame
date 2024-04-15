@@ -23,30 +23,22 @@ internal class GameViewModel @Inject constructor(
     private val _state = MutableStateFlow<State>(State.None)
     val state: StateFlow<State>
         get() = _state.asStateFlow()
-//    val state: StateFlow<State> = generateGameLevelUseCase.get().invoke()
-//        .map { it.toState() }
-//        .catch { emit(State.Error("TEST")) }
-//        .stateIn(viewModelScope, SharingStarted.Lazily, State.Loading)
 
     init {
         onGenerateGameLevel()
-    }
-
-    fun onGenerateGameLevel() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.update { State.Loading }
-            val gameLevel = generateGameLevelUseCase.get().invoke()
-            _state.update { State.Success(gameLevel) }
-        }
     }
 
     fun onBackButtonClicked() {
         appNavigator.tryNavigateBack()
     }
 
-//    val state: StateFlow<State> = getGameLevelUseCase.get().invoke()
-//        .map { it.toState() }
-//        .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
+    private fun onGenerateGameLevel() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { State.Loading }
+            val gameLevel = generateGameLevelUseCase.get().invoke()
+            _state.update { State.Success(gameLevel) }
+        }
+    }
 }
 
 internal sealed class State {
