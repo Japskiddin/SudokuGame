@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.feature.main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
 import io.github.japskiddin.sudoku.data.models.GameLevel
-import kotlin.random.Random
+
+private const val TAG = "Game UI"
 
 @Composable
 fun GameScreen() {
@@ -50,19 +52,24 @@ internal fun GameScreen(viewModel: GameViewModel) {
 internal fun Game(
     gameLevel: GameLevel,
 ) {
-    GameBoard(gameLevel = gameLevel)
+    var selectedCell: Pair<Int, Int> = remember { Pair(-1, -1) }
+    GameBoard(
+        gameLevel = gameLevel,
+        selectedCell = selectedCell,
+    )
 }
 
 @Composable
 internal fun GameBoard(
     gameLevel: GameLevel,
+    selectedCell: Pair<Int, Int> = Pair(-1, -1),
 ) {
-    Log.d("TEST", "GameBoard")
     val board = gameLevel.board
-    val divider = when (board.size) {
-        9 -> 3
-        6 -> 2
-        else -> 0
+    val size = board.size
+    val divider = if (size >= 6) {
+        size / 3
+    } else {
+        0
     }
     Box(
         modifier = Modifier
@@ -76,6 +83,10 @@ internal fun GameBoard(
                     for (j in cells.indices) {
                         Cell(
                             value = board[i][j],
+                            isSelected = selectedCell.first == i && selectedCell.second == j,
+                            onClick = {
+//                                onSelectCell(i, j)
+                            },
                             modifier = Modifier
                                 .aspectRatio(1f)
                                 .weight(1f)
@@ -102,20 +113,34 @@ internal fun GameBoard(
 @Composable
 internal fun Cell(
     value: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .background(color = Color.White)
+            .background(
+                color = if (isSelected) {
+                    Color.Green
+                } else {
+                    Color.White
+                }
+            )
             .border(width = .1f.dp, color = Color.Black.copy(alpha = .7f))
-            .then(modifier),
+            .then(modifier)
+            .clickable { onClick() },
     ) {
         Text(
             text = if (value == 0) {
                 ""
             } else {
                 value.toString()
+            },
+            color = if (isSelected) {
+                Color.White
+            } else {
+                Color.Black
             },
             modifier = Modifier.padding(4.dp),
         )
@@ -124,13 +149,12 @@ internal fun Cell(
 
 @Composable
 internal fun Loading() {
-    Log.d("TEST", "Loading")
     Text(text = "Loading")
 }
 
 @Composable
 internal fun Error(message: String) {
-    Log.d("TEST", "Error")
+    Text(text = "Error")
 }
 
 @Composable
@@ -138,13 +162,13 @@ internal fun Empty() {
 }
 
 @Preview(
-    name = "Game Board",
+    name = "Game Preview",
 )
 @Composable
-internal fun GameBoardPreview(
+internal fun GamePreview(
     @PreviewParameter(GameLevelPreviewProvider::class) gameLevel: GameLevel
 ) {
-    GameBoard(gameLevel)
+    Game(gameLevel)
 }
 
 @Preview(
@@ -152,18 +176,15 @@ internal fun GameBoardPreview(
 )
 @Composable
 internal fun CellPreview() {
-    Cell(value = 1)
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Cell(value = 1, isSelected = false, onClick = {})
+        Cell(value = 2, isSelected = true, onClick = {})
+    }
 }
 
 private class GameLevelPreviewProvider : PreviewParameterProvider<GameLevel> {
-    private val size = 9
-    private val board = Array(size) { IntArray(size) }.apply {
-        for (element in this) {
-            for (j in indices) {
-                element[j] = Random.nextInt(0, size)
-            }
-        }
-    }
+    private val generator = SudokuGenerator(9, 50)
+    private val board = generator.fillValues()
 
     override val values: Sequence<GameLevel>
         get() = sequenceOf(
