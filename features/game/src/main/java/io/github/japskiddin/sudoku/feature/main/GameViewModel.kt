@@ -42,7 +42,7 @@ internal class GameViewModel @Inject constructor(
                     UiState.Error(R.string.err_generate_level)
                 } else {
                     val gameLevelUi = gameLevel.toState()
-//                    gameLevelUi.selectedCell = selectedCell
+                    gameLevelUi.selectedCell = selectedCell
                     UiState.Success(gameLevelUi)
                 }
             }
@@ -56,6 +56,10 @@ internal class GameViewModel @Inject constructor(
 
     init {
         onGenerateGameLevel()
+    }
+
+    fun updateSelectedCell(i: Int, j: Int) {
+        _selectedCell.value = Pair(i, j)
     }
 
     fun onBackButtonClicked() {
@@ -85,5 +89,5 @@ internal class GameLevelUi(
     val completedBoard: Array<IntArray> = emptyArray(),
     val actions: Int = 0,
     val difficulty: Difficulty = Difficulty.NORMAL,
-    val selectedCell: Pair<Int, Int> = Pair(-1, -1)
+    var selectedCell: Pair<Int, Int> = Pair(-1, -1)
 )

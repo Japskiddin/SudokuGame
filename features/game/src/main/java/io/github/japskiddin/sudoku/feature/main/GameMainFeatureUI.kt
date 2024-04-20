@@ -20,7 +20,6 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +42,13 @@ fun GameScreen() {
 internal fun GameScreen(viewModel: GameViewModel) {
     val state by viewModel.uiState.collectAsState()
     when (val currentState = state) {
-        is UiState.Success -> Game(gameLevelUi = currentState.gameLevelUi)
+        is UiState.Success -> Game(
+            gameLevelUi = currentState.gameLevelUi,
+            onSelectCell = { i, j ->
+                viewModel.updateSelectedCell(i, j)
+            }
+        )
+
         is UiState.Error -> Error(message = currentState.message)
         is UiState.Loading -> Loading()
         UiState.None -> Empty()
@@ -53,12 +58,12 @@ internal fun GameScreen(viewModel: GameViewModel) {
 @Composable
 internal fun Game(
     gameLevelUi: GameLevelUi,
+    onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
-    var selectedCell: Pair<Int, Int> = remember { Pair(-1, -1) }
     GameBoard(
         gameLevelUi = gameLevelUi,
-        selectedCell = selectedCell,
+        onSelectCell = onSelectCell,
         modifier = Modifier
             .padding(12.dp)
             .fillMaxWidth()
@@ -69,8 +74,10 @@ internal fun Game(
 internal fun GameBoard(
     modifier: Modifier = Modifier,
     gameLevelUi: GameLevelUi,
-    selectedCell: Pair<Int, Int> = Pair(-1, -1),
+    onSelectCell: (Int, Int) -> Unit,
 ) {
+    if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
+    val selectedCell = gameLevelUi.selectedCell
     val board = gameLevelUi.board
     val size = board.size
     val divider = if (size >= 6) {
@@ -92,7 +99,7 @@ internal fun GameBoard(
                             value = board[i][j],
                             isSelected = selectedCell.first == i && selectedCell.second == j,
                             onClick = {
-//                                onSelectCell(i, j)
+                                onSelectCell(i, j)
                             },
                             modifier = Modifier
                                 .aspectRatio(1f)
@@ -128,6 +135,7 @@ internal fun Cell(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (BuildConfig.DEBUG) Log.d(TAG, "Composing Cell")
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -182,7 +190,10 @@ internal fun Empty() {
 internal fun GamePreview(
     @PreviewParameter(GameLevelUiPreviewProvider::class) gameLevelUi: GameLevelUi
 ) {
-    Game(gameLevelUi)
+    Game(
+        gameLevelUi = gameLevelUi,
+        onSelectCell = { _, _ -> }
+    )
 }
 
 @Preview(
@@ -190,7 +201,7 @@ internal fun GamePreview(
 )
 @Composable
 internal fun CellPreview() {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row {
         Cell(value = 1, isSelected = false, onClick = {})
         Cell(value = 2, isSelected = true, onClick = {})
     }
