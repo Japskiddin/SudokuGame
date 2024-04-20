@@ -1,5 +1,7 @@
 package io.github.japskiddin.sudoku.feature.main
 
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,13 +24,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
-import io.github.japskiddin.sudoku.data.models.GameLevel
 
 private const val TAG = "Game UI"
 
@@ -39,22 +41,23 @@ fun GameScreen() {
 
 @Composable
 internal fun GameScreen(viewModel: GameViewModel) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     when (val currentState = state) {
-        is State.Success -> Game(gameLevel = currentState.gameLevel)
-        is State.Error -> Error(message = currentState.errorMessage)
-        is State.Loading -> Loading()
-        State.None -> Empty()
+        is UiState.Success -> Game(gameLevelUi = currentState.gameLevelUi)
+        is UiState.Error -> Error(message = currentState.message)
+        is UiState.Loading -> Loading()
+        UiState.None -> Empty()
     }
 }
 
 @Composable
 internal fun Game(
-    gameLevel: GameLevel,
+    gameLevelUi: GameLevelUi,
 ) {
+    if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
     var selectedCell: Pair<Int, Int> = remember { Pair(-1, -1) }
     GameBoard(
-        gameLevel = gameLevel,
+        gameLevelUi = gameLevelUi,
         selectedCell = selectedCell,
         modifier = Modifier
             .padding(12.dp)
@@ -65,10 +68,10 @@ internal fun Game(
 @Composable
 internal fun GameBoard(
     modifier: Modifier = Modifier,
-    gameLevel: GameLevel,
+    gameLevelUi: GameLevelUi,
     selectedCell: Pair<Int, Int> = Pair(-1, -1),
 ) {
-    val board = gameLevel.board
+    val board = gameLevelUi.board
     val size = board.size
     val divider = if (size >= 6) {
         size / 3
@@ -157,16 +160,19 @@ internal fun Cell(
 
 @Composable
 internal fun Loading() {
+    if (BuildConfig.DEBUG) Log.d(TAG, "Composing Loading screen")
     Text(text = "Loading")
 }
 
 @Composable
-internal fun Error(message: String) {
-    Text(text = "Error")
+internal fun Error(@StringRes message: Int) {
+    if (BuildConfig.DEBUG) Log.d(TAG, "Composing Error screen")
+    Text(text = stringResource(id = message))
 }
 
 @Composable
 internal fun Empty() {
+    if (BuildConfig.DEBUG) Log.d(TAG, "Composing Empty screen")
 }
 
 @Preview(
@@ -174,9 +180,9 @@ internal fun Empty() {
 )
 @Composable
 internal fun GamePreview(
-    @PreviewParameter(GameLevelPreviewProvider::class) gameLevel: GameLevel
+    @PreviewParameter(GameLevelUiPreviewProvider::class) gameLevelUi: GameLevelUi
 ) {
-    Game(gameLevel)
+    Game(gameLevelUi)
 }
 
 @Preview(
@@ -190,15 +196,19 @@ internal fun CellPreview() {
     }
 }
 
-private class GameLevelPreviewProvider : PreviewParameterProvider<GameLevel> {
-    private val generator = SudokuGenerator(9, 50)
-    private val board = generator.fillValues()
+private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi> {
+    private val generator = SudokuGenerator(9, 50).apply {
+        generate()
+    }
+    private val board = generator.getResult().items
+    private val completedBoard = generator.getResult().completedItems
 
-    override val values: Sequence<GameLevel>
+    override val values: Sequence<GameLevelUi>
         get() = sequenceOf(
-            GameLevel(
+            GameLevelUi(
                 time = 0L,
                 board = board,
+                completedBoard = completedBoard,
                 actions = 0,
                 difficulty = Difficulty.NORMAL,
             ),

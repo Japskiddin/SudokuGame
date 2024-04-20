@@ -7,24 +7,29 @@ internal class SudokuGenerator(
     private val size: Int,
     private val missingDigits: Int,
 ) {
+    private val completedItems = Array(size) { IntArray(size) }
     private val items = Array(size) { IntArray(size) }
     private val squareRootOfSize = sqrt(size.toDouble()).toInt()
 
     fun print() {
         for (i in 0 until size) {
             for (j in 0 until size) {
-                print(items[i][j].toString() + " ")
+                print(completedItems[i][j].toString() + " ")
             }
             println()
         }
         println()
     }
 
-    fun fillValues(): Array<IntArray> {
+    fun getResult(): Result {
+        return Result(completedItems = completedItems, items = items)
+    }
+
+    fun generate() {
         fillDiagonal()
         fillRemaining(0, squareRootOfSize)
+        copyCompletedItems()
         removeMissingDigits()
-        return items
     }
 
     private fun fillDiagonal() {
@@ -42,7 +47,7 @@ internal class SudokuGenerator(
                 do {
                     num = randomGenerator(size)
                 } while (!isUnusedInCell(row, col, num))
-                items[row + i][col + j] = num
+                completedItems[row + i][col + j] = num
             }
         }
     }
@@ -60,7 +65,7 @@ internal class SudokuGenerator(
     private fun isUnusedInCell(rowStart: Int, colStart: Int, num: Int): Boolean {
         for (i in 0 until squareRootOfSize) {
             for (j in 0 until squareRootOfSize) {
-                if (items[rowStart + i][colStart + j] == num) return false
+                if (completedItems[rowStart + i][colStart + j] == num) return false
             }
         }
         return true
@@ -68,14 +73,14 @@ internal class SudokuGenerator(
 
     private fun isUnusedInRow(i: Int, num: Int): Boolean {
         for (j in 0 until size) {
-            if (items[i][j] == num) return false
+            if (completedItems[i][j] == num) return false
         }
         return true
     }
 
     private fun isUnusedInCol(j: Int, num: Int): Boolean {
         for (i in 0 until size) {
-            if (items[i][j] == num) return false
+            if (completedItems[i][j] == num) return false
         }
         return true
     }
@@ -110,15 +115,21 @@ internal class SudokuGenerator(
 
         for (num in 1..size) {
             if (checkIfSafe(i, j, num)) {
-                items[i][j] = num
+                completedItems[i][j] = num
                 if (fillRemaining(i, j + 1)) {
                     return true
                 }
-                items[i][j] = 0
+                completedItems[i][j] = 0
             }
         }
 
         return false
+    }
+
+    private fun copyCompletedItems() {
+        completedItems.forEachIndexed { index, item ->
+            items[index] = item
+        }
     }
 
     private fun removeMissingDigits() {
@@ -134,6 +145,29 @@ internal class SudokuGenerator(
                 count--
                 items[i][j] = 0
             }
+        }
+    }
+
+    internal data class Result(
+        val completedItems: Array<IntArray>,
+        val items: Array<IntArray>
+    ) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Result
+
+            if (!completedItems.contentDeepEquals(other.completedItems)) return false
+            if (!items.contentDeepEquals(other.items)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = completedItems.contentDeepHashCode()
+            result = 31 * result + items.contentDeepHashCode()
+            return result
         }
     }
 }

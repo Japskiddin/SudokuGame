@@ -7,6 +7,7 @@ internal fun GameLevelDSO.toGameLevelDO(): GameLevelDO {
     return GameLevelDO(
         this.time,
         this.board,
+        this.completedBoard,
         this.actions,
         this.difficulty,
     )

@@ -10,8 +10,10 @@ internal class GenerateGameLevelUseCase @Inject constructor(
 ) {
     operator fun invoke(): GameLevel {
 //        return repository.getGameLevel()
-        val generator = SudokuGenerator(9, 40)
-        val board = generator.fillValues()
-        return GameLevel(board = board)
+        val generator = SudokuGenerator(9, 30).apply {
+            generate()
+        }
+        val result = generator.getResult()
+        return GameLevel(board = result.items, completedBoard = result.completedItems)
     }
 }

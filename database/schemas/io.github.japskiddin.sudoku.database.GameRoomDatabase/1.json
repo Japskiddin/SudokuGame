@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0a17c88fde26a65ac2c8e23727a5f681",
+    "identityHash": "136ee801cdd9d1a768d4fc6ebcc5f986",
     "entities": [
       {
         "tableName": "history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` TEXT NOT NULL, `level.time` INTEGER NOT NULL, `level.board` TEXT NOT NULL, `level.actions` INTEGER NOT NULL, `level.difficulty` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` TEXT NOT NULL, `level.time` INTEGER NOT NULL, `level.board` TEXT NOT NULL, `level.completed_board` TEXT NOT NULL, `level.actions` INTEGER NOT NULL, `level.difficulty` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -29,6 +29,12 @@
           {
             "fieldPath": "level.board",
             "columnName": "level.board",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level.completedBoard",
+            "columnName": "level.completed_board",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -58,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a17c88fde26a65ac2c8e23727a5f681')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '136ee801cdd9d1a768d4fc6ebcc5f986')"
     ]
   }
 }

@@ -16,6 +16,7 @@ data class HistoryDBO(
 data class Level(
     @ColumnInfo("time") val time: Long,
     @ColumnInfo("board") val board: String,
+    @ColumnInfo("completed_board") val completedBoard: String,
     @ColumnInfo("actions") val actions: Int,
     @ColumnInfo("difficulty") val difficulty: Int,
 )

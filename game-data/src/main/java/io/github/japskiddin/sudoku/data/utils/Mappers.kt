@@ -10,6 +10,7 @@ internal fun GameLevel.toGameLevelDO(): GameLevelDO {
     return GameLevelDO(
         this.time,
         this.board.toBoardString(),
+        this.completedBoard.toBoardString(),
         this.actions,
         this.difficulty.toInt()
     )
@@ -19,6 +20,7 @@ internal fun GameLevelDO.toGameLevel(): GameLevel {
     return GameLevel(
         this.time,
         this.board.toIntArray(),
+        this.completedBoard.toIntArray(),
         this.actions,
         this.difficulty.toDifficulty(),
     )
