@@ -5,13 +5,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -75,12 +76,13 @@ internal fun GameBoard(
         0
     }
     Box(
-        modifier = modifier
-            .border(width = 1f.dp, color = Color.Black)
+        modifier = modifier.border(width = 1f.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             for (i in board.indices) {
-                Row {
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ) {
                     val cells = board[i]
                     for (j in cells.indices) {
                         Cell(
@@ -94,15 +96,16 @@ internal fun GameBoard(
                                 .weight(1f)
                         )
                         if (divider != 0 && ((j + 1) % divider == 0)) {
-                            Divider(
+                            VerticalDivider(
                                 color = Color.Black,
-                                modifier = Modifier.width(1.dp)
+                                thickness = 1.dp,
+                                modifier = Modifier.fillMaxHeight()
                             )
                         }
                     }
                 }
                 if (divider != 0 && ((i + 1) % divider == 0)) {
-                    VerticalDivider(
+                    HorizontalDivider(
                         color = Color.Black,
                         thickness = 1.dp,
                         modifier = Modifier
