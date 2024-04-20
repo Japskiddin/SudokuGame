@@ -8,23 +8,30 @@ composeVersion = "1.5.11"
 versionName = "1.0.0"
 versionCode = "1"
 
-agp = "8.3.1"
-androidxCoreKtx = "1.12.0"
+agp = "8.3.2"
+
+androidxCoreKtx = "1.13.0"
 androidxLifecycle = "2.7.0"
-androidxActivityCompose = "1.8.2"
-androidxComposeBom = "2024.04.00"
+androidxActivityCompose = "1.9.0"
+androidxComposeBom = "2024.04.01"
 androidxRoom = "2.6.1"
-androidxDatastore = "1.0.0"
+androidxDatastore = "1.1.0"
+
 kotlinAndroid = "1.9.23"
 kotlinCoroutines = "1.8.0"
+
 bundletool = "1.15.6"
 ksp = "1.9.23-1.0.19"
+
 hiltAndroid = "2.51"
 hilt = "1.2.0"
 jakatraInject = "2.0.1"
+
 junit = "4.13.2"
+
 googleProtobufPlugin = "0.9.4"
 googleProtobuf = "3.25.3"
+
 androidxTestExtJunit = "1.1.5"
 androidxTestEspressoCore = "3.5.1"
 
@@ -45,6 +52,7 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
 
 bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bundletool" }
+
 jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinAndroid" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
 

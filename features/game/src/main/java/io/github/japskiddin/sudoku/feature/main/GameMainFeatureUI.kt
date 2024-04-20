@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -56,11 +55,15 @@ internal fun Game(
     GameBoard(
         gameLevel = gameLevel,
         selectedCell = selectedCell,
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxWidth()
     )
 }
 
 @Composable
 internal fun GameBoard(
+    modifier: Modifier = Modifier,
     gameLevel: GameLevel,
     selectedCell: Pair<Int, Int> = Pair(-1, -1),
 ) {
@@ -72,8 +75,7 @@ internal fun GameBoard(
         0
     }
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .border(width = 1f.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -92,17 +94,20 @@ internal fun GameBoard(
                                 .weight(1f)
                         )
                         if (divider != 0 && ((j + 1) % divider == 0)) {
-                            HorizontalDivider(
-                                modifier = Modifier.width(1.dp),
-                                color = Color.Black
+                            Divider(
+                                color = Color.Black,
+                                modifier = Modifier.width(1.dp)
                             )
                         }
                     }
                 }
                 if (divider != 0 && ((i + 1) % divider == 0)) {
                     VerticalDivider(
-                        modifier = Modifier.height(1.dp),
-                        color = Color.Black
+                        color = Color.Black,
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .height(1.dp)
+                            .fillMaxWidth(),
                     )
                 }
             }
