@@ -116,8 +116,8 @@ internal fun MenuButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val buttonContainerColor = Color(if (isPressed) 0xFFCC773C else 0xFFFAA468)
-    val buttonShadowColor = Color(if (isPressed) 0xFFA05622 else 0xFFC6763F)
+    val buttonForegroundColor = Color(if (isPressed) 0xFFCC773C else 0xFFFAA468)
+    val buttonBackgroundColor = Color(if (isPressed) 0xFFA05622 else 0xFFC6763F)
     val onButtonColor = Color.White
 
     Button(
@@ -126,15 +126,15 @@ internal fun MenuButton(
         interactionSource = interactionSource,
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
         colors = ButtonDefaults.buttonColors(
-            contentColor = buttonContainerColor,
-            containerColor = buttonShadowColor,
+            contentColor = buttonForegroundColor,
+            containerColor = buttonBackgroundColor,
         ),
         contentPadding = PaddingValues(all = 8.dp),
         modifier = modifier
             .fillMaxWidth()
             .drawBorder(
-                backgroundColor = buttonShadowColor,
-                foregroundColor = buttonContainerColor,
+                backgroundColor = buttonBackgroundColor,
+                foregroundColor = buttonForegroundColor,
                 strokeWidth = 1.dp,
                 cornerRadius = 8.dp,
                 bottomStroke = 4.dp,
