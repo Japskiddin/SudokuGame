@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,14 +27,19 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -141,6 +147,7 @@ internal fun MenuButton(
             icon = icon,
             text = text,
             textColor = onButtonColor,
+            outlineColor = buttonBackgroundColor,
         )
     }
 }
@@ -150,6 +157,7 @@ internal fun MenuButtonContent(
     icon: Painter,
     text: String,
     textColor: Color,
+    outlineColor: Color,
 ) {
     Row(
         modifier = Modifier
@@ -161,15 +169,50 @@ internal fun MenuButtonContent(
             contentDescription = text,
             modifier = Modifier.size(24.dp),
         )
-        Text(
+        OutlineText(
             text = text,
-            textAlign = TextAlign.Center,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = textColor,
+            fillColor = textColor,
+            outlineColor = outlineColor,
             modifier = Modifier
                 .padding(start = 4.dp, end = 4.dp)
                 .weight(1f)
+        )
+    }
+}
+
+@Composable
+internal fun OutlineText(
+    modifier: Modifier = Modifier,
+    text: String,
+    textSize: TextUnit = 16.sp,
+    fillColor: Color,
+    outlineColor: Color,
+    outlineWidth: Dp = 2.dp,
+) {
+    Box {
+        val fillTextStyle = TextStyle(
+            color = fillColor,
+            fontSize = textSize,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+        val outlineTextStyle = fillTextStyle.copy(
+            color = outlineColor,
+            drawStyle = Stroke(
+                width = with(LocalDensity.current) { outlineWidth.toPx() },
+                join = StrokeJoin.Round
+            )
+        )
+
+        Text(
+            text = text,
+            style = LocalTextStyle.current.merge(outlineTextStyle),
+            modifier = modifier.fillMaxWidth(),
+        )
+        Text(
+            text = text,
+            style = LocalTextStyle.current.merge(fillTextStyle),
+            modifier = modifier.fillMaxWidth(),
         )
     }
 }
