@@ -63,7 +63,7 @@ internal fun Game(
     val selectedCell = remember { mutableStateOf(Pair(-1, -1)) }
 
     GameBoard(
-        gameLevelUi = gameLevelUi,
+        board = gameLevelUi.board,
         selectedCell = selectedCell.value,
         onSelectCell = { i, j ->
             selectedCell.value = Pair(i, j)
@@ -77,12 +77,11 @@ internal fun Game(
 @Composable
 internal fun GameBoard(
     modifier: Modifier = Modifier,
-    gameLevelUi: GameLevelUi,
+    board: Array<IntArray>,
     selectedCell: Pair<Int, Int> = Pair(-1, -1),
     onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
-    val board = gameLevelUi.board
     val size = board.size
     val divider = if (size >= 6) {
         size / 3
