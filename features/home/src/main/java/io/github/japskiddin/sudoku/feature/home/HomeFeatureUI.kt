@@ -1,21 +1,19 @@
 package io.github.japskiddin.sudoku.feature.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -90,18 +88,19 @@ internal fun Menu(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.start_game),
             onClick = onStartGameClick,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.settings),
             onClick = onSettingsClick,
-//            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
         )
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.records),
             onClick = onRecordsClick,
-//            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 8.dp)
         )
     }
 }
@@ -120,25 +119,23 @@ internal fun MenuButton(
     val buttonBackgroundColor = Color(if (isPressed) 0xFFA05622 else 0xFFC6763F)
     val onButtonColor = Color.White
 
-    Button(
-        onClick = { onClick() },
-        shape = RoundedCornerShape(8.dp),
-        interactionSource = interactionSource,
-        elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = buttonForegroundColor,
-            containerColor = buttonBackgroundColor,
-        ),
-        contentPadding = PaddingValues(all = 8.dp),
+    Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                onClick = onClick
+            )
             .drawBorder(
                 backgroundColor = buttonBackgroundColor,
                 foregroundColor = buttonForegroundColor,
                 strokeWidth = 1.dp,
                 cornerRadius = 8.dp,
                 bottomStroke = 4.dp,
-            )
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
     ) {
         MenuButtonContent(
             icon = icon,
@@ -146,41 +143,6 @@ internal fun MenuButton(
             textColor = onButtonColor,
         )
     }
-
-//    Row(
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .clickable { onClick() }
-////            .background(color = borderColor, shape = RoundedCornerShape(size = 8.dp))
-////            .padding(start = 1.dp, top = 1.dp, end = 1.dp, bottom = 4.dp)
-////            .background(color = containerColor, shape = RoundedCornerShape(size = 8.dp))
-//            .drawBorder(
-//                backgroundColor = buttonShadowColor,
-//                foregroundColor = buttonContainerColor,
-//                strokeWidth = 1.dp,
-//                cornerRadius = 8.dp,
-//                bottomStroke = 4.dp,
-//            )
-//            .padding(8.dp),
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.Center,
-//    ) {
-//        Image(
-//            painter = icon,
-//            contentDescription = text,
-//            modifier = modifier.size(24.dp),
-//        )
-//        Text(
-//            text = text,
-//            textAlign = TextAlign.Center,
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.Bold,
-//            color = onButtonColor,
-//            modifier = modifier
-//                .padding(start = 4.dp)
-//                .weight(1f)
-//        )
-//    }
 }
 
 @Composable
@@ -189,7 +151,11 @@ internal fun MenuButtonContent(
     text: String,
     textColor: Color,
 ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 16.dp)
+    ) {
         Image(
             painter = icon,
             contentDescription = text,
