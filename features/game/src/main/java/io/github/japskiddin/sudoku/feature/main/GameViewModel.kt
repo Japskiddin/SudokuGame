@@ -28,6 +28,8 @@ internal class GameViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     private val _gameLevel = MutableStateFlow<GameLevel?>(null)
     private val _selectedCell = MutableStateFlow(Pair(-1, -1))
+    private val _playtime = MutableStateFlow(0L)
+    private val _actions = MutableStateFlow(0)
 
     val uiState: StateFlow<UiState> = combine(
         _isLoading, _selectedCell, _gameLevel
@@ -42,7 +44,7 @@ internal class GameViewModel @Inject constructor(
                     UiState.Error(R.string.err_generate_level)
                 } else {
                     val gameLevelUi = gameLevel.toState()
-                    gameLevelUi.selectedCell = selectedCell
+//                    gameLevelUi.selectedCell = selectedCell
                     UiState.Success(gameLevelUi)
                 }
             }
@@ -84,10 +86,7 @@ internal sealed class UiState {
 }
 
 internal class GameLevelUi(
-    val time: Long = 0,
     val board: Array<IntArray> = emptyArray(),
     val completedBoard: Array<IntArray> = emptyArray(),
-    val actions: Int = 0,
     val difficulty: Difficulty = Difficulty.NORMAL,
-    var selectedCell: Pair<Int, Int> = Pair(-1, -1)
 )

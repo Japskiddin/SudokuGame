@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.data.models
 
 data class GameLevel(
-    val time: Long = 0,
+    val playtime: Long = 0L,
     val board: Array<IntArray>,
     val completedBoard: Array<IntArray>,
     val actions: Int = 0,
@@ -17,7 +17,7 @@ data class GameLevel(
 
         other as GameLevel
 
-        if (time != other.time) return false
+        if (playtime != other.playtime) return false
         if (!board.contentEquals(other.board)) return false
         if (!completedBoard.contentEquals(other.completedBoard)) return false
         if (actions != other.actions) return false
@@ -27,7 +27,7 @@ data class GameLevel(
     }
 
     override fun hashCode(): Int {
-        var result = time.hashCode()
+        var result = playtime.hashCode()
         result = 31 * result + board.contentHashCode()
         result = 31 * result + completedBoard.contentHashCode()
         result = 31 * result + actions

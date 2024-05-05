@@ -21,7 +21,7 @@ class GameDatastore(applicationContext: Context) {
     }
 
     suspend fun updateGameLevel(
-        time: Long? = null,
+        playtime: Long? = null,
         board: String? = null,
         actions: Int? = null,
         difficulty: Int? = null
@@ -30,7 +30,7 @@ class GameDatastore(applicationContext: Context) {
             val level = GameLevelDSO.newBuilder()
                 .setActions(actions ?: gameLevel.actions)
                 .setBoard(board ?: gameLevel.board)
-                .setTime(time ?: gameLevel.time)
+                .setPlaytime(playtime ?: gameLevel.playtime)
                 .setDifficulty(difficulty ?: gameLevel.difficulty)
                 .build()
 

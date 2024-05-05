@@ -77,7 +77,7 @@ internal fun GameBoard(
     onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
-    val selectedCell = gameLevelUi.selectedCell
+    val selectedCell = Pair(-1,-1)
     val board = gameLevelUi.board
     val size = board.size
     val divider = if (size >= 6) {
@@ -217,10 +217,8 @@ private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi>
     override val values: Sequence<GameLevelUi>
         get() = sequenceOf(
             GameLevelUi(
-                time = 0L,
                 board = board,
                 completedBoard = completedBoard,
-                actions = 0,
                 difficulty = Difficulty.NORMAL,
             ),
         )
