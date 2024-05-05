@@ -1,16 +1,18 @@
-package io.github.japskiddin.sudoku.feature.main
+package io.github.japskiddin.sudoku.feature.game
 
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
+import io.github.japskiddin.sudoku.feature.game.widgets.autosizetext.AutoSizeText
 
 private const val TAG = "Game UI"
 
@@ -62,16 +65,22 @@ internal fun Game(
 
     val selectedCell = remember { mutableStateOf(Pair(-1, -1)) }
 
-    GameBoard(
-        board = gameLevelUi.board,
-        selectedCell = selectedCell.value,
-        onSelectCell = { i, j ->
-            selectedCell.value = Pair(i, j)
-        },
-        modifier = Modifier
-            .padding(12.dp)
-            .fillMaxWidth()
-    )
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+    ) {
+        GameBoard(
+            board = gameLevelUi.board,
+            selectedCell = selectedCell.value,
+            onSelectCell = { i, j ->
+                selectedCell.value = Pair(i, j)
+            },
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth()
+        )
+        InputPanel(size = gameLevelUi.board.size)
+    }
 }
 
 @Composable
@@ -170,6 +179,28 @@ internal fun Cell(
 }
 
 @Composable
+internal fun InputPanel(
+    modifier: Modifier = Modifier,
+    size: Int,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        for (i in 1..size) {
+            AutoSizeText(
+                text = i.toString(),
+                alignment = Alignment.Center,
+                lineSpacingRatio = 1F,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp),
+            )
+        }
+    }
+}
+
+@Composable
 internal fun Loading() {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing Loading screen")
     Text(text = "Loading")
@@ -207,6 +238,14 @@ internal fun CellPreview() {
         Cell(value = 1, isSelected = false, onClick = {})
         Cell(value = 2, isSelected = true, onClick = {})
     }
+}
+
+@Preview(
+    name = "Input Panel",
+)
+@Composable
+internal fun InputPanelPreview() {
+    InputPanel(size = 9)
 }
 
 private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi> {

@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.main.utils
+package io.github.japskiddin.sudoku.feature.game.utils
 
 import kotlinx.coroutines.flow.SharingStarted
 

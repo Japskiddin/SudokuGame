@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.main
+package io.github.japskiddin.sudoku.feature.game
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
 import io.github.japskiddin.sudoku.data.models.GameLevel
-import io.github.japskiddin.sudoku.feature.main.usecase.GenerateGameLevelUseCase
-import io.github.japskiddin.sudoku.feature.main.utils.WhileUiSubscribed
-import io.github.japskiddin.sudoku.feature.main.utils.toState
+import io.github.japskiddin.sudoku.feature.game.usecase.GenerateGameLevelUseCase
+import io.github.japskiddin.sudoku.feature.game.utils.WhileUiSubscribed
+import io.github.japskiddin.sudoku.feature.game.utils.toState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

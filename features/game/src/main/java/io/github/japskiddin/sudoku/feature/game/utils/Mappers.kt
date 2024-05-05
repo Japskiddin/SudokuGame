@@ -1,7 +1,7 @@
-package io.github.japskiddin.sudoku.feature.main.utils
+package io.github.japskiddin.sudoku.feature.game.utils
 
 import io.github.japskiddin.sudoku.data.models.GameLevel
-import io.github.japskiddin.sudoku.feature.main.GameLevelUi
+import io.github.japskiddin.sudoku.feature.game.GameLevelUi
 
 internal fun GameLevel.toState(): GameLevelUi {
     return GameLevelUi(

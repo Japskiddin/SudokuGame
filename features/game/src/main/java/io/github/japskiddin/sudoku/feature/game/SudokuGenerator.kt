@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.main
+package io.github.japskiddin.sudoku.feature.game
 
 import kotlin.math.floor
 import kotlin.math.sqrt
