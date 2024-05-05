@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.japskiddin.sudoku.feature.main"
+    namespace = "io.github.japskiddin.sudoku.feature.game"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

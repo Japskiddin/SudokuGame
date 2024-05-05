@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
-import io.github.japskiddin.sudoku.feature.game.widgets.autosizetext.AutoSizeText
+import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
 
 private const val TAG = "Game UI"
 

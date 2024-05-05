@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.game.widgets.autosizetext
+package io.github.japskiddin.sudoku.feature.component.autosizetext
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size

@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.game.widgets.autosizetext
+package io.github.japskiddin.sudoku.feature.component.autosizetext
 
 import android.util.Log
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.feature.game.widgets.autosizetext.SuggestedFontSizesStatus.Companion.rememberSuggestedFontSizesStatus
+import io.github.japskiddin.sudoku.feature.component.autosizetext.SuggestedFontSizesStatus.Companion.rememberSuggestedFontSizesStatus
 import kotlin.math.min
 
 /**
