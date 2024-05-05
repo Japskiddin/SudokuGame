@@ -22,14 +22,18 @@ class GameDatastore(applicationContext: Context) {
 
     suspend fun updateGameLevel(
         playtime: Long? = null,
-        board: String? = null,
+        defaultBoard: String? = null,
+        completedBoard: String? = null,
+        currentBoard: String? = null,
         actions: Int? = null,
         difficulty: Int? = null
     ) {
         gameLevelDataStore.updateData { gameLevel ->
             val level = GameLevelDSO.newBuilder()
                 .setActions(actions ?: gameLevel.actions)
-                .setBoard(board ?: gameLevel.board)
+                .setDefaultBoard(defaultBoard ?: gameLevel.defaultBoard)
+                .setCompletedBoard(completedBoard ?: gameLevel.completedBoard)
+                .setCurrentBoard(currentBoard ?: gameLevel.currentBoard)
                 .setPlaytime(playtime ?: gameLevel.playtime)
                 .setDifficulty(difficulty ?: gameLevel.difficulty)
                 .build()

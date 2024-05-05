@@ -6,7 +6,8 @@ import io.github.japskiddin.sudoku.datastore.models.GameLevelDO
 internal fun GameLevelDSO.toGameLevelDO(): GameLevelDO {
     return GameLevelDO(
         this.playtime,
-        this.board,
+        this.defaultBoard,
+        this.currentBoard,
         this.completedBoard,
         this.actions,
         this.difficulty,

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eba7686f42292b7a248c2efd6d77667e",
+    "identityHash": "9a21c4fe320262c5463adf34d34d2cd7",
     "entities": [
       {
         "tableName": "history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` TEXT NOT NULL, `level.playtime` INTEGER NOT NULL, `level.board` TEXT NOT NULL, `level.completed_board` TEXT NOT NULL, `level.actions` INTEGER NOT NULL, `level.difficulty` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` TEXT NOT NULL, `level.playtime` INTEGER NOT NULL, `level.default_board` TEXT NOT NULL, `level.current_board` TEXT NOT NULL, `level.completed_board` TEXT NOT NULL, `level.actions` INTEGER NOT NULL, `level.difficulty` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,8 +27,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "level.board",
-            "columnName": "level.board",
+            "fieldPath": "level.defaultBoard",
+            "columnName": "level.default_board",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level.currentBoard",
+            "columnName": "level.current_board",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -64,7 +70,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eba7686f42292b7a248c2efd6d77667e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9a21c4fe320262c5463adf34d34d2cd7')"
     ]
   }
 }

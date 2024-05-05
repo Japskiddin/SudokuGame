@@ -80,7 +80,8 @@ internal sealed class UiState {
 }
 
 internal class GameLevelUi(
-    val board: Array<IntArray> = emptyArray(),
+    val defaultBoard: Array<IntArray> = emptyArray(),
+    val currentBoard: Array<IntArray> = emptyArray(),
     val completedBoard: Array<IntArray> = emptyArray(),
     val difficulty: Difficulty = Difficulty.NORMAL,
 )

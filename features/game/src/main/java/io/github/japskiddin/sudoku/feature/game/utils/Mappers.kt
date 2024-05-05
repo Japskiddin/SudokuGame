@@ -5,7 +5,7 @@ import io.github.japskiddin.sudoku.feature.game.GameLevelUi
 
 internal fun GameLevel.toState(): GameLevelUi {
     return GameLevelUi(
-        board = this.board,
+        currentBoard = this.currentBoard,
         completedBoard = this.completedBoard,
         difficulty = this.difficulty,
     )

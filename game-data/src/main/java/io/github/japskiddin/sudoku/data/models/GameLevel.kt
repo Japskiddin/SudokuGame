@@ -2,13 +2,14 @@ package io.github.japskiddin.sudoku.data.models
 
 data class GameLevel(
     val playtime: Long = 0L,
-    val board: Array<IntArray>,
+    val defaultBoard: Array<IntArray>,
+    val currentBoard: Array<IntArray>,
     val completedBoard: Array<IntArray>,
     val actions: Int = 0,
     val difficulty: Difficulty = Difficulty.NORMAL,
 ) {
     fun isEmptyBoard(): Boolean {
-        return board.isEmpty() || completedBoard.isEmpty()
+        return currentBoard.isEmpty() || completedBoard.isEmpty()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -18,7 +19,8 @@ data class GameLevel(
         other as GameLevel
 
         if (playtime != other.playtime) return false
-        if (!board.contentEquals(other.board)) return false
+        if (!defaultBoard.contentEquals(other.defaultBoard)) return false
+        if (!currentBoard.contentEquals(other.currentBoard)) return false
         if (!completedBoard.contentEquals(other.completedBoard)) return false
         if (actions != other.actions) return false
         if (difficulty != other.difficulty) return false
@@ -28,7 +30,8 @@ data class GameLevel(
 
     override fun hashCode(): Int {
         var result = playtime.hashCode()
-        result = 31 * result + board.contentHashCode()
+        result = 31 * result + defaultBoard.contentHashCode()
+        result = 31 * result + currentBoard.contentHashCode()
         result = 31 * result + completedBoard.contentHashCode()
         result = 31 * result + actions
         result = 31 * result + difficulty.hashCode()

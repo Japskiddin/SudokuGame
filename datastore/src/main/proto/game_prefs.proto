@@ -5,8 +5,9 @@ option java_multiple_files = true;
 
 message GameLevelDSO {
     int64 playtime = 1;
-    string board = 2;
-    string completedBoard = 3;
-    int32 actions = 4;
-    int32 difficulty = 5;
+    string defaultBoard = 2;
+    string currentBoard = 3;
+    string completedBoard = 4;
+    int32 actions = 5;
+    int32 difficulty = 6;
 }

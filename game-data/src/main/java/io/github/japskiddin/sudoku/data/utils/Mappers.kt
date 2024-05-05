@@ -9,7 +9,8 @@ internal const val BOARD_SEPARATOR = ";"
 internal fun GameLevel.toGameLevelDO(): GameLevelDO {
     return GameLevelDO(
         this.playtime,
-        this.board.toBoardString(),
+        this.defaultBoard.toBoardString(),
+        this.currentBoard.toBoardString(),
         this.completedBoard.toBoardString(),
         this.actions,
         this.difficulty.toInt()
@@ -19,7 +20,8 @@ internal fun GameLevel.toGameLevelDO(): GameLevelDO {
 internal fun GameLevelDO.toGameLevel(): GameLevel {
     return GameLevel(
         this.playtime,
-        this.board.toIntArray(),
+        this.defaultBoard.toIntArray(),
+        this.currentBoard.toIntArray(),
         this.completedBoard.toIntArray(),
         this.actions,
         this.difficulty.toDifficulty(),

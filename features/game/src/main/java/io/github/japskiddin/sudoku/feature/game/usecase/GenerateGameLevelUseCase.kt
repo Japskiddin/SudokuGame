@@ -14,6 +14,10 @@ internal class GenerateGameLevelUseCase @Inject constructor(
             generate()
         }
         val result = generator.getResult()
-        return GameLevel(board = result.items, completedBoard = result.completedItems)
+        return GameLevel(
+            defaultBoard = result.items,
+            currentBoard = result.items,
+            completedBoard = result.completedItems
+        )
     }
 }

@@ -70,7 +70,7 @@ internal fun Game(
         verticalArrangement = Arrangement.Center,
     ) {
         GameBoard(
-            board = gameLevelUi.board,
+            board = gameLevelUi.currentBoard,
             selectedCell = selectedCell.value,
             onSelectCell = { i, j ->
                 selectedCell.value = Pair(i, j)
@@ -79,7 +79,7 @@ internal fun Game(
                 .padding(12.dp)
                 .fillMaxWidth()
         )
-        InputPanel(size = gameLevelUi.board.size)
+        InputPanel(size = gameLevelUi.currentBoard.size)
     }
 }
 
@@ -87,7 +87,7 @@ internal fun Game(
 internal fun GameBoard(
     modifier: Modifier = Modifier,
     board: Array<IntArray>,
-    selectedCell: Pair<Int, Int> = Pair(-1, -1),
+    selectedCell: Pair<Int, Int>,
     onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
@@ -258,7 +258,7 @@ private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi>
     override val values: Sequence<GameLevelUi>
         get() = sequenceOf(
             GameLevelUi(
-                board = board,
+                currentBoard = board,
                 completedBoard = completedBoard,
                 difficulty = Difficulty.NORMAL,
             ),
