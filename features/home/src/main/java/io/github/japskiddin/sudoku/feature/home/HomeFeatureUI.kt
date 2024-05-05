@@ -70,8 +70,8 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
                     .fillMaxWidth(.8f)
                     .weight(1f),
                 onStartGameClick = { viewModel.navigateToGame() },
-                onSettingsClick = {},
-                onRecordsClick = {},
+                onSettingsClick = { TODO("In Development") },
+                onRecordsClick = { TODO("In Development") },
             )
             OutlineText(
                 text = viewModel.getCurrentYear(),
