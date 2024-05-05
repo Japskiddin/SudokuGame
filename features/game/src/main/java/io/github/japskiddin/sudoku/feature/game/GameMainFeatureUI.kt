@@ -70,7 +70,8 @@ internal fun Game(
         verticalArrangement = Arrangement.Center,
     ) {
         GameBoard(
-            board = gameLevelUi.currentBoard,
+            defaultBoard = gameLevelUi.defaultBoard,
+            currentBoard = gameLevelUi.currentBoard,
             selectedCell = selectedCell.value,
             onSelectCell = { i, j ->
                 selectedCell.value = Pair(i, j)
@@ -86,12 +87,13 @@ internal fun Game(
 @Composable
 internal fun GameBoard(
     modifier: Modifier = Modifier,
-    board: Array<IntArray>,
+    defaultBoard: Array<IntArray>,
+    currentBoard: Array<IntArray>,
     selectedCell: Pair<Int, Int>,
     onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
-    val size = board.size
+    val size = currentBoard.size
     val divider = if (size >= 6) {
         size / 3
     } else {
@@ -101,15 +103,16 @@ internal fun GameBoard(
         modifier = modifier.border(width = 1f.dp, color = Color.Black)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            for (i in board.indices) {
+            for (i in currentBoard.indices) {
                 Row(
                     modifier = Modifier.height(IntrinsicSize.Min)
                 ) {
-                    val cells = board[i]
+                    val cells = currentBoard[i]
                     for (j in cells.indices) {
                         Cell(
-                            value = board[i][j],
+                            value = currentBoard[i][j],
                             isSelected = selectedCell.first == i && selectedCell.second == j,
+                            isEditable = defaultBoard[i][j] <= 0,
                             onClick = {
                                 onSelectCell(i, j)
                             },
@@ -144,6 +147,7 @@ internal fun GameBoard(
 internal fun Cell(
     value: Int,
     isSelected: Boolean,
+    isEditable: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -160,7 +164,12 @@ internal fun Cell(
             )
             .border(width = .1f.dp, color = Color.Black.copy(alpha = .7f))
             .then(modifier)
-            .clickable { onClick() },
+            .let {
+                if (isEditable) {
+                    return@let it.clickable { onClick() }
+                }
+                it
+            },
     ) {
         Text(
             text = if (value == 0) {
@@ -235,8 +244,8 @@ internal fun GamePreview(
 @Composable
 internal fun CellPreview() {
     Row {
-        Cell(value = 1, isSelected = false, onClick = {})
-        Cell(value = 2, isSelected = true, onClick = {})
+        Cell(value = 1, isSelected = false, isEditable = true, onClick = {})
+        Cell(value = 2, isSelected = true, isEditable = true, onClick = {})
     }
 }
 
@@ -252,13 +261,14 @@ private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi>
     private val generator = SudokuGenerator(9, 50).apply {
         generate()
     }
-    private val board = generator.getResult().items
+    private val currentBoard = generator.getResult().items
     private val completedBoard = generator.getResult().completedItems
 
     override val values: Sequence<GameLevelUi>
         get() = sequenceOf(
             GameLevelUi(
-                currentBoard = board,
+                defaultBoard = currentBoard,
+                currentBoard = currentBoard,
                 completedBoard = completedBoard,
                 difficulty = Difficulty.NORMAL,
             ),
