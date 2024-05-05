@@ -49,6 +49,7 @@ internal fun GameScreen(viewModel: GameViewModel) {
     when (val currentState = state) {
         is UiState.Success -> Game(
             gameLevelUi = currentState.gameLevelUi,
+            onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
         )
 
         is UiState.Error -> Error(message = currentState.message)
@@ -60,6 +61,7 @@ internal fun GameScreen(viewModel: GameViewModel) {
 @Composable
 internal fun Game(
     gameLevelUi: GameLevelUi,
+    onInputCell: (Pair<Int, Int>, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
 
@@ -80,7 +82,10 @@ internal fun Game(
                 .padding(12.dp)
                 .fillMaxWidth()
         )
-        InputPanel(size = gameLevelUi.currentBoard.size)
+        InputPanel(
+            size = gameLevelUi.currentBoard.size,
+            onClick = { item -> onInputCell(selectedCell.value, item) }
+        )
     }
 }
 
@@ -190,6 +195,7 @@ internal fun Cell(
 @Composable
 internal fun InputPanel(
     modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
     size: Int,
 ) {
     Row(
@@ -203,6 +209,7 @@ internal fun InputPanel(
                 lineSpacingRatio = 1F,
                 modifier = Modifier
                     .weight(1f)
+                    .clickable { onClick(i) }
                     .padding(4.dp),
             )
         }
@@ -235,6 +242,7 @@ internal fun GamePreview(
 ) {
     Game(
         gameLevelUi = gameLevelUi,
+        onInputCell = { _, _ -> },
     )
 }
 
@@ -254,7 +262,7 @@ internal fun CellPreview() {
 )
 @Composable
 internal fun InputPanelPreview() {
-    InputPanel(size = 9)
+    InputPanel(size = 9, onClick = {})
 }
 
 private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi> {

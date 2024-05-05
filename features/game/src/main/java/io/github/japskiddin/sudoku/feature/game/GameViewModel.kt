@@ -58,6 +58,20 @@ internal class GameViewModel @Inject constructor(
         onGenerateGameLevel()
     }
 
+    fun onInputCell(cell: Pair<Int, Int>, item: Int) {
+        viewModelScope.launch {
+            val level = _gameLevel.value ?: return@launch
+            val board = level.currentBoard.clone()
+            board[cell.first][cell.second] = item
+            _gameLevel.update {
+//                val board = it?.currentBoard ?: return@launch
+//                board[cell.first][cell.second] = item
+//                it
+                it?.copy(currentBoard = board)
+            }
+        }
+    }
+
     fun onBackButtonClicked() {
         appNavigator.tryNavigateBack()
     }
