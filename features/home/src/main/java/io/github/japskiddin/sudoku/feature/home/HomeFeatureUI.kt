@@ -65,7 +65,6 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = stringResource(id = R.string.title))
             Menu(
                 modifier = Modifier
                     .fillMaxWidth(.8f)
@@ -74,7 +73,11 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
                 onSettingsClick = {},
                 onRecordsClick = {},
             )
-            Text(text = viewModel.getCurrentYear())
+            OutlineText(
+                text = viewModel.getCurrentYear(),
+                fillColor = Color.White,
+                outlineColor = Color.Black
+            )
         }
     }
 }
@@ -90,11 +93,18 @@ internal fun Menu(
         modifier = modifier.wrapContentHeight(),
         verticalArrangement = Arrangement.Center,
     ) {
+        OutlineText(
+            text = stringResource(id = R.string.title),
+            textSize = 48.sp,
+            fillColor = Color.White,
+            outlineColor = Color.Black,
+            outlineWidth = 4.dp,
+        )
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
             text = stringResource(id = R.string.start_game),
             onClick = onStartGameClick,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
         )
         MenuButton(
             icon = painterResource(id = R.drawable.ic_start_game),
