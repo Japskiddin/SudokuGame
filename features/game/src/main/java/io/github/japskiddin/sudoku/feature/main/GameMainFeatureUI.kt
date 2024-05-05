@@ -20,6 +20,8 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,9 +46,6 @@ internal fun GameScreen(viewModel: GameViewModel) {
     when (val currentState = state) {
         is UiState.Success -> Game(
             gameLevelUi = currentState.gameLevelUi,
-            onSelectCell = { i, j ->
-                viewModel.updateSelectedCell(i, j)
-            }
         )
 
         is UiState.Error -> Error(message = currentState.message)
@@ -58,12 +57,17 @@ internal fun GameScreen(viewModel: GameViewModel) {
 @Composable
 internal fun Game(
     gameLevelUi: GameLevelUi,
-    onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
+
+    val selectedCell = remember { mutableStateOf(Pair(-1, -1)) }
+
     GameBoard(
         gameLevelUi = gameLevelUi,
-        onSelectCell = onSelectCell,
+        selectedCell = selectedCell.value,
+        onSelectCell = { i, j ->
+            selectedCell.value = Pair(i, j)
+        },
         modifier = Modifier
             .padding(12.dp)
             .fillMaxWidth()
@@ -74,10 +78,10 @@ internal fun Game(
 internal fun GameBoard(
     modifier: Modifier = Modifier,
     gameLevelUi: GameLevelUi,
+    selectedCell: Pair<Int, Int> = Pair(-1, -1),
     onSelectCell: (Int, Int) -> Unit,
 ) {
     if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
-    val selectedCell = Pair(-1,-1)
     val board = gameLevelUi.board
     val size = board.size
     val divider = if (size >= 6) {
@@ -192,7 +196,6 @@ internal fun GamePreview(
 ) {
     Game(
         gameLevelUi = gameLevelUi,
-        onSelectCell = { _, _ -> }
     )
 }
 
