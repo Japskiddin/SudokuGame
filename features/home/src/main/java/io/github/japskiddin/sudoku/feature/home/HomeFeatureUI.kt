@@ -51,8 +51,24 @@ fun HomeScreen() {
 
 @Composable
 internal fun HomeScreen(viewModel: HomeViewModel) {
+    HomeScreenContent(
+        currentYear = viewModel.getCurrentYear(),
+        onStartGameClick = { viewModel.navigateToGame() },
+        onSettingsClick = { TODO("In Development") },
+        onRecordsClick = { TODO("In Development") },
+    )
+}
+
+@Composable
+internal fun HomeScreenContent(
+    currentYear: String,
+    onStartGameClick: () -> Unit,
+    onRecordsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .paint(
                 painter = painterResource(id = R.drawable.home_background),
@@ -69,12 +85,12 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
                 modifier = Modifier
                     .fillMaxWidth(.8f)
                     .weight(1f),
-                onStartGameClick = { viewModel.navigateToGame() },
-                onSettingsClick = { TODO("In Development") },
-                onRecordsClick = { TODO("In Development") },
+                onStartGameClick = onStartGameClick,
+                onSettingsClick = onSettingsClick,
+                onRecordsClick = onRecordsClick,
             )
             OutlineText(
-                text = viewModel.getCurrentYear(),
+                text = currentYear,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
@@ -131,8 +147,8 @@ internal fun MenuButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val buttonForegroundColor = Color(if (isPressed) 0xFFCC773C else 0xFFFAA468)
-    val buttonBackgroundColor = Color(if (isPressed) 0xFFA05622 else 0xFFC6763F)
+    val buttonForegroundColor = Color(if (isPressed) 0xFF428EC2 else 0xFF68BEFA)
+    val buttonBackgroundColor = Color(if (isPressed) 0xFF10354F else 0xFF235F89)
     val onButtonColor = Color.White
 
     Row(
@@ -146,9 +162,9 @@ internal fun MenuButton(
             .drawBorder(
                 backgroundColor = buttonBackgroundColor,
                 foregroundColor = buttonForegroundColor,
-                strokeWidth = 1.dp,
+                strokeWidth = 2.dp,
                 cornerRadius = 8.dp,
-                bottomStroke = 4.dp,
+                bottomStroke = 6.dp,
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -172,7 +188,7 @@ internal fun MenuButtonContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 16.dp)
+            .padding(all = 12.dp)
     ) {
         Image(
             painter = icon,
@@ -269,5 +285,10 @@ internal fun MenuButtonPreview() {
 )
 @Composable
 internal fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreenContent(
+        currentYear = "2024",
+        onStartGameClick = {},
+        onRecordsClick = {},
+        onSettingsClick = {},
+    )
 }
