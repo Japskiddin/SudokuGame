@@ -5,7 +5,7 @@ targetSdk = "34"
 
 composeVersion = "1.5.13"
 
-versionName = "1.0.0"
+versionName = "0.1.0"
 versionCode = "1"
 
 agp = "8.4.0"
