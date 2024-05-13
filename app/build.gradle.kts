@@ -23,7 +23,7 @@ android {
     versionCode = libs.versions.versionCode.get().toInt()
     versionName = libs.versions.versionName.get()
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    setProperty("archivesBaseName", "sudoku-${applicationId}-${versionCode}")
+    setProperty("archivesBaseName", "sudoku-${versionName}-${versionCode}")
   }
 
   val secretProperties = Properties()
