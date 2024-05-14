@@ -1,40 +1,40 @@
 package io.github.japskiddin.sudoku.data.models
 
 data class GameLevel(
-    val playtime: Long = 0L,
-    val defaultBoard: Array<IntArray>,
-    val currentBoard: Array<IntArray>,
-    val completedBoard: Array<IntArray>,
-    val actions: Int = 0,
-    val difficulty: Difficulty = Difficulty.NORMAL,
+  val playtime: Long = 0L,
+  val defaultBoard: Array<IntArray> = emptyArray(),
+  val currentBoard: Array<IntArray> = emptyArray(),
+  val completedBoard: Array<IntArray> = emptyArray(),
+  val actions: Int = 0,
+  val difficulty: Difficulty = Difficulty.NORMAL,
 ) {
-    fun isEmptyBoard(): Boolean {
-        return currentBoard.isEmpty() || completedBoard.isEmpty()
-    }
+  fun isEmptyBoard(): Boolean {
+    return currentBoard.isEmpty() || completedBoard.isEmpty()
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
 
-        other as GameLevel
+    other as GameLevel
 
-        if (playtime != other.playtime) return false
-        if (!defaultBoard.contentEquals(other.defaultBoard)) return false
-        if (!currentBoard.contentEquals(other.currentBoard)) return false
-        if (!completedBoard.contentEquals(other.completedBoard)) return false
-        if (actions != other.actions) return false
-        if (difficulty != other.difficulty) return false
+    if (playtime != other.playtime) return false
+    if (!defaultBoard.contentEquals(other.defaultBoard)) return false
+    if (!currentBoard.contentEquals(other.currentBoard)) return false
+    if (!completedBoard.contentEquals(other.completedBoard)) return false
+    if (actions != other.actions) return false
+    if (difficulty != other.difficulty) return false
 
-        return true
-    }
+    return true
+  }
 
-    override fun hashCode(): Int {
-        var result = playtime.hashCode()
-        result = 31 * result + defaultBoard.contentHashCode()
-        result = 31 * result + currentBoard.contentHashCode()
-        result = 31 * result + completedBoard.contentHashCode()
-        result = 31 * result + actions
-        result = 31 * result + difficulty.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = playtime.hashCode()
+    result = 31 * result + defaultBoard.contentHashCode()
+    result = 31 * result + currentBoard.contentHashCode()
+    result = 31 * result + completedBoard.contentHashCode()
+    result = 31 * result + actions
+    result = 31 * result + difficulty.hashCode()
+    return result
+  }
 }

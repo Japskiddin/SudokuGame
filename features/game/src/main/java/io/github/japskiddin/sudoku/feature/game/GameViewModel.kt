@@ -22,80 +22,86 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class GameViewModel @Inject constructor(
-    private val generateGameLevelUseCase: Provider<GenerateGameLevelUseCase>,
-    private val appNavigator: AppNavigator,
+  private val generateGameLevelUseCase: Provider<GenerateGameLevelUseCase>,
+  private val appNavigator: AppNavigator,
 ) : ViewModel() {
-    private val _isLoading = MutableStateFlow(false)
-    private val _gameLevel = MutableStateFlow<GameLevel?>(null)
-    private val _playtime = MutableStateFlow(0L)
-    private val _actions = MutableStateFlow(0)
+  private val _isLoading = MutableStateFlow(false)
+  private val _gameLevel = MutableStateFlow(GameLevel())
+  private val _playtime = MutableStateFlow(0L)
+  private val _actions = MutableStateFlow(0)
 
-    val uiState: StateFlow<UiState> = combine(
-        _isLoading, _gameLevel
-    ) { isLoading, gameLevel ->
-        if (isLoading) {
-            UiState.Loading
-        } else {
-            if (gameLevel == null) {
-                UiState.Error(R.string.err_generate_level)
-            } else {
-                if (gameLevel.isEmptyBoard()) {
-                    UiState.Error(R.string.err_generate_level)
-                } else {
-                    val gameLevelUi = gameLevel.toState()
-                    UiState.Success(gameLevelUi)
-                }
-            }
-        }
+  val uiState: StateFlow<UiState> = combine(
+    _isLoading, _gameLevel
+  ) { isLoading, gameLevel ->
+    if (isLoading) {
+      UiState.Loading
+    } else {
+      if (gameLevel.isEmptyBoard()) {
+        UiState.Error(R.string.err_generate_level)
+      } else {
+        val gameLevelUi = gameLevel.toState()
+        UiState.Success(gameLevelUi)
+      }
     }
-        .stateIn(
-            scope = viewModelScope,
-            started = WhileUiSubscribed,
-            initialValue = UiState.None,
-        )
+  }
+    .stateIn(
+      scope = viewModelScope,
+      started = WhileUiSubscribed,
+      initialValue = UiState.None,
+    )
 
-    init {
-        onGenerateGameLevel()
-    }
+  init {
+    onGenerateGameLevel()
+  }
 
-    fun onInputCell(cell: Pair<Int, Int>, item: Int) {
-        viewModelScope.launch {
-            val level = _gameLevel.value ?: return@launch
-            val board = level.currentBoard.clone()
-            board[cell.first][cell.second] = item
-            _gameLevel.update {
+  fun onInputCell(cell: Pair<Int, Int>, item: Int) {
+    viewModelScope.launch {
+      val level = _gameLevel.value ?: return@launch
+      val board = level.currentBoard.copyOf()
+      board[cell.first][cell.second] = item
+      _gameLevel.update {
 //                val board = it?.currentBoard ?: return@launch
 //                board[cell.first][cell.second] = item
 //                it
-                it?.copy(currentBoard = board)
-            }
-        }
+        it.copy(currentBoard = board)
+      }
     }
+  }
 
-    fun onBackButtonClicked() {
-        appNavigator.tryNavigateBack()
-    }
+  fun onBackButtonClicked() {
+    appNavigator.tryNavigateBack()
+  }
 
-    private fun onGenerateGameLevel() {
-        _isLoading.value = true
-        viewModelScope.launch {
-            _gameLevel.update { generateGameLevelUseCase.get().invoke() }
-            delay(1000)
-            _isLoading.value = false
-        }
+  private fun onGenerateGameLevel() {
+    _isLoading.value = true
+    viewModelScope.launch {
+      _gameLevel.update { generateGameLevelUseCase.get().invoke() }
+      delay(1000)
+      _isLoading.value = false
     }
+  }
+}
+
+internal class GameUiState {
+  val errorMessage: String? = null
+  val isLoading: Boolean = false
+  val gameLevel: GameLevelUi? = null
+  // val defaultBoard: Array<IntArray> = emptyArray()
+  // val currentBoard: Array<IntArray> = emptyArray()
+  // val completedBoard: Array<IntArray> = emptyArray()
+  // val difficulty: Difficulty = Difficulty.NORMAL
 }
 
 internal sealed class UiState {
-    data object None : UiState()
-    data object Loading : UiState()
-    class Error(@StringRes val message: Int) : UiState()
-    class Success(val gameLevelUi: GameLevelUi) : UiState()
+  data object None : UiState()
+  data object Loading : UiState()
+  class Error(@StringRes val message: Int) : UiState()
+  class Success(val gameLevelUi: GameLevelUi) : UiState()
 }
 
 internal class GameLevelUi(
-    val defaultBoard: Array<IntArray>,
-    val currentBoard: Array<IntArray>,
-    val completedBoard: Array<IntArray>,
-    val difficulty: Difficulty,
+  val defaultBoard: Array<IntArray>,
+  val currentBoard: Array<IntArray>,
+  val completedBoard: Array<IntArray>,
+  val difficulty: Difficulty,
 )
