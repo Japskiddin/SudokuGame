@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.data.models.Difficulty
 import io.github.japskiddin.sudoku.data.models.GameLevel
-import io.github.japskiddin.sudoku.feature.game.usecase.GenerateGameLevelUseCase
+import io.github.japskiddin.sudoku.feature.game.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.utils.WhileUiSubscribed
 import io.github.japskiddin.sudoku.feature.game.utils.toState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
@@ -22,7 +22,7 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class GameViewModel @Inject constructor(
-  private val generateGameLevelUseCase: Provider<GenerateGameLevelUseCase>,
+  private val getBoardUseCase: Provider<GetBoardUseCase>,
   private val appNavigator: AppNavigator,
 ) : ViewModel() {
   private val _isLoading = MutableStateFlow(false)
@@ -75,7 +75,7 @@ internal class GameViewModel @Inject constructor(
   private fun onGenerateGameLevel() {
     _isLoading.value = true
     viewModelScope.launch {
-      _gameLevel.update { generateGameLevelUseCase.get().invoke() }
+      _gameLevel.update { getBoardUseCase.get().invoke() }
       delay(1000)
       _isLoading.value = false
     }
