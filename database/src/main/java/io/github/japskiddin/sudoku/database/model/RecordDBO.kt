@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
   foreignKeys = [
     ForeignKey(
       onDelete = ForeignKey.CASCADE,
-      entity = SudokuBoardDBO::class,
+      entity = BoardDBO::class,
       parentColumns = arrayOf("uid"),
       childColumns = arrayOf("board_uid"),
     )

@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
   foreignKeys = [
     ForeignKey(
       onDelete = ForeignKey.CASCADE,
-      entity = SudokuBoardDBO::class,
+      entity = BoardDBO::class,
       parentColumns = arrayOf("uid"),
       childColumns = arrayOf("board_uid"),
     )
@@ -25,7 +25,7 @@ data class SavedGameDBO(
   @ColumnInfo(name = "actions", defaultValue = "0") val actions: Int = 0,
   @ColumnInfo(name = "mistakes", defaultValue = "0") val mistakes: Int = 0,
   @ColumnInfo(name = "timer", defaultValue = "0") val timer: Long,
-  @ColumnInfo(name = "last_player", defaultValue = "0") val lastPlayed: Long,
+  @ColumnInfo(name = "last_played", defaultValue = "0") val lastPlayed: Long,
   @ColumnInfo(name = "started_at", defaultValue = "0") val startedAt: Long,
   @ColumnInfo(name = "finished_at", defaultValue = "0") val finishedAt: Long,
   @ColumnInfo(name = "status", defaultValue = "0") val status: Int = 0,

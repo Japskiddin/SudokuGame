@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Entity(
   tableName = "board",
 )
-data class SudokuBoardDBO(
+data class BoardDBO(
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "uid") val uid: Long,
   @ColumnInfo(name = "initial_board") val initialBoard: String,
