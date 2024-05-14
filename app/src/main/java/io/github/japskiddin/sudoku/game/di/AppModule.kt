@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.japskiddin.sudoku.common.AppDispatchers
 import io.github.japskiddin.sudoku.database.SudokuDatabase
-import io.github.japskiddin.sudoku.datastore.GameDatastore
+import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.AppNavigatorImpl
 import javax.inject.Singleton
@@ -22,10 +22,11 @@ object AppModule {
     return SudokuDatabase(context)
   }
 
+  // TODO: Wrapper class for Datastore?
   @Provides
   @Singleton
-  fun provideGameDatastore(@ApplicationContext context: Context): GameDatastore {
-    return GameDatastore(context)
+  fun provideSettingsDatastore(@ApplicationContext context: Context): SettingsDatastore {
+    return SettingsDatastore(context)
   }
 
   @Provides
