@@ -17,11 +17,11 @@ androidxComposeBom = "2024.05.00"
 androidxRoom = "2.6.1"
 androidxDatastore = "1.1.1"
 
-kotlinAndroid = "1.9.23"
-kotlinCoroutines = "1.8.0"
+kotlinAndroid = "1.9.24"
+kotlinCoroutines = "1.8.1"
 
 bundletool = "1.15.6"
-ksp = "1.9.23-1.0.19"
+ksp = "1.9.24-1.0.20"
 
 hiltAndroid = "2.51"
 hilt = "1.2.0"
