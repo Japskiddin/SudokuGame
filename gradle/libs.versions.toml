@@ -19,6 +19,7 @@ androidxDatastore = "1.1.1"
 
 kotlinAndroid = "1.9.23"
 kotlinCoroutines = "1.8.1"
+kotlinxSerializationJson = "1.6.3"
 
 bundletool = "1.15.6"
 ksp = "1.9.23-1.0.19"
@@ -56,6 +57,7 @@ bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bun
 
 jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinAndroid" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
@@ -83,6 +85,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroid" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinAndroid" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinAndroid" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "googleProtobufPlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
