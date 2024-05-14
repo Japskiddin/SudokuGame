@@ -37,9 +37,9 @@ class SudokuDatabase internal constructor(private val database: SudokuRoomDataba
     get() = database.savedGameDao()
 }
 
-fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
+fun SudokuDatabase(context: Context): SudokuDatabase {
   val sudokuRoomDatabase = Room.databaseBuilder(
-    checkNotNull(applicationContext.applicationContext),
+    checkNotNull(context.applicationContext),
     SudokuRoomDatabase::class.java,
     "sudoku"
   ).build()
