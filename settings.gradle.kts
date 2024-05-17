@@ -24,7 +24,7 @@ include(
   ":app",
   ":database",
   ":datastore",
-  ":core-utils",
+  ":core:common",
   ":navigation",
   ":game-data",
   ":features:home",

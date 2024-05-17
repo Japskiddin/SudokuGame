@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  namespace = "io.github.japskiddin.sudoku.core.utils"
+  namespace = "io.github.japskiddin.sudoku.core.common"
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
@@ -34,7 +34,8 @@ android {
 }
 
 dependencies {
-  implementation(libs.jetbrains.kotlin.stdlib)
-  implementation(libs.jetbrains.kotlinx.coroutines.android)
-  implementation(libs.androidx.core.ktx)
+  api(libs.jetbrains.kotlin.stdlib)
+  api(libs.jetbrains.kotlinx.coroutines.android)
+  api(libs.androidx.core.ktx)
+  api(libs.jakatra.inject.api)
 }

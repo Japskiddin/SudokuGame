@@ -203,7 +203,7 @@ dependencies {
   implementation(project(":features:home"))
   implementation(project(":features:game"))
   implementation(project(":game-data"))
-  implementation(project(":core-utils"))
+  implementation(project(":core:common"))
   implementation(project(":datastore"))
   implementation(project(":database"))
   implementation(project(":navigation"))

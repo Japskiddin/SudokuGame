@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.utils
+package io.github.japskiddin.sudoku.core.common
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
