@@ -25,8 +25,9 @@ include(
   ":database",
   ":datastore",
   ":core:common",
-  ":navigation",
+  ":core:game",
   ":game-data",
   ":features:home",
   ":features:game",
+  ":navigation",
 )
