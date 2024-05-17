@@ -179,9 +179,6 @@ dependencies {
   implementation(composeBom)
   androidTestImplementation(composeBom)
 
-  implementation(libs.jetbrains.kotlin.stdlib)
-  implementation(libs.jetbrains.kotlinx.coroutines.android)
-
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.activity.compose)
 
@@ -200,12 +197,12 @@ dependencies {
   implementation(libs.hilt.android)
   ksp(libs.hilt.compiler)
 
-  implementation(project(":features:home"))
-  implementation(project(":features:game"))
-  implementation(project(":game-data"))
   implementation(project(":core:common"))
   implementation(project(":datastore"))
   implementation(project(":database"))
+  implementation(project(":game-data"))
+  implementation(project(":features:home"))
+  implementation(project(":features:game"))
   implementation(project(":navigation"))
 
   debugImplementation(libs.androidx.compose.ui.tooling)
