@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.model
 
+// TODO переименовать в BoardCell
 data class Cell(
   val row: Int,
   val col: Int,
