@@ -1,6 +1,9 @@
 package io.github.japskiddin.sudoku.core.game.qqwing
 
-import java.util.*
+import java.util.Arrays
+import java.util.Collections
+import java.util.Random
+import kotlin.math.abs
 
 // @formatter:off
 /*
@@ -68,9 +71,9 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
 
   /**
    * The 729 integers that make up a the possible values for a Sudoku puzzle.
-   * (9 possibilities for each of 81 squares). If possibilities[i] is zero,
+   * (9 possibilities for each of 81 squares). If possibilities is zero,
    * then the possibility could still be filled in according to the Sudoku
-   * rules. When a possibility is eliminated, possibilities[i] is assigned the
+   * rules. When a possibility is eliminated, possibilities is assigned the
    * round (recursion level) at which it was determined that it could not be a
    * possibility.
    */
@@ -188,7 +191,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
   /**
    * Get the gameDifficulty rating.
    */
-  @JvmName("getDifficulty1")
   fun getDifficulty(): GameDifficulty {
     if (getGuessCount() > 0) return GameDifficulty.EXPERT
     if (getBoxLineReductionCount() > 0) return GameDifficulty.HARD
@@ -213,7 +215,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
   /**
    * Get the gameDifficulty rating.
    */
-  fun getDifficultyAsString(): String {
+  fun getDifficultyName(): String {
     return getDifficulty().name
   }
 
@@ -350,7 +352,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
       puzzle[i] = solution[i]
     }
 
-    // Rerandomize everything so that we test squares
+    // Randomize everything so that we test squares
     // in a different order than they were added.
     shuffleRandomArrays()
 
@@ -460,16 +462,13 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
   }
 
   private fun addHistoryItem(l: LogItem) {
-    var l: LogItem? = l
     if (logHistory) {
-      l!!.print()
+      l.print()
       println()
     }
     if (recordHistory) {
       solveHistory.add(l) // ->push_back(l);
       solveInstructions.add(l) // ->push_back(l);
-    } else {
-      l = null
     }
   }
 
@@ -1635,7 +1634,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     private fun shuffleArray(array: IntArray, size: Int) {
       for (i in 0 until size) {
         val tailSize = size - i
-        val randTailPos = Math.abs(random.nextInt()) % tailSize + i
+        val randTailPos = abs(random.nextInt()) % tailSize + i
         val temp = array[i]
         array[i] = array[randTailPos]
         array[randTailPos] = temp
@@ -1645,7 +1644,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     // not the first and last value which are NONE and RANDOM
     private val randomSymmetry: Symmetry
       get() {
-        val values = Symmetry.values()
+        val values = Symmetry.entries.toTypedArray()
         // not the first and last value which are NONE and RANDOM
         return values[Math.abs(random.nextInt()) % (values.size - 1) + 1]
       }
@@ -1655,7 +1654,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * cell resides.
      * Checked!
      */
-    @JvmStatic
     fun cellToColumn(cell: Int): Int {
       return cell % ROW_COL_SEC_SIZE
     }
@@ -1665,7 +1663,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * resides.
      * Checked!
      */
-    @JvmStatic
     fun cellToRow(cell: Int): Int {
       return cell / ROW_COL_SEC_SIZE
     }

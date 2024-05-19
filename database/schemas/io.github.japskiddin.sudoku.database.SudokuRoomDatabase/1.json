@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6cf3bc307838dcb4e53b0070351395e1",
+    "identityHash": "45f7c8e700b9a76bccc2102f6a8135d8",
     "entities": [
       {
         "tableName": "record",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "saved_game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `current_board` TEXT NOT NULL, `actions` INTEGER NOT NULL DEFAULT 0, `mistakes` INTEGER NOT NULL DEFAULT 0, `timer` INTEGER NOT NULL DEFAULT 0, `last_played` INTEGER NOT NULL DEFAULT 0, `started_at` INTEGER NOT NULL DEFAULT 0, `finished_at` INTEGER NOT NULL DEFAULT 0, `status` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `current_board` TEXT NOT NULL, `notes` TEXT NOT NULL, `actions` INTEGER NOT NULL DEFAULT 0, `mistakes` INTEGER NOT NULL DEFAULT 0, `timer` INTEGER NOT NULL DEFAULT 0, `last_played` INTEGER NOT NULL DEFAULT 0, `started_at` INTEGER NOT NULL DEFAULT 0, `finished_at` INTEGER NOT NULL DEFAULT 0, `status` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -55,6 +55,12 @@
           {
             "fieldPath": "currentBoard",
             "columnName": "current_board",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -177,7 +183,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6cf3bc307838dcb4e53b0070351395e1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '45f7c8e700b9a76bccc2102f6a8135d8')"
     ]
   }
 }

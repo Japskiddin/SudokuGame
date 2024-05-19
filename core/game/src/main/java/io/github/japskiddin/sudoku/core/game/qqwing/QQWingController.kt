@@ -37,7 +37,7 @@ class QQWingController {
     private set
   var solutionCount = 0
 
-  fun generate(type: GameType, difficulty: GameDifficulty): IntArray {
+  fun generate(type: GameType, difficulty: GameDifficulty): IntArray? {
     generated.clear()
     options.gameDifficulty = difficulty
     options.action = Action.GENERATE
@@ -79,7 +79,7 @@ class QQWingController {
     seed: Int,
     challengePermission: Double = 1.0,
     challengeIterations: Int = 1
-  ): IntArray {
+  ): IntArray? {
     var seed = seed
     var challengeIterations = challengeIterations
     generated.clear()
@@ -144,13 +144,13 @@ class QQWingController {
 
                 // Record whether the puzzle was possible or not,
                 // so that we don't try to solve impossible givens.
-                var havePuzzle = false
+                var havePuzzle: Boolean
                 if (options.action == Action.GENERATE) {
                   // Generate a puzzle
                   havePuzzle = qqWing.generatePuzzleSymmetry(options.symmetry)
                 } else {
                   // Read the next puzzle on STDIN
-                  var puzzle: IntArray? = IntArray(QQWing.BOARD_SIZE)
+                  val puzzle = IntArray(QQWing.BOARD_SIZE)
                   if (getPuzzleToSolve(puzzle)) {
                     havePuzzle = qqWing.setPuzzle(puzzle)
                     if (havePuzzle) {
@@ -165,7 +165,6 @@ class QQWingController {
                     havePuzzle = false
                     done.set(true)
                   }
-                  puzzle = null
                 }
 
                 if (havePuzzle) {
