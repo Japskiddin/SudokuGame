@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.japskiddin.sudoku.data.models.Difficulty
+import io.github.japskiddin.sudoku.data.model.Difficulty
 import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
 
 private const val TAG = "Game UI"
@@ -79,8 +79,8 @@ internal fun Game(
         selectedCell.value = Pair(i, j)
       },
       modifier = Modifier
-          .padding(12.dp)
-          .fillMaxWidth()
+        .padding(12.dp)
+        .fillMaxWidth()
     )
     InputPanel(
       size = gameLevelUi.currentBoard.size,
@@ -122,8 +122,8 @@ internal fun GameBoard(
                 onSelectCell(i, j)
               },
               modifier = Modifier
-                  .aspectRatio(1f)
-                  .weight(1f)
+                .aspectRatio(1f)
+                .weight(1f)
             )
             if (divider != 0 && ((j + 1) % divider == 0)) {
               VerticalDivider(
@@ -139,8 +139,8 @@ internal fun GameBoard(
             color = Color.Black,
             thickness = 1.dp,
             modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(),
+              .height(1.dp)
+              .fillMaxWidth(),
           )
         }
       }
@@ -160,21 +160,21 @@ internal fun Cell(
   Box(
     contentAlignment = Alignment.Center,
     modifier = Modifier
-        .background(
-            color = if (isSelected) {
-                Color.Green
-            } else {
-                Color.White
-            }
-        )
-        .border(width = .1f.dp, color = Color.Black.copy(alpha = .7f))
-        .then(modifier)
-        .let {
-            if (isEditable) {
-                return@let it.clickable { onClick() }
-            }
-            it
-        },
+      .background(
+        color = if (isSelected) {
+          Color.Green
+        } else {
+          Color.White
+        }
+      )
+      .border(width = .1f.dp, color = Color.Black.copy(alpha = .7f))
+      .then(modifier)
+      .let {
+        if (isEditable) {
+          return@let it.clickable { onClick() }
+        }
+        it
+      },
   ) {
     Text(
       text = if (value == 0) {
@@ -208,9 +208,9 @@ internal fun InputPanel(
         alignment = Alignment.Center,
         lineSpacingRatio = 1F,
         modifier = Modifier
-            .weight(1f)
-            .clickable { onClick(i) }
-            .padding(4.dp),
+          .weight(1f)
+          .clickable { onClick(i) }
+          .padding(4.dp),
       )
     }
   }

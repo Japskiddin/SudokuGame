@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 class BoardRepository @Inject constructor(private val boardDao: BoardDao) {
   fun getAll(): Flow<List<BoardDBO>> = boardDao.getAll()
 
-  fun get(uid: Long) = boardDao.get(uid)
+  suspend fun get(uid: Long) = boardDao.get(uid)
 }

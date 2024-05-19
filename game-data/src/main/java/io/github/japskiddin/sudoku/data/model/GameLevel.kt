@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.data.models
+package io.github.japskiddin.sudoku.data.model
 
 data class GameLevel(
   val playtime: Long = 0L,

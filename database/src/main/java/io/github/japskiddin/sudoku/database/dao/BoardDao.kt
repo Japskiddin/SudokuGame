@@ -29,7 +29,7 @@ interface BoardDao {
   fun getBoardsWithSavedGames(difficulty: Int): Flow<Map<BoardDBO, SavedGameDBO>>
 
   @Query("SELECT * FROM board WHERE uid == :uid")
-  fun get(uid: Long): BoardDBO
+  suspend fun get(uid: Long): BoardDBO
 
   @Query("DELETE FROM board")
   suspend fun deleteAll()

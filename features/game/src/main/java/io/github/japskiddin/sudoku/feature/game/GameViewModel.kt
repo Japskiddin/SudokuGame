@@ -4,13 +4,14 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.japskiddin.sudoku.data.models.Difficulty
-import io.github.japskiddin.sudoku.data.models.GameLevel
+import io.github.japskiddin.sudoku.data.model.Difficulty
+import io.github.japskiddin.sudoku.data.model.GameLevel
 import io.github.japskiddin.sudoku.feature.game.usecase.GetBoardUseCase
+import io.github.japskiddin.sudoku.feature.game.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.utils.WhileUiSubscribed
 import io.github.japskiddin.sudoku.feature.game.utils.toState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -22,6 +23,7 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class GameViewModel @Inject constructor(
+  private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
   private val getBoardUseCase: Provider<GetBoardUseCase>,
   private val appNavigator: AppNavigator,
 ) : ViewModel() {
@@ -51,7 +53,7 @@ internal class GameViewModel @Inject constructor(
     )
 
   init {
-    onGenerateGameLevel()
+    generateGameLevel()
   }
 
   fun onInputCell(cell: Pair<Int, Int>, item: Int) {
@@ -72,13 +74,17 @@ internal class GameViewModel @Inject constructor(
     appNavigator.tryNavigateBack()
   }
 
-  private fun onGenerateGameLevel() {
-    _isLoading.value = true
-    viewModelScope.launch {
-      _gameLevel.update { getBoardUseCase.get().invoke() }
-      delay(1000)
-      _isLoading.value = false
+  private fun generateGameLevel() {
+    viewModelScope.launch(Dispatchers.IO) {
+      val board = getBoardUseCase.get().invoke(-1)
+      val savedGame = getSavedGameUseCase.get().invoke(board.uid)
     }
+    // _isLoading.value = true
+    // viewModelScope.launch {
+    //   _gameLevel.update { getBoardUseCaseOld.get().invoke() }
+    //   delay(1000)
+    //   _isLoading.value = false
+    // }
   }
 }
 

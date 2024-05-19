@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.data.utils
 
-import io.github.japskiddin.sudoku.data.models.Difficulty
+import io.github.japskiddin.sudoku.data.model.Difficulty
 
 internal const val BOARD_SEPARATOR = ";"
 
