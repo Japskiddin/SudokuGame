@@ -4,10 +4,17 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty.INTERMEDIATE
+import io.github.japskiddin.sudoku.core.game.qqwing.GameType.DEFAULT9X9
+import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
+import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.data.model.Difficulty
 import io.github.japskiddin.sudoku.data.model.GameLevel
+import io.github.japskiddin.sudoku.feature.game.model.Cell
+import io.github.japskiddin.sudoku.feature.game.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.usecase.GetSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.feature.game.utils.WhileUiSubscribed
 import io.github.japskiddin.sudoku.feature.game.utils.toState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
@@ -18,6 +25,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -25,6 +33,7 @@ import javax.inject.Provider
 internal class GameViewModel @Inject constructor(
   private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
   private val getBoardUseCase: Provider<GetBoardUseCase>,
+  private val createBoardUseCase: Provider<CreateBoardUseCase>,
   private val appNavigator: AppNavigator,
 ) : ViewModel() {
   private val _isLoading = MutableStateFlow(false)
@@ -76,8 +85,51 @@ internal class GameViewModel @Inject constructor(
 
   private fun generateGameLevel() {
     viewModelScope.launch(Dispatchers.IO) {
-      val board = getBoardUseCase.get().invoke(-1)
-      val savedGame = getSavedGameUseCase.get().invoke(board.uid)
+      val puzzle = List(DEFAULT9X9.size) { row ->
+        List(DEFAULT9X9.size) { col -> Cell(row, col, 0) }
+      }
+      val solvedPuzzle = List(DEFAULT9X9.size) { row ->
+        List(DEFAULT9X9.size) { col -> Cell(row, col, 0) }
+      }
+      val qqWingController = QQWingController()
+      val generatedBoard = qqWingController.generate(DEFAULT9X9, INTERMEDIATE) ?: return@launch
+      val solvedBoard = qqWingController.solve(generatedBoard, DEFAULT9X9)
+
+      if (qqWingController.isImpossible || qqWingController.solutionCount != 1) {
+        return@launch
+      }
+
+      for (i in 0 until DEFAULT9X9.size) {
+        for (j in 0 until DEFAULT9X9.size) {
+          puzzle[i][j].value = generatedBoard[i * DEFAULT9X9.size + j]
+          solvedPuzzle[i][j].value = solvedBoard[i * DEFAULT9X9.size + j]
+        }
+      }
+
+      // TODO перенести этот кусок в HomeScreen
+      withContext(Dispatchers.IO) {
+        val sudokuParser = SudokuParser()
+        val newBoard = Board(
+          uid = 0,
+          initialBoard = sudokuParser.boardToString(puzzle),
+          solvedBoard = sudokuParser.boardToString(solvedPuzzle),
+          difficulty = 0, // TODO обновить константы
+          type = 0,
+        )
+        val insertedBoardUid = createBoardUseCase.get().invoke(newBoard)
+
+        val board = getBoardUseCase.get().invoke(insertedBoardUid)
+        val savedGame = getSavedGameUseCase.get().invoke(board.uid)
+        // val insertedBoardUid = boardRepository.insert(
+        //   SudokuBoard(
+        //     uid = 0,
+        //     initialBoard = sudokuParser.boardToString(puzzle),
+        //     solvedBoard = sudokuParser.boardToString(solvedPuzzle),
+        //     difficulty = selectedDifficulty,
+        //     type = selectedType
+        //   )
+        // )
+      }
     }
     // _isLoading.value = true
     // viewModelScope.launch {

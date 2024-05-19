@@ -3,7 +3,7 @@ package io.github.japskiddin.sudoku.data.utils
 import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.database.model.SavedGameDBO
 
-internal fun SavedGame.toSavedGameDBO(): SavedGameDBO = SavedGameDBO(
+internal fun SavedGame.toSavedGameDBO() = SavedGameDBO(
   uid = this.uid,
   currentBoard = this.currentBoard,
   notes = this.notes,
@@ -16,7 +16,7 @@ internal fun SavedGame.toSavedGameDBO(): SavedGameDBO = SavedGameDBO(
   status = this.status,
 )
 
-internal fun SavedGameDBO.toSavedGame(): SavedGame = SavedGame(
+internal fun SavedGameDBO.toSavedGame() = SavedGame(
   uid = this.uid,
   currentBoard = this.currentBoard,
   notes = this.notes,

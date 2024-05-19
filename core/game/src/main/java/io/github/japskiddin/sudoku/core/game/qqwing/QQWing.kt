@@ -191,6 +191,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
   /**
    * Get the gameDifficulty rating.
    */
+  @JvmName("getDifficulty1") // TODO убрать эту аннотацию
   fun getDifficulty(): GameDifficulty {
     if (getGuessCount() > 0) return GameDifficulty.EXPERT
     if (getBoxLineReductionCount() > 0) return GameDifficulty.HARD
@@ -1576,7 +1577,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     return puzzleToString(puzzle)
   }
 
-  @JvmName("getPuzzle1")
+  @JvmName("getPuzzle1") // TODO убрать эту аннотацию
   fun getPuzzle(): IntArray {
     return puzzle.clone()
   }
@@ -1592,7 +1593,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     return puzzleToString(solution)
   }
 
-  @JvmName("getSolution1")
+  @JvmName("getSolution1") // TODO убрать эту аннотацию
   fun getSolution(): IntArray {
     return solution.clone()
   }
@@ -1654,6 +1655,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * cell resides.
      * Checked!
      */
+    @JvmStatic // TODO убрать эту аннотацию
     fun cellToColumn(cell: Int): Int {
       return cell % ROW_COL_SEC_SIZE
     }
@@ -1663,6 +1665,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * resides.
      * Checked!
      */
+    @JvmStatic // TODO убрать эту аннотацию
     fun cellToRow(cell: Int): Int {
       return cell / ROW_COL_SEC_SIZE
     }

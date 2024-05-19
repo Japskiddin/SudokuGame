@@ -20,8 +20,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,17 +43,17 @@ fun GameScreen() {
 
 @Composable
 internal fun GameScreen(viewModel: GameViewModel) {
-  val state by viewModel.uiState.collectAsState()
-  when (val currentState = state) {
-    is UiState.Success -> Game(
-      gameLevelUi = currentState.gameLevelUi,
-      onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
-    )
-
-    is UiState.Error -> Error(message = currentState.message)
-    is UiState.Loading -> Loading()
-    UiState.None -> Empty()
-  }
+  // val state by viewModel.uiState.collectAsState()
+  // when (val currentState = state) {
+  //   is UiState.Success -> Game(
+  //     gameLevelUi = currentState.gameLevelUi,
+  //     onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
+  //   )
+  //
+  //   is UiState.Error -> Error(message = currentState.message)
+  //   is UiState.Loading -> Loading()
+  //   UiState.None -> Empty()
+  // }
 }
 
 @Composable
