@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.feature.game
 
 import androidx.annotation.StringRes
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import io.github.japskiddin.sudoku.feature.game.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.utils.WhileUiSubscribed
 import io.github.japskiddin.sudoku.feature.game.utils.toState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
+import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +28,7 @@ internal class GameViewModel @Inject constructor(
   private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
   private val getBoardUseCase: Provider<GetBoardUseCase>,
   private val appNavigator: AppNavigator,
+  private val savedState: SavedStateHandle,
 ) : ViewModel() {
   private val _isLoading = MutableStateFlow(false)
   private val _gameLevel = MutableStateFlow(GameLevel())
@@ -76,7 +79,10 @@ internal class GameViewModel @Inject constructor(
 
   private fun generateGameLevel() {
     viewModelScope.launch(Dispatchers.IO) {
-      val board = getBoardUseCase.get().invoke(-1) ?: return@launch
+      // TODO добавить эксепшн BoardNotFoundException
+      val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
+      if (boardUid == -1L) return@launch
+      val board = getBoardUseCase.get().invoke(boardUid) ?: return@launch
       val savedGame = getSavedGameUseCase.get().invoke(board.uid)
     }
     // _isLoading.value = true

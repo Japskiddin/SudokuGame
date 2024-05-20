@@ -4,6 +4,7 @@ import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.BoardNote
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
 
+// TODO переписать в SudokuMapper
 class SudokuParser {
   private val emptySeparators = listOf('0', '.')
   private val radix = 13

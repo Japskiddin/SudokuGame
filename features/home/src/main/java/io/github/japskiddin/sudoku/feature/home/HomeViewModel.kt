@@ -81,7 +81,7 @@ internal class HomeViewModel @Inject constructor(
     }
   }
 
-  private fun navigateToGame(uid: Long) {
-    appNavigator.tryNavigateTo(Destination.GameScreen())
+  private fun navigateToGame(boardUid: Long) {
+    appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))
   }
 }
