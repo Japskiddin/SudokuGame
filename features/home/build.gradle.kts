@@ -76,6 +76,8 @@ dependencies {
   ksp(libs.hilt.compiler)
 
   implementation(project(":core:common"))
+  implementation(project(":core:game"))
+  implementation(project(":game-data"))
   api(project(":navigation"))
 
   debugImplementation(libs.androidx.compose.ui.tooling)

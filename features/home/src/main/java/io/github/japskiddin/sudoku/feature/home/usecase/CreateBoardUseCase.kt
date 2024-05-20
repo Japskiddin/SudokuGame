@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.game.usecase
+package io.github.japskiddin.sudoku.feature.home.usecase
 
 import io.github.japskiddin.sudoku.data.BoardRepository
 import io.github.japskiddin.sudoku.data.model.Board

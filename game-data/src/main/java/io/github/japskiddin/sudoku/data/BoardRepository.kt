@@ -13,7 +13,7 @@ class BoardRepository @Inject constructor(private val boardDao: BoardDao) {
     list.map { boardDBO -> boardDBO.toBoard() }
   }
 
-  suspend fun get(uid: Long) = boardDao.get(uid).toBoard()
+  suspend fun get(uid: Long) = boardDao.get(uid)?.toBoard()
 
   suspend fun insert(board: Board) = boardDao.insert(board.toBoardDBO())
 }

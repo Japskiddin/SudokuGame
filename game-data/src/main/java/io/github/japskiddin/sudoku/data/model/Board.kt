@@ -4,7 +4,7 @@ import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
 
 data class Board(
-  val uid: Long,
+  val uid: Long = 0,
   val initialBoard: String,
   val solvedBoard: String,
   val difficulty: GameDifficulty,
