@@ -9,14 +9,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
-    private val appNavigator: AppNavigator,
+  private val appNavigator: AppNavigator,
 ) : ViewModel() {
-    fun getCurrentYear(): String {
-        val calendar = Calendar.getInstance()
-        return calendar.get(Calendar.YEAR).toString()
-    }
+  internal val currentYear: String
+    get() = Calendar.getInstance().get(Calendar.YEAR).toString()
 
-    fun navigateToGame() {
-        appNavigator.tryNavigateTo(Destination.GameScreen())
-    }
+  internal fun onStartClick() {
+  }
+
+  internal fun onSettingsClick() {
+    TODO("In Development")
+  }
+
+  internal fun onRecordsClick() {
+    TODO("In Development")
+  }
+
+  private fun navigateToGame() {
+    appNavigator.tryNavigateTo(Destination.GameScreen())
+  }
 }

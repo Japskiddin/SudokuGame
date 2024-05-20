@@ -52,20 +52,20 @@ fun HomeScreen() {
 @Composable
 internal fun HomeScreen(viewModel: HomeViewModel) {
     HomeScreenContent(
-        currentYear = viewModel.getCurrentYear(),
-        onStartGameClick = { viewModel.navigateToGame() },
-        onSettingsClick = { TODO("In Development") },
-        onRecordsClick = { TODO("In Development") },
+        currentYear = viewModel.currentYear,
+        onStartGameClick = { viewModel.onStartClick() },
+        onSettingsClick = { viewModel.onSettingsClick() },
+        onRecordsClick = { viewModel.onRecordsClick() },
     )
 }
 
 @Composable
 internal fun HomeScreenContent(
+    modifier: Modifier = Modifier,
     currentYear: String,
     onStartGameClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -139,10 +139,10 @@ internal fun Menu(
 
 @Composable
 internal fun MenuButton(
+    modifier: Modifier = Modifier,
     icon: Painter,
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
