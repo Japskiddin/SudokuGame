@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.feature.game.utils
 
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
-import io.github.japskiddin.sudoku.feature.game.model.Cell
-import io.github.japskiddin.sudoku.feature.game.model.Note
+import io.github.japskiddin.sudoku.feature.game.model.BoardCell
+import io.github.japskiddin.sudoku.feature.game.model.BoardNote
 
 class SudokuParser {
   private val emptySeparators = listOf('0', '.')
@@ -12,7 +12,7 @@ class SudokuParser {
     gameType: GameType,
     locked: Boolean = false,
     emptySeparator: Char? = null
-  ): MutableList<MutableList<Cell>> {
+  ): MutableList<MutableList<BoardCell>> {
     if (board.isEmpty()) {
       throw BoardParseException(message = "Input string was empty")
     }
@@ -20,7 +20,7 @@ class SudokuParser {
     val size = gameType.size
     val listBoard = MutableList(size) { row ->
       MutableList(size) { col ->
-        Cell(row, col, 0)
+        BoardCell(row, col, 0)
       }
     }
 
@@ -32,7 +32,7 @@ class SudokuParser {
       }
 
       listBoard[i / size][i % size].value = value
-      listBoard[i / size][i % size].locked = locked
+      listBoard[i / size][i % size].isLocked = locked
     }
 
     return listBoard
@@ -43,7 +43,7 @@ class SudokuParser {
    * @param boardList Sudoku board
    * @return Sudoku in string
    */
-  fun boardToString(boardList: List<List<Cell>>, emptySeparator: Char = '0'): String {
+  fun boardToString(boardList: List<List<BoardCell>>, emptySeparator: Char = '0'): String {
     var boardString = ""
     boardList.forEach { cells ->
       cells.forEach { cell ->
@@ -69,8 +69,8 @@ class SudokuParser {
     return boardString
   }
 
-  fun parseNotes(notesString: String): List<Note> {
-    val notes = mutableListOf<Note>()
+  fun parseNotes(notesString: String): List<BoardNote> {
+    val boardNotes = mutableListOf<BoardNote>()
     var i = 0
     while (i < notesString.length) {
       println(i.toString())
@@ -79,17 +79,17 @@ class SudokuParser {
       val row = boardDigitToInt(toParse[0])
       val col = boardDigitToInt(toParse[2])
       val value = boardDigitToInt(toParse[4])
-      notes.add(Note(row, col, value))
+      boardNotes.add(BoardNote(row, col, value))
       i += index - i + 1
     }
-    return notes
+    return boardNotes
   }
 
-  fun notesToString(notes: List<Note>): String {
+  fun notesToString(boardNotes: List<BoardNote>): String {
     var notesString = ""
     // row,col,number;row,col,number....row,col,number;
     // e.g 0,3,1;0,3,5;7,7,5;
-    notes.forEach {
+    boardNotes.forEach {
       notesString +=
         "${it.row.toString(radix)},${it.col.toString(radix)},${it.value.toString(radix)};"
     }

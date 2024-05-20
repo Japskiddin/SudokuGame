@@ -10,7 +10,7 @@ import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.data.model.Difficulty
 import io.github.japskiddin.sudoku.data.model.GameLevel
-import io.github.japskiddin.sudoku.feature.game.model.Cell
+import io.github.japskiddin.sudoku.feature.game.model.BoardCell
 import io.github.japskiddin.sudoku.feature.game.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.usecase.GetSavedGameUseCase
@@ -86,10 +86,10 @@ internal class GameViewModel @Inject constructor(
   private fun generateGameLevel() {
     viewModelScope.launch(Dispatchers.IO) {
       val puzzle = List(DEFAULT9X9.size) { row ->
-        List(DEFAULT9X9.size) { col -> Cell(row, col, 0) }
+        List(DEFAULT9X9.size) { col -> BoardCell(row, col, 0) }
       }
       val solvedPuzzle = List(DEFAULT9X9.size) { row ->
-        List(DEFAULT9X9.size) { col -> Cell(row, col, 0) }
+        List(DEFAULT9X9.size) { col -> BoardCell(row, col, 0) }
       }
       val qqWingController = QQWingController()
       val generatedBoard = qqWingController.generate(DEFAULT9X9, INTERMEDIATE) ?: return@launch

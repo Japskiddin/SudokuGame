@@ -1,7 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.model
 
-// TODO переименовать в BoardNote
-data class Note(
+data class BoardNote(
   val row: Int,
   val col: Int,
   val value: Int
