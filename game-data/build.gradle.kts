@@ -36,6 +36,7 @@ android {
 dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(project(":core:common"))
+  implementation(project(":core:game"))
   implementation(project(":database"))
   implementation(project(":datastore"))
 }

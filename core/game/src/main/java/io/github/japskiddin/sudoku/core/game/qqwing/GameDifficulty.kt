@@ -20,8 +20,6 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-// TODO добавить GameStatus
-// TODO добавить эти поля в модель game-data и маппинг для них
 enum class GameDifficulty {
   UNSPECIFIED,
   EASY,

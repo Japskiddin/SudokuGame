@@ -1,12 +1,13 @@
-package io.github.japskiddin.sudoku.feature.game.utils
+package io.github.japskiddin.sudoku.core.game.utils
 
+import io.github.japskiddin.sudoku.core.game.model.BoardCell
+import io.github.japskiddin.sudoku.core.game.model.BoardNote
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
-import io.github.japskiddin.sudoku.feature.game.model.BoardCell
-import io.github.japskiddin.sudoku.feature.game.model.BoardNote
 
 class SudokuParser {
   private val emptySeparators = listOf('0', '.')
   private val radix = 13
+
   fun parseBoard(
     board: String,
     gameType: GameType,

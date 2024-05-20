@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.game.model
+package io.github.japskiddin.sudoku.core.game.model
 
 data class BoardNote(
   val row: Int,

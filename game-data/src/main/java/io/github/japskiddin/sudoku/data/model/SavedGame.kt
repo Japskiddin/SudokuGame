@@ -1,5 +1,7 @@
 package io.github.japskiddin.sudoku.data.model
 
+import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
+
 data class SavedGame(
   val uid: Long,
   val currentBoard: String,
@@ -10,5 +12,5 @@ data class SavedGame(
   val lastPlayed: Long,
   val startedAt: Long,
   val finishedAt: Long,
-  val status: Int,
+  val status: GameStatus,
 )
