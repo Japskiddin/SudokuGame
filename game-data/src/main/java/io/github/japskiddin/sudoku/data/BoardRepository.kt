@@ -13,7 +13,10 @@ class BoardRepository @Inject constructor(private val boardDao: BoardDao) {
     list.map { boardDBO -> boardDBO.toBoard() }
   }
 
-  suspend fun get(uid: Long) = boardDao.get(uid)?.toBoard()
+  suspend fun get(uid: Long): Board = boardDao.get(uid)?.toBoard()
+    ?: throw BoardNotFoundException("Board with $uid not found")
 
-  suspend fun insert(board: Board) = boardDao.insert(board.toBoardDBO())
+  suspend fun insert(board: Board): Long = boardDao.insert(board.toBoardDBO())
+
+  class BoardNotFoundException(message: String) : Exception(message)
 }

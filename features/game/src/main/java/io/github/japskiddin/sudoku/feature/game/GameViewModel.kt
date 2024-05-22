@@ -5,6 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.japskiddin.sudoku.data.BoardRepository.BoardNotFoundException
+import io.github.japskiddin.sudoku.data.SavedGameRepository.SavedGameNotFoundException
 import io.github.japskiddin.sudoku.data.model.Difficulty
 import io.github.japskiddin.sudoku.data.model.GameLevel
 import io.github.japskiddin.sudoku.feature.game.usecase.GetBoardUseCase
@@ -79,11 +81,23 @@ internal class GameViewModel @Inject constructor(
 
   private fun generateGameLevel() {
     viewModelScope.launch(Dispatchers.IO) {
-      // TODO добавить эксепшн BoardNotFoundException
       val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
-      if (boardUid == -1L) return@launch
-      val board = getBoardUseCase.get().invoke(boardUid) ?: return@launch
-      val savedGame = getSavedGameUseCase.get().invoke(board.uid)
+      if (boardUid == -1L) {
+        // TODO обработать
+        return@launch
+      }
+      val board = try {
+        getBoardUseCase.get().invoke(boardUid)
+      } catch (ex: BoardNotFoundException) {
+        // TODO обработать
+        return@launch
+      }
+      val savedGame = try {
+        getSavedGameUseCase.get().invoke(board.uid)
+      } catch (ex: SavedGameNotFoundException) {
+        // TODO обработать
+        return@launch
+      }
     }
     // _isLoading.value = true
     // viewModelScope.launch {
