@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -16,23 +17,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.japskiddin.sudoku.data.model.Difficulty
+import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.sqrt
 
 private const val TAG = "Game UI"
 
@@ -43,81 +48,91 @@ fun GameScreen() {
 
 @Composable
 internal fun GameScreen(viewModel: GameViewModel) {
-  // val state by viewModel.uiState.collectAsState()
-  // when (val currentState = state) {
-  //   is UiState.Success -> Game(
-  //     gameLevelUi = currentState.gameLevelUi,
-  //     onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
-  //   )
-  //
-  //   is UiState.Error -> Error(message = currentState.message)
-  //   is UiState.Loading -> Loading()
-  //   UiState.None -> Empty()
-  // }
+  val state by viewModel.uiState.collectAsState()
+  when (val currentState = state) {
+    is UiState.Success -> Game(
+      gameState = currentState.gameState,
+      onSelectCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
+      onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
+    )
+
+    is UiState.Error -> Error(message = currentState.message)
+    is UiState.Loading -> Loading()
+    UiState.None -> Empty()
+  }
 }
 
 @Composable
 internal fun Game(
-  gameLevelUi: GameLevelUi,
+  gameState: GameState,
+  onSelectCell: (BoardCell) -> Unit,
   onInputCell: (Pair<Int, Int>, Int) -> Unit,
 ) {
   if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
-
-  val selectedCell = remember { mutableStateOf(Pair(-1, -1)) }
 
   Column(
     modifier = Modifier.fillMaxSize(),
     verticalArrangement = Arrangement.Center,
   ) {
     GameBoard(
-      defaultBoard = gameLevelUi.defaultBoard,
-      currentBoard = gameLevelUi.currentBoard,
-      selectedCell = selectedCell.value,
-      onSelectCell = { i, j ->
-        selectedCell.value = Pair(i, j)
+      board = gameState.board,
+      selectedCell = gameState.selectedCell,
+      onSelectCell = { boardCell ->
+        onSelectCell(boardCell)
       },
       modifier = Modifier
         .padding(12.dp)
         .fillMaxWidth()
     )
-    InputPanel(
-      size = gameLevelUi.currentBoard.size,
-      onClick = { item -> onInputCell(selectedCell.value, item) }
-    )
+    // InputPanel(
+    //   size = gameState.currentBoard.size,
+    //   onClick = { item -> onInputCell(selectedCell.value, item) }
+    // )
   }
 }
 
 @Composable
 internal fun GameBoard(
   modifier: Modifier = Modifier,
-  defaultBoard: Array<IntArray>,
-  currentBoard: Array<IntArray>,
-  selectedCell: Pair<Int, Int>,
-  onSelectCell: (Int, Int) -> Unit,
+  board: List<List<BoardCell>>,
+  selectedCell: BoardCell,
+  onSelectCell: (BoardCell) -> Unit,
 ) {
   if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
-  val size = currentBoard.size
+  val size = board.size
   val divider = if (size >= 6) {
     size / 3
   } else {
     0
   }
-  Box(
-    modifier = modifier.border(width = 1f.dp, color = Color.Black)
+  BoxWithConstraints(
+    modifier = modifier
+      .fillMaxWidth()
+      .aspectRatio(1f)
+      .border(
+        width = 1f.dp,
+        color = Color.Black,
+        shape = RoundedCornerShape(size = 8.dp)
+      )
   ) {
+    val maxWidth = constraints.maxWidth.toFloat()
+    val cellSize by remember(size) { mutableFloatStateOf(maxWidth / size.toFloat()) }
+    val cellSizeDividerWidth by remember(size) { mutableFloatStateOf(cellSize / ceil(sqrt(size.toFloat()))) }
+    val cellSizeDividerHeight by remember(size) { mutableFloatStateOf(cellSize / floor(sqrt(size.toFloat()))) }
+
     Column(modifier = Modifier.fillMaxWidth()) {
-      for (i in currentBoard.indices) {
+      for (i in board.indices) {
         Row(
           modifier = Modifier.height(IntrinsicSize.Min)
         ) {
-          val cells = currentBoard[i]
+          val cells = board[i]
           for (j in cells.indices) {
             Cell(
-              value = currentBoard[i][j],
-              isSelected = selectedCell.first == i && selectedCell.second == j,
-              isEditable = defaultBoard[i][j] <= 0,
+              boardCell = board[i][j],
+              isSelected = false,
+              isEditable = true,
               onClick = {
-                onSelectCell(i, j)
+                onSelectCell(board[i][j])
               },
               modifier = Modifier
                 .aspectRatio(1f)
@@ -148,7 +163,7 @@ internal fun GameBoard(
 
 @Composable
 internal fun Cell(
-  value: Int,
+  boardCell: BoardCell,
   isSelected: Boolean,
   isEditable: Boolean,
   onClick: () -> Unit,
@@ -175,10 +190,10 @@ internal fun Cell(
       },
   ) {
     Text(
-      text = if (value == 0) {
+      text = if (boardCell.value == 0) {
         ""
       } else {
-        value.toString()
+        boardCell.value.toString()
       },
       color = if (isSelected) {
         Color.White
@@ -236,12 +251,12 @@ internal fun Empty() {
 )
 @Composable
 internal fun GamePreview(
-  @PreviewParameter(GameLevelUiPreviewProvider::class) gameLevelUi: GameLevelUi
+  // @PreviewParameter(GameLevelUiPreviewProvider::class) gameState: GameState
 ) {
-  Game(
-    gameLevelUi = gameLevelUi,
-    onInputCell = { _, _ -> },
-  )
+  // Game(
+  //   gameState = gameState,
+  //   onInputCell = { _, _ -> },
+  // )
 }
 
 @Preview(
@@ -250,8 +265,16 @@ internal fun GamePreview(
 @Composable
 internal fun CellPreview() {
   Row {
-    Cell(value = 1, isSelected = false, isEditable = true, onClick = {})
-    Cell(value = 2, isSelected = true, isEditable = true, onClick = {})
+    Cell(
+      boardCell = BoardCell(row = 0, col = 0, value = 1),
+      isSelected = false,
+      isEditable = true,
+      onClick = {})
+    Cell(
+      boardCell = BoardCell(row = 0, col = 0, value = 2),
+      isSelected = true,
+      isEditable = true,
+      onClick = {})
   }
 }
 
@@ -263,20 +286,18 @@ internal fun InputPanelPreview() {
   InputPanel(size = 9, onClick = {})
 }
 
-private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameLevelUi> {
-  private val generator = SudokuGenerator(9, 50).apply {
-    generate()
-  }
-  private val currentBoard = generator.getResult().items
-  private val completedBoard = generator.getResult().completedItems
-
-  override val values: Sequence<GameLevelUi>
-    get() = sequenceOf(
-      GameLevelUi(
-        defaultBoard = currentBoard,
-        currentBoard = currentBoard,
-        completedBoard = completedBoard,
-        difficulty = Difficulty.NORMAL,
-      ),
-    )
-}
+// private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameState> {
+//   private val generator = SudokuGenerator(9, 50).apply {
+//     generate()
+//   }
+//   private val currentBoard = generator.getResult().items
+//   private val completedBoard = generator.getResult().completedItems
+//
+//   override val values: Sequence<GameState>
+//     get() = sequenceOf(
+//       GameState(
+//         board = Board(),
+//         savedGame = SavedGame(),
+//       ),
+//     )
+// }

@@ -12,8 +12,7 @@ class SavedGameRepository @Inject constructor(private val savedGameDao: SavedGam
     list.map { savedGameDBO -> savedGameDBO.toSavedGame() }
   }
 
-  suspend fun get(uid: Long): SavedGame = savedGameDao.get(uid)?.toSavedGame()
-    ?: throw SavedGameNotFoundException("Saved game with $uid not found!")
+  suspend fun get(uid: Long): SavedGame? = savedGameDao.get(uid)?.toSavedGame()
 
   // fun getWithBoards(): Flow<Map<SavedGame, BoardDBO>> = savedGameDao.getSavedWithBoards()
 
