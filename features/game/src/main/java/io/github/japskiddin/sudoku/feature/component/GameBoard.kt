@@ -35,13 +35,20 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.BoardNote
+import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty.INTERMEDIATE
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
+import io.github.japskiddin.sudoku.core.game.qqwing.GameType.DEFAULT9X9
+import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
+import io.github.japskiddin.sudoku.data.model.Board
+import io.github.japskiddin.sudoku.feature.game.GameState
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -54,16 +61,6 @@ internal fun GameBoard(
   selectedCell: BoardCell,
   outerCornerRadius: Dp = 12.dp,
   innerStrokeWidth: Dp = 1.3.dp,
-  onSelectCell: (BoardCell) -> Unit,
-  isIdenticalNumbersHighlight: Boolean = true,
-  isErrorsHighlight: Boolean = true,
-  isPositionLines: Boolean = true,
-  isEnabled: Boolean = true,
-  isQuestions: Boolean = false,
-  isRenderNotes: Boolean = true,
-  cellsToHighlight: List<BoardCell>? = null,
-  isZoomable: Boolean = false,
-  notes: List<BoardNote>? = null,
   outerStrokeWidth: Dp = 1.3.dp,
   numberTextSize: TextUnit = when (size) {
     6 -> 32.sp
@@ -77,7 +74,16 @@ internal fun GameBoard(
     12 -> 7.sp
     else -> 14.sp
   },
+  isIdenticalNumbersHighlight: Boolean = true,
+  isErrorsHighlight: Boolean = true,
+  isPositionLines: Boolean = true,
+  isEnabled: Boolean = true,
+  isQuestions: Boolean = false,
+  isRenderNotes: Boolean = true,
+  isZoomable: Boolean = false,
   isCrossHighlight: Boolean = false,
+  cellsToHighlight: List<BoardCell>? = null,
+  notes: List<BoardNote>? = null,
   numberColor: Color = Color.Black,
   noteColor: Color = Color.Black,
   lockedNumberColor: Color = Color.Black,
@@ -85,6 +91,7 @@ internal fun GameBoard(
   selectedColor: Color = Color.Green,
   outerStrokeColor: Color = Color.Black,
   innerStrokeColor: Color = Color.Black,
+  onSelectCell: (BoardCell) -> Unit,
 ) {
   BoxWithConstraints(
     modifier = modifier
@@ -548,29 +555,40 @@ private fun getSectionWidthForSize(size: Int): Int {
 
 @Preview(
   name = "Game Board Preview",
+  showBackground = true,
 )
 @Composable
 internal fun GameBoardPreview(
-  // @PreviewParameter(GameLevelUiPreviewProvider::class) gameState: GameState
+  @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
 ) {
-  // Game(
-  //   gameState = gameState,
-  //   onInputCell = { _, _ -> },
-  // )
+  GameBoard(
+    board = state.board,
+    selectedCell = state.selectedCell,
+    onSelectCell = {},
+  )
 }
 
-// private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameState> {
-//   private val generator = SudokuGenerator(9, 50).apply {
-//     generate()
-//   }
-//   private val currentBoard = generator.getResult().items
-//   private val completedBoard = generator.getResult().completedItems
-//
-//   override val values: Sequence<GameState>
-//     get() = sequenceOf(
-//       GameState(
-//         board = Board(),
-//         savedGame = SavedGame(),
-//       ),
-//     )
-// }
+private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
+  val parser = SudokuParser()
+  val board = Board(
+    initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+    solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+    difficulty = INTERMEDIATE,
+    type = DEFAULT9X9,
+  )
+
+  override val values: Sequence<GameState>
+    get() = sequenceOf(
+      GameState(
+        board = parser.parseBoard(
+          board = board.initialBoard,
+          gameType = board.type
+        ).toList(),
+        selectedCell = BoardCell(
+          row = -1,
+          col = -1,
+          value = 0,
+        ),
+      ),
+    )
+}
