@@ -59,8 +59,10 @@ import kotlin.math.sqrt
 internal fun GameBoard(
   modifier: Modifier = Modifier,
   board: List<List<BoardCell>>,
+  size: Int = board.size,
   selectedCell: BoardCell,
   boardCornerRadius: Float = with(LocalDensity.current) { 12.dp.toPx() },
+  innerStrokeWidth: Float = with(LocalDensity.current) { 1.3.dp.toPx() },
   onSelectCell: (BoardCell) -> Unit,
   identicalNumbersHighlight: Boolean = true,
   isErrorsHighlight: Boolean = true,
@@ -71,13 +73,14 @@ internal fun GameBoard(
   cellsToHighlight: List<BoardCell>? = null,
   zoomable: Boolean = false,
   notes: List<BoardNote>? = null,
-  mainTextSize: TextUnit = when (board.size) {
+  outerStrokeWidth: Float = with(LocalDensity.current) { 1.3.dp.toPx() },
+  mainTextSize: TextUnit = when (size) {
     6 -> 32.sp
     9 -> 26.sp
     12 -> 24.sp
     else -> 14.sp
   },
-  noteTextSize: TextUnit = when (board.size) {
+  noteTextSize: TextUnit = when (size) {
     6 -> 18.sp
     9 -> 12.sp
     12 -> 7.sp
@@ -91,9 +94,8 @@ internal fun GameBoard(
   val altForegroundColor: Color = Color.Black
   val errorColor: Color = Color.Red
   val highlightColor: Color = Color.Green
-  val boardStrokeColor: Color = Color.Black
-  val thinLineColor: Color = Color.Black
-  val size = board.size
+  val outerStrokeColor: Color = Color.Black
+  val innerStrokeColor: Color = Color.Black
   val divider = if (size >= 6) {
     size / 3
   } else {
@@ -110,14 +112,11 @@ internal fun GameBoard(
     val cellSizeDividerWidth by remember(size) { mutableFloatStateOf(cellSize / ceil(sqrt(size.toFloat()))) }
     val cellSizeDividerHeight by remember(size) { mutableFloatStateOf(cellSize / floor(sqrt(size.toFloat()))) }
 
-    val vertThick by remember(size) { mutableIntStateOf(floor(sqrt(size.toFloat())).toInt()) }
-    val horThick by remember(size) { mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt()) }
+    val verticalInnerStrokeThickness by remember(size) { mutableIntStateOf(floor(sqrt(size.toFloat())).toInt()) }
+    val horizontalInnerStrokeThickness by remember(size) { mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt()) }
 
     var fontSizePx = with(LocalDensity.current) { mainTextSize.toPx() }
     var noteSizePx = with(LocalDensity.current) { noteTextSize.toPx() }
-
-    val thinLineWidth = with(LocalDensity.current) { 1.3.dp.toPx() }
-    val boardStrokeWidth = with(LocalDensity.current) { 1.3.dp.toPx() }
 
     // paints
     // numbers
@@ -215,14 +214,6 @@ internal fun GameBoard(
               onSelectCell(board[row][column])
             }
           },
-          // onLongPress = {
-          //   if (enabled) {
-          //     val totalOffset = it / zoom + offset
-          //     val row = floor((totalOffset.y) / cellSize).toInt()
-          //     val column = floor((totalOffset.x) / cellSize).toInt()
-          //     onLongClick(board[row][column])
-          //   }
-          // }
         )
       }
 
@@ -321,8 +312,8 @@ internal fun GameBoard(
       }
 
       drawBoardFrame(
-        boardStrokeColor = boardStrokeColor,
-        boardStrokeWidth = boardStrokeWidth,
+        outerStrokeColor = outerStrokeColor,
+        outerStrokeWidth = outerStrokeWidth,
         maxWidth = maxWidth,
         cornerRadius = CornerRadius(boardCornerRadius, boardCornerRadius)
       )
@@ -330,23 +321,23 @@ internal fun GameBoard(
       drawHorizontalLines(
         size = size,
         cellSize = cellSize,
-        lineThickness = horThick,
-        boardStrokeColor = boardStrokeColor,
-        boardStrokeWidth = boardStrokeWidth,
+        innerStrokeThickness = horizontalInnerStrokeThickness,
+        outerStrokeColor = outerStrokeColor,
+        outerStrokeWidth = outerStrokeWidth,
         maxWidth = maxWidth,
-        thinLineWidth = thinLineWidth,
-        thinLineColor = thinLineColor,
+        innerStrokeWidth = innerStrokeWidth,
+        innerStrokeColor = innerStrokeColor,
       )
 
       drawVerticalLines(
         size = size,
         cellSize = cellSize,
-        lineThickness = vertThick,
-        boardStrokeColor = boardStrokeColor,
-        boardStrokeWidth = boardStrokeWidth,
+        innerStrokeThickness = verticalInnerStrokeThickness,
+        outerStrokeColor = outerStrokeColor,
+        outerStrokeWidth = outerStrokeWidth,
         maxWidth = maxWidth,
-        thinLineWidth = thinLineWidth,
-        thinLineColor = thinLineColor,
+        innerStrokeWidth = innerStrokeWidth,
+        innerStrokeColor = innerStrokeColor,
       )
 
       drawNumbers(
@@ -434,36 +425,36 @@ internal fun GameBoard(
 }
 
 private fun DrawScope.drawBoardFrame(
-  boardStrokeColor: Color,
-  boardStrokeWidth: Float,
+  outerStrokeColor: Color,
+  outerStrokeWidth: Float,
   maxWidth: Float,
   cornerRadius: CornerRadius,
 ) {
   drawRoundRect(
-    color = boardStrokeColor,
+    color = outerStrokeColor,
     size = Size(maxWidth, maxWidth),
     cornerRadius = cornerRadius,
-    style = Stroke(width = boardStrokeWidth)
+    style = Stroke(width = outerStrokeWidth)
   )
 }
 
 private fun DrawScope.drawHorizontalLines(
   size: Int,
   cellSize: Float,
-  lineThickness: Int,
-  boardStrokeColor: Color,
-  boardStrokeWidth: Float,
+  innerStrokeThickness: Int,
+  outerStrokeColor: Color,
+  outerStrokeWidth: Float,
   maxWidth: Float,
-  thinLineWidth: Float,
-  thinLineColor: Color,
+  innerStrokeWidth: Float,
+  innerStrokeColor: Color,
 ) {
   for (i in 1 until size) {
-    val isThickLine = i % lineThickness == 0
+    val isOuterStroke = i % innerStrokeThickness == 0
     drawLine(
-      color = if (isThickLine) boardStrokeColor else thinLineColor,
+      color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
       start = Offset(cellSize * i.toFloat(), 0f),
       end = Offset(cellSize * i.toFloat(), maxWidth),
-      strokeWidth = if (isThickLine) boardStrokeWidth else thinLineWidth
+      strokeWidth = if (isOuterStroke) outerStrokeWidth else innerStrokeWidth
     )
   }
 }
@@ -471,21 +462,21 @@ private fun DrawScope.drawHorizontalLines(
 private fun DrawScope.drawVerticalLines(
   size: Int,
   cellSize: Float,
-  lineThickness: Int,
-  boardStrokeColor: Color,
-  boardStrokeWidth: Float,
+  innerStrokeThickness: Int,
+  outerStrokeColor: Color,
+  outerStrokeWidth: Float,
   maxWidth: Float,
-  thinLineWidth: Float,
-  thinLineColor: Color,
+  innerStrokeWidth: Float,
+  innerStrokeColor: Color,
 ) {
   for (i in 1 until size) {
-    val isThickLine = i % lineThickness == 0
+    val isOuterStroke = i % innerStrokeThickness == 0
     if (maxWidth >= cellSize * i) {
       drawLine(
-        color = if (isThickLine) boardStrokeColor else thinLineColor,
+        color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
         start = Offset(0f, cellSize * i.toFloat()),
         end = Offset(maxWidth, cellSize * i.toFloat()),
-        strokeWidth = if (isThickLine) boardStrokeWidth else thinLineWidth
+        strokeWidth = if (isOuterStroke) outerStrokeWidth else innerStrokeWidth
       )
     }
   }
