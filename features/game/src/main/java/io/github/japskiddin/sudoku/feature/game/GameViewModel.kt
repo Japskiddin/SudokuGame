@@ -76,6 +76,13 @@ internal class GameViewModel @Inject constructor(
   }
 
   fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
+    viewModelScope.launch(Dispatchers.IO) {
+      val state = _uiState.value
+      if (state is UiState.Success) {
+        val gameState = state.gameState
+        _uiState.update { UiState.Success(gameState = gameState.copy(selectedCell = boardCell)) }
+      }
+    }
   }
 
   private fun generateGameLevel() {

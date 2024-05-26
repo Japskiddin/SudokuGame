@@ -86,9 +86,7 @@ internal fun Game(
     GameBoard(
       board = state.board,
       selectedCell = state.selectedCell,
-      onSelectCell = { boardCell ->
-        onSelectCell(boardCell)
-      },
+      onSelectCell = { boardCell -> onSelectCell(boardCell) },
       modifier = Modifier
         .padding(12.dp)
         .fillMaxWidth()

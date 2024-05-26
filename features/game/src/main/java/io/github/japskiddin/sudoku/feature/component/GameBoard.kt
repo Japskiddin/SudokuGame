@@ -271,7 +271,7 @@ internal fun GameBoard(
           for (j in 0 until size) {
             if (board[i][j].value == selectedCell.value && board[i][j].value != 0) {
               drawRect(
-                color = selectedColor.copy(alpha = 0.2f),
+                color = selectedColor,
                 topLeft = Offset(
                   x = board[i][j].col * cellSize,
                   y = board[i][j].row * cellSize
@@ -284,7 +284,7 @@ internal fun GameBoard(
       }
       cellsToHighlight?.forEach {
         drawRect(
-          color = selectedColor.copy(alpha = 0.3f),
+          color = selectedColor.copy(alpha = 0.5f),
           topLeft = Offset(
             x = it.col * cellSize,
             y = it.row * cellSize
