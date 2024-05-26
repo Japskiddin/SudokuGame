@@ -2,22 +2,15 @@ package io.github.japskiddin.sudoku.feature.component
 
 import android.graphics.Rect
 import android.text.TextPaint
-import android.util.Log
 import android.util.TypedValue
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,7 +19,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -50,8 +42,6 @@ import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.BoardNote
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
-import io.github.japskiddin.sudoku.feature.game.BuildConfig
-import io.github.japskiddin.sudoku.feature.game.TAG
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -65,14 +55,14 @@ internal fun GameBoard(
   outerCornerRadius: Dp = 12.dp,
   innerStrokeWidth: Dp = 1.3.dp,
   onSelectCell: (BoardCell) -> Unit,
-  identicalNumbersHighlight: Boolean = true,
+  isIdenticalNumbersHighlight: Boolean = true,
   isErrorsHighlight: Boolean = true,
-  positionLines: Boolean = true,
-  enabled: Boolean = true,
-  questions: Boolean = false,
-  renderNotes: Boolean = true,
+  isPositionLines: Boolean = true,
+  isEnabled: Boolean = true,
+  isQuestions: Boolean = false,
+  isRenderNotes: Boolean = true,
   cellsToHighlight: List<BoardCell>? = null,
-  zoomable: Boolean = false,
+  isZoomable: Boolean = false,
   notes: List<BoardNote>? = null,
   outerStrokeWidth: Dp = 1.3.dp,
   numberTextSize: TextUnit = when (size) {
@@ -87,21 +77,15 @@ internal fun GameBoard(
     12 -> 7.sp
     else -> 14.sp
   },
-  crossHighlight: Boolean = false,
+  isCrossHighlight: Boolean = false,
+  numberColor: Color = Color.Black,
+  noteColor: Color = Color.Black,
+  lockedNumberColor: Color = Color.Black,
+  errorNumberColor: Color = Color.Red,
+  highlightColor: Color = Color.Green,
+  outerStrokeColor: Color = Color.Black,
+  innerStrokeColor: Color = Color.Black,
 ) {
-  if (BuildConfig.DEBUG) Log.d(TAG, "Composing GameBoard")
-  val foregroundColor: Color = Color.Black
-  val notesColor: Color = Color.Black
-  val altForegroundColor: Color = Color.Black
-  val errorColor: Color = Color.Red
-  val highlightColor: Color = Color.Green
-  val outerStrokeColor: Color = Color.Black
-  val innerStrokeColor: Color = Color.Black
-  val divider = if (size >= 6) {
-    size / 3
-  } else {
-    0
-  }
   BoxWithConstraints(
     modifier = modifier
       .fillMaxWidth()
@@ -120,46 +104,44 @@ internal fun GameBoard(
     var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
     var noteTextSizePx = with(LocalDensity.current) { noteTextSize.toPx() }
 
-    val outerStrokeWidthPx = with(LocalDensity.current) { outerStrokeWidth.toPx() }
     val outerCornerRadiusPx: Float = with(LocalDensity.current) { outerCornerRadius.toPx() }
+    val outerStrokeWidthPx = with(LocalDensity.current) { outerStrokeWidth.toPx() }
     val innerStrokeWidthPx: Float = with(LocalDensity.current) { innerStrokeWidth.toPx() }
 
-    // numbers
-    var textPaint by remember {
-      mutableStateOf(
-        TextPaint().apply {
-          color = foregroundColor.toArgb()
-          isAntiAlias = true
-          textSize = numberTextSizePx
-        }
-      )
-    }
-    // errors
-    var errorTextPaint by remember {
-      mutableStateOf(
-        TextPaint().apply {
-          color = errorColor.toArgb()
-          isAntiAlias = true
-          textSize = numberTextSizePx
-        }
-      )
-    }
-    // locked numbers
-    var lockedTextPaint by remember {
-      mutableStateOf(
-        TextPaint().apply {
-          color = altForegroundColor.toArgb()
-          isAntiAlias = true
-          textSize = numberTextSizePx
-        }
-      )
-    }
+    var zoom by remember(isEnabled) { mutableFloatStateOf(1f) }
+    var offset by remember(isEnabled) { mutableStateOf(Offset.Zero) }
 
-    // notes
+    var numberPaint by remember {
+      mutableStateOf(
+        TextPaint().apply {
+          color = numberColor.toArgb()
+          isAntiAlias = true
+          textSize = numberTextSizePx
+        }
+      )
+    }
+    var errorNumberPaint by remember {
+      mutableStateOf(
+        TextPaint().apply {
+          color = errorNumberColor.toArgb()
+          isAntiAlias = true
+          textSize = numberTextSizePx
+        }
+      )
+    }
+    var lockedNumberPaint by remember {
+      mutableStateOf(
+        TextPaint().apply {
+          color = lockedNumberColor.toArgb()
+          isAntiAlias = true
+          textSize = numberTextSizePx
+        }
+      )
+    }
     var notePaint by remember {
       mutableStateOf(
         TextPaint().apply {
-          color = notesColor.toArgb()
+          color = noteColor.toArgb()
           isAntiAlias = true
           textSize = noteTextSizePx
         }
@@ -178,37 +160,34 @@ internal fun GameBoard(
         noteTextSize.value,
         context.resources.displayMetrics
       )
-      textPaint = TextPaint().apply {
-        color = foregroundColor.toArgb()
+      numberPaint = TextPaint().apply {
+        color = numberColor.toArgb()
         isAntiAlias = true
         textSize = numberTextSizePx
       }
       notePaint = TextPaint().apply {
-        color = notesColor.toArgb()
+        color = noteColor.toArgb()
         isAntiAlias = true
         textSize = noteTextSizePx
       }
-      errorTextPaint = TextPaint().apply {
-        color = Color(230, 67, 83).toArgb()
+      errorNumberPaint = TextPaint().apply {
+        color = errorNumberColor.toArgb()
         isAntiAlias = true
         textSize = numberTextSizePx
       }
-      lockedTextPaint = TextPaint().apply {
-        color = altForegroundColor.toArgb()
+      lockedNumberPaint = TextPaint().apply {
+        color = lockedNumberColor.toArgb()
         isAntiAlias = true
         textSize = numberTextSizePx
       }
     }
 
-    var zoom by remember(enabled) { mutableFloatStateOf(1f) }
-    var offset by remember(enabled) { mutableStateOf(Offset.Zero) }
-
     val boardModifier = Modifier
       .fillMaxSize()
-      .pointerInput(key1 = enabled, key2 = board) {
+      .pointerInput(key1 = isEnabled, key2 = board) {
         detectTapGestures(
           onTap = {
-            if (enabled) {
+            if (isEnabled) {
               val totalOffset = it / zoom + offset
               val row = floor((totalOffset.y) / cellSize)
                 .toInt()
@@ -223,10 +202,10 @@ internal fun GameBoard(
       }
 
     val zoomModifier = Modifier
-      .pointerInput(enabled) {
+      .pointerInput(isEnabled) {
         detectTransformGestures(
           onGesture = { gestureCentroid, gesturePan, gestureZoom, _ ->
-            if (enabled) {
+            if (isEnabled) {
               val oldScale = zoom
               val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
 
@@ -256,7 +235,7 @@ internal fun GameBoard(
         TransformOrigin(0f, 0f).also { transformOrigin = it }
       }
     Canvas(
-      modifier = if (zoomable) boardModifier.then(zoomModifier) else boardModifier
+      modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
     ) {
       if (selectedCell.row >= 0 && selectedCell.col >= 0) {
         // current cell
@@ -268,7 +247,7 @@ internal fun GameBoard(
           ),
           size = Size(cellSize, cellSize)
         )
-        if (positionLines) {
+        if (isPositionLines) {
           // vertical position line
           drawRect(
             color = highlightColor.copy(alpha = 0.1f),
@@ -289,7 +268,7 @@ internal fun GameBoard(
           )
         }
       }
-      if (identicalNumbersHighlight) {
+      if (isIdenticalNumbersHighlight) {
         for (i in 0 until size) {
           for (j in 0 until size) {
             if (board[i][j].value == selectedCell.value && board[i][j].value != 0) {
@@ -349,14 +328,14 @@ internal fun GameBoard(
         size = size,
         board = board,
         isErrorsHighlight = isErrorsHighlight,
-        errorTextPaint = errorTextPaint,
-        lockedTextPaint = lockedTextPaint,
-        textPaint = textPaint,
-        questions = questions,
+        errorNumberPaint = errorNumberPaint,
+        lockedNumberPaint = lockedNumberPaint,
+        numberPaint = numberPaint,
+        isQuestions = isQuestions,
         cellSize = cellSize,
       )
 
-      if (!notes.isNullOrEmpty() && !questions && renderNotes) {
+      if (!notes.isNullOrEmpty() && !isQuestions && isRenderNotes) {
         drawNotes(
           size = size,
           paint = notePaint,
@@ -368,7 +347,7 @@ internal fun GameBoard(
       }
 
       // doesn't look good on 6x6
-      if (crossHighlight && size != 6) {
+      if (isCrossHighlight && size != 6) {
         val sectionHeight = getSectionHeightForSize(size)
         val sectionWidth = getSectionWidthForSize(size)
         for (i in 0 until size / sectionWidth) {
@@ -387,45 +366,6 @@ internal fun GameBoard(
         }
       }
     }
-
-    // Column(modifier = Modifier.fillMaxWidth()) {
-    //   for (i in board.indices) {
-    //     Row(
-    //       modifier = Modifier.height(IntrinsicSize.Min)
-    //     ) {
-    //       val cells = board[i]
-    //       for (j in cells.indices) {
-    //         Cell(
-    //           boardCell = board[i][j],
-    //           isSelected = false,
-    //           isEditable = true,
-    //           onClick = {
-    //             onSelectCell(board[i][j])
-    //           },
-    //           modifier = Modifier
-    //             .aspectRatio(1f)
-    //             .weight(1f)
-    //         )
-    //         if (divider != 0 && ((j + 1) % divider == 0)) {
-    //           VerticalDivider(
-    //             color = Color.Black,
-    //             thickness = 1.dp,
-    //             modifier = Modifier.fillMaxHeight()
-    //           )
-    //         }
-    //       }
-    //     }
-    //     if (divider != 0 && ((i + 1) % divider == 0)) {
-    //       HorizontalDivider(
-    //         color = Color.Black,
-    //         thickness = 1.dp,
-    //         modifier = Modifier
-    //           .height(1.dp)
-    //           .fillMaxWidth(),
-    //       )
-    //     }
-    //   }
-    // }
   }
 }
 
@@ -491,10 +431,10 @@ private fun DrawScope.drawNumbers(
   size: Int,
   board: List<List<BoardCell>>,
   isErrorsHighlight: Boolean,
-  errorTextPaint: TextPaint,
-  lockedTextPaint: TextPaint,
-  textPaint: TextPaint,
-  questions: Boolean,
+  errorNumberPaint: TextPaint,
+  lockedNumberPaint: TextPaint,
+  numberPaint: TextPaint,
+  isQuestions: Boolean,
   cellSize: Float,
 ) {
   drawIntoCanvas { canvas ->
@@ -503,14 +443,14 @@ private fun DrawScope.drawNumbers(
         val number = board[i][j]
         if (number.value != 0) {
           val paint = when {
-            number.isError && isErrorsHighlight -> errorTextPaint
-            number.isLocked -> lockedTextPaint
-            else -> textPaint
+            number.isError && isErrorsHighlight -> errorNumberPaint
+            number.isLocked -> lockedNumberPaint
+            else -> numberPaint
           }
 
-          val textToDraw = if (questions) "?" else number.value.toString(16).uppercase()
+          val textToDraw = if (isQuestions) "?" else number.value.toString(16).uppercase()
           val textBounds = Rect()
-          textPaint.getTextBounds(textToDraw, 0, 1, textBounds)
+          numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
           val textWidth = paint.measureText(textToDraw)
           val textPosX = number.col * cellSize + (cellSize - textWidth) / 2f
           val textPosY = number.row * cellSize + (cellSize + textBounds.height()) / 2f
@@ -608,80 +548,17 @@ private fun getSectionWidthForSize(size: Int): Int {
   }
 }
 
-@Composable
-internal fun Cell(
-  boardCell: BoardCell,
-  isSelected: Boolean,
-  isEditable: Boolean,
-  onClick: () -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  if (BuildConfig.DEBUG) Log.d(TAG, "Composing Cell")
-  Box(
-    contentAlignment = Alignment.Center,
-    modifier = Modifier
-      .background(
-        color = if (isSelected) {
-          Color.Green
-        } else {
-          Color.White
-        }
-      )
-      .border(width = .1f.dp, color = Color.Black.copy(alpha = .7f))
-      .then(modifier)
-      .let {
-        if (isEditable) {
-          return@let it.clickable { onClick() }
-        }
-        it
-      },
-  ) {
-    Text(
-      text = if (boardCell.value == 0) {
-        ""
-      } else {
-        boardCell.value.toString()
-      },
-      color = if (isSelected) {
-        Color.White
-      } else {
-        Color.Black
-      },
-      modifier = Modifier.padding(4.dp),
-    )
-  }
-}
-
 @Preview(
-  name = "Game Preview",
+  name = "Game Board Preview",
 )
 @Composable
-internal fun GamePreview(
+internal fun GameBoardPreview(
   // @PreviewParameter(GameLevelUiPreviewProvider::class) gameState: GameState
 ) {
   // Game(
   //   gameState = gameState,
   //   onInputCell = { _, _ -> },
   // )
-}
-
-@Preview(
-  name = "Game Cell",
-)
-@Composable
-internal fun CellPreview() {
-  Row {
-    Cell(
-      boardCell = BoardCell(row = 0, col = 0, value = 1),
-      isSelected = false,
-      isEditable = true,
-      onClick = {})
-    Cell(
-      boardCell = BoardCell(row = 0, col = 0, value = 2),
-      isSelected = true,
-      isEditable = true,
-      onClick = {})
-  }
 }
 
 // private class GameLevelUiPreviewProvider : PreviewParameterProvider<GameState> {

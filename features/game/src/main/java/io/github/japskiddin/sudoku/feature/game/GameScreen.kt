@@ -23,7 +23,7 @@ import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.feature.component.GameBoard
 import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
 
-internal const val TAG = "Game UI"
+private const val TAG = "Game UI"
 
 @Composable
 fun GameScreen() {
