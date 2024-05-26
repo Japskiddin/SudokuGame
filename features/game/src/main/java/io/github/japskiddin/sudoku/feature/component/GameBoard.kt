@@ -43,6 +43,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,8 +62,8 @@ internal fun GameBoard(
   board: List<List<BoardCell>>,
   size: Int = board.size,
   selectedCell: BoardCell,
-  boardCornerRadius: Float = with(LocalDensity.current) { 12.dp.toPx() },
-  innerStrokeWidth: Float = with(LocalDensity.current) { 1.3.dp.toPx() },
+  outerCornerRadius: Dp = 12.dp,
+  innerStrokeWidth: Dp = 1.3.dp,
   onSelectCell: (BoardCell) -> Unit,
   identicalNumbersHighlight: Boolean = true,
   isErrorsHighlight: Boolean = true,
@@ -73,8 +74,8 @@ internal fun GameBoard(
   cellsToHighlight: List<BoardCell>? = null,
   zoomable: Boolean = false,
   notes: List<BoardNote>? = null,
-  outerStrokeWidth: Float = with(LocalDensity.current) { 1.3.dp.toPx() },
-  mainTextSize: TextUnit = when (size) {
+  outerStrokeWidth: Dp = 1.3.dp,
+  numberTextSize: TextUnit = when (size) {
     6 -> 32.sp
     9 -> 26.sp
     12 -> 24.sp
@@ -108,6 +109,7 @@ internal fun GameBoard(
       .padding(4.dp)
   ) {
     val maxWidth = constraints.maxWidth.toFloat()
+
     val cellSize by remember(size) { mutableFloatStateOf(maxWidth / size.toFloat()) }
     val cellSizeDividerWidth by remember(size) { mutableFloatStateOf(cellSize / ceil(sqrt(size.toFloat()))) }
     val cellSizeDividerHeight by remember(size) { mutableFloatStateOf(cellSize / floor(sqrt(size.toFloat()))) }
@@ -115,17 +117,20 @@ internal fun GameBoard(
     val verticalInnerStrokeThickness by remember(size) { mutableIntStateOf(floor(sqrt(size.toFloat())).toInt()) }
     val horizontalInnerStrokeThickness by remember(size) { mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt()) }
 
-    var fontSizePx = with(LocalDensity.current) { mainTextSize.toPx() }
-    var noteSizePx = with(LocalDensity.current) { noteTextSize.toPx() }
+    var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
+    var noteTextSizePx = with(LocalDensity.current) { noteTextSize.toPx() }
 
-    // paints
+    val outerStrokeWidthPx = with(LocalDensity.current) { outerStrokeWidth.toPx() }
+    val outerCornerRadiusPx: Float = with(LocalDensity.current) { outerCornerRadius.toPx() }
+    val innerStrokeWidthPx: Float = with(LocalDensity.current) { innerStrokeWidth.toPx() }
+
     // numbers
     var textPaint by remember {
       mutableStateOf(
         TextPaint().apply {
           color = foregroundColor.toArgb()
           isAntiAlias = true
-          textSize = fontSizePx
+          textSize = numberTextSizePx
         }
       )
     }
@@ -135,7 +140,7 @@ internal fun GameBoard(
         TextPaint().apply {
           color = errorColor.toArgb()
           isAntiAlias = true
-          textSize = fontSizePx
+          textSize = numberTextSizePx
         }
       )
     }
@@ -145,7 +150,7 @@ internal fun GameBoard(
         TextPaint().apply {
           color = altForegroundColor.toArgb()
           isAntiAlias = true
-          textSize = fontSizePx
+          textSize = numberTextSizePx
         }
       )
     }
@@ -156,19 +161,19 @@ internal fun GameBoard(
         TextPaint().apply {
           color = notesColor.toArgb()
           isAntiAlias = true
-          textSize = noteSizePx
+          textSize = noteTextSizePx
         }
       )
     }
 
     val context = LocalContext.current
-    LaunchedEffect(mainTextSize, noteTextSize) {
-      fontSizePx = TypedValue.applyDimension(
+    LaunchedEffect(numberTextSize, noteTextSize) {
+      numberTextSizePx = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
-        mainTextSize.value,
+        numberTextSize.value,
         context.resources.displayMetrics
       )
-      noteSizePx = TypedValue.applyDimension(
+      noteTextSizePx = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
         noteTextSize.value,
         context.resources.displayMetrics
@@ -176,22 +181,22 @@ internal fun GameBoard(
       textPaint = TextPaint().apply {
         color = foregroundColor.toArgb()
         isAntiAlias = true
-        textSize = fontSizePx
+        textSize = numberTextSizePx
       }
       notePaint = TextPaint().apply {
         color = notesColor.toArgb()
         isAntiAlias = true
-        textSize = noteSizePx
+        textSize = noteTextSizePx
       }
       errorTextPaint = TextPaint().apply {
         color = Color(230, 67, 83).toArgb()
         isAntiAlias = true
-        textSize = fontSizePx
+        textSize = numberTextSizePx
       }
       lockedTextPaint = TextPaint().apply {
         color = altForegroundColor.toArgb()
         isAntiAlias = true
-        textSize = fontSizePx
+        textSize = numberTextSizePx
       }
     }
 
@@ -313,9 +318,9 @@ internal fun GameBoard(
 
       drawBoardFrame(
         outerStrokeColor = outerStrokeColor,
-        outerStrokeWidth = outerStrokeWidth,
+        outerStrokeWidth = outerStrokeWidthPx,
         maxWidth = maxWidth,
-        cornerRadius = CornerRadius(boardCornerRadius, boardCornerRadius)
+        cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
       )
 
       drawHorizontalLines(
@@ -323,9 +328,9 @@ internal fun GameBoard(
         cellSize = cellSize,
         innerStrokeThickness = horizontalInnerStrokeThickness,
         outerStrokeColor = outerStrokeColor,
-        outerStrokeWidth = outerStrokeWidth,
+        outerStrokeWidth = outerStrokeWidthPx,
         maxWidth = maxWidth,
-        innerStrokeWidth = innerStrokeWidth,
+        innerStrokeWidth = innerStrokeWidthPx,
         innerStrokeColor = innerStrokeColor,
       )
 
@@ -334,9 +339,9 @@ internal fun GameBoard(
         cellSize = cellSize,
         innerStrokeThickness = verticalInnerStrokeThickness,
         outerStrokeColor = outerStrokeColor,
-        outerStrokeWidth = outerStrokeWidth,
+        outerStrokeWidth = outerStrokeWidthPx,
         maxWidth = maxWidth,
-        innerStrokeWidth = innerStrokeWidth,
+        innerStrokeWidth = innerStrokeWidthPx,
         innerStrokeColor = innerStrokeColor,
       )
 
