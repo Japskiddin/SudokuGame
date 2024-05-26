@@ -60,8 +60,8 @@ internal fun GameBoard(
   size: Int = board.size,
   selectedCell: BoardCell,
   outerCornerRadius: Dp = 12.dp,
-  innerStrokeWidth: Dp = 1.3.dp,
   outerStrokeWidth: Dp = 1.3.dp,
+  innerStrokeWidth: Dp = 1.3.dp, // TODO уменьшить
   numberTextSize: TextUnit = when (size) {
     6 -> 32.sp
     9 -> 26.sp
@@ -90,7 +90,7 @@ internal fun GameBoard(
   errorNumberColor: Color = Color.Red,
   selectedColor: Color = Color.Green,
   outerStrokeColor: Color = Color.Black,
-  innerStrokeColor: Color = Color.Black,
+  innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
   onSelectCell: (BoardCell) -> Unit,
 ) {
   BoxWithConstraints(
@@ -99,6 +99,9 @@ internal fun GameBoard(
       .aspectRatio(1f)
       .padding(4.dp)
   ) {
+    // TODO закруглять фон у выбранных угловых элементов
+    // TODO добавить фон по умолчанию (белый)
+
     val maxWidth = constraints.maxWidth.toFloat()
 
     val cellSize by remember(size) { mutableFloatStateOf(maxWidth / size.toFloat()) }
@@ -585,9 +588,9 @@ private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
           gameType = board.type
         ).toList(),
         selectedCell = BoardCell(
-          row = -1,
-          col = -1,
-          value = 0,
+          row = 3,
+          col = 2,
+          value = 3,
         ),
       ),
     )
