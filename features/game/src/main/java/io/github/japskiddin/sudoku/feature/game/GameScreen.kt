@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,34 +34,58 @@ fun GameScreen() {
 @Composable
 internal fun GameScreen(viewModel: GameViewModel) {
   val state by viewModel.uiState.collectAsState()
-  when (val currentState = state) {
+  GameContent(
+    state = state,
+    onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
+    onInputCell = { cell, item -> viewModel.onInputCell(cell, item) },
+  )
+}
+
+@Composable
+internal fun GameContent(
+  state: UiState,
+  onSelectBoardCell: (BoardCell) -> Unit,
+  onInputCell: (Pair<Int, Int>, Int) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  val screenModifier = Modifier
+    .fillMaxSize()
+    .then(modifier)
+  when (state) {
     is UiState.Success -> Game(
-      gameState = currentState.gameState,
-      onSelectCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
-      onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
+      state = state.gameState,
+      onSelectCell = onSelectBoardCell,
+      onInputCell = onInputCell,
+      modifier = screenModifier,
     )
 
-    is UiState.Error -> Error(message = currentState.message)
-    is UiState.Loading -> Loading()
-    UiState.None -> Empty()
+    is UiState.Loading -> Loading(
+      modifier = screenModifier,
+    )
+
+    is UiState.Error -> Error(
+      message = state.message,
+      modifier = screenModifier,
+    )
   }
 }
 
 @Composable
 internal fun Game(
-  gameState: GameState,
+  state: GameState,
   onSelectCell: (BoardCell) -> Unit,
   onInputCell: (Pair<Int, Int>, Int) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
 
   Column(
-    modifier = Modifier.fillMaxSize(),
     verticalArrangement = Arrangement.Center,
+    modifier = Modifier.then(modifier),
   ) {
     GameBoard(
-      board = gameState.board,
-      selectedCell = gameState.selectedCell,
+      board = state.board,
+      selectedCell = state.selectedCell,
       onSelectCell = { boardCell ->
         onSelectCell(boardCell)
       },
@@ -100,20 +125,30 @@ internal fun InputPanel(
 }
 
 @Composable
-internal fun Loading() {
+internal fun Loading(
+  modifier: Modifier = Modifier,
+) {
   if (BuildConfig.DEBUG) Log.d(TAG, "Composing Loading screen")
-  Text(text = "Loading")
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier.then(modifier),
+  ) {
+    Text(text = "Loading")
+  }
 }
 
 @Composable
-internal fun Error(@StringRes message: Int) {
+internal fun Error(
+  modifier: Modifier = Modifier,
+  @StringRes message: Int,
+) {
   if (BuildConfig.DEBUG) Log.d(TAG, "Composing Error screen")
-  Text(text = stringResource(id = message))
-}
-
-@Composable
-internal fun Empty() {
-  if (BuildConfig.DEBUG) Log.d(TAG, "Composing Empty screen")
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier.then(modifier),
+  ) {
+    Text(text = stringResource(id = message))
+  }
 }
 
 @Preview(

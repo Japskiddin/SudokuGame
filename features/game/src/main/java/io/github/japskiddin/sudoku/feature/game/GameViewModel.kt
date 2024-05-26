@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.feature.game
 
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,7 @@ internal class GameViewModel @Inject constructor(
   private val appNavigator: AppNavigator,
   private val savedState: SavedStateHandle,
 ) : ViewModel() {
-  private var _uiState = MutableStateFlow<UiState>(UiState.None)
+  private var _uiState = MutableStateFlow(UiState.Initial)
   val uiState: StateFlow<UiState>
     get() = _uiState.asStateFlow()
 
@@ -107,6 +108,7 @@ internal class GameViewModel @Inject constructor(
   }
 }
 
+@Immutable
 internal class GameUiState {
   val errorMessage: String? = null
   val isLoading: Boolean = false
@@ -117,13 +119,23 @@ internal class GameUiState {
   // val difficulty: Difficulty = Difficulty.NORMAL
 }
 
+@Immutable
 internal sealed class UiState {
-  data object None : UiState()
+  @Immutable
   data object Loading : UiState()
+
+  @Immutable
   class Error(@StringRes val message: Int) : UiState()
+
+  @Immutable
   class Success(val gameState: GameState) : UiState()
+
+  companion object {
+    val Initial: UiState = Loading
+  }
 }
 
+@Immutable
 internal data class GameState(
   val board: List<List<BoardCell>>,
   val selectedCell: BoardCell = BoardCell(-1, -1, 0),

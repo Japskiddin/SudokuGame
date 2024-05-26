@@ -82,7 +82,7 @@ internal fun GameBoard(
   noteColor: Color = Color.Black,
   lockedNumberColor: Color = Color.Black,
   errorNumberColor: Color = Color.Red,
-  highlightColor: Color = Color.Green,
+  selectedColor: Color = Color.Green,
   outerStrokeColor: Color = Color.Black,
   innerStrokeColor: Color = Color.Black,
 ) {
@@ -234,13 +234,13 @@ internal fun GameBoard(
         scaleY = zoom
         TransformOrigin(0f, 0f).also { transformOrigin = it }
       }
+
     Canvas(
       modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
     ) {
       if (selectedCell.row >= 0 && selectedCell.col >= 0) {
-        // current cell
         drawRect(
-          color = highlightColor.copy(alpha = 0.2f),
+          color = selectedColor,
           topLeft = Offset(
             x = selectedCell.col * cellSize,
             y = selectedCell.row * cellSize
@@ -248,18 +248,16 @@ internal fun GameBoard(
           size = Size(cellSize, cellSize)
         )
         if (isPositionLines) {
-          // vertical position line
           drawRect(
-            color = highlightColor.copy(alpha = 0.1f),
+            color = selectedColor.copy(alpha = 0.2f),
             topLeft = Offset(
               x = selectedCell.col * cellSize,
               y = 0f
             ),
             size = Size(cellSize, maxWidth)
           )
-          // horizontal position line
           drawRect(
-            color = highlightColor.copy(alpha = 0.1f),
+            color = selectedColor.copy(alpha = 0.2f),
             topLeft = Offset(
               x = 0f,
               y = selectedCell.row * cellSize
@@ -273,7 +271,7 @@ internal fun GameBoard(
           for (j in 0 until size) {
             if (board[i][j].value == selectedCell.value && board[i][j].value != 0) {
               drawRect(
-                color = highlightColor.copy(alpha = 0.2f),
+                color = selectedColor.copy(alpha = 0.2f),
                 topLeft = Offset(
                   x = board[i][j].col * cellSize,
                   y = board[i][j].row * cellSize
@@ -286,7 +284,7 @@ internal fun GameBoard(
       }
       cellsToHighlight?.forEach {
         drawRect(
-          color = highlightColor.copy(alpha = 0.3f),
+          color = selectedColor.copy(alpha = 0.3f),
           topLeft = Offset(
             x = it.col * cellSize,
             y = it.row * cellSize
@@ -354,7 +352,7 @@ internal fun GameBoard(
           for (j in 0 until size / sectionHeight) {
             if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
               drawRect(
-                color = highlightColor.copy(alpha = 0.1f),
+                color = selectedColor.copy(alpha = 0.1f),
                 topLeft = Offset(
                   x = i * sectionWidth * cellSize,
                   y = j * sectionHeight * cellSize
