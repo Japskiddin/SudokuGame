@@ -6,7 +6,7 @@ plugins {
   alias(libs.plugins.jetbrains.kotlin.android)
   alias(libs.plugins.jetbrains.compose.compiler)
   alias(libs.plugins.google.ksp)
-  alias(libs.plugins.hilt)
+  alias(libs.plugins.dagger.hilt.android)
 }
 
 kotlin {
@@ -25,6 +25,10 @@ android {
     versionName = libs.versions.versionName.get()
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     setProperty("archivesBaseName", "sudoku-${versionName}-${versionCode}")
+    vectorDrawables {
+      useSupportLibrary = true
+    }
+    resourceConfigurations += setOf("ru", "en")
   }
 
   val secretProperties = Properties()
@@ -190,9 +194,9 @@ dependencies {
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.runtime.livedata)
 
-  implementation(libs.hilt.navigation.compose)
-  implementation(libs.hilt.android)
-  ksp(libs.hilt.compiler)
+  implementation(libs.dagger.hilt.navigation.compose)
+  implementation(libs.dagger.hilt.android)
+  ksp(libs.dagger.hilt.compiler)
 
   implementation(project(":core:common"))
   implementation(project(":datastore"))

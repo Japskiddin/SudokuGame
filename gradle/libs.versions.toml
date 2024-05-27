@@ -8,6 +8,7 @@ versionCode = "1"
 
 agp = "8.4.1"
 
+androidxAnnotation = "1.8.0"
 androidxCoreKtx = "1.13.1"
 androidxLifecycle = "2.8.0"
 androidxActivityCompose = "1.9.0"
@@ -16,7 +17,7 @@ androidxRoom = "2.6.1"
 androidxDatastore = "1.1.1"
 
 kotlinAndroid = "2.0.0"
-kotlinCoroutines = "1.8.1"
+kotlinxCoroutines = "1.8.1"
 kotlinxSerializationJson = "1.7.0-RC"
 
 bundletool = "1.15.6"
@@ -35,6 +36,7 @@ androidxTestExtJunit = "1.1.5"
 androidxTestEspressoCore = "3.5.1"
 
 [libraries]
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidxAnnotation" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCoreKtx" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspressoCore" }
@@ -54,7 +56,8 @@ androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime
 bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bundletool" }
 
 jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinAndroid" }
-jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+jetbrains-koltinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
@@ -71,9 +74,9 @@ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "a
 google-protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "googleProtobuf" }
 google-protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "googleProtobuf" }
 
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
+dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
 jakatra-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakatraInject" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -87,4 +90,5 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinA
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinAndroid" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "googleProtobufPlugin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+androidx-room = { id = "androidx.room", version.ref = "androidxRoom" }
