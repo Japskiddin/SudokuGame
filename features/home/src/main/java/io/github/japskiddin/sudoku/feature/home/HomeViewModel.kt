@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
@@ -52,6 +53,8 @@ internal class HomeViewModel @Inject constructor(
     val selectedDifficulty = GameDifficulty.INTERMEDIATE
 
     viewModelScope.launch(Dispatchers.IO) {
+      _uiState.update { UiState.Loading }
+
       val puzzle = List(selectedType.size) { row ->
         List(selectedType.size) { col -> BoardCell(row, col, 0) }
       }
@@ -86,6 +89,8 @@ internal class HomeViewModel @Inject constructor(
         val insertedBoardUid = createBoardUseCase.get().invoke(board)
         navigateToGame(insertedBoardUid)
       }
+
+      _uiState.update { UiState.Menu }
     }
   }
 

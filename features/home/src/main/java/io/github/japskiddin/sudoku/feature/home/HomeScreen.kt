@@ -2,6 +2,7 @@ package io.github.japskiddin.sudoku.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +30,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.painter.Painter
@@ -49,6 +52,8 @@ import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonBackgroundPressed
 import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundNormal
 import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundPressed
 import io.github.japskiddin.sudoku.core.ui.theme.OnMenuButton
+import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
+import io.github.japskiddin.sudoku.core.ui.theme.Primary
 
 @Composable
 fun HomeScreen() {
@@ -137,13 +142,29 @@ internal fun Loading(
 ) {
   Box(
     contentAlignment = Alignment.Center,
-    modifier = Modifier.then(modifier),
+    modifier = Modifier
+      .then(modifier)
+      .background(Primary),
   ) {
-    // Column(
-    //   modifier = Modifier.background()
-    // ) {
-    //
-    // }
+    Column(
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      CircularProgressIndicator(
+        trackColor = OnPrimary.copy(alpha = 0.2f),
+        color = OnPrimary,
+        strokeWidth = 6.dp,
+        strokeCap = StrokeCap.Round,
+        modifier = Modifier.size(48.dp)
+      )
+      Text(
+        text = "Please wait...",
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
+        color = OnPrimary,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(top = 16.dp)
+      )
+    }
   }
 }
 
