@@ -44,6 +44,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonBackgroundNormal
+import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonBackgroundPressed
+import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundNormal
+import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundPressed
+import io.github.japskiddin.sudoku.core.ui.theme.OnMenuButton
 
 @Composable
 fun HomeScreen() {
@@ -191,9 +196,16 @@ internal fun MenuButton(
   val interactionSource = remember { MutableInteractionSource() }
   val isPressed by interactionSource.collectIsPressedAsState()
 
-  val buttonForegroundColor = Color(if (isPressed) 0xFF428EC2 else 0xFF68BEFA)
-  val buttonBackgroundColor = Color(if (isPressed) 0xFF10354F else 0xFF235F89)
-  val onButtonColor = Color.White
+  val buttonForegroundColor = if (isPressed) {
+    MenuButtonForegroundPressed
+  } else {
+    MenuButtonForegroundNormal
+  }
+  val buttonBackgroundColor = if (isPressed) {
+    MenuButtonBackgroundPressed
+  } else {
+    MenuButtonBackgroundNormal
+  }
 
   Row(
     modifier = modifier
@@ -216,7 +228,7 @@ internal fun MenuButton(
     MenuButtonContent(
       icon = icon,
       text = text,
-      textColor = onButtonColor,
+      textColor = OnMenuButton,
       outlineColor = buttonBackgroundColor,
     )
   }

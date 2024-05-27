@@ -73,6 +73,7 @@ dependencies {
 
   implementation(project(":core:common"))
   implementation(project(":core:game"))
+  implementation(project(":core:ui"))
   implementation(project(":game-data"))
   api(project(":navigation"))
 
