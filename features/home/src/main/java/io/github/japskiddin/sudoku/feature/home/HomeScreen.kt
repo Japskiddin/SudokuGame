@@ -99,16 +99,14 @@ internal fun MainMenu(
 ) {
   Box(
     modifier = Modifier
+      .then(modifier)
       .paint(
         painter = painterResource(id = R.drawable.home_background),
         contentScale = ContentScale.Crop
       )
-      .then(modifier)
+      .padding(16.dp),
   ) {
     Column(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       Menu(
@@ -136,7 +134,11 @@ internal fun Loading(
     contentAlignment = Alignment.Center,
     modifier = Modifier.then(modifier),
   ) {
-    Text(text = "Loading")
+    // Column(
+    //   modifier = Modifier.background()
+    // ) {
+    //
+    // }
   }
 }
 
@@ -311,18 +313,6 @@ internal fun Modifier.drawBorder(
 )
 
 @Preview(
-  name = "Menu Button"
-)
-@Composable
-internal fun MenuButtonPreview() {
-  MenuButton(
-    icon = painterResource(id = R.drawable.ic_start_game),
-    text = stringResource(id = R.string.start_game),
-    onClick = {},
-  )
-}
-
-@Preview(
   name = "Main Menu",
   showBackground = true
 )
@@ -333,5 +323,25 @@ internal fun MainMenuPreview() {
     onStartGameClick = {},
     onRecordsClick = {},
     onSettingsClick = {},
+  )
+}
+
+@Preview(
+  name = "Loading"
+)
+@Composable
+internal fun LoadingPreview() {
+  Loading()
+}
+
+@Preview(
+  name = "Menu Button"
+)
+@Composable
+internal fun MenuButtonPreview() {
+  MenuButton(
+    icon = painterResource(id = R.drawable.ic_start_game),
+    text = stringResource(id = R.string.start_game),
+    onClick = {},
   )
 }
