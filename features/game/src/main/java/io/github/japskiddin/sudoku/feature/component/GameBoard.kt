@@ -45,9 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.BoardNote
-import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty.INTERMEDIATE
+import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
-import io.github.japskiddin.sudoku.core.game.qqwing.GameType.DEFAULT9X9
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.GameState
@@ -666,8 +665,8 @@ private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
   val board = Board(
     initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
     solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-    difficulty = INTERMEDIATE,
-    type = DEFAULT9X9,
+    difficulty = GameDifficulty.INTERMEDIATE,
+    type = GameType.DEFAULT9X9,
   )
 
   override val values: Sequence<GameState>
