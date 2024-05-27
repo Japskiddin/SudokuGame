@@ -34,7 +34,7 @@ fun GameScreen() {
 @Composable
 internal fun GameScreen(viewModel: GameViewModel) {
   val state by viewModel.uiState.collectAsState()
-  GameContent(
+  GameScreenContent(
     state = state,
     onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
     onInputCell = { cell, item -> viewModel.onInputCell(cell, item) },
@@ -42,7 +42,7 @@ internal fun GameScreen(viewModel: GameViewModel) {
 }
 
 @Composable
-internal fun GameContent(
+internal fun GameScreenContent(
   state: UiState,
   onSelectBoardCell: (BoardCell) -> Unit,
   onInputCell: (Pair<Int, Int>, Int) -> Unit,

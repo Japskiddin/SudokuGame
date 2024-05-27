@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.home
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,9 @@ import io.github.japskiddin.sudoku.feature.home.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
@@ -24,18 +28,22 @@ internal class HomeViewModel @Inject constructor(
   private val appNavigator: AppNavigator,
   private val createBoardUseCase: Provider<CreateBoardUseCase>,
 ) : ViewModel() {
-  internal val currentYear: String
+  private val _uiState = MutableStateFlow(UiState.Initial)
+  val uiState: StateFlow<UiState>
+    get() = _uiState.asStateFlow()
+
+  val currentYear: String
     get() = Calendar.getInstance().get(Calendar.YEAR).toString()
 
-  internal fun onStartClick() {
+  fun onStartClick() {
     generateNewBoard()
   }
 
-  internal fun onSettingsClick() {
+  fun onSettingsClick() {
     TODO("In Development")
   }
 
-  internal fun onRecordsClick() {
+  fun onRecordsClick() {
     TODO("In Development")
   }
 
@@ -83,5 +91,18 @@ internal class HomeViewModel @Inject constructor(
 
   private fun navigateToGame(boardUid: Long) {
     appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))
+  }
+}
+
+@Immutable
+internal sealed class UiState {
+  @Immutable
+  data object Loading : UiState()
+
+  @Immutable
+  data object Menu : UiState()
+
+  companion object {
+    val Initial: UiState = Menu
   }
 }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -46,249 +47,291 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun HomeScreen() {
-    HomeScreen(viewModel = hiltViewModel())
+  HomeScreen(viewModel = hiltViewModel())
 }
 
 @Composable
 internal fun HomeScreen(viewModel: HomeViewModel) {
-    HomeScreenContent(
-        currentYear = viewModel.currentYear,
-        onStartGameClick = { viewModel.onStartClick() },
-        onSettingsClick = { viewModel.onSettingsClick() },
-        onRecordsClick = { viewModel.onRecordsClick() },
-    )
+  val state by viewModel.uiState.collectAsState()
+  HomeScreenContent(
+    state = state,
+    currentYear = viewModel.currentYear,
+    onStartGameClick = { viewModel.onStartClick() },
+    onSettingsClick = { viewModel.onSettingsClick() },
+    onRecordsClick = { viewModel.onRecordsClick() },
+  )
 }
 
 @Composable
 internal fun HomeScreenContent(
-    modifier: Modifier = Modifier,
-    currentYear: String,
-    onStartGameClick: () -> Unit,
-    onRecordsClick: () -> Unit,
-    onSettingsClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  state: UiState,
+  currentYear: String,
+  onStartGameClick: () -> Unit,
+  onRecordsClick: () -> Unit,
+  onSettingsClick: () -> Unit,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .paint(
-                painter = painterResource(id = R.drawable.home_background),
-                contentScale = ContentScale.Crop
-            )
+  val screenModifier = Modifier
+    .fillMaxSize()
+    .then(modifier)
+  when (state) {
+    is UiState.Menu -> MainMenu(
+      modifier = screenModifier,
+      currentYear = currentYear,
+      onStartGameClick = onStartGameClick,
+      onRecordsClick = onRecordsClick,
+      onSettingsClick = onSettingsClick,
+    )
+
+    is UiState.Loading -> Loading(
+      modifier = screenModifier,
+    )
+  }
+}
+
+@Composable
+internal fun MainMenu(
+  modifier: Modifier = Modifier,
+  currentYear: String,
+  onStartGameClick: () -> Unit,
+  onSettingsClick: () -> Unit,
+  onRecordsClick: () -> Unit,
+) {
+  Box(
+    modifier = Modifier
+      .paint(
+        painter = painterResource(id = R.drawable.home_background),
+        contentScale = ContentScale.Crop
+      )
+      .then(modifier)
+  ) {
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Menu(
-                modifier = Modifier
-                    .fillMaxWidth(.8f)
-                    .weight(1f),
-                onStartGameClick = onStartGameClick,
-                onSettingsClick = onSettingsClick,
-                onRecordsClick = onRecordsClick,
-            )
-            OutlineText(
-                text = currentYear,
-                fillColor = Color.White,
-                outlineColor = Color.Black
-            )
-        }
+      Menu(
+        modifier = Modifier
+          .fillMaxWidth(.8f)
+          .weight(1f),
+        onStartGameClick = onStartGameClick,
+        onSettingsClick = onSettingsClick,
+        onRecordsClick = onRecordsClick,
+      )
+      OutlineText(
+        text = currentYear,
+        fillColor = Color.White,
+        outlineColor = Color.Black
+      )
     }
+  }
+}
+
+@Composable
+internal fun Loading(
+  modifier: Modifier = Modifier,
+) {
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier.then(modifier),
+  ) {
+    Text(text = "Loading")
+  }
 }
 
 @Composable
 internal fun Menu(
-    modifier: Modifier = Modifier,
-    onStartGameClick: () -> Unit,
-    onSettingsClick: () -> Unit,
-    onRecordsClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  onStartGameClick: () -> Unit,
+  onSettingsClick: () -> Unit,
+  onRecordsClick: () -> Unit,
 ) {
-    Column(
-        modifier = modifier.wrapContentHeight(),
-        verticalArrangement = Arrangement.Center,
-    ) {
-        OutlineText(
-            text = stringResource(id = R.string.title),
-            textSize = 48.sp,
-            fillColor = Color.White,
-            outlineColor = Color.Black,
-            outlineWidth = 4.dp,
-        )
-        MenuButton(
-            icon = painterResource(id = R.drawable.ic_start_game),
-            text = stringResource(id = R.string.start_game),
-            onClick = onStartGameClick,
-            modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
-        )
-        MenuButton(
-            icon = painterResource(id = R.drawable.ic_start_game),
-            text = stringResource(id = R.string.settings),
-            onClick = onSettingsClick,
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-        )
-        MenuButton(
-            icon = painterResource(id = R.drawable.ic_start_game),
-            text = stringResource(id = R.string.records),
-            onClick = onRecordsClick,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-    }
+  Column(
+    modifier = modifier.wrapContentHeight(),
+    verticalArrangement = Arrangement.Center,
+  ) {
+    OutlineText(
+      text = stringResource(id = R.string.title),
+      textSize = 48.sp,
+      fillColor = Color.White,
+      outlineColor = Color.Black,
+      outlineWidth = 4.dp,
+    )
+    MenuButton(
+      icon = painterResource(id = R.drawable.ic_start_game),
+      text = stringResource(id = R.string.start_game),
+      onClick = onStartGameClick,
+      modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
+    )
+    MenuButton(
+      icon = painterResource(id = R.drawable.ic_start_game),
+      text = stringResource(id = R.string.settings),
+      onClick = onSettingsClick,
+      modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+    )
+    MenuButton(
+      icon = painterResource(id = R.drawable.ic_start_game),
+      text = stringResource(id = R.string.records),
+      onClick = onRecordsClick,
+      modifier = Modifier.padding(top = 8.dp)
+    )
+  }
 }
 
 @Composable
 internal fun MenuButton(
-    modifier: Modifier = Modifier,
-    icon: Painter,
-    text: String,
-    onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  icon: Painter,
+  text: String,
+  onClick: () -> Unit,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
+  val interactionSource = remember { MutableInteractionSource() }
+  val isPressed by interactionSource.collectIsPressedAsState()
 
-    val buttonForegroundColor = Color(if (isPressed) 0xFF428EC2 else 0xFF68BEFA)
-    val buttonBackgroundColor = Color(if (isPressed) 0xFF10354F else 0xFF235F89)
-    val onButtonColor = Color.White
+  val buttonForegroundColor = Color(if (isPressed) 0xFF428EC2 else 0xFF68BEFA)
+  val buttonBackgroundColor = Color(if (isPressed) 0xFF10354F else 0xFF235F89)
+  val onButtonColor = Color.White
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                interactionSource = interactionSource,
-                indication = LocalIndication.current,
-                onClick = onClick
-            )
-            .drawBorder(
-                backgroundColor = buttonBackgroundColor,
-                foregroundColor = buttonForegroundColor,
-                strokeWidth = 2.dp,
-                cornerRadius = 8.dp,
-                bottomStroke = 6.dp,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        MenuButtonContent(
-            icon = icon,
-            text = text,
-            textColor = onButtonColor,
-            outlineColor = buttonBackgroundColor,
-        )
-    }
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .clickable(
+        interactionSource = interactionSource,
+        indication = LocalIndication.current,
+        onClick = onClick
+      )
+      .drawBorder(
+        backgroundColor = buttonBackgroundColor,
+        foregroundColor = buttonForegroundColor,
+        strokeWidth = 2.dp,
+        cornerRadius = 8.dp,
+        bottomStroke = 6.dp,
+      ),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.Center,
+  ) {
+    MenuButtonContent(
+      icon = icon,
+      text = text,
+      textColor = onButtonColor,
+      outlineColor = buttonBackgroundColor,
+    )
+  }
 }
 
 @Composable
 internal fun MenuButtonContent(
-    icon: Painter,
-    text: String,
-    textColor: Color,
-    outlineColor: Color,
+  modifier: Modifier = Modifier,
+  icon: Painter,
+  text: String,
+  textColor: Color,
+  outlineColor: Color,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = 12.dp)
-    ) {
-        Image(
-            painter = icon,
-            contentDescription = text,
-            modifier = Modifier.size(24.dp),
-        )
-        OutlineText(
-            text = text,
-            fillColor = textColor,
-            outlineColor = outlineColor,
-            modifier = Modifier
-                .padding(start = 4.dp, end = 4.dp)
-                .weight(1f)
-        )
-    }
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(all = 12.dp)
+  ) {
+    Image(
+      painter = icon,
+      contentDescription = text,
+      modifier = Modifier.size(24.dp),
+    )
+    OutlineText(
+      text = text,
+      fillColor = textColor,
+      outlineColor = outlineColor,
+      modifier = Modifier
+        .padding(start = 4.dp, end = 4.dp)
+        .weight(1f)
+    )
+  }
 }
 
 @Composable
 internal fun OutlineText(
-    modifier: Modifier = Modifier,
-    text: String,
-    textSize: TextUnit = 16.sp,
-    fillColor: Color,
-    outlineColor: Color,
-    outlineWidth: Dp = 2.dp,
+  modifier: Modifier = Modifier,
+  text: String,
+  textSize: TextUnit = 16.sp,
+  fillColor: Color,
+  outlineColor: Color,
+  outlineWidth: Dp = 2.dp,
 ) {
-    Box {
-        val fillTextStyle = TextStyle(
-            color = fillColor,
-            fontSize = textSize,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-        val outlineTextStyle = fillTextStyle.copy(
-            color = outlineColor,
-            drawStyle = Stroke(
-                width = with(LocalDensity.current) { outlineWidth.toPx() },
-                join = StrokeJoin.Round
-            )
-        )
+  Box {
+    val fillTextStyle = TextStyle(
+      color = fillColor,
+      fontSize = textSize,
+      fontWeight = FontWeight.Bold,
+      textAlign = TextAlign.Center
+    )
+    val outlineTextStyle = fillTextStyle.copy(
+      color = outlineColor,
+      drawStyle = Stroke(
+        width = with(LocalDensity.current) { outlineWidth.toPx() },
+        join = StrokeJoin.Round
+      )
+    )
 
-        Text(
-            text = text,
-            style = LocalTextStyle.current.merge(outlineTextStyle),
-            modifier = modifier.fillMaxWidth(),
-        )
-        Text(
-            text = text,
-            style = LocalTextStyle.current.merge(fillTextStyle),
-            modifier = modifier.fillMaxWidth(),
-        )
-    }
+    Text(
+      text = text,
+      style = LocalTextStyle.current.merge(outlineTextStyle),
+      modifier = modifier.fillMaxWidth(),
+    )
+    Text(
+      text = text,
+      style = LocalTextStyle.current.merge(fillTextStyle),
+      modifier = modifier.fillMaxWidth(),
+    )
+  }
 }
 
 internal fun Modifier.drawBorder(
-    backgroundColor: Color,
-    foregroundColor: Color,
-    strokeWidth: Dp = 1.dp,
-    cornerRadius: Dp = 8.dp,
-    bottomStroke: Dp = 4.dp
+  backgroundColor: Color,
+  foregroundColor: Color,
+  strokeWidth: Dp = 1.dp,
+  cornerRadius: Dp = 8.dp,
+  bottomStroke: Dp = 4.dp
 ) = this.then(
-    Modifier.drawBehind {
-        val strokeWidthPx = strokeWidth.toPx()
-        val bottomStrokeWidthPx = bottomStroke.toPx()
-        val cornerRadiusPx = cornerRadius.toPx()
-        drawRoundRect(
-            color = backgroundColor,
-            cornerRadius = CornerRadius(cornerRadiusPx * 1.2f, cornerRadiusPx * 1.2f)
-        )
-        drawRoundRect(
-            color = foregroundColor,
-            cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
-            topLeft = Offset(strokeWidthPx, strokeWidthPx),
-            size = Size(size.width - strokeWidthPx * 2, size.height - bottomStrokeWidthPx)
-        )
-    }
+  Modifier.drawBehind {
+    val strokeWidthPx = strokeWidth.toPx()
+    val bottomStrokeWidthPx = bottomStroke.toPx()
+    val cornerRadiusPx = cornerRadius.toPx()
+    drawRoundRect(
+      color = backgroundColor,
+      cornerRadius = CornerRadius(cornerRadiusPx * 1.2f, cornerRadiusPx * 1.2f)
+    )
+    drawRoundRect(
+      color = foregroundColor,
+      cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
+      topLeft = Offset(strokeWidthPx, strokeWidthPx),
+      size = Size(size.width - strokeWidthPx * 2, size.height - bottomStrokeWidthPx)
+    )
+  }
 )
 
 @Preview(
-    name = "Menu Button"
+  name = "Menu Button"
 )
 @Composable
 internal fun MenuButtonPreview() {
-    MenuButton(
-        icon = painterResource(id = R.drawable.ic_start_game),
-        text = stringResource(id = R.string.start_game),
-        onClick = {},
-    )
+  MenuButton(
+    icon = painterResource(id = R.drawable.ic_start_game),
+    text = stringResource(id = R.string.start_game),
+    onClick = {},
+  )
 }
 
 @Preview(
-    name = "Home Screen",
-    showBackground = true
+  name = "Main Menu",
+  showBackground = true
 )
 @Composable
-internal fun HomeScreenPreview() {
-    HomeScreenContent(
-        currentYear = "2024",
-        onStartGameClick = {},
-        onRecordsClick = {},
-        onSettingsClick = {},
-    )
+internal fun MainMenuPreview() {
+  MainMenu(
+    currentYear = "2024",
+    onStartGameClick = {},
+    onRecordsClick = {},
+    onSettingsClick = {},
+  )
 }
