@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.component
 
-import android.graphics.Rect
 import android.text.TextPaint
 import android.util.TypedValue
 import androidx.compose.foundation.Canvas
@@ -22,8 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -89,6 +91,7 @@ internal fun GameBoard(
   lockedNumberColor: Color = Color.Black,
   errorNumberColor: Color = Color.Red,
   selectedColor: Color = Color.Green,
+  backgroundColor: Color = Color.White,
   outerStrokeColor: Color = Color.Black,
   innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
   onSelectCell: (BoardCell) -> Unit,
@@ -99,9 +102,6 @@ internal fun GameBoard(
       .aspectRatio(1f)
       .padding(4.dp)
   ) {
-    // TODO закруглять фон у выбранных угловых элементов
-    // TODO добавить фон по умолчанию (белый)
-
     val maxWidth = constraints.maxWidth.toFloat()
 
     val cellSize by remember(size) { mutableFloatStateOf(maxWidth / size.toFloat()) }
@@ -117,6 +117,7 @@ internal fun GameBoard(
     val outerCornerRadiusPx: Float = with(LocalDensity.current) { outerCornerRadius.toPx() }
     val outerStrokeWidthPx = with(LocalDensity.current) { outerStrokeWidth.toPx() }
     val innerStrokeWidthPx: Float = with(LocalDensity.current) { innerStrokeWidth.toPx() }
+    val cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
 
     var zoom by remember(isEnabled) { mutableFloatStateOf(1f) }
     var offset by remember(isEnabled) { mutableStateOf(Offset.Zero) }
@@ -248,58 +249,108 @@ internal fun GameBoard(
     Canvas(
       modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
     ) {
+      // закрашиваем все клетки цветом фона
+      for (i in 0 until size) {
+        for (j in 0 until size) {
+          val itemOffset = Offset(
+            x = board[i][j].col * cellSize,
+            y = board[i][j].row * cellSize
+          )
+          val itemSize = Size(cellSize, cellSize)
+          if (i == 0 && j == 0) {
+            drawRoundCell(
+              offset = itemOffset,
+              size = itemSize,
+              color = backgroundColor,
+              topLeftCorner = cornerRadius,
+            )
+          } else if (i == 0 && j == size - 1) {
+            drawRoundCell(
+              offset = itemOffset,
+              size = itemSize,
+              color = backgroundColor,
+              topRightCorner = cornerRadius,
+            )
+          } else if (i == size - 1 && j == 0) {
+            drawRoundCell(
+              offset = itemOffset,
+              size = itemSize,
+              color = backgroundColor,
+              bottomLeftCorner = cornerRadius,
+            )
+          } else if (i == size - 1 && j == size - 1) {
+            drawRoundCell(
+              offset = itemOffset,
+              size = itemSize,
+              color = backgroundColor,
+              bottomRightCorner = cornerRadius,
+            )
+          } else {
+            drawCell(
+              offset = itemOffset,
+              size = itemSize,
+              color = backgroundColor,
+            )
+          }
+        }
+      }
+
+      // закрашиваем выделенную клетку, если есть
       if (selectedCell.row >= 0 && selectedCell.col >= 0) {
-        drawRect(
+        drawCell(
           color = selectedColor,
-          topLeft = Offset(
+          offset = Offset(
             x = selectedCell.col * cellSize,
             y = selectedCell.row * cellSize
           ),
-          size = Size(cellSize, cellSize)
+          size = Size(cellSize, cellSize),
         )
         if (isPositionLines) {
-          drawRect(
+          drawCell(
             color = selectedColor.copy(alpha = 0.2f),
-            topLeft = Offset(
+            offset = Offset(
               x = selectedCell.col * cellSize,
               y = 0f
             ),
-            size = Size(cellSize, maxWidth)
+            size = Size(cellSize, maxWidth),
           )
-          drawRect(
+          drawCell(
             color = selectedColor.copy(alpha = 0.2f),
-            topLeft = Offset(
+            offset = Offset(
               x = 0f,
               y = selectedCell.row * cellSize
             ),
-            size = Size(maxWidth, cellSize)
+            size = Size(maxWidth, cellSize),
           )
         }
       }
+
+      // закрашиваем клетки с таким же значением
       if (isIdenticalNumbersHighlight) {
         for (i in 0 until size) {
           for (j in 0 until size) {
             if (board[i][j].value == selectedCell.value && board[i][j].value != 0) {
-              drawRect(
+              drawCell(
                 color = selectedColor,
-                topLeft = Offset(
+                offset = Offset(
                   x = board[i][j].col * cellSize,
                   y = board[i][j].row * cellSize
                 ),
-                size = Size(cellSize, cellSize)
+                size = Size(cellSize, cellSize),
               )
             }
           }
         }
       }
+
       cellsToHighlight?.forEach {
-        drawRect(
+        drawCell(
           color = selectedColor.copy(alpha = 0.5f),
-          topLeft = Offset(
+          offset = Offset(
             x = it.col * cellSize,
             y = it.row * cellSize
           ),
-          size = Size(cellSize, cellSize)
+          size = Size(cellSize, cellSize),
         )
       }
 
@@ -307,7 +358,7 @@ internal fun GameBoard(
         outerStrokeColor = outerStrokeColor,
         outerStrokeWidth = outerStrokeWidthPx,
         maxWidth = maxWidth,
-        cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
+        cornerRadius = cornerRadius,
       )
 
       drawHorizontalLines(
@@ -387,7 +438,7 @@ private fun DrawScope.drawBoardFrame(
     color = outerStrokeColor,
     size = Size(maxWidth, maxWidth),
     cornerRadius = cornerRadius,
-    style = Stroke(width = outerStrokeWidth)
+    style = Stroke(width = outerStrokeWidth),
   )
 }
 
@@ -435,6 +486,44 @@ private fun DrawScope.drawVerticalLines(
   }
 }
 
+private fun DrawScope.drawCell(
+  offset: Offset,
+  size: Size,
+  color: Color,
+) {
+  drawRect(
+    color = color,
+    topLeft = offset,
+    size = size
+  )
+}
+
+private fun DrawScope.drawRoundCell(
+  offset: Offset,
+  size: Size,
+  color: Color,
+  topLeftCorner: CornerRadius = CornerRadius.Zero,
+  topRightCorner: CornerRadius = CornerRadius.Zero,
+  bottomLeftCorner: CornerRadius = CornerRadius.Zero,
+  bottomRightCorner: CornerRadius = CornerRadius.Zero,
+) {
+  val path = Path().apply {
+    addRoundRect(
+      RoundRect(
+        rect = Rect(
+          offset = offset,
+          size = size,
+        ),
+        topLeft = topLeftCorner,
+        topRight = topRightCorner,
+        bottomLeft = bottomLeftCorner,
+        bottomRight = bottomRightCorner,
+      )
+    )
+  }
+  drawPath(path = path, color = color)
+}
+
 private fun DrawScope.drawNumbers(
   size: Int,
   board: List<List<BoardCell>>,
@@ -457,7 +546,7 @@ private fun DrawScope.drawNumbers(
           }
 
           val textToDraw = if (isQuestions) "?" else number.value.toString(16).uppercase()
-          val textBounds = Rect()
+          val textBounds = android.graphics.Rect()
           numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
           val textWidth = paint.measureText(textToDraw)
           val textPosX = number.col * cellSize + (cellSize - textWidth) / 2f
@@ -477,7 +566,7 @@ private fun DrawScope.drawNotes(
   cellSizeDividerWidth: Float,
   cellSizeDividerHeight: Float,
 ) {
-  val noteBounds = Rect()
+  val noteBounds = android.graphics.Rect()
   paint.getTextBounds("1", 0, 1, noteBounds)
 
   drawIntoCanvas { canvas ->
@@ -558,16 +647,17 @@ private fun getSectionWidthForSize(size: Int): Int {
 
 @Preview(
   name = "Game Board Preview",
-  showBackground = true,
 )
 @Composable
 internal fun GameBoardPreview(
   @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
 ) {
+  val notes: List<BoardNote> = listOf(BoardNote(row = 2, col = 2, value = 5))
   GameBoard(
     board = state.board,
     selectedCell = state.selectedCell,
     onSelectCell = {},
+    notes = notes,
   )
 }
 
