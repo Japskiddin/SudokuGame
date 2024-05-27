@@ -62,8 +62,8 @@ internal fun GameBoard(
   size: Int = board.size,
   selectedCell: BoardCell,
   outerCornerRadius: Dp = 12.dp,
-  outerStrokeWidth: Dp = 1.3.dp,
-  innerStrokeWidth: Dp = 1.3.dp, // TODO уменьшить
+  outerStrokeWidth: Dp = 1.5.dp,
+  innerStrokeWidth: Dp = 1.dp,
   numberTextSize: TextUnit = when (size) {
     6 -> 32.sp
     9 -> 26.sp
