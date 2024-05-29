@@ -62,18 +62,18 @@ import kotlin.math.sqrt
 internal fun GameBoard(
   modifier: Modifier = Modifier,
   board: List<List<BoardCell>>,
-  size: Int = board.size,
+  boardSize: Int = board.size,
   selectedCell: BoardCell,
   outerCornerRadius: Dp = 12.dp,
   outerStrokeWidth: Dp = 1.5.dp,
   innerStrokeWidth: Dp = 1.dp,
-  numberTextSize: TextUnit = when (size) {
+  numberTextSize: TextUnit = when (boardSize) {
     6 -> 32.sp
     9 -> 26.sp
     12 -> 24.sp
     else -> 14.sp
   },
-  noteTextSize: TextUnit = when (size) {
+  noteTextSize: TextUnit = when (boardSize) {
     6 -> 18.sp
     9 -> 12.sp
     12 -> 7.sp
@@ -124,12 +124,36 @@ internal fun GameBoard(
   ) {
     val maxWidth = constraints.maxWidth.toFloat()
 
-    val cellSizePx by remember(size) { mutableFloatStateOf(maxWidth / size.toFloat()) }
-    val cellSizeDividerWidth by remember(size) { mutableFloatStateOf(cellSizePx / ceil(sqrt(size.toFloat()))) }
-    val cellSizeDividerHeight by remember(size) { mutableFloatStateOf(cellSizePx / floor(sqrt(size.toFloat()))) }
+    val cellSizePx by remember(boardSize) { mutableFloatStateOf(maxWidth / boardSize.toFloat()) }
+    val cellSizeDividerWidth by remember(boardSize) {
+      mutableFloatStateOf(
+        cellSizePx / ceil(
+          sqrt(
+            boardSize.toFloat()
+          )
+        )
+      )
+    }
+    val cellSizeDividerHeight by remember(boardSize) {
+      mutableFloatStateOf(
+        cellSizePx / floor(
+          sqrt(
+            boardSize.toFloat()
+          )
+        )
+      )
+    }
 
-    val verticalInnerStrokeThickness by remember(size) { mutableIntStateOf(floor(sqrt(size.toFloat())).toInt()) }
-    val horizontalInnerStrokeThickness by remember(size) { mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt()) }
+    val verticalInnerStrokeThickness by remember(boardSize) { mutableIntStateOf(floor(sqrt(boardSize.toFloat())).toInt()) }
+    val horizontalInnerStrokeThickness by remember(boardSize) {
+      mutableIntStateOf(
+        ceil(
+          sqrt(
+            boardSize.toFloat()
+          )
+        ).toInt()
+      )
+    }
 
     var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
     var noteTextSizePx = with(LocalDensity.current) { noteTextSize.toPx() }
@@ -272,13 +296,13 @@ internal fun GameBoard(
       modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
     ) {
       // закрашиваем все клетки цветом фона
-      for (i in 0 until size) {
-        for (j in 0 until size) {
+      for (i in 0 until boardSize) {
+        for (j in 0 until boardSize) {
           val cell = board[i][j]
           drawCell(
             cornerRadius = cornerRadius,
             color = backgroundColor,
-            size = size,
+            boardSize = boardSize,
             cellSize = cellSize,
             cellOffset = Offset(
               x = cell.col * cellSizePx,
@@ -298,7 +322,7 @@ internal fun GameBoard(
         drawCell(
           cornerRadius = cornerRadius,
           color = selectedColor,
-          size = size,
+          boardSize = boardSize,
           cellSize = cellSize,
           cellOffset = selectedOffset,
         )
@@ -306,14 +330,14 @@ internal fun GameBoard(
           drawVerticalPositionCells(
             cornerRadius = cornerRadius,
             color = selectedColor.copy(alpha = 0.2f),
-            size = size,
+            boardSize = boardSize,
             cellSize = cellSize,
             cellOffset = selectedOffset,
           )
           drawHorizontalPositionCells(
             cornerRadius = cornerRadius,
             color = selectedColor.copy(alpha = 0.2f),
-            size = size,
+            boardSize = boardSize,
             cellSize = cellSize,
             cellOffset = selectedOffset,
           )
@@ -322,14 +346,14 @@ internal fun GameBoard(
 
       // закрашиваем клетки с таким же значением
       if (isIdenticalNumbersHighlight) {
-        for (i in 0 until size) {
-          for (j in 0 until size) {
+        for (i in 0 until boardSize) {
+          for (j in 0 until boardSize) {
             val cell = board[i][j]
             if (cell.value == selectedCell.value && cell.value != 0) {
               drawCell(
                 cornerRadius = cornerRadius,
                 color = selectedColor,
-                size = size,
+                boardSize = boardSize,
                 cellSize = cellSize,
                 cellOffset = Offset(
                   x = cell.col * cellSizePx,
@@ -345,7 +369,7 @@ internal fun GameBoard(
         drawCell(
           cornerRadius = cornerRadius,
           color = selectedColor.copy(alpha = 0.5f),
-          size = size,
+          boardSize = boardSize,
           cellSize = cellSize,
           cellOffset = Offset(
             x = it.col * cellSizePx,
@@ -364,7 +388,7 @@ internal fun GameBoard(
       }
 
       drawHorizontalLines(
-        size = size,
+        boardSize = boardSize,
         cellSize = cellSizePx,
         innerStrokeThickness = horizontalInnerStrokeThickness,
         outerStrokeColor = outerStrokeColor,
@@ -375,7 +399,7 @@ internal fun GameBoard(
       )
 
       drawVerticalLines(
-        size = size,
+        boardSize = boardSize,
         cellSize = cellSizePx,
         innerStrokeThickness = verticalInnerStrokeThickness,
         outerStrokeColor = outerStrokeColor,
@@ -386,7 +410,7 @@ internal fun GameBoard(
       )
 
       drawNumbers(
-        size = size,
+        boardSize = boardSize,
         board = board,
         isErrorsHighlight = isErrorsHighlight,
         errorNumberPaint = errorNumberPaint,
@@ -398,7 +422,7 @@ internal fun GameBoard(
 
       if (!notes.isNullOrEmpty() && !isQuestions && isRenderNotes) {
         drawNotes(
-          size = size,
+          boardSize = boardSize,
           paint = notePaint,
           notes = notes,
           cellSize = cellSizePx,
@@ -408,11 +432,11 @@ internal fun GameBoard(
       }
 
       // doesn't look good on 6x6
-      if (isCrossHighlight && size != 6) {
-        val sectionHeight = getSectionHeightForSize(size)
-        val sectionWidth = getSectionWidthForSize(size)
-        for (i in 0 until size / sectionWidth) {
-          for (j in 0 until size / sectionHeight) {
+      if (isCrossHighlight && boardSize != 6) {
+        val sectionHeight = getSectionHeightForSize(boardSize)
+        val sectionWidth = getSectionWidthForSize(boardSize)
+        for (i in 0 until boardSize / sectionWidth) {
+          for (j in 0 until boardSize / sectionHeight) {
             if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
               drawRect(
                 color = selectedColor.copy(alpha = 0.1f),
@@ -445,7 +469,7 @@ private fun DrawScope.drawBoardFrame(
 }
 
 private fun DrawScope.drawHorizontalLines(
-  size: Int,
+  boardSize: Int,
   cellSize: Float,
   innerStrokeThickness: Int,
   outerStrokeColor: Color,
@@ -454,7 +478,7 @@ private fun DrawScope.drawHorizontalLines(
   innerStrokeWidth: Float,
   innerStrokeColor: Color,
 ) {
-  for (i in 1 until size) {
+  for (i in 1 until boardSize) {
     val isOuterStroke = i % innerStrokeThickness == 0
     drawLine(
       color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
@@ -466,7 +490,7 @@ private fun DrawScope.drawHorizontalLines(
 }
 
 private fun DrawScope.drawVerticalLines(
-  size: Int,
+  boardSize: Int,
   cellSize: Float,
   innerStrokeThickness: Int,
   outerStrokeColor: Color,
@@ -475,7 +499,7 @@ private fun DrawScope.drawVerticalLines(
   innerStrokeWidth: Float,
   innerStrokeColor: Color,
 ) {
-  for (i in 1 until size) {
+  for (i in 1 until boardSize) {
     val isOuterStroke = i % innerStrokeThickness == 0
     if (maxWidth >= cellSize * i) {
       drawLine(
@@ -491,15 +515,15 @@ private fun DrawScope.drawVerticalLines(
 private fun DrawScope.drawVerticalPositionCells(
   cornerRadius: CornerRadius,
   color: Color,
-  size: Int,
+  boardSize: Int,
   cellSize: Size,
   cellOffset: Offset,
 ) {
-  for (j in 0 until size) {
+  for (j in 0 until boardSize) {
     drawCell(
       cornerRadius = cornerRadius,
       color = color,
-      size = size,
+      boardSize = boardSize,
       cellSize = cellSize,
       cellOffset = Offset(
         x = cellOffset.x,
@@ -512,15 +536,15 @@ private fun DrawScope.drawVerticalPositionCells(
 private fun DrawScope.drawHorizontalPositionCells(
   cornerRadius: CornerRadius,
   color: Color,
-  size: Int,
+  boardSize: Int,
   cellSize: Size,
   cellOffset: Offset,
 ) {
-  for (i in 0 until size) {
+  for (i in 0 until boardSize) {
     drawCell(
       cornerRadius = cornerRadius,
       color = color,
-      size = size,
+      boardSize = boardSize,
       cellSize = cellSize,
       cellOffset = Offset(
         x = i * cellSize.width,
@@ -533,7 +557,7 @@ private fun DrawScope.drawHorizontalPositionCells(
 private fun DrawScope.drawCell(
   cornerRadius: CornerRadius,
   color: Color,
-  size: Int,
+  boardSize: Int,
   cellSize: Size,
   cellOffset: Offset,
 ) {
@@ -546,21 +570,21 @@ private fun DrawScope.drawCell(
       color = color,
       topLeftCorner = cornerRadius,
     )
-  } else if (row == size - 1 && col == 0) {
+  } else if (row == boardSize - 1 && col == 0) {
     drawRoundCellBackground(
       offset = cellOffset,
       size = cellSize,
       color = color,
       topRightCorner = cornerRadius,
     )
-  } else if (row == 0 && col == size - 1) {
+  } else if (row == 0 && col == boardSize - 1) {
     drawRoundCellBackground(
       offset = cellOffset,
       size = cellSize,
       color = color,
       bottomLeftCorner = cornerRadius,
     )
-  } else if (row == size - 1 && col == size - 1) {
+  } else if (row == boardSize - 1 && col == boardSize - 1) {
     drawRoundCellBackground(
       offset = cellOffset,
       size = cellSize,
@@ -615,7 +639,7 @@ private fun DrawScope.drawRoundCellBackground(
 }
 
 private fun DrawScope.drawNumbers(
-  size: Int,
+  boardSize: Int,
   board: List<List<BoardCell>>,
   isErrorsHighlight: Boolean,
   errorNumberPaint: TextPaint,
@@ -625,8 +649,8 @@ private fun DrawScope.drawNumbers(
   cellSize: Float,
 ) {
   drawIntoCanvas { canvas ->
-    for (i in 0 until size) {
-      for (j in 0 until size) {
+    for (i in 0 until boardSize) {
+      for (j in 0 until boardSize) {
         val number = board[i][j]
         if (number.value != 0) {
           val paint = when {
@@ -649,7 +673,7 @@ private fun DrawScope.drawNumbers(
 }
 
 private fun DrawScope.drawNotes(
-  size: Int,
+  boardSize: Int,
   paint: TextPaint,
   notes: List<BoardNote>,
   cellSize: Float,
@@ -666,12 +690,12 @@ private fun DrawScope.drawNotes(
       val textPosX =
         note.col * cellSize + cellSizeDividerWidth / 2f + (cellSizeDividerWidth * getNoteRowNumber(
           note.value,
-          size
+          boardSize
         )) - noteTextMeasure / 2f
       val textPosY =
         note.row * cellSize + cellSizeDividerHeight / 2f + (cellSizeDividerHeight * getNoteColumnNumber(
           note.value,
-          size
+          boardSize
         )) + noteBounds.height() / 2f
       canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
     }
