@@ -104,7 +104,7 @@ internal class GameViewModel @Inject constructor(
 
       val parser = SudokuParser()
       val list = parser.parseBoard(board.initialBoard, board.type).toList()
-      _uiState.update { UiState.Success(GameState(board = list)) }
+      _uiState.update { UiState.Success(gameState = GameState(board = list)) }
     }
     // _isLoading.value = true
     // viewModelScope.launch {

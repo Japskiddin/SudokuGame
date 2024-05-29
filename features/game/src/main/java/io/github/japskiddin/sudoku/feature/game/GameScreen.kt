@@ -19,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
 import io.github.japskiddin.sudoku.feature.component.GameBoard
+import io.github.japskiddin.sudoku.feature.component.GameBoardUiPreviewProvider
 import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
 
 private const val TAG = "Game UI"
@@ -96,10 +98,10 @@ internal fun Game(
         .padding(12.dp)
         .fillMaxWidth()
     )
-    // InputPanel(
-    //   size = gameState.currentBoard.size,
-    //   onClick = { item -> onInputCell(selectedCell.value, item) }
-    // )
+    InputPanel(
+      size = state.board.size,
+      onClick = { item -> }
+    )
   }
 }
 
@@ -139,6 +141,19 @@ internal fun Error(
   ) {
     Text(text = stringResource(id = message))
   }
+}
+
+@Preview(
+  name = "Game Screen"
+)
+@Composable
+internal fun GameScreenPreview(
+  @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
+) {
+  GameScreenContent(
+    state = UiState.Success(gameState = state),
+    onSelectBoardCell = {},
+    onInputCell = { _cell, _value -> })
 }
 
 @Preview(
