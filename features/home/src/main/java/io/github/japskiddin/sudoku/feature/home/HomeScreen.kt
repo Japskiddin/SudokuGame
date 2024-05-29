@@ -91,7 +91,7 @@ internal fun HomeScreenContent(
 
     is UiState.Loading -> Loading(
       modifier = screenModifier,
-      text = stringResource(id = io.github.japskiddin.sudoku.core.ui.R.string.please_wait)
+      stringId = state.message,
     )
   }
 }

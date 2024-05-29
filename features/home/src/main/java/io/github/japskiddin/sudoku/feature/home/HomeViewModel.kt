@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.home
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -53,7 +54,7 @@ internal class HomeViewModel @Inject constructor(
     val selectedDifficulty = GameDifficulty.INTERMEDIATE
 
     viewModelScope.launch(Dispatchers.IO) {
-      _uiState.update { UiState.Loading }
+      _uiState.update { UiState.Loading(R.string.preparing_game_please_wait) }
 
       val puzzle = List(selectedType.size) { row ->
         List(selectedType.size) { col -> BoardCell(row, col, 0) }
@@ -102,7 +103,7 @@ internal class HomeViewModel @Inject constructor(
 @Immutable
 internal sealed class UiState {
   @Immutable
-  data object Loading : UiState()
+  class Loading(@StringRes val message: Int) : UiState()
 
   @Immutable
   data object Menu : UiState()
