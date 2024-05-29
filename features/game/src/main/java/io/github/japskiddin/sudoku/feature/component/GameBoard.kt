@@ -51,7 +51,7 @@ import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
-import io.github.japskiddin.sudoku.core.ui.theme.Primary
+import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.GameState
 import kotlin.math.ceil
@@ -105,7 +105,7 @@ internal fun GameBoard(
       .fillMaxWidth()
       .aspectRatio(1f)
       .background(
-        color = Primary,
+        color = OnPrimary,
         shape = RoundedCornerShape(size = 16.dp),
       )
       .padding(8.dp)
