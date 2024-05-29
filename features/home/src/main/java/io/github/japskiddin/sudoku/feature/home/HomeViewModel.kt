@@ -54,7 +54,7 @@ internal class HomeViewModel @Inject constructor(
     val selectedDifficulty = GameDifficulty.INTERMEDIATE
 
     viewModelScope.launch(Dispatchers.IO) {
-      _uiState.update { UiState.Loading(R.string.preparing_game_please_wait) }
+      _uiState.update { UiState.Loading(message = R.string.preparing_game_please_wait) }
 
       val puzzle = List(selectedType.size) { row ->
         List(selectedType.size) { col -> BoardCell(row, col, 0) }

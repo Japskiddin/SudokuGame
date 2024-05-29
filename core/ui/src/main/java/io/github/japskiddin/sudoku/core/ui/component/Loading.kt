@@ -37,10 +37,10 @@ fun Loading(
 @Composable
 fun Loading(
   modifier: Modifier = Modifier,
-  @StringRes stringId: Int,
+  @StringRes resId: Int,
 ) {
   LoadingContent(
-    text = stringResource(id = stringId),
+    text = stringResource(id = resId),
     modifier = modifier,
   )
 }

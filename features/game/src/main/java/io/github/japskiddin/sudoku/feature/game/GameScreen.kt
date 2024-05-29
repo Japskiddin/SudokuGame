@@ -2,6 +2,7 @@ package io.github.japskiddin.sudoku.feature.game
 
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
+import io.github.japskiddin.sudoku.core.ui.component.Loading
+import io.github.japskiddin.sudoku.core.ui.theme.Primary
 import io.github.japskiddin.sudoku.feature.component.GameBoard
 import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
 
@@ -51,6 +54,7 @@ internal fun GameScreenContent(
   val screenModifier = Modifier
     .fillMaxSize()
     .then(modifier)
+    .background(Primary)
   when (state) {
     is UiState.Success -> Game(
       state = state.gameState,
@@ -61,6 +65,7 @@ internal fun GameScreenContent(
 
     is UiState.Loading -> Loading(
       modifier = screenModifier,
+      resId = state.message,
     )
 
     is UiState.Error -> Error(
@@ -119,19 +124,6 @@ internal fun InputPanel(
           .padding(4.dp),
       )
     }
-  }
-}
-
-@Composable
-internal fun Loading(
-  modifier: Modifier = Modifier,
-) {
-  if (BuildConfig.DEBUG) Log.d(TAG, "Composing Loading screen")
-  Box(
-    contentAlignment = Alignment.Center,
-    modifier = Modifier.then(modifier),
-  ) {
-    Text(text = "Loading")
   }
 }
 

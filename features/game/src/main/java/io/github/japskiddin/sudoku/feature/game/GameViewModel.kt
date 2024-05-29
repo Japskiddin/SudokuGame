@@ -87,17 +87,17 @@ internal class GameViewModel @Inject constructor(
 
   private fun generateGameLevel() {
     viewModelScope.launch(Dispatchers.IO) {
-      _uiState.update { UiState.Loading }
+      _uiState.update { UiState.Loading(message = R.string.level_creation) }
 
       val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
       if (boardUid == -1L) {
-        _uiState.update { UiState.Error(R.string.err_generate_level) }
+        _uiState.update { UiState.Error(message = R.string.err_generate_level) }
         return@launch
       }
       val board = try {
         getBoardUseCase.get().invoke(boardUid)
       } catch (ex: BoardNotFoundException) {
-        _uiState.update { UiState.Error(R.string.err_generate_level) }
+        _uiState.update { UiState.Error(message = R.string.err_generate_level) }
         return@launch
       }
       val savedGame = getSavedGameUseCase.get().invoke(board.uid)
@@ -129,7 +129,7 @@ internal class GameUiState {
 @Immutable
 internal sealed class UiState {
   @Immutable
-  data object Loading : UiState()
+  class Loading(@StringRes val message: Int) : UiState()
 
   @Immutable
   class Error(@StringRes val message: Int) : UiState()
@@ -138,7 +138,7 @@ internal sealed class UiState {
   class Success(val gameState: GameState) : UiState()
 
   companion object {
-    val Initial: UiState = Loading
+    val Initial: UiState = Loading(message = R.string.level_creation)
   }
 }
 

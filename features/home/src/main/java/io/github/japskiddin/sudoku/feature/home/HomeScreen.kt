@@ -91,7 +91,7 @@ internal fun HomeScreenContent(
 
     is UiState.Loading -> Loading(
       modifier = screenModifier,
-      stringId = state.message,
+      resId = state.message,
     )
   }
 }
