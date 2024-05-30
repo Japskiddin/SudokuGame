@@ -55,6 +55,6 @@ internal fun Int.toGameType() = when (this) {
   else -> throw IncorrectGameDifficultyException("Incorrect game difficulty value. Value must be between 0-3, found $this")
 }
 
-class IncorrectGameDifficultyException(message: String) : Exception(message)
+public class IncorrectGameDifficultyException(message: String) : Exception(message)
 
-class IncorrectGameTypeException(message: String) : Exception(message)
+public class IncorrectGameTypeException(message: String) : Exception(message)

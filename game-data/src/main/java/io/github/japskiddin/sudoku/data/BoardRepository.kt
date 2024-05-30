@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class BoardRepository @Inject constructor(private val boardDao: BoardDao) {
-  fun getAll(): Flow<List<Board>> = boardDao.getAll().map { list ->
+public class BoardRepository @Inject constructor(private val boardDao: BoardDao) {
+  public fun getAll(): Flow<List<Board>> = boardDao.getAll().map { list ->
     list.map { boardDBO -> boardDBO.toBoard() }
   }
 
-  suspend fun get(uid: Long): Board = boardDao.get(uid)?.toBoard()
+  public suspend fun get(uid: Long): Board = boardDao.get(uid)?.toBoard()
     ?: throw BoardNotFoundException("Board with $uid not found")
 
-  suspend fun insert(board: Board): Long = boardDao.insert(board.toBoardDBO())
+  public suspend fun insert(board: Board): Long = boardDao.insert(board.toBoardDBO())
 
-  class BoardNotFoundException(message: String) : Exception(message)
+  public class BoardNotFoundException(message: String) : Exception(message)
 }

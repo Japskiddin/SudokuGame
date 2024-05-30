@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class SavedGameRepository @Inject constructor(private val savedGameDao: SavedGameDao) {
-  fun getAll(): Flow<List<SavedGame>> = savedGameDao.getAll().map { list ->
+public class SavedGameRepository @Inject constructor(private val savedGameDao: SavedGameDao) {
+  public fun getAll(): Flow<List<SavedGame>> = savedGameDao.getAll().map { list ->
     list.map { savedGameDBO -> savedGameDBO.toSavedGame() }
   }
 
-  suspend fun get(uid: Long): SavedGame? = savedGameDao.get(uid)?.toSavedGame()
+  public suspend fun get(uid: Long): SavedGame? = savedGameDao.get(uid)?.toSavedGame()
 
   // fun getWithBoards(): Flow<Map<SavedGame, BoardDBO>> = savedGameDao.getSavedWithBoards()
 
@@ -29,5 +29,5 @@ class SavedGameRepository @Inject constructor(private val savedGameDao: SavedGam
 
   // suspend fun delete(savedGame: SavedGame) = savedGameDao.delete(savedGame)
 
-  class SavedGameNotFoundException(message: String) : Exception(message)
+  public class SavedGameNotFoundException(message: String) : Exception(message)
 }

@@ -44,4 +44,4 @@ internal fun GameStatus.toInt() = when (this) {
   else -> throw IncorrectGameStatusException("Incorrect game status value. Value must be ${GameStatus.entries}, found $this")
 }
 
-class IncorrectGameStatusException(message: String) : Exception(message)
+public class IncorrectGameStatusException(message: String) : Exception(message)

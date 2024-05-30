@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.data.model
 
-enum class Difficulty {
+public enum class Difficulty {
   EASY,
   NORMAL,
   HARD,

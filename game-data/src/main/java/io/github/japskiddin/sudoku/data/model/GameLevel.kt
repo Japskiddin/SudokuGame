@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.data.model
 
-data class GameLevel(
+public data class GameLevel(
   val playtime: Long = 0L,
   val defaultBoard: Array<IntArray> = emptyArray(),
   val currentBoard: Array<IntArray> = emptyArray(),
@@ -8,7 +8,7 @@ data class GameLevel(
   val actions: Int = 0,
   val difficulty: Difficulty = Difficulty.NORMAL,
 ) {
-  fun isEmptyBoard(): Boolean {
+  public fun isEmptyBoard(): Boolean {
     return currentBoard.isEmpty() || completedBoard.isEmpty()
   }
 
