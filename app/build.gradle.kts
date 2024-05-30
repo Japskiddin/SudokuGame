@@ -15,14 +15,14 @@ kotlin {
 
 android {
   namespace = "io.github.japskiddin.sudoku.game"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
   defaultConfig {
     applicationId = "io.github.japskiddin.sudoku.game"
-    minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = libs.versions.targetSdk.get().toInt()
-    versionCode = libs.versions.versionCode.get().toInt()
-    versionName = libs.versions.versionName.get()
+    minSdk = libs.versions.androidSdk.min.get().toInt()
+    targetSdk = libs.versions.androidSdk.target.get().toInt()
+    versionCode = libs.versions.appVersion.code.get().toInt()
+    versionName = libs.versions.appVersion.name.get()
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     setProperty("archivesBaseName", "sudoku-${versionName}-${versionCode}")
     vectorDrawables {

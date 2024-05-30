@@ -10,10 +10,10 @@ kotlin {
 
 android {
   namespace = "io.github.japskiddin.sudoku.core.ui"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
+    minSdk = libs.versions.androidSdk.min.get().toInt()
     vectorDrawables {
       useSupportLibrary = true
     }
