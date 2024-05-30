@@ -52,14 +52,18 @@ import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundPressed
 import io.github.japskiddin.sudoku.core.ui.theme.OnMenuButton
 
 @Composable
-fun HomeScreen() {
-  HomeScreen(viewModel = hiltViewModel())
+fun HomeScreen(modifier: Modifier = Modifier) {
+  HomeScreen(modifier = modifier, viewModel = hiltViewModel())
 }
 
 @Composable
-internal fun HomeScreen(viewModel: HomeViewModel) {
+internal fun HomeScreen(
+  modifier: Modifier = Modifier,
+  viewModel: HomeViewModel
+) {
   val state by viewModel.uiState.collectAsState()
   HomeScreenContent(
+    modifier = modifier,
     state = state,
     currentYear = viewModel.currentYear,
     onStartGameClick = { viewModel.onStartClick() },
@@ -69,7 +73,7 @@ internal fun HomeScreen(viewModel: HomeViewModel) {
 }
 
 @Composable
-internal fun HomeScreenContent(
+private fun HomeScreenContent(
   modifier: Modifier = Modifier,
   state: UiState,
   currentYear: String,
@@ -97,7 +101,7 @@ internal fun HomeScreenContent(
 }
 
 @Composable
-internal fun MainMenu(
+private fun MainMenu(
   modifier: Modifier = Modifier,
   currentYear: String,
   onStartGameClick: () -> Unit,
@@ -134,7 +138,7 @@ internal fun MainMenu(
 }
 
 @Composable
-internal fun Menu(
+private fun Menu(
   modifier: Modifier = Modifier,
   onStartGameClick: () -> Unit,
   onSettingsClick: () -> Unit,
@@ -173,7 +177,7 @@ internal fun Menu(
 }
 
 @Composable
-internal fun MenuButton(
+private fun MenuButton(
   modifier: Modifier = Modifier,
   icon: Painter,
   text: String,
@@ -221,7 +225,7 @@ internal fun MenuButton(
 }
 
 @Composable
-internal fun MenuButtonContent(
+private fun MenuButtonContent(
   modifier: Modifier = Modifier,
   icon: Painter,
   text: String,
@@ -250,7 +254,7 @@ internal fun MenuButtonContent(
 }
 
 @Composable
-internal fun OutlineText(
+private fun OutlineText(
   modifier: Modifier = Modifier,
   text: String,
   textSize: TextUnit = 16.sp,
@@ -286,7 +290,7 @@ internal fun OutlineText(
   }
 }
 
-internal fun Modifier.drawBorder(
+private fun Modifier.drawBorder(
   backgroundColor: Color,
   foregroundColor: Color,
   strokeWidth: Dp = 1.dp,
@@ -315,7 +319,7 @@ internal fun Modifier.drawBorder(
   showBackground = true
 )
 @Composable
-internal fun MainMenuPreview() {
+private fun MainMenuPreview() {
   MainMenu(
     currentYear = "2024",
     onStartGameClick = {},
@@ -328,7 +332,7 @@ internal fun MainMenuPreview() {
   name = "Menu Button"
 )
 @Composable
-internal fun MenuButtonPreview() {
+private fun MenuButtonPreview() {
   MenuButton(
     icon = painterResource(id = R.drawable.ic_start_game),
     text = stringResource(id = R.string.start_game),

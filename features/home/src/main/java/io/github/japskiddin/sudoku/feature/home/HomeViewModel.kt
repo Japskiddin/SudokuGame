@@ -2,6 +2,7 @@ package io.github.japskiddin.sudoku.feature.home
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -100,9 +101,9 @@ internal class HomeViewModel @Inject constructor(
   }
 }
 
-@Immutable
+@Stable
 internal sealed class UiState {
-  @Immutable
+  @Stable
   class Loading(@StringRes val message: Int) : UiState()
 
   @Immutable

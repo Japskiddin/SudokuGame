@@ -23,17 +23,23 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
-fun MainScreen() {
-  MainScreen(viewModel = hiltViewModel())
+fun MainScreen(modifier: Modifier = Modifier) {
+  MainScreen(modifier = modifier, viewModel = hiltViewModel())
 }
 
 @Composable
-internal fun MainScreen(viewModel: MainViewModel) {
-  MainScreenContent(navigationChannel = viewModel.navigationChannel)
+internal fun MainScreen(
+  modifier: Modifier = Modifier,
+  viewModel: MainViewModel
+) {
+  MainScreenContent(modifier = modifier, navigationChannel = viewModel.navigationChannel)
 }
 
 @Composable
-internal fun MainScreenContent(navigationChannel: Channel<NavigationIntent>) {
+private fun MainScreenContent(
+  modifier: Modifier = Modifier,
+  navigationChannel: Channel<NavigationIntent>
+) {
   val navController = rememberNavController()
 
   NavigationEffects(
@@ -43,7 +49,7 @@ internal fun MainScreenContent(navigationChannel: Channel<NavigationIntent>) {
 
   SudokuTheme {
     Surface(
-      modifier = Modifier
+      modifier = modifier
         .fillMaxSize()
         .safeDrawingPadding(),
       color = MaterialTheme.colorScheme.background

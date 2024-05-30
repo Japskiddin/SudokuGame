@@ -2,6 +2,7 @@ package io.github.japskiddin.sudoku.feature.game
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -126,15 +127,15 @@ internal class GameUiState {
   // val difficulty: Difficulty = Difficulty.NORMAL
 }
 
-@Immutable
+@Stable
 internal sealed class UiState {
-  @Immutable
+  @Stable
   class Loading(@StringRes val message: Int) : UiState()
 
-  @Immutable
+  @Stable
   class Error(@StringRes val message: Int) : UiState()
 
-  @Immutable
+  @Stable
   class Success(val gameState: GameState) : UiState()
 
   companion object {

@@ -32,14 +32,18 @@ import io.github.japskiddin.sudoku.feature.component.autosizetext.AutoSizeText
 private const val TAG = "Game UI"
 
 @Composable
-fun GameScreen() {
-  GameScreen(viewModel = hiltViewModel())
+fun GameScreen(modifier: Modifier = Modifier) {
+  GameScreen(modifier = modifier, viewModel = hiltViewModel())
 }
 
 @Composable
-internal fun GameScreen(viewModel: GameViewModel) {
+internal fun GameScreen(
+  modifier: Modifier = Modifier,
+  viewModel: GameViewModel
+) {
   val state by viewModel.uiState.collectAsState()
   GameScreenContent(
+    modifier = modifier,
     state = state,
     onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
     onInputCell = { cell, item -> viewModel.onInputCell(cell, item) },
@@ -47,11 +51,11 @@ internal fun GameScreen(viewModel: GameViewModel) {
 }
 
 @Composable
-internal fun GameScreenContent(
+private fun GameScreenContent(
+  modifier: Modifier = Modifier,
   state: UiState,
   onSelectBoardCell: (BoardCell) -> Unit,
   onInputCell: (Pair<Int, Int>, Int) -> Unit,
-  modifier: Modifier = Modifier,
 ) {
   val screenModifier = Modifier
     .fillMaxSize()
@@ -78,11 +82,11 @@ internal fun GameScreenContent(
 }
 
 @Composable
-internal fun Game(
+private fun Game(
+  modifier: Modifier = Modifier,
   state: GameState,
   onSelectCell: (BoardCell) -> Unit,
   onInputCell: (Pair<Int, Int>, Int) -> Unit,
-  modifier: Modifier = Modifier,
 ) {
   if (BuildConfig.DEBUG) Log.d(TAG, "Composing Game screen")
 
@@ -106,7 +110,7 @@ internal fun Game(
 }
 
 @Composable
-internal fun InputPanel(
+private fun InputPanel(
   modifier: Modifier = Modifier,
   onClick: (Int) -> Unit,
   size: Int,
@@ -130,7 +134,7 @@ internal fun InputPanel(
 }
 
 @Composable
-internal fun Error(
+private fun Error(
   modifier: Modifier = Modifier,
   @StringRes message: Int,
 ) {
@@ -147,7 +151,7 @@ internal fun Error(
   name = "Game Screen"
 )
 @Composable
-internal fun GameScreenPreview(
+private fun GameScreenPreview(
   @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
 ) {
   GameScreenContent(
@@ -160,6 +164,6 @@ internal fun GameScreenPreview(
   name = "Input Panel",
 )
 @Composable
-internal fun InputPanelPreview() {
+private fun InputPanelPreview() {
   InputPanel(size = 9, onClick = {})
 }

@@ -789,7 +789,7 @@ private fun getSectionWidthForSize(size: Int): Int {
   name = "Game Board Preview",
 )
 @Composable
-internal fun GameBoardPreview(
+private fun GameBoardPreview(
   @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
 ) {
   val notes: List<BoardNote> = listOf(BoardNote(row = 2, col = 2, value = 5))
