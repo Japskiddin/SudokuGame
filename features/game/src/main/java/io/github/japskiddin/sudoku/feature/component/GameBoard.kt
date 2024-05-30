@@ -92,8 +92,8 @@ internal fun GameBoard(
   isZoomable: Boolean = false,
   isDrawBoardFrame: Boolean = false,
   isCrossHighlight: Boolean = false,
-  cellsToHighlight: List<BoardCell>? = null,
-  notes: List<BoardNote>? = null,
+  cellsToHighlight: List<BoardCell> = emptyList(),
+  notes: List<BoardNote> = emptyList(),
   numberColor: Color = BoardNumberNormal,
   selectedNumberColor: Color = BoardNumberSelected,
   lockedNumberColor: Color = Color.Black,
@@ -384,7 +384,7 @@ internal fun GameBoard(
         }
       }
 
-      cellsToHighlight?.forEach {
+      cellsToHighlight.forEach {
         drawCell(
           cornerRadius = cornerRadius,
           color = selectedCellColor.copy(alpha = 0.5f),
@@ -442,7 +442,7 @@ internal fun GameBoard(
         cellSize = cellSizePx,
       )
 
-      if (!notes.isNullOrEmpty() && !isQuestions && isRenderNotes) {
+      if (notes.isNotEmpty() && !isQuestions && isRenderNotes) {
         drawNotes(
           boardSize = boardSize,
           paint = notePaint,
