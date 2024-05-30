@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.feature.game.usecase
 
 import io.github.japskiddin.sudoku.data.BoardRepository
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 class GetBoardUseCase @Inject constructor(
   private val boardRepository: BoardRepository

@@ -35,6 +35,7 @@ android {
 
 dependencies {
   implementation(libs.androidx.core.ktx)
+  implementation(libs.javax.inject)
   implementation(project(":core:common"))
   implementation(project(":core:game"))
   implementation(project(":database"))

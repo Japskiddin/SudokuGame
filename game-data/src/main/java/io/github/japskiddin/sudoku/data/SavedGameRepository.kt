@@ -3,9 +3,9 @@ package io.github.japskiddin.sudoku.data
 import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.data.utils.toSavedGame
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class SavedGameRepository @Inject constructor(private val savedGameDao: SavedGameDao) {
   fun getAll(): Flow<List<SavedGame>> = savedGameDao.getAll().map { list ->

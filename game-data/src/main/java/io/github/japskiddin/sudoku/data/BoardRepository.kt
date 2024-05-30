@@ -4,9 +4,9 @@ import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.data.utils.toBoard
 import io.github.japskiddin.sudoku.data.utils.toBoardDBO
 import io.github.japskiddin.sudoku.database.dao.BoardDao
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class BoardRepository @Inject constructor(private val boardDao: BoardDao) {
   fun getAll(): Flow<List<Board>> = boardDao.getAll().map { list ->

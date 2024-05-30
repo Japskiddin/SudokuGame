@@ -55,6 +55,7 @@ dependencies {
   androidTestImplementation(composeBom)
 
   implementation(libs.androidx.core.ktx)
+  implementation(libs.javax.inject)
 
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.lifecycle.livedata.ktx)
