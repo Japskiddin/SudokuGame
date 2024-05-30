@@ -62,11 +62,11 @@ dependencies {
   implementation(libs.dagger.hilt.android)
   ksp(libs.dagger.hilt.compiler)
 
-  implementation(project(":core:common"))
-  implementation(project(":core:game"))
-  implementation(project(":core:ui"))
-  implementation(project(":game-data"))
-  api(project(":navigation"))
+  implementation(projects.core.common)
+  implementation(projects.core.game)
+  implementation(projects.core.ui)
+  implementation(projects.gameData)
+  api(projects.navigation)
 
   debugImplementation(libs.androidx.compose.ui.tooling)
   debugImplementation(libs.androidx.compose.ui.test.manifest)
