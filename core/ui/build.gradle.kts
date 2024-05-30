@@ -14,9 +14,6 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.androidSdk.min.get().toInt()
-    vectorDrawables {
-      useSupportLibrary = true
-    }
     consumerProguardFiles("consumer-rules.pro")
   }
 
@@ -39,12 +36,13 @@ dependencies {
   implementation(libs.androidx.core.ktx)
 
   implementation(platform(libs.androidx.compose.bom))
-  implementation(libs.androidx.compose.ui)
-  implementation(libs.androidx.compose.ui.graphics)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.runtime.livedata)
+  api(libs.androidx.compose.ui)
+  api(libs.androidx.compose.ui.unit)
+  api(libs.androidx.compose.ui.graphics)
+  api(libs.androidx.compose.ui.tooling.preview)
+  api(libs.androidx.compose.runtime)
+  api(libs.androidx.compose.material3)
 
-  debugImplementation(libs.androidx.compose.ui.tooling)
-  debugImplementation(libs.androidx.compose.ui.test.manifest)
+  debugApi(libs.androidx.compose.ui.tooling)
+  debugApi(libs.androidx.compose.ui.test.manifest)
 }

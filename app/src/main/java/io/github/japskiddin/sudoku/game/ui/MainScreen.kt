@@ -12,11 +12,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.game.ui.GameScreen
 import io.github.japskiddin.sudoku.feature.home.ui.HomeScreen
 import io.github.japskiddin.sudoku.game.ui.navigation.NavHost
 import io.github.japskiddin.sudoku.game.ui.navigation.composable
-import io.github.japskiddin.sudoku.game.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.navigation.Destination
 import io.github.japskiddin.sudoku.navigation.NavigationIntent
 import kotlinx.coroutines.channels.Channel
