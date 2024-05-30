@@ -1,15 +1,37 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
-  id("java-library")
-  alias(libs.plugins.jetbrains.kotlin.jvm)
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.jetbrains.kotlin.android)
 }
 
-java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+kotlin {
+  explicitApi = ExplicitApiMode.Strict
+  jvmToolchain(17)
 }
+
+android {
+  namespace = "io.github.japskiddin.sudoku.core.common"
+  compileSdk = libs.versions.androidSdk.compile.get().toInt()
+
+  defaultConfig {
+    minSdk = libs.versions.androidSdk.min.get().toInt()
+    consumerProguardFiles("consumer-rules.pro")
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = "17"
+  }
+}
+
 
 dependencies {
-  api(libs.jetbrains.kotlin.stdlib)
-  api(libs.jetbrains.kotlinx.coroutines.android)
-  api(libs.jakatra.inject.api)
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.jetbrains.kotlinx.coroutines.core)
+  api(libs.jetbrains.kotlinx.immutable)
 }

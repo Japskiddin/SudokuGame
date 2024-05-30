@@ -17,15 +17,16 @@ androidxRoom = "2.6.1"
 androidxDatastore = "1.1.1"
 
 kotlinAndroid = "2.0.0"
-kotlinxCoroutines = "1.8.1"
+kotlinxCoroutines = "1.9.0-RC"
 kotlinxSerializationJson = "1.7.0-RC"
+kotlinxImmutable = "0.3.7"
 
 bundletool = "1.15.6"
 ksp = "2.0.0-1.0.21"
 
 hiltAndroid = "2.51.1"
 hilt = "1.2.0"
-jakatraInject = "2.0.1"
+javaxInject = "1"
 
 junit = "4.13.2"
 
@@ -56,9 +57,10 @@ androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime
 bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bundletool" }
 
 jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinAndroid" }
-jetbrains-koltinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+jetbrains-kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
 
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
@@ -77,7 +79,7 @@ google-protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = 
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
-jakatra-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakatraInject" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 

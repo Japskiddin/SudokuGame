@@ -10,5 +10,5 @@ java {
 
 dependencies {
   implementation(libs.jetbrains.kotlinx.coroutines.android)
-  implementation(libs.jakatra.inject.api)
+  implementation(libs.javax.inject)
 }
