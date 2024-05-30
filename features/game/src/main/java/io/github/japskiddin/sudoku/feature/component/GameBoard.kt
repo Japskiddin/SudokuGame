@@ -51,6 +51,10 @@ import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.qqwing.GameType
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
+import io.github.japskiddin.sudoku.core.ui.theme.BoardCellNormal
+import io.github.japskiddin.sudoku.core.ui.theme.BoardCellSelected
+import io.github.japskiddin.sudoku.core.ui.theme.BoardNumberNormal
+import io.github.japskiddin.sudoku.core.ui.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.GameState
@@ -90,12 +94,13 @@ internal fun GameBoard(
   isCrossHighlight: Boolean = false,
   cellsToHighlight: List<BoardCell>? = null,
   notes: List<BoardNote>? = null,
-  numberColor: Color = Color.Black,
-  noteColor: Color = Color.Black,
+  numberColor: Color = BoardNumberNormal,
+  selectedNumberColor: Color = BoardNumberSelected,
   lockedNumberColor: Color = Color.Black,
   errorNumberColor: Color = Color.Red,
-  selectedColor: Color = Color.Green,
-  backgroundColor: Color = Color.White,
+  cellColor: Color = BoardCellNormal,
+  selectedCellColor: Color = BoardCellSelected,
+  noteColor: Color = numberColor.copy(alpha = 0.8f),
   outerStrokeColor: Color = Color.Black,
   innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
   onSelectCell: (BoardCell) -> Unit,
@@ -177,6 +182,15 @@ internal fun GameBoard(
         }
       )
     }
+    var selectedNumberPaint by remember {
+      mutableStateOf(
+        TextPaint().apply {
+          color = selectedNumberColor.toArgb()
+          isAntiAlias = true
+          textSize = numberTextSizePx
+        }
+      )
+    }
     var errorNumberPaint by remember {
       mutableStateOf(
         TextPaint().apply {
@@ -219,6 +233,11 @@ internal fun GameBoard(
       )
       numberPaint = TextPaint().apply {
         color = numberColor.toArgb()
+        isAntiAlias = true
+        textSize = numberTextSizePx
+      }
+      selectedNumberPaint = TextPaint().apply {
+        color = selectedNumberColor.toArgb()
         isAntiAlias = true
         textSize = numberTextSizePx
       }
@@ -301,7 +320,7 @@ internal fun GameBoard(
           val cell = board[i][j]
           drawCell(
             cornerRadius = cornerRadius,
-            color = backgroundColor,
+            color = cellColor,
             boardSize = boardSize,
             cellSize = cellSize,
             cellOffset = Offset(
@@ -321,7 +340,7 @@ internal fun GameBoard(
 
         drawCell(
           cornerRadius = cornerRadius,
-          color = selectedColor,
+          color = selectedCellColor,
           boardSize = boardSize,
           cellSize = cellSize,
           cellOffset = selectedOffset,
@@ -329,14 +348,14 @@ internal fun GameBoard(
         if (isPositionCells) {
           drawVerticalPositionCells(
             cornerRadius = cornerRadius,
-            color = selectedColor.copy(alpha = 0.2f),
+            color = selectedCellColor.copy(alpha = 0.2f),
             boardSize = boardSize,
             cellSize = cellSize,
             cellOffset = selectedOffset,
           )
           drawHorizontalPositionCells(
             cornerRadius = cornerRadius,
-            color = selectedColor.copy(alpha = 0.2f),
+            color = selectedCellColor.copy(alpha = 0.2f),
             boardSize = boardSize,
             cellSize = cellSize,
             cellOffset = selectedOffset,
@@ -352,7 +371,7 @@ internal fun GameBoard(
             if (cell.value == selectedCell.value && cell.value != 0) {
               drawCell(
                 cornerRadius = cornerRadius,
-                color = selectedColor,
+                color = selectedCellColor,
                 boardSize = boardSize,
                 cellSize = cellSize,
                 cellOffset = Offset(
@@ -368,7 +387,7 @@ internal fun GameBoard(
       cellsToHighlight?.forEach {
         drawCell(
           cornerRadius = cornerRadius,
-          color = selectedColor.copy(alpha = 0.5f),
+          color = selectedCellColor.copy(alpha = 0.5f),
           boardSize = boardSize,
           cellSize = cellSize,
           cellOffset = Offset(
@@ -415,6 +434,9 @@ internal fun GameBoard(
         isErrorsHighlight = isErrorsHighlight,
         errorNumberPaint = errorNumberPaint,
         lockedNumberPaint = lockedNumberPaint,
+        selectedNumberPaint = selectedNumberPaint,
+        selectedCell = selectedCell,
+        isIdenticalNumberHighlight = isIdenticalNumbersHighlight,
         numberPaint = numberPaint,
         isQuestions = isQuestions,
         cellSize = cellSizePx,
@@ -439,7 +461,7 @@ internal fun GameBoard(
           for (j in 0 until boardSize / sectionHeight) {
             if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
               drawRect(
-                color = selectedColor.copy(alpha = 0.1f),
+                color = selectedCellColor.copy(alpha = 0.1f),
                 topLeft = Offset(
                   x = i * sectionWidth * cellSizePx,
                   y = j * sectionHeight * cellSizePx
@@ -645,7 +667,10 @@ private fun DrawScope.drawNumbers(
   errorNumberPaint: TextPaint,
   lockedNumberPaint: TextPaint,
   numberPaint: TextPaint,
+  selectedNumberPaint: TextPaint,
+  selectedCell: BoardCell,
   isQuestions: Boolean,
+  isIdenticalNumberHighlight: Boolean,
   cellSize: Float,
 ) {
   drawIntoCanvas { canvas ->
@@ -656,6 +681,7 @@ private fun DrawScope.drawNumbers(
           val paint = when {
             number.isError && isErrorsHighlight -> errorNumberPaint
             number.isLocked -> lockedNumberPaint
+            (selectedCell.row >= 0 && selectedCell.col >= 0) && ((isIdenticalNumberHighlight && number.value == selectedCell.value) || (selectedCell.row == i && selectedCell.col == j)) -> selectedNumberPaint
             else -> numberPaint
           }
 

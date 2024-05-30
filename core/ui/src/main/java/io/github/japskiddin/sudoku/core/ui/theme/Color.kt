@@ -15,3 +15,9 @@ val MenuButtonBackgroundNormal = Color(0xFF235F89)
 val MenuButtonBackgroundPressed = Color(0xFF10354F)
 
 val OnMenuButton = Color(0xFFFFFFFF)
+
+val BoardCellNormal = Color(0xFFFFFFFF)
+val BoardCellSelected = Color(0xFF68BEFA)
+
+val BoardNumberNormal = Color(0xFF000000)
+val BoardNumberSelected = Color(0xFFFFFFFF)
