@@ -4,8 +4,8 @@ plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.jetbrains.kotlin.android)
   alias(libs.plugins.jetbrains.compose.compiler)
-  alias(libs.plugins.google.ksp)
   alias(libs.plugins.dagger.hilt.android)
+  alias(libs.plugins.google.ksp)
 }
 
 kotlin {
@@ -18,7 +18,6 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.androidSdk.min.get().toInt()
-
     consumerProguardFiles("consumer-rules.pro")
   }
 
@@ -44,16 +43,18 @@ android {
   }
 }
 
+composeCompiler {
+  enableStrongSkippingMode = true
+  reportsDestination = layout.buildDirectory.dir("compose_compiler")
+}
+
 dependencies {
-  val composeBom = platform(libs.androidx.compose.bom)
-  implementation(composeBom)
-  androidTestImplementation(composeBom)
+  implementation(platform(libs.androidx.compose.bom))
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.javax.inject)
 
   implementation(libs.androidx.lifecycle.runtime.ktx)
-  implementation(libs.androidx.lifecycle.livedata.ktx)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -62,24 +63,15 @@ dependencies {
   implementation(libs.androidx.compose.ui.graphics)
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.runtime.livedata)
 
   implementation(libs.dagger.hilt.navigation.compose)
   implementation(libs.dagger.hilt.android)
   ksp(libs.dagger.hilt.compiler)
 
   implementation(projects.core.common)
-  implementation(projects.core.game)
   implementation(projects.core.ui)
   implementation(projects.features.home.domain)
-  implementation(projects.gameData)
-  api(projects.navigation)
 
   debugImplementation(libs.androidx.compose.ui.tooling)
   debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-  testImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-  androidTestImplementation(libs.androidx.test.espresso.core)
-  androidTestImplementation(libs.androidx.test.ext.junit)
 }
