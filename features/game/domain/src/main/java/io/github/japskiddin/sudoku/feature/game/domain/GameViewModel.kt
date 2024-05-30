@@ -13,6 +13,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -103,7 +104,9 @@ public class GameViewModel @Inject internal constructor(
       val savedGame = getSavedGameUseCase.get().invoke(board.uid)
 
       val parser = SudokuParser()
-      val list = parser.parseBoard(board.initialBoard, board.type).toList()
+      val list = parser.parseBoard(board.initialBoard, board.type)
+        .map { item -> item.toImmutableList() }
+        .toImmutableList()
       _uiState.update { Success(gameState = GameState(board = list)) }
     }
     // _isLoading.value = true

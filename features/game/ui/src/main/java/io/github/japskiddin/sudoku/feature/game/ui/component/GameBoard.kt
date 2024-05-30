@@ -58,6 +58,7 @@ import io.github.japskiddin.sudoku.core.ui.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.domain.GameState
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -814,9 +815,10 @@ internal class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> 
     get() = sequenceOf(
       GameState(
         board = parser.parseBoard(
-          board = board.initialBoard,
-          gameType = board.type
-        ).toList(),
+          board = board.initialBoard, gameType = board.type
+        )
+          .map { item -> item.toImmutableList() }
+          .toImmutableList(),
         selectedCell = BoardCell(
           row = 3,
           col = 2,
