@@ -202,8 +202,10 @@ dependencies {
   implementation(projects.datastore)
   implementation(projects.database)
   implementation(projects.gameData)
-  implementation(projects.features.home)
-  implementation(projects.features.game)
+  implementation(projects.features.home.ui)
+  implementation(projects.features.home.domain)
+  implementation(projects.features.game.ui)
+  implementation(projects.features.game.domain)
   implementation(projects.navigation)
 
   debugImplementation(libs.androidx.compose.ui.tooling)

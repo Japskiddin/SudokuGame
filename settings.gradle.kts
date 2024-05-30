@@ -36,7 +36,9 @@ include(
   ":core:game",
   ":core:ui",
   ":game-data",
-  ":features:home",
-  ":features:game",
+  ":features:home:ui",
+  ":features:home:domain",
+  ":features:game:ui",
+  ":features:game:domain",
   ":navigation",
 )
