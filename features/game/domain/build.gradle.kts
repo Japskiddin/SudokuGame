@@ -48,7 +48,7 @@ dependencies {
   ksp(libs.dagger.hilt.compiler)
 
   implementation(projects.core.common)
-  implementation(projects.core.game)
-  implementation(projects.gameData)
+  api(projects.core.game)
+  api(projects.gameData)
   implementation(projects.navigation)
 }
