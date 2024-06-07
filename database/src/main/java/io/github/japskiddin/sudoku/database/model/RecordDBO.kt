@@ -10,18 +10,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Keep
 @Entity(
-  tableName = "record",
-  foreignKeys = [
-    ForeignKey(
-      onDelete = ForeignKey.CASCADE,
-      entity = BoardDBO::class,
-      parentColumns = arrayOf("uid"),
-      childColumns = arrayOf("board_uid"),
-    )
-  ]
+    tableName = "record",
+    foreignKeys = [
+        ForeignKey(
+            onDelete = ForeignKey.CASCADE,
+            entity = BoardDBO::class,
+            parentColumns = arrayOf("uid"),
+            childColumns = arrayOf("board_uid"),
+        )
+    ]
 )
 data class RecordDBO(
-  @PrimaryKey
-  @ColumnInfo(name = "board_uid") val boardUid: Long,
-  @ColumnInfo(name = "time") val time: Long,
+    @PrimaryKey
+    @ColumnInfo(name = "board_uid") val boardUid: Long,
+    @ColumnInfo(name = "time") val time: Long,
 )

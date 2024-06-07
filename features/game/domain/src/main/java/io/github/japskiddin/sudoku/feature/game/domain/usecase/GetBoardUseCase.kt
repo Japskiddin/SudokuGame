@@ -4,7 +4,7 @@ import io.github.japskiddin.sudoku.data.BoardRepository
 import javax.inject.Inject
 
 internal class GetBoardUseCase @Inject constructor(
-  private val boardRepository: BoardRepository
+    private val boardRepository: BoardRepository
 ) {
-  suspend operator fun invoke(uid: Long) = boardRepository.get(uid)
+    suspend operator fun invoke(uid: Long) = boardRepository.get(uid)
 }

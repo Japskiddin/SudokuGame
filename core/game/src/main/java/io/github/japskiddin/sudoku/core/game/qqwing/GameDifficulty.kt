@@ -21,9 +21,9 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  */
 // @formatter:on
 enum class GameDifficulty {
-  UNSPECIFIED,
-  EASY,
-  INTERMEDIATE,
-  HARD,
-  EXPERT,
+    UNSPECIFIED,
+    EASY,
+    INTERMEDIATE,
+    HARD,
+    EXPERT,
 }

@@ -33,134 +33,134 @@ import io.github.japskiddin.sudoku.feature.game.ui.component.autosizetext.AutoSi
 
 @Composable
 public fun GameScreen(modifier: Modifier = Modifier) {
-  GameScreen(modifier = modifier, viewModel = hiltViewModel())
+    GameScreen(modifier = modifier, viewModel = hiltViewModel())
 }
 
 @Composable
 internal fun GameScreen(
-  modifier: Modifier = Modifier,
-  viewModel: GameViewModel
+    modifier: Modifier = Modifier,
+    viewModel: GameViewModel
 ) {
-  val state by viewModel.uiState.collectAsState()
-  GameScreenContent(
-    modifier = modifier,
-    state = state,
-    onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
-    onInputCell = { cell, item -> viewModel.onInputCell(cell, item) },
-  )
+    val state by viewModel.uiState.collectAsState()
+    GameScreenContent(
+        modifier = modifier,
+        state = state,
+        onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
+        onInputCell = { cell, item -> viewModel.onInputCell(cell, item) },
+    )
 }
 
 @Composable
 private fun GameScreenContent(
-  modifier: Modifier = Modifier,
-  state: UiState,
-  onSelectBoardCell: (BoardCell) -> Unit,
-  onInputCell: (Pair<Int, Int>, Int) -> Unit,
+    modifier: Modifier = Modifier,
+    state: UiState,
+    onSelectBoardCell: (BoardCell) -> Unit,
+    onInputCell: (Pair<Int, Int>, Int) -> Unit,
 ) {
-  val screenModifier = Modifier
-    .fillMaxSize()
-    .then(modifier)
-    .background(Primary)
-  when (state) {
-    is UiState.Success -> Game(
-      state = state.gameState,
-      onSelectCell = onSelectBoardCell,
-      onInputCell = onInputCell,
-      modifier = screenModifier,
-    )
+    val screenModifier = Modifier
+        .fillMaxSize()
+        .then(modifier)
+        .background(Primary)
+    when (state) {
+        is UiState.Success -> Game(
+            state = state.gameState,
+            onSelectCell = onSelectBoardCell,
+            onInputCell = onInputCell,
+            modifier = screenModifier,
+        )
 
-    is UiState.Loading -> Loading(
-      modifier = screenModifier,
-      resId = state.message,
-    )
+        is UiState.Loading -> Loading(
+            modifier = screenModifier,
+            resId = state.message,
+        )
 
-    is UiState.Error -> Error(
-      message = state.message,
-      modifier = screenModifier,
-    )
-  }
+        is UiState.Error -> Error(
+            message = state.message,
+            modifier = screenModifier,
+        )
+    }
 }
 
 @Composable
 private fun Game(
-  modifier: Modifier = Modifier,
-  state: GameState,
-  onSelectCell: (BoardCell) -> Unit,
-  onInputCell: (Pair<Int, Int>, Int) -> Unit,
+    modifier: Modifier = Modifier,
+    state: GameState,
+    onSelectCell: (BoardCell) -> Unit,
+    onInputCell: (Pair<Int, Int>, Int) -> Unit,
 ) {
-  Column(
-    verticalArrangement = Arrangement.Center,
-    modifier = Modifier.then(modifier),
-  ) {
-    GameBoard(
-      board = state.board,
-      selectedCell = state.selectedCell,
-      onSelectCell = { boardCell -> onSelectCell(boardCell) },
-      modifier = Modifier
-        .padding(12.dp)
-        .fillMaxWidth()
-    )
-    InputPanel(
-      size = state.board.size,
-      onClick = { item -> }
-    )
-  }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.then(modifier),
+    ) {
+        GameBoard(
+            board = state.board,
+            selectedCell = state.selectedCell,
+            onSelectCell = { boardCell -> onSelectCell(boardCell) },
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth()
+        )
+        InputPanel(
+            size = state.board.size,
+            onClick = { item -> }
+        )
+    }
 }
 
 @Composable
 private fun InputPanel(
-  modifier: Modifier = Modifier,
-  onClick: (Int) -> Unit,
-  size: Int,
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
+    size: Int,
 ) {
-  Row(
-    modifier = modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.Center
-  ) {
-    for (i in 1..size) {
-      AutoSizeText(
-        text = i.toString(),
-        alignment = Alignment.Center,
-        lineSpacingRatio = 1F,
-        modifier = Modifier
-          .weight(1f)
-          .clickable { onClick(i) }
-          .padding(4.dp),
-      )
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        for (i in 1..size) {
+            AutoSizeText(
+                text = i.toString(),
+                alignment = Alignment.Center,
+                lineSpacingRatio = 1F,
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { onClick(i) }
+                    .padding(4.dp),
+            )
+        }
     }
-  }
 }
 
 @Composable
 private fun Error(
-  modifier: Modifier = Modifier,
-  @StringRes message: Int,
+    modifier: Modifier = Modifier,
+    @StringRes message: Int,
 ) {
-  Box(
-    contentAlignment = Alignment.Center,
-    modifier = Modifier.then(modifier),
-  ) {
-    Text(text = stringResource(id = message))
-  }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.then(modifier),
+    ) {
+        Text(text = stringResource(id = message))
+    }
 }
 
 @Preview(
-  name = "Game Screen"
+    name = "Game Screen"
 )
 @Composable
 private fun GameScreenPreview(
-  @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
+    @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
 ) {
-  GameScreenContent(
-    state = UiState.Success(gameState = state),
-    onSelectBoardCell = {},
-    onInputCell = { _cell, _value -> })
+    GameScreenContent(
+        state = UiState.Success(gameState = state),
+        onSelectBoardCell = {},
+        onInputCell = { _cell, _value -> })
 }
 
 @Preview(
-  name = "Input Panel",
+    name = "Input Panel",
 )
 @Composable
 private fun InputPanelPreview() {
-  InputPanel(size = 9, onClick = {})
+    InputPanel(size = 9, onClick = {})
 }

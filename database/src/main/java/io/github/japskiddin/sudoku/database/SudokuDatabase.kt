@@ -14,34 +14,34 @@ import io.github.japskiddin.sudoku.database.model.SavedGameDBO
 import io.github.japskiddin.sudoku.database.utils.DateConverter
 
 @Database(
-  entities = [
-    RecordDBO::class,
-    SavedGameDBO::class,
-    BoardDBO::class,
-  ],
-  version = 1,
+    entities = [
+        RecordDBO::class,
+        SavedGameDBO::class,
+        BoardDBO::class,
+    ],
+    version = 1,
 )
 @TypeConverters(DateConverter::class)
 internal abstract class SudokuRoomDatabase : RoomDatabase() {
-  abstract fun recordDao(): RecordDao
-  abstract fun boardDao(): BoardDao
-  abstract fun savedGameDao(): SavedGameDao
+    abstract fun recordDao(): RecordDao
+    abstract fun boardDao(): BoardDao
+    abstract fun savedGameDao(): SavedGameDao
 }
 
 class SudokuDatabase internal constructor(private val database: SudokuRoomDatabase) {
-  val recordDao: RecordDao
-    get() = database.recordDao()
-  val boardDao: BoardDao
-    get() = database.boardDao()
-  val savedGameDao: SavedGameDao
-    get() = database.savedGameDao()
+    val recordDao: RecordDao
+        get() = database.recordDao()
+    val boardDao: BoardDao
+        get() = database.boardDao()
+    val savedGameDao: SavedGameDao
+        get() = database.savedGameDao()
 }
 
 fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
-  val sudokuRoomDatabase = Room.databaseBuilder(
-    checkNotNull(applicationContext.applicationContext),
-    SudokuRoomDatabase::class.java,
-    "sudoku"
-  ).build()
-  return SudokuDatabase(sudokuRoomDatabase)
+    val sudokuRoomDatabase = Room.databaseBuilder(
+        checkNotNull(applicationContext.applicationContext),
+        SudokuRoomDatabase::class.java,
+        "sudoku"
+    ).build()
+    return SudokuDatabase(sudokuRoomDatabase)
 }

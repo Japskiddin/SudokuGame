@@ -5,7 +5,7 @@ import java.util.Date
 
 @Keep
 public data class History(
-  val id: Long,
-  val date: Date,
-  val level: GameLevel,
+    val id: Long,
+    val date: Date,
+    val level: GameLevel,
 )

@@ -25,85 +25,85 @@ import io.github.japskiddin.sudoku.core.ui.theme.Primary
 
 @Composable
 fun Loading(
-  modifier: Modifier = Modifier,
-  text: String,
+    modifier: Modifier = Modifier,
+    text: String,
 ) {
-  LoadingContent(
-    text = text,
-    modifier = modifier,
-  )
+    LoadingContent(
+        text = text,
+        modifier = modifier,
+    )
 }
 
 @Composable
 fun Loading(
-  modifier: Modifier = Modifier,
-  @StringRes resId: Int,
+    modifier: Modifier = Modifier,
+    @StringRes resId: Int,
 ) {
-  LoadingContent(
-    text = stringResource(id = resId),
-    modifier = modifier,
-  )
+    LoadingContent(
+        text = stringResource(id = resId),
+        modifier = modifier,
+    )
 }
 
 @Composable
 internal fun LoadingContent(
-  modifier: Modifier = Modifier,
-  text: String,
+    modifier: Modifier = Modifier,
+    text: String,
 ) {
-  Box(
-    contentAlignment = Alignment.Center,
-    modifier = Modifier
-      .then(modifier)
-      .background(Primary),
-  ) {
-    Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
-      modifier = Modifier
-        .padding(16.dp)
-        .background(
-          color = OnPrimary,
-          shape = RoundedCornerShape(size = 16.dp),
-        )
-        .padding(4.dp)
-        .innerShadow(
-          shape = RoundedCornerShape(size = 12.dp),
-          color = Color.Black.copy(alpha = .8f),
-          offsetX = 2.dp,
-          offsetY = 2.dp,
-        )
-        .innerShadow(
-          shape = RoundedCornerShape(size = 12.dp),
-          color = Color.White.copy(alpha = .8f),
-          offsetX = (-2).dp,
-          offsetY = (-2).dp,
-        )
-        .padding(16.dp)
-    ) {
-      Text(
-        text = text,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.Bold,
-        color = Primary,
-        textAlign = TextAlign.Center,
-      )
-      LinearProgressIndicator(
-        trackColor = Primary.copy(alpha = .2f),
-        color = Primary,
-        strokeCap = StrokeCap.Round,
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-          .padding(top = 16.dp)
-          .height(8.dp),
-      )
+            .then(modifier)
+            .background(Primary),
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(16.dp)
+                .background(
+                    color = OnPrimary,
+                    shape = RoundedCornerShape(size = 16.dp),
+                )
+                .padding(4.dp)
+                .innerShadow(
+                    shape = RoundedCornerShape(size = 12.dp),
+                    color = Color.Black.copy(alpha = .8f),
+                    offsetX = 2.dp,
+                    offsetY = 2.dp,
+                )
+                .innerShadow(
+                    shape = RoundedCornerShape(size = 12.dp),
+                    color = Color.White.copy(alpha = .8f),
+                    offsetX = (-2).dp,
+                    offsetY = (-2).dp,
+                )
+                .padding(16.dp)
+        ) {
+            Text(
+                text = text,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Primary,
+                textAlign = TextAlign.Center,
+            )
+            LinearProgressIndicator(
+                trackColor = Primary.copy(alpha = .2f),
+                color = Primary,
+                strokeCap = StrokeCap.Round,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .height(8.dp),
+            )
+        }
     }
-  }
 }
 
 @Preview(
-  name = "Loading"
+    name = "Loading"
 )
 @Composable
 internal fun LoadingPreview() {
-  Loading(
-    text = "Please, wait..."
-  )
+    Loading(
+        text = "Please, wait..."
+    )
 }

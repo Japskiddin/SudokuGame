@@ -21,22 +21,22 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  */
 // @formatter:on
 enum class Symmetry {
-  NONE,
-  ROTATE90,
-  ROTATE180,
-  MIRROR,
-  FLIP,
-  RANDOM;
+    NONE,
+    ROTATE90,
+    ROTATE180,
+    MIRROR,
+    FLIP,
+    RANDOM;
 
-  companion object {
-    operator fun get(s: String?): Symmetry? {
-      var s = s ?: return null
-      return try {
-        s = s.uppercase()
-        valueOf(s)
-      } catch (aix: IllegalArgumentException) {
-        null
-      }
+    companion object {
+        operator fun get(s: String?): Symmetry? {
+            var s = s ?: return null
+            return try {
+                s = s.uppercase()
+                valueOf(s)
+            } catch (aix: IllegalArgumentException) {
+                null
+            }
+        }
     }
-  }
 }

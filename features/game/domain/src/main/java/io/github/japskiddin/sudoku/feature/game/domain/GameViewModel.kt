@@ -25,40 +25,40 @@ import javax.inject.Provider
 
 @HiltViewModel
 public class GameViewModel @Inject internal constructor(
-  private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
-  private val getBoardUseCase: Provider<GetBoardUseCase>,
-  private val appNavigator: AppNavigator,
-  private val savedState: SavedStateHandle,
+    private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
+    private val getBoardUseCase: Provider<GetBoardUseCase>,
+    private val appNavigator: AppNavigator,
+    private val savedState: SavedStateHandle,
 ) : ViewModel() {
-  private var _uiState = MutableStateFlow(UiState.Initial)
-  public val uiState: StateFlow<UiState>
-    get() = _uiState.asStateFlow()
+    private var _uiState = MutableStateFlow(UiState.Initial)
+    public val uiState: StateFlow<UiState>
+        get() = _uiState.asStateFlow()
 
-  // val uiState: StateFlow<UiState> = combine(
-  //   _isLoading, _gameLevel
-  // ) { isLoading, gameLevel ->
-  //   if (isLoading) {
-  //     UiState.Loading
-  //   } else {
-  //     if (gameLevel.isEmptyBoard()) {
-  //       UiState.Error(R.string.err_generate_level)
-  //     } else {
-  //       val gameLevelUi = gameLevel.toState()
-  //       UiState.Success(gameLevelUi)
-  //     }
-  //   }
-  // }
-  //   .stateIn(
-  //     scope = viewModelScope,
-  //     started = WhileUiSubscribed,
-  //     initialValue = UiState.None,
-  //   )
+    // val uiState: StateFlow<UiState> = combine(
+    //   _isLoading, _gameLevel
+    // ) { isLoading, gameLevel ->
+    //   if (isLoading) {
+    //     UiState.Loading
+    //   } else {
+    //     if (gameLevel.isEmptyBoard()) {
+    //       UiState.Error(R.string.err_generate_level)
+    //     } else {
+    //       val gameLevelUi = gameLevel.toState()
+    //       UiState.Success(gameLevelUi)
+    //     }
+    //   }
+    // }
+    //   .stateIn(
+    //     scope = viewModelScope,
+    //     started = WhileUiSubscribed,
+    //     initialValue = UiState.None,
+    //   )
 
-  init {
-    generateGameLevel()
-  }
+    init {
+        generateGameLevel()
+    }
 
-  public fun onInputCell(cell: Pair<Int, Int>, item: Int) {
+    public fun onInputCell(cell: Pair<Int, Int>, item: Int) {
 //     viewModelScope.launch {
 //       val level = _gameLevel.value ?: return@launch
 //       val board = level.currentBoard.copyOf()
@@ -70,50 +70,50 @@ public class GameViewModel @Inject internal constructor(
 //         it.copy(currentBoard = board)
 //       }
 //     }
-  }
-
-  public fun onBackButtonClicked() {
-    appNavigator.tryNavigateBack()
-  }
-
-  public fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
-    viewModelScope.launch(Dispatchers.IO) {
-      val state = _uiState.value
-      if (state is Success) {
-        val gameState = state.gameState
-        _uiState.update { Success(gameState = gameState.copy(selectedCell = boardCell)) }
-      }
     }
-  }
 
-  private fun generateGameLevel() {
-    viewModelScope.launch(Dispatchers.IO) {
-      _uiState.update { Loading(message = R.string.level_creation) }
-
-      val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
-      if (boardUid == -1L) {
-        _uiState.update { UiState.Error(message = R.string.err_generate_level) }
-        return@launch
-      }
-      val board = try {
-        getBoardUseCase.get().invoke(boardUid)
-      } catch (ex: BoardNotFoundException) {
-        _uiState.update { UiState.Error(message = R.string.err_generate_level) }
-        return@launch
-      }
-      val savedGame = getSavedGameUseCase.get().invoke(board.uid)
-
-      val parser = SudokuParser()
-      val list = parser.parseBoard(board.initialBoard, board.type)
-        .map { item -> item.toImmutableList() }
-        .toImmutableList()
-      _uiState.update { Success(gameState = GameState(board = list)) }
+    public fun onBackButtonClicked() {
+        appNavigator.tryNavigateBack()
     }
-    // _isLoading.value = true
-    // viewModelScope.launch {
-    //   _gameLevel.update { getBoardUseCaseOld.get().invoke() }
-    //   delay(1000)
-    //   _isLoading.value = false
-    // }
-  }
+
+    public fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val state = _uiState.value
+            if (state is Success) {
+                val gameState = state.gameState
+                _uiState.update { Success(gameState = gameState.copy(selectedCell = boardCell)) }
+            }
+        }
+    }
+
+    private fun generateGameLevel() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.update { Loading(message = R.string.level_creation) }
+
+            val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
+            if (boardUid == -1L) {
+                _uiState.update { UiState.Error(message = R.string.err_generate_level) }
+                return@launch
+            }
+            val board = try {
+                getBoardUseCase.get().invoke(boardUid)
+            } catch (ex: BoardNotFoundException) {
+                _uiState.update { UiState.Error(message = R.string.err_generate_level) }
+                return@launch
+            }
+            val savedGame = getSavedGameUseCase.get().invoke(board.uid)
+
+            val parser = SudokuParser()
+            val list = parser.parseBoard(board.initialBoard, board.type)
+                .map { item -> item.toImmutableList() }
+                .toImmutableList()
+            _uiState.update { Success(gameState = GameState(board = list)) }
+        }
+        // _isLoading.value = true
+        // viewModelScope.launch {
+        //   _gameLevel.update { getBoardUseCaseOld.get().invoke() }
+        //   delay(1000)
+        //   _isLoading.value = false
+        // }
+    }
 }

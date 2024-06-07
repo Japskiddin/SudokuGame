@@ -4,8 +4,8 @@ import androidx.annotation.Keep
 
 @Keep
 public enum class Difficulty {
-  EASY,
-  NORMAL,
-  HARD,
-  EXPERT,
+    EASY,
+    NORMAL,
+    HARD,
+    EXPERT,
 }

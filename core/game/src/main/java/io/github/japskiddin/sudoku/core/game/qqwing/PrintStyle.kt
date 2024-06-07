@@ -21,8 +21,8 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  */
 // @formatter:on
 enum class PrintStyle {
-  ONE_LINE,
-  COMPACT,
-  READABLE,
-  CSV
+    ONE_LINE,
+    COMPACT,
+    READABLE,
+    CSV
 }

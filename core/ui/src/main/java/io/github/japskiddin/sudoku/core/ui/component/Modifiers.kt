@@ -18,41 +18,41 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Modifier.innerShadow(
-  shape: Shape,
-  color: Color = Color.Black,
-  blur: Dp = 4.dp,
-  offsetY: Dp = 1.dp,
-  offsetX: Dp = 1.dp,
-  spread: Dp = 0.dp,
+    shape: Shape,
+    color: Color = Color.Black,
+    blur: Dp = 4.dp,
+    offsetY: Dp = 1.dp,
+    offsetX: Dp = 1.dp,
+    spread: Dp = 0.dp,
 ) = drawWithContent {
-  drawContent()
+    drawContent()
 
-  val rect = Rect(Offset.Zero, size)
-  val paint = Paint().apply {
-    this.color = color
-    this.isAntiAlias = true
-  }
-
-  val shadowOutline = shape.createOutline(size, layoutDirection, this)
-
-  drawIntoCanvas { canvas ->
-    canvas.saveLayer(rect, paint)
-    canvas.drawOutline(shadowOutline, paint)
-
-    val frameworkPaint = paint.asFrameworkPaint()
-    frameworkPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
-
-    if (blur.toPx() > 0) {
-      frameworkPaint.maskFilter = BlurMaskFilter(blur.toPx(), BlurMaskFilter.Blur.NORMAL)
+    val rect = Rect(Offset.Zero, size)
+    val paint = Paint().apply {
+        this.color = color
+        this.isAntiAlias = true
     }
 
-    paint.color = Color.Black
+    val shadowOutline = shape.createOutline(size, layoutDirection, this)
 
-    val spreadOffsetX = offsetX.toPx() + if (offsetX.toPx() < 0) -spread.toPx() else spread.toPx()
-    val spreadOffsetY = offsetY.toPx() + if (offsetY.toPx() < 0) -spread.toPx() else spread.toPx()
+    drawIntoCanvas { canvas ->
+        canvas.saveLayer(rect, paint)
+        canvas.drawOutline(shadowOutline, paint)
 
-    canvas.translate(spreadOffsetX, spreadOffsetY)
-    canvas.drawOutline(shadowOutline, paint)
-    canvas.restore()
-  }
+        val frameworkPaint = paint.asFrameworkPaint()
+        frameworkPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+
+        if (blur.toPx() > 0) {
+            frameworkPaint.maskFilter = BlurMaskFilter(blur.toPx(), BlurMaskFilter.Blur.NORMAL)
+        }
+
+        paint.color = Color.Black
+
+        val spreadOffsetX = offsetX.toPx() + if (offsetX.toPx() < 0) -spread.toPx() else spread.toPx()
+        val spreadOffsetY = offsetY.toPx() + if (offsetY.toPx() < 0) -spread.toPx() else spread.toPx()
+
+        canvas.translate(spreadOffsetX, spreadOffsetY)
+        canvas.drawOutline(shadowOutline, paint)
+        canvas.restore()
+    }
 }

@@ -20,42 +20,42 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-  @Provides
-  @Singleton
-  fun provideSudokuDatabase(@ApplicationContext context: Context): SudokuDatabase {
-    return SudokuDatabase(context)
-  }
+    @Provides
+    @Singleton
+    fun provideSudokuDatabase(@ApplicationContext context: Context): SudokuDatabase {
+        return SudokuDatabase(context)
+    }
 
-  @Provides
-  @Singleton
-  fun provideBoardRepository(boardDao: BoardDao): BoardRepository = BoardRepository(boardDao)
+    @Provides
+    @Singleton
+    fun provideBoardRepository(boardDao: BoardDao): BoardRepository = BoardRepository(boardDao)
 
-  @Provides
-  @Singleton
-  fun provideBoardDao(sudokuDatabase: SudokuDatabase): BoardDao = sudokuDatabase.boardDao
+    @Provides
+    @Singleton
+    fun provideBoardDao(sudokuDatabase: SudokuDatabase): BoardDao = sudokuDatabase.boardDao
 
-  @Provides
-  @Singleton
-  fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository =
-    SavedGameRepository(savedGameDao)
+    @Provides
+    @Singleton
+    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository =
+        SavedGameRepository(savedGameDao)
 
-  @Provides
-  @Singleton
-  fun provideSavedGameDao(sudokuDatabase: SudokuDatabase): SavedGameDao =
-    sudokuDatabase.savedGameDao
+    @Provides
+    @Singleton
+    fun provideSavedGameDao(sudokuDatabase: SudokuDatabase): SavedGameDao =
+        sudokuDatabase.savedGameDao
 
-  // TODO: Wrapper class for Datastore?
-  @Provides
-  @Singleton
-  fun provideSettingsDatastore(@ApplicationContext context: Context): SettingsDatastore {
-    return SettingsDatastore(context)
-  }
+    // TODO: Wrapper class for Datastore?
+    @Provides
+    @Singleton
+    fun provideSettingsDatastore(@ApplicationContext context: Context): SettingsDatastore {
+        return SettingsDatastore(context)
+    }
 
-  @Provides
-  @Singleton
-  fun provideAppCoroutineDispatchers(): AppDispatchers = AppDispatchers()
+    @Provides
+    @Singleton
+    fun provideAppCoroutineDispatchers(): AppDispatchers = AppDispatchers()
 
-  @Provides
-  @Singleton
-  fun provideAppNavigator(): AppNavigator = AppNavigatorImpl()
+    @Provides
+    @Singleton
+    fun provideAppNavigator(): AppNavigator = AppNavigatorImpl()
 }

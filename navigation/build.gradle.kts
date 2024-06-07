@@ -1,13 +1,13 @@
 plugins {
-  alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
-  implementation(libs.jetbrains.kotlinx.coroutines.android)
-  implementation(libs.javax.inject)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+    implementation(libs.javax.inject)
 }

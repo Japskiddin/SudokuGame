@@ -9,13 +9,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Keep
 @Entity(
-  tableName = "board",
+    tableName = "board",
 )
 data class BoardDBO(
-  @PrimaryKey(autoGenerate = true)
-  @ColumnInfo(name = "uid") val uid: Long,
-  @ColumnInfo(name = "initial_board") val initialBoard: String,
-  @ColumnInfo(name = "solved_board") val solvedBoard: String,
-  @ColumnInfo(name = "difficulty") val difficulty: Int,
-  @ColumnInfo(name = "type") val type: Int,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid") val uid: Long,
+    @ColumnInfo(name = "initial_board") val initialBoard: String,
+    @ColumnInfo(name = "solved_board") val solvedBoard: String,
+    @ColumnInfo(name = "difficulty") val difficulty: Int,
+    @ColumnInfo(name = "type") val type: Int,
 )

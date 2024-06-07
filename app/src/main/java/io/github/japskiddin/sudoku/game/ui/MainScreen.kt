@@ -24,82 +24,82 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-  MainScreen(modifier = modifier, viewModel = hiltViewModel())
+    MainScreen(modifier = modifier, viewModel = hiltViewModel())
 }
 
 @Composable
 internal fun MainScreen(
-  modifier: Modifier = Modifier,
-  viewModel: MainViewModel
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel
 ) {
-  MainScreenContent(modifier = modifier, navigationChannel = viewModel.navigationChannel)
+    MainScreenContent(modifier = modifier, navigationChannel = viewModel.navigationChannel)
 }
 
 @Composable
 private fun MainScreenContent(
-  modifier: Modifier = Modifier,
-  navigationChannel: Channel<NavigationIntent>
+    modifier: Modifier = Modifier,
+    navigationChannel: Channel<NavigationIntent>
 ) {
-  val navController = rememberNavController()
+    val navController = rememberNavController()
 
-  NavigationEffects(
-    navigationChannel = navigationChannel,
-    navHostController = navController
-  )
+    NavigationEffects(
+        navigationChannel = navigationChannel,
+        navHostController = navController
+    )
 
-  SudokuTheme {
-    Surface(
-      modifier = modifier
-        .fillMaxSize()
-        .safeDrawingPadding(),
-      color = MaterialTheme.colorScheme.background
-    ) {
-      NavHost(
-        navController = navController,
-        startDestination = Destination.HomeScreen
-      ) {
-        composable(destination = Destination.HomeScreen) {
-          HomeScreen()
+    SudokuTheme {
+        Surface(
+            modifier = modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            NavHost(
+                navController = navController,
+                startDestination = Destination.HomeScreen
+            ) {
+                composable(destination = Destination.HomeScreen) {
+                    HomeScreen()
+                }
+                composable(destination = Destination.GameScreen) {
+                    GameScreen()
+                }
+            }
         }
-        composable(destination = Destination.GameScreen) {
-          GameScreen()
-        }
-      }
     }
-  }
 }
 
 @Composable
 internal fun NavigationEffects(
-  navigationChannel: Channel<NavigationIntent>,
-  navHostController: NavHostController,
+    navigationChannel: Channel<NavigationIntent>,
+    navHostController: NavHostController,
 ) {
-  val activity = LocalContext.current as? Activity
-  LaunchedEffect(activity, navHostController, navigationChannel) {
-    navigationChannel.receiveAsFlow().collect { intent ->
-      if (activity?.isFinishing == true) {
-        return@collect
-      }
-      when (intent) {
-        is NavigationIntent.NavigateBack -> {
-          if (intent.route != null) {
-            navHostController.popBackStack(intent.route!!, intent.inclusive)
-          } else {
-            navHostController.popBackStack()
-          }
-        }
-
-        is NavigationIntent.NavigateTo -> {
-          navHostController.navigate(intent.route) {
-            launchSingleTop = intent.isSingleTop
-            intent.popUpToRoute?.let { popUpToRoute ->
-              popUpTo(popUpToRoute) { inclusive = intent.inclusive }
+    val activity = LocalContext.current as? Activity
+    LaunchedEffect(activity, navHostController, navigationChannel) {
+        navigationChannel.receiveAsFlow().collect { intent ->
+            if (activity?.isFinishing == true) {
+                return@collect
             }
-          }
-        }
+            when (intent) {
+                is NavigationIntent.NavigateBack -> {
+                    if (intent.route != null) {
+                        navHostController.popBackStack(intent.route!!, intent.inclusive)
+                    } else {
+                        navHostController.popBackStack()
+                    }
+                }
 
-        else -> return@collect
-      }
+                is NavigationIntent.NavigateTo -> {
+                    navHostController.navigate(intent.route) {
+                        launchSingleTop = intent.isSingleTop
+                        intent.popUpToRoute?.let { popUpToRoute ->
+                            popUpTo(popUpToRoute) { inclusive = intent.inclusive }
+                        }
+                    }
+                }
+
+                else -> return@collect
+            }
+        }
     }
-  }
 }

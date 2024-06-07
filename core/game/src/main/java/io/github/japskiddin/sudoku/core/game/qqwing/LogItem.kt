@@ -29,97 +29,97 @@ import io.github.japskiddin.sudoku.core.game.qqwing.QQWing.Companion.cellToRow
  * the puzzle was to solve.
  */
 class LogItem {
-  /**
-   * The recursion level at which this item was gathered. Used for backing out
-   * log items solve branches that don't lead to a solution.
-   */
-  var round = 0
-    private set
-  /**
-   * Get the type of this log item.
-   */
-  /**
-   * The type of log message that will determine the message printed.
-   */
-  var type: LogType? = null
-    private set
+    /**
+     * The recursion level at which this item was gathered. Used for backing out
+     * log items solve branches that don't lead to a solution.
+     */
+    var round = 0
+        private set
+    /**
+     * Get the type of this log item.
+     */
+    /**
+     * The type of log message that will determine the message printed.
+     */
+    var type: LogType? = null
+        private set
 
-  /**
-   * Value that was set by the operation (or zero for no value)
-   */
-  private var value = 0
-  /**
-   * Get the position (0-80) on the board or -1 if no position
-   */
-  /**
-   * position on the board at which the value (if any) was set.
-   */
-  var position = 0
-    private set
+    /**
+     * Value that was set by the operation (or zero for no value)
+     */
+    private var value = 0
+    /**
+     * Get the position (0-80) on the board or -1 if no position
+     */
+    /**
+     * position on the board at which the value (if any) was set.
+     */
+    var position = 0
+        private set
 
-  constructor(r: Int, t: LogType) {
-    init(r, t, 0, -1)
-  }
-
-  constructor(r: Int, t: LogType, v: Int, p: Int) {
-    init(r, t, v, p)
-  }
-
-  private fun init(r: Int, t: LogType, v: Int, p: Int) {
-    round = r
-    type = t
-    value = v
-    position = p
-  }
-
-  fun print() {
-    print(this)
-  }
-
-  /**
-   * Get the row (1 indexed), or -1 if no row
-   */
-  val row: Int
-    get() = if (position <= -1) -1 else cellToRow(position) + 1
-
-  /**
-   * Get the column (1 indexed), or -1 if no column
-   */
-  val column: Int
-    get() = if (position <= -1) -1 else cellToColumn(position) + 1
-
-  /**
-   * Get the value, or -1 if no value
-   */
-  fun getValue(): Int {
-    return if (value <= 0) -1 else value
-  }
-
-  /**
-   * Print the current log item. The message used is determined by the type of
-   * log item.
-   */
-  val description: String
-    get() {
-      val sb = StringBuilder()
-      sb.append("Round: ").append(round)
-      sb.append(" - ")
-      sb.append(type!!.description)
-      if (value > 0 || position > -1) {
-        sb.append(" (")
-        if (position > -1) {
-          sb.append("Row: ").append(row).append(" - Column: ").append(column)
-        }
-        if (value > 0) {
-          if (position > -1) sb.append(" - ")
-          sb.append("Value: ").append(getValue())
-        }
-        sb.append(")")
-      }
-      return sb.toString()
+    constructor(r: Int, t: LogType) {
+        init(r, t, 0, -1)
     }
 
-  override fun toString(): String {
-    return description
-  }
+    constructor(r: Int, t: LogType, v: Int, p: Int) {
+        init(r, t, v, p)
+    }
+
+    private fun init(r: Int, t: LogType, v: Int, p: Int) {
+        round = r
+        type = t
+        value = v
+        position = p
+    }
+
+    fun print() {
+        print(this)
+    }
+
+    /**
+     * Get the row (1 indexed), or -1 if no row
+     */
+    val row: Int
+        get() = if (position <= -1) -1 else cellToRow(position) + 1
+
+    /**
+     * Get the column (1 indexed), or -1 if no column
+     */
+    val column: Int
+        get() = if (position <= -1) -1 else cellToColumn(position) + 1
+
+    /**
+     * Get the value, or -1 if no value
+     */
+    fun getValue(): Int {
+        return if (value <= 0) -1 else value
+    }
+
+    /**
+     * Print the current log item. The message used is determined by the type of
+     * log item.
+     */
+    val description: String
+        get() {
+            val sb = StringBuilder()
+            sb.append("Round: ").append(round)
+            sb.append(" - ")
+            sb.append(type!!.description)
+            if (value > 0 || position > -1) {
+                sb.append(" (")
+                if (position > -1) {
+                    sb.append("Row: ").append(row).append(" - Column: ").append(column)
+                }
+                if (value > 0) {
+                    if (position > -1) sb.append(" - ")
+                    sb.append("Value: ").append(getValue())
+                }
+                sb.append(")")
+            }
+            return sb.toString()
+        }
+
+    override fun toString(): String {
+        return description
+    }
 }

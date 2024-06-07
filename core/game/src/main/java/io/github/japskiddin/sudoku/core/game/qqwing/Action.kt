@@ -21,7 +21,7 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  */
 // @formatter:on
 enum class Action {
-  NONE,
-  GENERATE,
-  SOLVE,
+    NONE,
+    GENERATE,
+    SOLVE,
 }

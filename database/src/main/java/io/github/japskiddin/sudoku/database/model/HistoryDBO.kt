@@ -10,17 +10,17 @@ import java.util.Date
 @Entity(tableName = "history")
 @Keep
 data class HistoryDBO(
-  @PrimaryKey(autoGenerate = true) val id: Long,
-  @ColumnInfo("date") val date: Date,
-  @Embedded(prefix = "level.") val level: Level,
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    @ColumnInfo("date") val date: Date,
+    @Embedded(prefix = "level.") val level: Level,
 )
 
 @Keep
 data class Level(
-  @ColumnInfo("playtime") val playtime: Long,
-  @ColumnInfo("default_board") val defaultBoard: String,
-  @ColumnInfo("current_board") val currentBoard: String,
-  @ColumnInfo("completed_board") val completedBoard: String,
-  @ColumnInfo("actions") val actions: Int,
-  @ColumnInfo("difficulty") val difficulty: Int,
+    @ColumnInfo("playtime") val playtime: Long,
+    @ColumnInfo("default_board") val defaultBoard: String,
+    @ColumnInfo("current_board") val currentBoard: String,
+    @ColumnInfo("completed_board") val completedBoard: String,
+    @ColumnInfo("actions") val actions: Int,
+    @ColumnInfo("difficulty") val difficulty: Int,
 )

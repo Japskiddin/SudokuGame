@@ -32,30 +32,30 @@ public fun Density.toSp(px: Int): TextUnit = px.toSp()
 
 // SIZE
 public fun Density.toIntSize(dpSize: DpSize): IntSize =
-  IntSize(dpSize.width.roundToPx(), dpSize.height.roundToPx())
+    IntSize(dpSize.width.roundToPx(), dpSize.height.roundToPx())
 
 public fun Density.toSize(dpSize: DpSize): Size =
-  if (dpSize.isSpecified) Size(dpSize.width.toPx(), dpSize.height.toPx())
-  else Size.Unspecified
+    if (dpSize.isSpecified) Size(dpSize.width.toPx(), dpSize.height.toPx())
+    else Size.Unspecified
 
 public fun Density.toDpSize(size: Size): DpSize =
-  if (size.isSpecified) DpSize(size.width.toDp(), size.height.toDp())
-  else DpSize.Unspecified
+    if (size.isSpecified) DpSize(size.width.toDp(), size.height.toDp())
+    else DpSize.Unspecified
 
 public fun Density.toDpSize(intSize: IntSize): DpSize =
-  DpSize(intSize.width.toDp(), intSize.height.toDp())
+    DpSize(intSize.width.toDp(), intSize.height.toDp())
 
 // OFFSET
 public fun Density.toIntOffset(dpOffset: DpOffset): IntOffset =
-  IntOffset(dpOffset.x.roundToPx(), dpOffset.y.roundToPx())
+    IntOffset(dpOffset.x.roundToPx(), dpOffset.y.roundToPx())
 
 public fun Density.toOffset(dpOffset: DpOffset): Offset =
-  if (dpOffset.isSpecified) Offset(dpOffset.x.toPx(), dpOffset.y.toPx())
-  else Offset.Unspecified
+    if (dpOffset.isSpecified) Offset(dpOffset.x.toPx(), dpOffset.y.toPx())
+    else Offset.Unspecified
 
 public fun Density.toDpOffset(offset: Offset): DpOffset =
-  if (offset.isSpecified) DpOffset(offset.x.toDp(), offset.y.toDp())
-  else DpOffset.Unspecified
+    if (offset.isSpecified) DpOffset(offset.x.toDp(), offset.y.toDp())
+    else DpOffset.Unspecified
 
 public fun Density.toDpOffset(intOffset: IntOffset): DpOffset =
-  DpOffset(intOffset.x.toDp(), intOffset.y.toDp())
+    DpOffset(intOffset.x.toDp(), intOffset.y.toDp())
