@@ -30,6 +30,10 @@ android {
       useSupportLibrary = true
     }
     resourceConfigurations += setOf("ru", "en")
+    ndk {
+      //noinspection ChromeOsAbiSupport
+      abiFilters += setOf("arm64-v8a", "armeabi-v7a")
+    }
   }
 
   val secretProperties = Properties()
@@ -129,31 +133,16 @@ android {
   }
 
   packaging {
-    jniLibs {
-      excludes += listOf(
-        "**/kotlin/**",
-        "META-INF/androidx.*",
-        "META-INF/proguard/androidx-*"
-      )
-    }
     resources {
       excludes += listOf(
-        "/META-INF/*.kotlin_module",
-        "**/kotlin/**",
-        "**/*.txt",
-        "**/*.xml",
-        "**/*.properties",
-        "META-INF/DEPENDENCIES",
-        "META-INF/LICENSE",
-        "META-INF/LICENSE.txt",
-        "META-INF/license.txt",
-        "META-INF/NOTICE",
-        "META-INF/NOTICE.txt",
-        "META-INF/notice.txt",
-        "META-INF/ASL2.0",
-        "META-INF/*.version",
-        "META-INF/androidx.*",
-        "META-INF/proguard/androidx-*"
+        "/META-INF/{AL2.0,LGPL2.1}",
+        "/kotlin/**",
+        "META-INF/androidx.*.version",
+        "META-INF/com.google.*.version",
+        "META-INF/kotlinx_*.version",
+        "kotlin-tooling-metadata.json",
+        "DebugProbesKt.bin",
+        "META-INF/com/android/build/gradle/*",
       )
     }
   }
@@ -162,7 +151,8 @@ android {
     val variant = this
     variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
       .forEach { output ->
-        val outputFileName = "sudoku-${variant.versionName}-${buildType.name}.apk"
+        val outputFileName =
+          "sudoku-${variant.versionName}-${variant.versionCode}-${buildType.name}.apk"
         output.outputFileName = outputFileName
       }
   }
@@ -176,6 +166,11 @@ tasks.withType<JavaCompile> {
       "-Xlint:deprecation"
     )
   )
+}
+
+composeCompiler {
+  enableStrongSkippingMode = true
+  reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 dependencies {

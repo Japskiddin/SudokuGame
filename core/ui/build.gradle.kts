@@ -36,6 +36,11 @@ android {
   }
 }
 
+composeCompiler {
+  enableStrongSkippingMode = true
+  reportsDestination = layout.buildDirectory.dir("compose_compiler")
+}
+
 dependencies {
   implementation(libs.androidx.core.ktx)
 

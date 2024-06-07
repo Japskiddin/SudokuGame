@@ -15,6 +15,8 @@ plugins {
   alias(libs.plugins.google.ksp) apply false
   alias(libs.plugins.dagger.hilt.android) apply false
   alias(libs.plugins.androidx.room) apply false
+  alias(libs.plugins.detekt) apply false
+  alias(libs.plugins.android.test) apply false
 }
 
 tasks.register("clean", Delete::class) {
