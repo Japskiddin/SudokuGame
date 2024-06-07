@@ -1,7 +1,9 @@
 package io.github.japskiddin.sudoku.data.model
 
+import androidx.annotation.Keep
 import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
 
+@Keep
 public data class SavedGame(
   val uid: Long = ID_NONE,
   val currentBoard: String,

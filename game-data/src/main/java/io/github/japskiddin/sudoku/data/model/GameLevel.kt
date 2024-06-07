@@ -1,5 +1,8 @@
 package io.github.japskiddin.sudoku.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 public data class GameLevel(
   val playtime: Long = 0L,
   val defaultBoard: Array<IntArray> = emptyArray(),
