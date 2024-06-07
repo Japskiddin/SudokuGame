@@ -18,7 +18,7 @@ androidxDatastore = "1.1.1"
 
 kotlinAndroid = "2.0.0"
 kotlinxCoroutines = "1.9.0-RC"
-kotlinxSerializationJson = "1.7.0-RC"
+kotlinxSerializationJson = "1.7.0"
 kotlinxImmutable = "0.3.7"
 
 bundletool = "1.15.6"
