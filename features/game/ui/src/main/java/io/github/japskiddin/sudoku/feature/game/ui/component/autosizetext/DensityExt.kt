@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.japskiddin.sudoku.feature.game.ui.component.autosizetext
 
 import androidx.compose.ui.geometry.Offset

@@ -29,12 +29,12 @@ enum class Symmetry {
     RANDOM;
 
     companion object {
-        operator fun get(s: String?): Symmetry? {
-            var s = s ?: return null
+        operator fun get(name: String?): Symmetry? {
+            var s = name ?: return null
             return try {
                 s = s.uppercase()
                 valueOf(s)
-            } catch (aix: IllegalArgumentException) {
+            } catch (@Suppress("SwallowedException") aix: IllegalArgumentException) {
                 null
             }
         }

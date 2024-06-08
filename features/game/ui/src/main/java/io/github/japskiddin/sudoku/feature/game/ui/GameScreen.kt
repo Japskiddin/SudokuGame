@@ -90,7 +90,7 @@ private fun Game(
     modifier: Modifier = Modifier,
     state: GameState,
     onSelectCell: (BoardCell) -> Unit,
-    onInputCell: (Pair<Int, Int>, Int) -> Unit
+    @Suppress("UNUSED_PARAMETER") onInputCell: (Pair<Int, Int>, Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,

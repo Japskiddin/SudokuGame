@@ -23,6 +23,7 @@ internal fun BoardDBO.toBoard() =
         type = this.type.toGameType()
     )
 
+@Suppress("MagicNumber")
 internal fun GameDifficulty.toInt() =
     when (this) {
         GameDifficulty.UNSPECIFIED -> 0
@@ -35,6 +36,7 @@ internal fun GameDifficulty.toInt() =
         )
     }
 
+@Suppress("MagicNumber")
 internal fun Int.toGameDifficulty() =
     when (this) {
         0 -> GameDifficulty.UNSPECIFIED
@@ -47,6 +49,7 @@ internal fun Int.toGameDifficulty() =
         )
     }
 
+@Suppress("MagicNumber")
 internal fun GameType.toInt() =
     when (this) {
         GameType.UNSPECIFIED -> 0
@@ -58,6 +61,7 @@ internal fun GameType.toInt() =
         )
     }
 
+@Suppress("MagicNumber")
 internal fun Int.toGameType() =
     when (this) {
         0 -> GameType.UNSPECIFIED

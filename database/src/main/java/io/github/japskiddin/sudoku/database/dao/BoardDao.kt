@@ -9,6 +9,7 @@ import io.github.japskiddin.sudoku.database.model.BoardDBO
 import io.github.japskiddin.sudoku.database.model.SavedGameDBO
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("TooManyFunctions")
 @Dao
 interface BoardDao {
     @Query("SELECT * FROM board")

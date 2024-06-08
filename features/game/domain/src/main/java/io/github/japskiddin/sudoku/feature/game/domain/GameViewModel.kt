@@ -61,8 +61,8 @@ internal constructor(
     }
 
     public fun onInputCell(
-        cell: Pair<Int, Int>,
-        item: Int
+        @Suppress("UNUSED_PARAMETER") cell: Pair<Int, Int>,
+        @Suppress("UNUSED_PARAMETER") item: Int
     ) {
 //     viewModelScope.launch {
 //       val level = _gameLevel.value ?: return@launch
@@ -100,13 +100,21 @@ internal constructor(
                 _uiState.update { UiState.Error(message = R.string.err_generate_level) }
                 return@launch
             }
-            val board =
-                try {
-                    getBoardUseCase.get().invoke(boardUid)
-                } catch (ex: BoardNotFoundException) {
-                    _uiState.update { UiState.Error(message = R.string.err_generate_level) }
-                    return@launch
+            val board = try {
+                getBoardUseCase.get().invoke(boardUid)
+            } catch (@Suppress("TooGenericExceptionCaught") ex: Exception) {
+                _uiState.update {
+                    UiState.Error(
+                        message = when (ex) {
+                            is BoardNotFoundException -> R.string.err_generate_level
+                            else -> R.string.err_unknown
+                        }
+                    )
                 }
+                return@launch
+            }
+
+            @Suppress("UNUSED_VARIABLE")
             val savedGame = getSavedGameUseCase.get().invoke(board.uid)
 
             val parser = SudokuParser()

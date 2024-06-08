@@ -83,10 +83,9 @@ private fun HomeScreenContent(
     onRecordsClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
-    val screenModifier =
-        Modifier
-            .fillMaxSize()
-            .then(modifier)
+    val screenModifier = Modifier
+        .fillMaxSize()
+        .then(modifier)
     when (state) {
         is UiState.Menu ->
             MainMenu(
@@ -108,14 +107,14 @@ private fun HomeScreenContent(
 @Composable
 private fun MainMenu(
     modifier: Modifier = Modifier,
+    widthPercent: Float = .8f,
     currentYear: String,
     onStartGameClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onRecordsClick: () -> Unit
 ) {
     Box(
-        modifier =
-        Modifier
+        modifier = Modifier
             .then(modifier)
             .paint(
                 painter = painterResource(id = R.drawable.home_background),
@@ -127,9 +126,8 @@ private fun MainMenu(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Menu(
-                modifier =
-                Modifier
-                    .fillMaxWidth(.8f)
+                modifier = Modifier
+                    .fillMaxWidth(widthPercent)
                     .weight(1f),
                 onStartGameClick = onStartGameClick,
                 onSettingsClick = onSettingsClick,
@@ -207,8 +205,7 @@ private fun MenuButton(
         }
 
     Row(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(
                 interactionSource = interactionSource,
@@ -243,8 +240,7 @@ private fun MenuButtonContent(
     outlineColor: Color
 ) {
     Row(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(all = 12.dp)
     ) {
@@ -257,8 +253,7 @@ private fun MenuButtonContent(
             text = text,
             fillColor = textColor,
             outlineColor = outlineColor,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(start = 4.dp, end = 4.dp)
                 .weight(1f)
         )
@@ -285,8 +280,7 @@ private fun OutlineText(
         val outlineTextStyle =
             fillTextStyle.copy(
                 color = outlineColor,
-                drawStyle =
-                Stroke(
+                drawStyle = Stroke(
                     width = with(LocalDensity.current) { outlineWidth.toPx() },
                     join = StrokeJoin.Round
                 )
@@ -310,7 +304,8 @@ private fun Modifier.drawBorder(
     foregroundColor: Color,
     strokeWidth: Dp = 1.dp,
     cornerRadius: Dp = 8.dp,
-    bottomStroke: Dp = 4.dp
+    bottomStroke: Dp = 4.dp,
+    cornerRadiusMultiplier: Float = 1.2f
 ) = this.then(
     Modifier.drawBehind {
         val strokeWidthPx = strokeWidth.toPx()
@@ -318,7 +313,10 @@ private fun Modifier.drawBorder(
         val cornerRadiusPx = cornerRadius.toPx()
         drawRoundRect(
             color = backgroundColor,
-            cornerRadius = CornerRadius(cornerRadiusPx * 1.2f, cornerRadiusPx * 1.2f)
+            cornerRadius = CornerRadius(
+                cornerRadiusPx * cornerRadiusMultiplier,
+                cornerRadiusPx * cornerRadiusMultiplier
+            )
         )
         drawRoundRect(
             color = foregroundColor,

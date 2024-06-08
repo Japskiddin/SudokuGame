@@ -47,6 +47,7 @@ class SudokuParser {
      * @param boardList Sudoku board
      * @return Sudoku in string
      */
+    @Suppress("MagicNumber", "NestedBlockDepth")
     fun boardToString(
         boardList: List<List<BoardCell>>,
         emptySeparator: Char = '0'
@@ -80,6 +81,7 @@ class SudokuParser {
         return boardString
     }
 
+    @Suppress("MagicNumber")
     fun parseNotes(notesString: String): List<BoardNote> {
         val boardNotes = mutableListOf<BoardNote>()
         var i = 0

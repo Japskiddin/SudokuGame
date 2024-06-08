@@ -63,6 +63,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
 
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun GameBoard(
     modifier: Modifier = Modifier,
@@ -72,14 +73,14 @@ internal fun GameBoard(
     outerCornerRadius: Dp = 12.dp,
     outerStrokeWidth: Dp = 1.5.dp,
     innerStrokeWidth: Dp = 1.dp,
-    numberTextSize: TextUnit =
+    @Suppress("MagicNumber") numberTextSize: TextUnit =
         when (boardSize) {
             6 -> 32.sp
             9 -> 26.sp
             12 -> 24.sp
             else -> 14.sp
         },
-    noteTextSize: TextUnit =
+    @Suppress("MagicNumber") noteTextSize: TextUnit =
         when (boardSize) {
             6 -> 18.sp
             9 -> 12.sp
@@ -94,7 +95,7 @@ internal fun GameBoard(
     isRenderNotes: Boolean = true,
     isZoomable: Boolean = false,
     isDrawBoardFrame: Boolean = false,
-    isCrossHighlight: Boolean = false,
+    @Suppress("UNUSED_PARAMETER") isCrossHighlight: Boolean = false,
     cellsToHighlight: List<BoardCell> = emptyList(),
     notes: List<BoardNote> = emptyList(),
     numberColor: Color = BoardNumberNormal,
@@ -109,8 +110,7 @@ internal fun GameBoard(
     onSelectCell: (BoardCell) -> Unit
 ) {
     BoxWithConstraints(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f)
             .background(
@@ -229,106 +229,97 @@ internal fun GameBoard(
 
         val context = LocalContext.current
         LaunchedEffect(numberTextSize, noteTextSize) {
-            numberTextSizePx =
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_SP,
-                    numberTextSize.value,
-                    context.resources.displayMetrics
-                )
-            noteTextSizePx =
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_SP,
-                    noteTextSize.value,
-                    context.resources.displayMetrics
-                )
-            numberPaint =
-                TextPaint().apply {
-                    color = numberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            selectedNumberPaint =
-                TextPaint().apply {
-                    color = selectedNumberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            notePaint =
-                TextPaint().apply {
-                    color = noteColor.toArgb()
-                    isAntiAlias = true
-                    textSize = noteTextSizePx
-                }
-            errorNumberPaint =
-                TextPaint().apply {
-                    color = errorNumberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            lockedNumberPaint =
-                TextPaint().apply {
-                    color = lockedNumberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
+            numberTextSizePx = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_SP,
+                numberTextSize.value,
+                context.resources.displayMetrics
+            )
+            noteTextSizePx = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_SP,
+                noteTextSize.value,
+                context.resources.displayMetrics
+            )
+            numberPaint = TextPaint().apply {
+                color = numberColor.toArgb()
+                isAntiAlias = true
+                textSize = numberTextSizePx
+            }
+            selectedNumberPaint = TextPaint().apply {
+                color = selectedNumberColor.toArgb()
+                isAntiAlias = true
+                textSize = numberTextSizePx
+            }
+            notePaint = TextPaint().apply {
+                color = noteColor.toArgb()
+                isAntiAlias = true
+                textSize = noteTextSizePx
+            }
+            errorNumberPaint = TextPaint().apply {
+                color = errorNumberColor.toArgb()
+                isAntiAlias = true
+                textSize = numberTextSizePx
+            }
+            lockedNumberPaint = TextPaint().apply {
+                color = lockedNumberColor.toArgb()
+                isAntiAlias = true
+                textSize = numberTextSizePx
+            }
         }
 
-        val boardModifier =
-            Modifier
-                .fillMaxSize()
-                .pointerInput(key1 = isEnabled, key2 = board) {
-                    detectTapGestures(
-                        onTap = {
-                            if (isEnabled) {
-                                val totalOffset = it / zoom + offset
-                                val row =
-                                    floor((totalOffset.y) / cellSizePx)
-                                        .toInt()
-                                        .coerceIn(board.indices)
-                                val column =
-                                    floor((totalOffset.x) / cellSizePx)
-                                        .toInt()
-                                        .coerceIn(board.indices)
-                                onSelectCell(board[row][column])
+        val boardModifier = Modifier
+            .fillMaxSize()
+            .pointerInput(key1 = isEnabled, key2 = board) {
+                detectTapGestures(
+                    onTap = {
+                        if (isEnabled) {
+                            val totalOffset = it / zoom + offset
+                            val row =
+                                floor((totalOffset.y) / cellSizePx)
+                                    .toInt()
+                                    .coerceIn(board.indices)
+                            val column =
+                                floor((totalOffset.x) / cellSizePx)
+                                    .toInt()
+                                    .coerceIn(board.indices)
+                            onSelectCell(board[row][column])
+                        }
+                    }
+                )
+            }
+
+        val zoomModifier = Modifier
+            .pointerInput(isEnabled) {
+                detectTransformGestures(
+                    onGesture = { gestureCentroid, gesturePan, gestureZoom, _ ->
+                        if (isEnabled) {
+                            val oldScale = zoom
+                            val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
+
+                            offset = (offset + gestureCentroid / oldScale) -
+                                (gestureCentroid / newScale + gesturePan / oldScale)
+
+                            zoom = newScale
+                            if (offset.x < 0) {
+                                offset = Offset(0f, offset.y)
+                            } else if (maxWidth - offset.x < maxWidth / zoom) {
+                                offset = offset.copy(x = maxWidth - maxWidth / zoom)
+                            }
+                            if (offset.y < 0) {
+                                offset = Offset(offset.x, 0f)
+                            } else if (maxWidth - offset.y < maxWidth / zoom) {
+                                offset = offset.copy(y = maxWidth - maxWidth / zoom)
                             }
                         }
-                    )
-                }
-
-        val zoomModifier =
-            Modifier
-                .pointerInput(isEnabled) {
-                    detectTransformGestures(
-                        onGesture = { gestureCentroid, gesturePan, gestureZoom, _ ->
-                            if (isEnabled) {
-                                val oldScale = zoom
-                                val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
-
-                                offset = (offset + gestureCentroid / oldScale) -
-                                    (gestureCentroid / newScale + gesturePan / oldScale)
-
-                                zoom = newScale
-                                if (offset.x < 0) {
-                                    offset = Offset(0f, offset.y)
-                                } else if (maxWidth - offset.x < maxWidth / zoom) {
-                                    offset = offset.copy(x = maxWidth - maxWidth / zoom)
-                                }
-                                if (offset.y < 0) {
-                                    offset = Offset(offset.x, 0f)
-                                } else if (maxWidth - offset.y < maxWidth / zoom) {
-                                    offset = offset.copy(y = maxWidth - maxWidth / zoom)
-                                }
-                            }
-                        }
-                    )
-                }
-                .graphicsLayer {
-                    translationX = -offset.x * zoom
-                    translationY = -offset.y * zoom
-                    scaleX = zoom
-                    scaleY = zoom
-                    TransformOrigin(0f, 0f).also { transformOrigin = it }
-                }
+                    }
+                )
+            }
+            .graphicsLayer {
+                translationX = -offset.x * zoom
+                translationY = -offset.y * zoom
+                scaleX = zoom
+                scaleY = zoom
+                TransformOrigin(0f, 0f).also { transformOrigin = it }
+            }
 
         Canvas(
             modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
@@ -477,25 +468,25 @@ internal fun GameBoard(
             }
 
             // doesn't look good on 6x6
-            if (isCrossHighlight && boardSize != 6) {
-                val sectionHeight = getSectionHeightForSize(boardSize)
-                val sectionWidth = getSectionWidthForSize(boardSize)
-                for (i in 0 until boardSize / sectionWidth) {
-                    for (j in 0 until boardSize / sectionHeight) {
-                        if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
-                            drawRect(
-                                color = selectedCellColor.copy(alpha = 0.1f),
-                                topLeft =
-                                Offset(
-                                    x = i * sectionWidth * cellSizePx,
-                                    y = j * sectionHeight * cellSizePx
-                                ),
-                                size = Size(cellSizePx * sectionWidth, cellSizePx * sectionHeight)
-                            )
-                        }
-                    }
-                }
-            }
+//            if (isCrossHighlight && boardSize != 6) {
+//                val sectionHeight = getSectionHeightForSize(boardSize)
+//                val sectionWidth = getSectionWidthForSize(boardSize)
+//                for (i in 0 until boardSize / sectionWidth) {
+//                    for (j in 0 until boardSize / sectionHeight) {
+//                        if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
+//                            drawRect(
+//                                color = selectedCellColor.copy(alpha = 0.1f),
+//                                topLeft =
+//                                Offset(
+//                                    x = i * sectionWidth * cellSizePx,
+//                                    y = j * sectionHeight * cellSizePx
+//                                ),
+//                                size = Size(cellSizePx * sectionWidth, cellSizePx * sectionHeight)
+//                            )
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 }
@@ -688,6 +679,7 @@ private fun DrawScope.drawRoundCellBackground(
     drawPath(path = path, color = color)
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun DrawScope.drawNumbers(
     boardSize: Int,
     board: List<List<BoardCell>>,
@@ -706,15 +698,23 @@ private fun DrawScope.drawNumbers(
             for (j in 0 until boardSize) {
                 val number = board[i][j]
                 if (number.value != 0) {
-                    val paint =
-                        when {
-                            number.isError && isErrorsHighlight -> errorNumberPaint
-                            number.isLocked -> lockedNumberPaint
-                            (selectedCell.row >= 0 && selectedCell.col >= 0) && ((isIdenticalNumberHighlight && number.value == selectedCell.value) || (selectedCell.row == i && selectedCell.col == j)) -> selectedNumberPaint
-                            else -> numberPaint
-                        }
+                    val paint = when {
+                        number.isError && isErrorsHighlight -> errorNumberPaint
+                        number.isLocked -> lockedNumberPaint
+                        (
+                            (selectedCell.row >= 0 && selectedCell.col >= 0) &&
+                                (
+                                    (isIdenticalNumberHighlight && number.value == selectedCell.value) ||
+                                        (selectedCell.row == i && selectedCell.col == j)
+                                    )
+                            ) -> selectedNumberPaint
 
-                    val textToDraw = if (isQuestions) "?" else number.value.toString(16).uppercase()
+                        else -> numberPaint
+                    }
+
+                    @Suppress("MagicNumber")
+                    val radix = 16
+                    val textToDraw = if (isQuestions) "?" else number.value.toString(radix).uppercase()
                     val textBounds = android.graphics.Rect()
                     numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
                     val textWidth = paint.measureText(textToDraw)
@@ -738,9 +738,11 @@ private fun DrawScope.drawNotes(
     val noteBounds = android.graphics.Rect()
     paint.getTextBounds("1", 0, 1, noteBounds)
 
+    @Suppress("MagicNumber")
+    val radix = 16
     drawIntoCanvas { canvas ->
         notes.forEach { note ->
-            val textToDraw = note.value.toString(16).uppercase()
+            val textToDraw = note.value.toString(radix).uppercase()
             val noteTextMeasure = paint.measureText(textToDraw)
             val textPosX =
                 note.col * cellSize + cellSizeDividerWidth / 2f + (
@@ -763,41 +765,50 @@ private fun DrawScope.drawNotes(
     }
 }
 
+@Suppress("MagicNumber")
 private fun getNoteColumnNumber(
     number: Int,
     size: Int
-): Int {
-    if (size == 9 || size == 6) {
-        return when (number) {
+): Int = when (size) {
+    9, 6 -> {
+        when (number) {
             1, 2, 3 -> 0
             4, 5, 6 -> 1
             7, 8, 9 -> 2
             else -> 0
         }
-    } else if (size == 12) {
-        return when (number) {
+    }
+
+    12 -> {
+        when (number) {
             1, 2, 3, 4 -> 0
             5, 6, 7, 8 -> 1
             9, 10, 11, 12 -> 2
             else -> 0
         }
     }
-    return 0
+
+    else -> {
+        0
+    }
 }
 
+@Suppress("MagicNumber")
 private fun getNoteRowNumber(
     number: Int,
     size: Int
-): Int {
-    if (size == 9 || size == 6) {
-        return when (number) {
+): Int = when (size) {
+    9, 6 -> {
+        when (number) {
             1, 4, 7 -> 0
             2, 5, 8 -> 1
             3, 6, 9 -> 2
             else -> 0
         }
-    } else if (size == 12) {
-        return when (number) {
+    }
+
+    12 -> {
+        when (number) {
             1, 5, 9 -> 0
             2, 6, 10 -> 1
             3, 7, 11 -> 2
@@ -805,25 +816,26 @@ private fun getNoteRowNumber(
             else -> 0
         }
     }
-    return 0
-}
 
-private fun getSectionHeightForSize(size: Int): Int {
-    return when (size) {
-        6 -> GameType.DEFAULT6X6.sectionHeight
-        9 -> GameType.DEFAULT9X9.sectionHeight
-        12 -> GameType.DEFAULT12X12.sectionHeight
-        else -> GameType.DEFAULT9X9.sectionHeight
+    else -> {
+        0
     }
 }
 
-private fun getSectionWidthForSize(size: Int): Int {
-    return when (size) {
-        6 -> GameType.DEFAULT6X6.sectionWidth
-        9 -> GameType.DEFAULT9X9.sectionWidth
-        12 -> GameType.DEFAULT12X12.sectionWidth
-        else -> GameType.DEFAULT9X9.sectionWidth
-    }
+@Suppress("MagicNumber")
+private fun getSectionHeightForSize(size: Int): Int = when (size) {
+    6 -> GameType.DEFAULT6X6.sectionHeight
+    9 -> GameType.DEFAULT9X9.sectionHeight
+    12 -> GameType.DEFAULT12X12.sectionHeight
+    else -> GameType.DEFAULT9X9.sectionHeight
+}
+
+@Suppress("MagicNumber")
+private fun getSectionWidthForSize(size: Int): Int = when (size) {
+    6 -> GameType.DEFAULT6X6.sectionWidth
+    9 -> GameType.DEFAULT9X9.sectionWidth
+    12 -> GameType.DEFAULT12X12.sectionWidth
+    else -> GameType.DEFAULT9X9.sectionWidth
 }
 
 @Preview(

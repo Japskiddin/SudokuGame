@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.japskiddin.sudoku.feature.game.ui.component.autosizetext
 
 import android.util.Log
@@ -46,10 +48,12 @@ import io.github.japskiddin.sudoku.feature.game.ui.component.autosizetext.Sugges
 import kotlin.math.min
 
 /**
- * Composable function that automatically adjusts the text size to fit within given constraints, considering the ratio of line spacing to text size.
+ * Composable function that automatically adjusts the text size to fit within given constraints,
+ * considering the ratio of line spacing to text size.
  *
  * Features:
- *  1. Best performance: Utilizes a dichotomous binary search algorithm for swift and optimal text size determination without unnecessary iterations.
+ *  1. Best performance: Utilizes a dichotomous binary search algorithm for swift and optimal
+ *  text size determination without unnecessary iterations.
  *  2. Alignment support: Supports six possible alignment values via the Alignment interface.
  *  3. Material Design 3 support.
  *  4. Font scaling support: User-initiated font scaling doesn't affect the visual rendering output.
@@ -59,11 +63,15 @@ import kotlin.math.min
  * @param modifier the [Modifier] to be applied to this layout node
  * @param color [Color] to apply to the text. If [Color.Unspecified], and [style] has no color set,
  * this will be [LocalContentColor].
- * @param suggestedFontSizes The suggested font sizes to choose from (Should be sorted from smallest to largest, not empty and contains only sp text unit).
- * @param suggestedFontSizesStatus Whether or not suggestedFontSizes is valid: not empty - contains oly sp text unit - sorted.
+ * @param suggestedFontSizes The suggested font sizes to choose from (Should be sorted from smallest to largest,
+ * not empty and contains only sp text unit).
+ * @param suggestedFontSizesStatus Whether or not suggestedFontSizes is valid: not empty - contains oly sp text unit
+ * - sorted.
  * You can check validity by invoking [List<TextUnit>.suggestedFontSizesStatus]
- * @param stepGranularityTextSize The step size for adjusting the text size. this parameter is ignored if [suggestedFontSizes] is specified and [suggestedFontSizesStatus] is [SuggestedFontSizesStatus.VALID].
- * @param minTextSize The minimum text size allowed. this parameter is ignored if [suggestedFontSizes] is specified or [suggestedFontSizesStatus] is [SuggestedFontSizesStatus.VALID].
+ * @param stepGranularityTextSize The step size for adjusting the text size. this parameter is ignored
+ * if [suggestedFontSizes] is specified and [suggestedFontSizesStatus] is [SuggestedFontSizesStatus.VALID].
+ * @param minTextSize The minimum text size allowed. this parameter is ignored if [suggestedFontSizes]
+ * is specified or [suggestedFontSizesStatus] is [SuggestedFontSizesStatus.VALID].
  * @param maxTextSize The maximum text size allowed.
  * @param fontStyle the typeface variant to use when drawing the letters (e.g., italic).
  * See [TextStyle.fontStyle].
@@ -143,7 +151,8 @@ public fun AutoSizeText(
 }
 
 /**
- * Composable function that automatically adjusts the text size to fit within given constraints using AnnotatedString, considering the ratio of line spacing to text size.
+ * Composable function that automatically adjusts the text size to fit within given constraints using AnnotatedString,
+ * considering the ratio of line spacing to text size.
  *
  * Features:
  *  Similar to AutoSizeText(String), with support for AnnotatedString.
@@ -152,6 +161,7 @@ public fun AutoSizeText(
  * insert composables into text layout. See [InlineTextContent].
  * @see AutoSizeText
  */
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 public fun AutoSizeText(
     text: AnnotatedString,
@@ -172,7 +182,8 @@ public fun AutoSizeText(
     softWrap: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
-    inlineContent: ImmutableWrapper<Map<String, InlineTextContent>> = mapOf<String, InlineTextContent>().toImmutableWrapper(),
+    inlineContent: ImmutableWrapper<Map<String, InlineTextContent>> =
+        mapOf<String, InlineTextContent>().toImmutableWrapper(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
     lineSpacingRatio: Float = style.lineHeight.value / style.fontSize.value
@@ -302,6 +313,7 @@ private fun BoxWithConstraintsScope.shouldShrink(
     layoutDirection = layoutDirection
 ).hasVisualOverflow
 
+@Suppress("unused")
 private fun BoxWithConstraintsScope.shouldShrink2(
     text: AnnotatedString,
     textStyle: TextStyle,
@@ -404,7 +416,7 @@ public enum class SuggestedFontSizesStatus {
     UNKNOWN;
 
     public companion object {
-        public val List<TextUnit>.suggestedFontSizesStatus: SuggestedFontSizesStatus
+        public val List<TextUnit>.toSuggestedFontSizesStatus: SuggestedFontSizesStatus
             get() =
                 if (isNotEmpty() && all { it.isSp } && sortedBy { it.value } == this) {
                     VALID
@@ -412,7 +424,7 @@ public enum class SuggestedFontSizesStatus {
                     INVALID
                 }
         public val ImmutableWrapper<List<TextUnit>>.rememberSuggestedFontSizesStatus: SuggestedFontSizesStatus
-            @Composable get() = remember(key1 = this) { value.suggestedFontSizesStatus }
+            @Composable get() = remember(key1 = this) { value.toSuggestedFontSizesStatus }
     }
 }
 

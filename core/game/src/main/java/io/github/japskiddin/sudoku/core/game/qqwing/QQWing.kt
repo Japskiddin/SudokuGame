@@ -32,6 +32,7 @@ import kotlin.math.abs
  * The board containing all the memory structures and methods for solving or
  * generating sudoku puzzles.
  */
+@Suppress("LargeClass", "TooManyFunctions")
 class QQWing(type: GameType, difficulty: GameDifficulty) {
     /**
      * A list of moves used to solve the puzzle. This list contains all moves,
@@ -134,6 +135,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * Get the number of cells that are set in the puzzle (as opposed to figured
      * out in the solution
      */
+    @Suppress("unused")
     val givenCount: Int
         get() {
             var count = 0
@@ -194,8 +196,8 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     /**
      * Get the gameDifficulty rating.
      */
-    @JvmName("getDifficulty1") // TODO убрать эту аннотацию
-    fun getDifficulty(): GameDifficulty {
+    @Suppress("CyclomaticComplexMethod", "ReturnCount", "MagicNumber")
+    fun calculateDifficulty(): GameDifficulty {
         if (getGuessCount() > 0) return GameDifficulty.EXPERT
         if (getBoxLineReductionCount() > 0) return GameDifficulty.HARD
         if (getPointingPairTripleCount() > 0) return GameDifficulty.HARD
@@ -220,7 +222,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * Get the gameDifficulty rating.
      */
     fun getDifficultyName(): String {
-        return getDifficulty().name
+        return calculateDifficulty().name
     }
 
     /**
@@ -336,7 +338,9 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return generatePuzzleSymmetry(Symmetry.NONE)
     }
 
+    @Suppress("CyclomaticComplexMethod", "LongMethod", "NestedBlockDepth")
     fun generatePuzzleSymmetry(symmetry: Symmetry): Boolean {
+        @Suppress("NAME_SHADOWING")
         var symmetry = symmetry
         if (symmetry == Symmetry.RANDOM) symmetry = randomSymmetry
 
@@ -499,9 +503,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         }
     }
 
-    private fun printHistory(v: ArrayList<LogItem?>) {
-        print(historyToString(v))
-    }
+    private fun printHistory(v: ArrayList<LogItem?>) = print(historyToString(v))
 
     private fun historyToString(v: ArrayList<LogItem?>): String {
         val sb = StringBuilder()
@@ -530,18 +532,16 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return sb.toString()
     }
 
-    fun printSolveInstructions() {
-        print(getSolveInstructionsString())
+    @Suppress("unused")
+    fun printSolveInstructions() = print(getSolveInstructionsString())
+
+    fun getSolveInstructionsString(): String = if (isSolved()) {
+        historyToString(solveInstructions)
+    } else {
+        "No solve instructions - Puzzle is not possible to solve."
     }
 
-    fun getSolveInstructionsString(): String {
-        return if (isSolved()) {
-            historyToString(solveInstructions)
-        } else {
-            "No solve instructions - Puzzle is not possible to solve."
-        }
-    }
-
+    @Suppress("unused")
     fun getSolveInstructions(): List<LogItem?> {
         return if (isSolved()) {
             Collections.unmodifiableList(solveInstructions)
@@ -550,14 +550,17 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         }
     }
 
+    @Suppress("unused")
     fun printSolveHistory() {
         printHistory(solveHistory)
     }
 
+    @Suppress("unused")
     fun getSolveHistoryString(): String {
         return historyToString(solveHistory)
     }
 
+    @Suppress("unused")
     fun getSolveHistory(): List<LogItem?> {
         return Collections.unmodifiableList(solveHistory)
     }
@@ -568,6 +571,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return solve(2)
     }
 
+    @Suppress("ReturnCount")
     private fun solve(round: Int): Boolean {
         lastSolveRound = round
         while (singleSolveMove(round)) {
@@ -593,6 +597,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * return true if the puzzle has a solution
      * and only a single solution
      */
+    @Suppress("unused")
     fun hasUniqueSolution(): Boolean {
         return countSolutionsLimited() == 1
     }
@@ -600,6 +605,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     /**
      * Count the number of solutions to the puzzle
      */
+    @Suppress("unused")
     fun countSolutions(): Int {
         return countSolutions(false)
     }
@@ -632,6 +638,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return solutionCount
     }
 
+    @Suppress("ReturnCount")
     private fun countSolutions(
         round: Int,
         limitToTwo: Boolean
@@ -689,6 +696,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return true
     }
 
+    @Suppress("NestedBlockDepth")
     private fun isImpossible(): Boolean {
         for (position in 0 until BOARD_SIZE) {
             if (solution[position] == 0) {
@@ -705,6 +713,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return false
     }
 
+    @Suppress("NestedBlockDepth")
     private fun findPositionWithFewestPossibilities(): Int {
         var minPossibilities = ROW_COL_SEC_SIZE + 1
         var bestPosition = 0
@@ -725,6 +734,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return bestPosition
     }
 
+    @Suppress("NestedBlockDepth")
     private fun guess(
         round: Int,
         guessNumber: Int
@@ -756,6 +766,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return false
     }
 
+    @Suppress("ReturnCount")
     private fun singleSolveMove(round: Int): Boolean {
         if (onlyPossibilityForCell(round)) return true
         if (onlyValueInSection(round)) return true
@@ -770,6 +781,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return if (hiddenPairInColumn(round)) true else hiddenPairInSection(round)
     }
 
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
     private fun colBoxReduction(round: Int): Boolean {
         for (valIndex in 0 until ROW_COL_SEC_SIZE) {
             for (col in 0 until ROW_COL_SEC_SIZE) {
@@ -828,6 +840,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         return false
     }
 
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
     private fun rowBoxReduction(round: Int): Boolean {
         for (valIndex in 0 until ROW_COL_SEC_SIZE) {
             for (row in 0 until ROW_COL_SEC_SIZE) {
@@ -886,6 +899,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     // CHECKED!
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
     private fun pointingRowReduction(round: Int): Boolean {
         for (valIndex in 0 until ROW_COL_SEC_SIZE) {
             for (section in 0 until ROW_COL_SEC_SIZE) {
@@ -938,6 +952,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     // CHECKED! .. pretty sure this is correct now
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
     private fun pointingColumnReduction(round: Int): Boolean {
         for (valIndex in 0 until ROW_COL_SEC_SIZE) {
             for (section in 0 until ROW_COL_SEC_SIZE) {
@@ -1007,7 +1022,10 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         for (valIndex in 0 until ROW_COL_SEC_SIZE) {
             val valPos1 = getPossibilityIndex(valIndex, position1)
             val valPos2 = getPossibilityIndex(valIndex, position2)
-            if ((possibilities[valPos1] == 0 || possibilities[valPos2] == 0) && (possibilities[valPos1] != 0 || possibilities[valPos2] != 0)) {
+            @Suppress("ComplexCondition")
+            if ((possibilities[valPos1] == 0 || possibilities[valPos2] == 0) &&
+                (possibilities[valPos1] != 0 || possibilities[valPos2] != 0)
+            ) {
                 return false
             }
         }
@@ -1033,6 +1051,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     // CHECKED!
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LongMethod")
     private fun hiddenPairInColumn(round: Int): Boolean {
         for (column in 0 until ROW_COL_SEC_SIZE) {
             for (valIndex in 0 until ROW_COL_SEC_SIZE) {
@@ -1108,6 +1127,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     // CHECKED!
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LongMethod")
     private fun hiddenPairInSection(round: Int): Boolean {
         for (section in 0 until ROW_COL_SEC_SIZE) {
             for (valIndex in 0 until ROW_COL_SEC_SIZE) {
@@ -1183,6 +1203,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     // CHECKED!
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LongMethod")
     private fun hiddenPairInRow(round: Int): Boolean {
         for (row in 0 until ROW_COL_SEC_SIZE) {
             for (valIndex in 0 until ROW_COL_SEC_SIZE) {
@@ -1258,6 +1279,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     // CHECKED!
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LongMethod", "ReturnCount")
     private fun handleNakedPairs(round: Int): Boolean {
         for (position in 0 until BOARD_SIZE) {
             val possibilities = countPossibilities(position)
@@ -1371,6 +1393,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * "hidden single"
      * CHECKED!
      */
+    @Suppress("NestedBlockDepth")
     private fun onlyValueInRow(round: Int): Boolean {
         for (row in 0 until ROW_COL_SEC_SIZE) {
             for (valIndex in 0 until ROW_COL_SEC_SIZE) {
@@ -1411,6 +1434,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * called a "hidden single"
      * CHECKED!
      */
+    @Suppress("NestedBlockDepth")
     private fun onlyValueInColumn(round: Int): Boolean {
         for (col in 0 until ROW_COL_SEC_SIZE) {
             for (valIndex in 0 until ROW_COL_SEC_SIZE) {
@@ -1451,6 +1475,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * called a "hidden single"
      * Checked!
      */
+    @Suppress("NestedBlockDepth")
     private fun onlyValueInSection(round: Int): Boolean {
         for (sec in 0 until ROW_COL_SEC_SIZE) {
             val secPos = sectionToFirstCell(sec)
@@ -1493,6 +1518,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * This type of cell is often called a "single"
      * Checked!
      */
+    @Suppress("NestedBlockDepth")
     private fun onlyPossibilityForCell(round: Int): Boolean {
         for (position in 0 until BOARD_SIZE) {
             if (solution[position] == 0) {
@@ -1551,7 +1577,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         for (col in 0 until ROW_COL_SEC_SIZE) {
             val rowVal = rowStart + col
             val valPos = getPossibilityIndex(valIndex, rowVal)
-            // System.out.println("Row Start: "+rowStart+" Row Value: "+rowVal+" Value Position: "+valPos);
             if (possibilities[valPos] == 0) {
                 possibilities[valPos] = round
             }
@@ -1562,7 +1587,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         for (i in 0 until ROW_COL_SEC_SIZE) {
             val colVal = colStart + ROW_COL_SEC_SIZE * i
             val valPos = getPossibilityIndex(valIndex, colVal)
-            // System.out.println("Col Start: "+colStart+" Col Value: "+colVal+" Value Position: "+valPos);
             if (possibilities[valPos] == 0) {
                 possibilities[valPos] = round
             }
@@ -1574,7 +1598,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
             for (j in 0 until GRID_SIZE_ROW) {
                 val secVal = secStart + i + ROW_COL_SEC_SIZE * j
                 val valPos = getPossibilityIndex(valIndex, secVal)
-                // System.out.println("Sec Start: "+secStart+" Sec Value: "+secVal+" Value Position: "+valPos);
                 if (possibilities[valPos] == 0) {
                     possibilities[valPos] = round
                 }
@@ -1600,6 +1623,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
         print(puzzleToString(sudoku))
     }
 
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
     private fun puzzleToString(sudoku: IntArray): String {
         val sb = StringBuilder()
         for (i in 0 until BOARD_SIZE) {
@@ -1641,32 +1665,36 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     /**
      * Print the sudoku puzzle.
      */
+    @Suppress("unused")
     fun printPuzzle() {
         print(puzzle)
     }
 
+    @Suppress("unused")
     fun getPuzzleString(): String {
         return puzzleToString(puzzle)
     }
 
-    @JvmName("getPuzzle1") // TODO убрать эту аннотацию
-    fun getPuzzle(): IntArray {
+    @Suppress("unused")
+    fun clonePuzzle(): IntArray {
         return puzzle.clone()
     }
 
     /**
      * Print the sudoku solution.
      */
+    @Suppress("unused")
     fun printSolution() {
         print(solution)
     }
 
+    @Suppress("unused")
     fun getSolutionString(): String {
         return puzzleToString(solution)
     }
 
-    @JvmName("getSolution1") // TODO убрать эту аннотацию
-    fun getSolution(): IntArray {
+    @Suppress("unused")
+    fun cloneSolution(): IntArray {
         return solution.clone()
     }
 
@@ -1686,10 +1714,10 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
     }
 
     companion object {
+        @Suppress("unused")
         const val QQWING_VERSION = "1.3.4"
         private val NL = System.getProperties().getProperty("line.separator")
 
-        // public static final int GRID_SIZE = 3;
         var GRID_SIZE_ROW = 3
         var GRID_SIZE_COL = 3
         var ROW_COL_SEC_SIZE = GRID_SIZE_ROW * GRID_SIZE_COL
@@ -1734,7 +1762,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
          * cell resides.
          * Checked!
          */
-        @JvmStatic // TODO убрать эту аннотацию
         fun cellToColumn(cell: Int): Int {
             return cell % ROW_COL_SEC_SIZE
         }
@@ -1744,7 +1771,6 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
          * resides.
          * Checked!
          */
-        @JvmStatic // TODO убрать эту аннотацию
         fun cellToRow(cell: Int): Int {
             return cell / ROW_COL_SEC_SIZE
         }
