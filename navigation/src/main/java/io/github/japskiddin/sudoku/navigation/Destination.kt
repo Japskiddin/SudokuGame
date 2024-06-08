@@ -5,7 +5,7 @@ sealed class Destination(protected val route: String, vararg params: String) {
         route
     } else {
         val builder = StringBuilder(route)
-        params.forEach { builder.append("/{$it/}") }
+        params.forEach { builder.append("/{$it}") }
         builder.toString()
     }
 
