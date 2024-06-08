@@ -49,8 +49,7 @@ private fun MainScreenContent(
 
     SudokuTheme {
         Surface(
-            modifier =
-            modifier
+            modifier = modifier
                 .fillMaxSize()
                 .safeDrawingPadding(),
             color = MaterialTheme.colorScheme.background
