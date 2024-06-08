@@ -95,7 +95,7 @@ internal fun GameBoard(
     isRenderNotes: Boolean = true,
     isZoomable: Boolean = false,
     isDrawBoardFrame: Boolean = false,
-    @Suppress("UNUSED_PARAMETER") isCrossHighlight: Boolean = false,
+    isCrossHighlight: Boolean = false,
     cellsToHighlight: List<BoardCell> = emptyList(),
     notes: List<BoardNote> = emptyList(),
     numberColor: Color = BoardNumberNormal,
@@ -293,7 +293,13 @@ internal fun GameBoard(
                     onGesture = { gestureCentroid, gesturePan, gestureZoom, _ ->
                         if (isEnabled) {
                             val oldScale = zoom
-                            val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
+
+                            @Suppress("MagicNumber")
+                            val minRange = 1f
+
+                            @Suppress("MagicNumber")
+                            val maxRange = 3f
+                            val newScale = (zoom * gestureZoom).coerceIn(minRange..maxRange)
 
                             offset = (offset + gestureCentroid / oldScale) -
                                 (gestureCentroid / newScale + gesturePan / oldScale)
@@ -467,26 +473,28 @@ internal fun GameBoard(
                 )
             }
 
-            // doesn't look good on 6x6
-//            if (isCrossHighlight && boardSize != 6) {
-//                val sectionHeight = getSectionHeightForSize(boardSize)
-//                val sectionWidth = getSectionWidthForSize(boardSize)
-//                for (i in 0 until boardSize / sectionWidth) {
-//                    for (j in 0 until boardSize / sectionHeight) {
-//                        if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
-//                            drawRect(
-//                                color = selectedCellColor.copy(alpha = 0.1f),
-//                                topLeft =
-//                                Offset(
-//                                    x = i * sectionWidth * cellSizePx,
-//                                    y = j * sectionHeight * cellSizePx
-//                                ),
-//                                size = Size(cellSizePx * sectionWidth, cellSizePx * sectionHeight)
-//                            )
-//                        }
-//                    }
-//                }
-//            }
+            if (isCrossHighlight) {
+                val sectionHeight = getSectionHeightForSize(boardSize)
+                val sectionWidth = getSectionWidthForSize(boardSize)
+                for (i in 0 until boardSize / sectionWidth) {
+                    for (j in 0 until boardSize / sectionHeight) {
+                        @Suppress("ComplexCondition")
+                        if ((i % 2 == 0 && j % 2 != 0) ||
+                            (i % 2 != 0 && j % 2 == 0)
+                        ) {
+                            drawRect(
+                                color = selectedCellColor.copy(alpha = 0.1f),
+                                topLeft =
+                                Offset(
+                                    x = i * sectionWidth * cellSizePx,
+                                    y = j * sectionHeight * cellSizePx
+                                ),
+                                size = Size(cellSizePx * sectionWidth, cellSizePx * sectionHeight)
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
