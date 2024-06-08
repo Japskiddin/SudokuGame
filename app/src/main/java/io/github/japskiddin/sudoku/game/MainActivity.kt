@@ -14,8 +14,9 @@ import io.github.japskiddin.sudoku.game.ui.MainScreen
 class MainActivity : ComponentActivity() {
     private var backPressedMillis = 0L
 
+    @Suppress("unused")
     private val finish: () -> Unit = {
-        if (backPressedMillis + 3000 > System.currentTimeMillis()) {
+        if (backPressedMillis + BACK_PRESSED_DELAY > System.currentTimeMillis()) {
             finishAndRemoveTask()
         } else {
             Toast.makeText(
@@ -35,5 +36,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainScreen()
         }
+    }
+
+    companion object {
+        private const val BACK_PRESSED_DELAY = 3000L
     }
 }

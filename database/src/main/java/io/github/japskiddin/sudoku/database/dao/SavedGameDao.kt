@@ -20,8 +20,8 @@ interface SavedGameDao {
 
     @Query(
         "SELECT * FROM saved_game"
-          + " JOIN board ON saved_game.board_uid == board.uid"
-          + " ORDER BY uid DESC"
+            + " JOIN board ON saved_game.board_uid == board.uid"
+            + " ORDER BY uid DESC"
     )
     fun getSavedWithBoards(): Flow<Map<SavedGameDBO, BoardDBO>>
 
@@ -30,10 +30,10 @@ interface SavedGameDao {
 
     @Query(
         "SELECT * FROM saved_game"
-          + " JOIN board ON saved_game.board_uid == board.uid"
-          + " WHERE saved_game.status == 0"
-          + " ORDER BY last_played DESC"
-          + " LIMIT :limit"
+            + " JOIN board ON saved_game.board_uid == board.uid"
+            + " WHERE saved_game.status == 0"
+            + " ORDER BY last_played DESC"
+            + " LIMIT :limit"
     )
     fun getLastPlayable(limit: Int): Flow<Map<SavedGameDBO, BoardDBO>>
 

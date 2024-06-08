@@ -36,15 +36,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository =
-        SavedGameRepository(savedGameDao)
+    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository = SavedGameRepository(savedGameDao)
 
     @Provides
     @Singleton
-    fun provideSavedGameDao(sudokuDatabase: SudokuDatabase): SavedGameDao =
-        sudokuDatabase.savedGameDao
+    fun provideSavedGameDao(sudokuDatabase: SudokuDatabase): SavedGameDao = sudokuDatabase.savedGameDao
 
-    // TODO: Wrapper class for Datastore?
     @Provides
     @Singleton
     fun provideSettingsDatastore(@ApplicationContext context: Context): SettingsDatastore {

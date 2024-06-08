@@ -22,9 +22,9 @@ interface BoardDao {
 
     @Query(
         "SELECT * FROM board"
-          + " LEFT OUTER JOIN saved_game ON board.uid = saved_game.board_uid"
-          + " WHERE difficulty == :difficulty"
-          + " ORDER BY uid DESC"
+            + " LEFT OUTER JOIN saved_game ON board.uid = saved_game.board_uid"
+            + " WHERE difficulty == :difficulty"
+            + " ORDER BY uid DESC"
     )
     fun getBoardsWithSavedGames(difficulty: Int): Flow<Map<BoardDBO, SavedGameDBO>>
 

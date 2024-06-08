@@ -235,7 +235,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      */
     fun getHiddenSingleCount(): Int {
         return getLogCount(solveInstructions, LogType.HIDDEN_SINGLE_ROW) +
-          getLogCount(solveInstructions, LogType.HIDDEN_SINGLE_COLUMN) + getLogCount(
+            getLogCount(solveInstructions, LogType.HIDDEN_SINGLE_COLUMN) + getLogCount(
             solveInstructions,
             LogType.HIDDEN_SINGLE_SECTION
         )
@@ -247,7 +247,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      */
     fun getNakedPairCount(): Int {
         return getLogCount(solveInstructions, LogType.NAKED_PAIR_ROW) +
-          getLogCount(solveInstructions, LogType.NAKED_PAIR_COLUMN) + getLogCount(
+            getLogCount(solveInstructions, LogType.NAKED_PAIR_COLUMN) + getLogCount(
             solveInstructions,
             LogType.NAKED_PAIR_SECTION
         )
@@ -259,7 +259,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      */
     fun getHiddenPairCount(): Int {
         return getLogCount(solveInstructions, LogType.HIDDEN_PAIR_ROW) +
-          getLogCount(solveInstructions, LogType.HIDDEN_PAIR_COLUMN) + getLogCount(
+            getLogCount(solveInstructions, LogType.HIDDEN_PAIR_COLUMN) + getLogCount(
             solveInstructions,
             LogType.HIDDEN_PAIR_SECTION
         )

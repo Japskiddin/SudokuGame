@@ -287,7 +287,7 @@ internal fun GameBoard(
                             val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
 
                             offset = (offset + gestureCentroid / oldScale) -
-                              (gestureCentroid / newScale + gesturePan / oldScale)
+                                (gestureCentroid / newScale + gesturePan / oldScale)
 
                             zoom = newScale
                             if (offset.x < 0) {

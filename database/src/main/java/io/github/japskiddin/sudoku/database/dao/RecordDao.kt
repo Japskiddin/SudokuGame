@@ -17,9 +17,9 @@ interface RecordDao {
 
     @Query(
         "SELECT * FROM record"
-          + " JOIN board ON record.board_uid == board.uid"
-          + " WHERE type == :type AND difficulty == :difficulty"
-          + " ORDER BY time ASC"
+            + " JOIN board ON record.board_uid == board.uid"
+            + " WHERE type == :type AND difficulty == :difficulty"
+            + " ORDER BY time ASC"
     )
     fun getAll(difficulty: Int, type: Int): Flow<List<RecordDBO>>
 
