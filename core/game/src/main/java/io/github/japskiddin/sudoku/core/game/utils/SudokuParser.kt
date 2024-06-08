@@ -20,18 +20,20 @@ class SudokuParser {
         }
 
         val size = gameType.size
-        val listBoard = MutableList(size) { row ->
-            MutableList(size) { col ->
-                BoardCell(row, col, 0)
+        val listBoard =
+            MutableList(size) { row ->
+                MutableList(size) { col ->
+                    BoardCell(row, col, 0)
+                }
             }
-        }
 
         for (i in board.indices) {
-            val value = if (emptySeparator != null) {
-                if (board[i] == emptySeparator) 0 else boardDigitToInt(board[i])
-            } else {
-                if (board[i] in emptySeparators) 0 else boardDigitToInt(board[i])
-            }
+            val value =
+                if (emptySeparator != null) {
+                    if (board[i] == emptySeparator) 0 else boardDigitToInt(board[i])
+                } else {
+                    if (board[i] in emptySeparators) 0 else boardDigitToInt(board[i])
+                }
 
             listBoard[i / size][i % size].value = value
             listBoard[i / size][i % size].isLocked = locked
@@ -45,25 +47,32 @@ class SudokuParser {
      * @param boardList Sudoku board
      * @return Sudoku in string
      */
-    fun boardToString(boardList: List<List<BoardCell>>, emptySeparator: Char = '0'): String {
+    fun boardToString(
+        boardList: List<List<BoardCell>>,
+        emptySeparator: Char = '0'
+    ): String {
         var boardString = ""
         boardList.forEach { cells ->
             cells.forEach { cell ->
-                boardString += if (cell.value <= 9) {
-                    if (cell.value != 0) {
-                        cell.value.toString()
+                boardString +=
+                    if (cell.value <= 9) {
+                        if (cell.value != 0) {
+                            cell.value.toString()
+                        } else {
+                            emptySeparator
+                        }
                     } else {
-                        emptySeparator
+                        cell.value.toString(radix)
                     }
-                } else {
-                    cell.value.toString(radix)
-                }
             }
         }
         return boardString
     }
 
-    fun boardToString(board: IntArray, emptySeparator: Char = '0'): String {
+    fun boardToString(
+        board: IntArray,
+        emptySeparator: Char = '0'
+    ): String {
         var boardString = ""
         board.forEach {
             boardString += if (it != 0) it.toString(radix) else emptySeparator

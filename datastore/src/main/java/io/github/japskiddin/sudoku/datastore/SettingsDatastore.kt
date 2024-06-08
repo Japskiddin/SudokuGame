@@ -25,7 +25,8 @@ class SettingsDatastore(applicationContext: Context) {
         }
     }
 
-    val mistakesLimit = dataStore.data.map { preferences ->
-        preferences[mistakesLimitKey] ?: MISTAKES_LIMIT
-    }
+    val mistakesLimit =
+        dataStore.data.map { preferences ->
+            preferences[mistakesLimitKey] ?: MISTAKES_LIMIT
+        }
 }

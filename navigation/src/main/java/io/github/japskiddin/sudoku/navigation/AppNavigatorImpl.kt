@@ -4,26 +4,35 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class AppNavigatorImpl @Inject constructor() : AppNavigator {
-    override val navigationChannel = Channel<NavigationIntent>(
-        capacity = Int.MAX_VALUE,
-        onBufferOverflow = BufferOverflow.DROP_LATEST,
-    )
+class AppNavigatorImpl
+@Inject
+constructor() : AppNavigator {
+    override val navigationChannel =
+        Channel<NavigationIntent>(
+            capacity = Int.MAX_VALUE,
+            onBufferOverflow = BufferOverflow.DROP_LATEST
+        )
 
-    override suspend fun navigateBack(route: String?, inclusive: Boolean) {
+    override suspend fun navigateBack(
+        route: String?,
+        inclusive: Boolean
+    ) {
         navigationChannel.send(
             NavigationIntent.NavigateBack(
                 route = route,
-                inclusive = inclusive,
+                inclusive = inclusive
             )
         )
     }
 
-    override fun tryNavigateBack(route: String?, inclusive: Boolean) {
+    override fun tryNavigateBack(
+        route: String?,
+        inclusive: Boolean
+    ) {
         navigationChannel.trySend(
             NavigationIntent.NavigateBack(
                 route = route,
-                inclusive = inclusive,
+                inclusive = inclusive
             )
         )
     }
@@ -39,7 +48,7 @@ class AppNavigatorImpl @Inject constructor() : AppNavigator {
                 route = route,
                 popUpToRoute = popUpToRoute,
                 inclusive = inclusive,
-                isSingleTop = isSingleTop,
+                isSingleTop = isSingleTop
             )
         )
     }
@@ -55,7 +64,7 @@ class AppNavigatorImpl @Inject constructor() : AppNavigator {
                 route = route,
                 popUpToRoute = popUpToRoute,
                 inclusive = inclusive,
-                isSingleTop = isSingleTop,
+                isSingleTop = isSingleTop
             )
         )
     }

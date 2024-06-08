@@ -14,7 +14,7 @@ public data class SavedGame(
     val lastPlayed: Long,
     val startedAt: Long,
     val finishedAt: Long,
-    val status: GameStatus,
+    val status: GameStatus
 ) {
     public companion object {
         public const val ID_NONE: Long = 0L

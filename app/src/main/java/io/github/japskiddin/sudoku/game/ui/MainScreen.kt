@@ -49,7 +49,8 @@ private fun MainScreenContent(
 
     SudokuTheme {
         Surface(
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxSize()
                 .safeDrawingPadding(),
             color = MaterialTheme.colorScheme.background
@@ -72,7 +73,7 @@ private fun MainScreenContent(
 @Composable
 internal fun NavigationEffects(
     navigationChannel: Channel<NavigationIntent>,
-    navHostController: NavHostController,
+    navHostController: NavHostController
 ) {
     val activity = LocalContext.current as? Activity
     LaunchedEffect(activity, navHostController, navigationChannel) {

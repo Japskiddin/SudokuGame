@@ -6,7 +6,9 @@ import io.github.japskiddin.sudoku.navigation.AppNavigator
 import javax.inject.Inject
 
 @HiltViewModel
-internal class MainViewModel @Inject constructor(
+internal class MainViewModel
+@Inject
+constructor(
     appNavigator: AppNavigator
 ) : ViewModel() {
     val navigationChannel = appNavigator.navigationChannel

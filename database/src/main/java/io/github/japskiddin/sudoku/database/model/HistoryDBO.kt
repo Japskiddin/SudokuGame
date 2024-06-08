@@ -12,7 +12,7 @@ import java.util.Date
 data class HistoryDBO(
     @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo("date") val date: Date,
-    @Embedded(prefix = "level.") val level: Level,
+    @Embedded(prefix = "level.") val level: Level
 )
 
 @Keep
@@ -22,5 +22,5 @@ data class Level(
     @ColumnInfo("current_board") val currentBoard: String,
     @ColumnInfo("completed_board") val completedBoard: String,
     @ColumnInfo("actions") val actions: Int,
-    @ColumnInfo("difficulty") val difficulty: Int,
+    @ColumnInfo("difficulty") val difficulty: Int
 )

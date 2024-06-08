@@ -17,14 +17,16 @@ import io.github.japskiddin.sudoku.database.utils.DateConverter
     entities = [
         RecordDBO::class,
         SavedGameDBO::class,
-        BoardDBO::class,
+        BoardDBO::class
     ],
-    version = 1,
+    version = 1
 )
 @TypeConverters(DateConverter::class)
 internal abstract class SudokuRoomDatabase : RoomDatabase() {
     abstract fun recordDao(): RecordDao
+
     abstract fun boardDao(): BoardDao
+
     abstract fun savedGameDao(): SavedGameDao
 }
 
@@ -38,10 +40,11 @@ class SudokuDatabase internal constructor(private val database: SudokuRoomDataba
 }
 
 fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
-    val sudokuRoomDatabase = Room.databaseBuilder(
-        checkNotNull(applicationContext.applicationContext),
-        SudokuRoomDatabase::class.java,
-        "sudoku"
-    ).build()
+    val sudokuRoomDatabase =
+        Room.databaseBuilder(
+            checkNotNull(applicationContext.applicationContext),
+            SudokuRoomDatabase::class.java,
+            "sudoku"
+        ).build()
     return SudokuDatabase(sudokuRoomDatabase)
 }

@@ -9,7 +9,7 @@ public data class GameLevel(
     val currentBoard: Array<IntArray> = emptyArray(),
     val completedBoard: Array<IntArray> = emptyArray(),
     val actions: Int = 0,
-    val difficulty: Difficulty = Difficulty.NORMAL,
+    val difficulty: Difficulty = Difficulty.NORMAL
 ) {
     public fun isEmptyBoard(): Boolean {
         return currentBoard.isEmpty() || completedBoard.isEmpty()

@@ -72,18 +72,20 @@ internal fun GameBoard(
     outerCornerRadius: Dp = 12.dp,
     outerStrokeWidth: Dp = 1.5.dp,
     innerStrokeWidth: Dp = 1.dp,
-    numberTextSize: TextUnit = when (boardSize) {
-        6 -> 32.sp
-        9 -> 26.sp
-        12 -> 24.sp
-        else -> 14.sp
-    },
-    noteTextSize: TextUnit = when (boardSize) {
-        6 -> 18.sp
-        9 -> 12.sp
-        12 -> 7.sp
-        else -> 14.sp
-    },
+    numberTextSize: TextUnit =
+        when (boardSize) {
+            6 -> 32.sp
+            9 -> 26.sp
+            12 -> 24.sp
+            else -> 14.sp
+        },
+    noteTextSize: TextUnit =
+        when (boardSize) {
+            6 -> 18.sp
+            9 -> 12.sp
+            12 -> 7.sp
+            else -> 14.sp
+        },
     isIdenticalNumbersHighlight: Boolean = true,
     isErrorsHighlight: Boolean = true,
     isPositionCells: Boolean = true,
@@ -104,28 +106,29 @@ internal fun GameBoard(
     noteColor: Color = numberColor.copy(alpha = 0.8f),
     outerStrokeColor: Color = Color.Black,
     innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
-    onSelectCell: (BoardCell) -> Unit,
+    onSelectCell: (BoardCell) -> Unit
 ) {
     BoxWithConstraints(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .aspectRatio(1f)
             .background(
                 color = OnPrimary,
-                shape = RoundedCornerShape(size = 16.dp),
+                shape = RoundedCornerShape(size = 16.dp)
             )
             .padding(8.dp)
             .innerShadow(
                 shape = RoundedCornerShape(size = 12.dp),
                 color = Color.Black.copy(alpha = .8f),
                 offsetX = 2.dp,
-                offsetY = 2.dp,
+                offsetY = 2.dp
             )
             .innerShadow(
                 shape = RoundedCornerShape(size = 12.dp),
                 color = Color.White.copy(alpha = .8f),
                 offsetX = (-2).dp,
-                offsetY = (-2).dp,
+                offsetY = (-2).dp
             )
     ) {
         val maxWidth = constraints.maxWidth.toFloat()
@@ -133,24 +136,28 @@ internal fun GameBoard(
         val cellSizePx by remember(boardSize) { mutableFloatStateOf(maxWidth / boardSize.toFloat()) }
         val cellSizeDividerWidth by remember(boardSize) {
             mutableFloatStateOf(
-                cellSizePx / ceil(
-                    sqrt(
-                        boardSize.toFloat()
+                cellSizePx /
+                    ceil(
+                        sqrt(
+                            boardSize.toFloat()
+                        )
                     )
-                )
             )
         }
         val cellSizeDividerHeight by remember(boardSize) {
             mutableFloatStateOf(
-                cellSizePx / floor(
-                    sqrt(
-                        boardSize.toFloat()
+                cellSizePx /
+                    floor(
+                        sqrt(
+                            boardSize.toFloat()
+                        )
                     )
-                )
             )
         }
 
-        val verticalInnerStrokeThickness by remember(boardSize) { mutableIntStateOf(floor(sqrt(boardSize.toFloat())).toInt()) }
+        val verticalInnerStrokeThickness by remember(
+            boardSize
+        ) { mutableIntStateOf(floor(sqrt(boardSize.toFloat())).toInt()) }
         val horizontalInnerStrokeThickness by remember(boardSize) {
             mutableIntStateOf(
                 ceil(
@@ -222,95 +229,106 @@ internal fun GameBoard(
 
         val context = LocalContext.current
         LaunchedEffect(numberTextSize, noteTextSize) {
-            numberTextSizePx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                numberTextSize.value,
-                context.resources.displayMetrics
-            )
-            noteTextSizePx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                noteTextSize.value,
-                context.resources.displayMetrics
-            )
-            numberPaint = TextPaint().apply {
-                color = numberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
-            selectedNumberPaint = TextPaint().apply {
-                color = selectedNumberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
-            notePaint = TextPaint().apply {
-                color = noteColor.toArgb()
-                isAntiAlias = true
-                textSize = noteTextSizePx
-            }
-            errorNumberPaint = TextPaint().apply {
-                color = errorNumberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
-            lockedNumberPaint = TextPaint().apply {
-                color = lockedNumberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
+            numberTextSizePx =
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    numberTextSize.value,
+                    context.resources.displayMetrics
+                )
+            noteTextSizePx =
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    noteTextSize.value,
+                    context.resources.displayMetrics
+                )
+            numberPaint =
+                TextPaint().apply {
+                    color = numberColor.toArgb()
+                    isAntiAlias = true
+                    textSize = numberTextSizePx
+                }
+            selectedNumberPaint =
+                TextPaint().apply {
+                    color = selectedNumberColor.toArgb()
+                    isAntiAlias = true
+                    textSize = numberTextSizePx
+                }
+            notePaint =
+                TextPaint().apply {
+                    color = noteColor.toArgb()
+                    isAntiAlias = true
+                    textSize = noteTextSizePx
+                }
+            errorNumberPaint =
+                TextPaint().apply {
+                    color = errorNumberColor.toArgb()
+                    isAntiAlias = true
+                    textSize = numberTextSizePx
+                }
+            lockedNumberPaint =
+                TextPaint().apply {
+                    color = lockedNumberColor.toArgb()
+                    isAntiAlias = true
+                    textSize = numberTextSizePx
+                }
         }
 
-        val boardModifier = Modifier
-            .fillMaxSize()
-            .pointerInput(key1 = isEnabled, key2 = board) {
-                detectTapGestures(
-                    onTap = {
-                        if (isEnabled) {
-                            val totalOffset = it / zoom + offset
-                            val row = floor((totalOffset.y) / cellSizePx)
-                                .toInt()
-                                .coerceIn(board.indices)
-                            val column = floor((totalOffset.x) / cellSizePx)
-                                .toInt()
-                                .coerceIn(board.indices)
-                            onSelectCell(board[row][column])
-                        }
-                    },
-                )
-            }
-
-        val zoomModifier = Modifier
-            .pointerInput(isEnabled) {
-                detectTransformGestures(
-                    onGesture = { gestureCentroid, gesturePan, gestureZoom, _ ->
-                        if (isEnabled) {
-                            val oldScale = zoom
-                            val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
-
-                            offset = (offset + gestureCentroid / oldScale) -
-                                (gestureCentroid / newScale + gesturePan / oldScale)
-
-                            zoom = newScale
-                            if (offset.x < 0) {
-                                offset = Offset(0f, offset.y)
-                            } else if (maxWidth - offset.x < maxWidth / zoom) {
-                                offset = offset.copy(x = maxWidth - maxWidth / zoom)
-                            }
-                            if (offset.y < 0) {
-                                offset = Offset(offset.x, 0f)
-                            } else if (maxWidth - offset.y < maxWidth / zoom) {
-                                offset = offset.copy(y = maxWidth - maxWidth / zoom)
+        val boardModifier =
+            Modifier
+                .fillMaxSize()
+                .pointerInput(key1 = isEnabled, key2 = board) {
+                    detectTapGestures(
+                        onTap = {
+                            if (isEnabled) {
+                                val totalOffset = it / zoom + offset
+                                val row =
+                                    floor((totalOffset.y) / cellSizePx)
+                                        .toInt()
+                                        .coerceIn(board.indices)
+                                val column =
+                                    floor((totalOffset.x) / cellSizePx)
+                                        .toInt()
+                                        .coerceIn(board.indices)
+                                onSelectCell(board[row][column])
                             }
                         }
-                    }
-                )
-            }
-            .graphicsLayer {
-                translationX = -offset.x * zoom
-                translationY = -offset.y * zoom
-                scaleX = zoom
-                scaleY = zoom
-                TransformOrigin(0f, 0f).also { transformOrigin = it }
-            }
+                    )
+                }
+
+        val zoomModifier =
+            Modifier
+                .pointerInput(isEnabled) {
+                    detectTransformGestures(
+                        onGesture = { gestureCentroid, gesturePan, gestureZoom, _ ->
+                            if (isEnabled) {
+                                val oldScale = zoom
+                                val newScale = (zoom * gestureZoom).coerceIn(1f..3f)
+
+                                offset = (offset + gestureCentroid / oldScale) -
+                                    (gestureCentroid / newScale + gesturePan / oldScale)
+
+                                zoom = newScale
+                                if (offset.x < 0) {
+                                    offset = Offset(0f, offset.y)
+                                } else if (maxWidth - offset.x < maxWidth / zoom) {
+                                    offset = offset.copy(x = maxWidth - maxWidth / zoom)
+                                }
+                                if (offset.y < 0) {
+                                    offset = Offset(offset.x, 0f)
+                                } else if (maxWidth - offset.y < maxWidth / zoom) {
+                                    offset = offset.copy(y = maxWidth - maxWidth / zoom)
+                                }
+                            }
+                        }
+                    )
+                }
+                .graphicsLayer {
+                    translationX = -offset.x * zoom
+                    translationY = -offset.y * zoom
+                    scaleX = zoom
+                    scaleY = zoom
+                    TransformOrigin(0f, 0f).also { transformOrigin = it }
+                }
 
         Canvas(
             modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
@@ -324,27 +342,29 @@ internal fun GameBoard(
                         color = cellColor,
                         boardSize = boardSize,
                         cellSize = cellSize,
-                        cellOffset = Offset(
+                        cellOffset =
+                        Offset(
                             x = cell.col * cellSizePx,
                             y = cell.row * cellSizePx
-                        ),
+                        )
                     )
                 }
             }
 
             // закрашиваем выделенную клетку, если есть
             if (selectedCell.row >= 0 && selectedCell.col >= 0) {
-                val selectedOffset = Offset(
-                    x = selectedCell.col * cellSizePx,
-                    y = selectedCell.row * cellSizePx
-                )
+                val selectedOffset =
+                    Offset(
+                        x = selectedCell.col * cellSizePx,
+                        y = selectedCell.row * cellSizePx
+                    )
 
                 drawCell(
                     cornerRadius = cornerRadius,
                     color = selectedCellColor,
                     boardSize = boardSize,
                     cellSize = cellSize,
-                    cellOffset = selectedOffset,
+                    cellOffset = selectedOffset
                 )
                 if (isPositionCells) {
                     drawVerticalPositionCells(
@@ -352,14 +372,14 @@ internal fun GameBoard(
                         color = selectedCellColor.copy(alpha = 0.2f),
                         boardSize = boardSize,
                         cellSize = cellSize,
-                        cellOffset = selectedOffset,
+                        cellOffset = selectedOffset
                     )
                     drawHorizontalPositionCells(
                         cornerRadius = cornerRadius,
                         color = selectedCellColor.copy(alpha = 0.2f),
                         boardSize = boardSize,
                         cellSize = cellSize,
-                        cellOffset = selectedOffset,
+                        cellOffset = selectedOffset
                     )
                 }
             }
@@ -375,10 +395,11 @@ internal fun GameBoard(
                                 color = selectedCellColor,
                                 boardSize = boardSize,
                                 cellSize = cellSize,
-                                cellOffset = Offset(
+                                cellOffset =
+                                Offset(
                                     x = cell.col * cellSizePx,
                                     y = cell.row * cellSizePx
-                                ),
+                                )
                             )
                         }
                     }
@@ -391,10 +412,11 @@ internal fun GameBoard(
                     color = selectedCellColor.copy(alpha = 0.5f),
                     boardSize = boardSize,
                     cellSize = cellSize,
-                    cellOffset = Offset(
+                    cellOffset =
+                    Offset(
                         x = it.col * cellSizePx,
                         y = it.row * cellSizePx
-                    ),
+                    )
                 )
             }
 
@@ -403,7 +425,7 @@ internal fun GameBoard(
                     outerStrokeColor = outerStrokeColor,
                     outerStrokeWidth = outerStrokeWidthPx,
                     maxWidth = maxWidth,
-                    cornerRadius = cornerRadius,
+                    cornerRadius = cornerRadius
                 )
             }
 
@@ -415,7 +437,7 @@ internal fun GameBoard(
                 outerStrokeWidth = outerStrokeWidthPx,
                 maxWidth = maxWidth,
                 innerStrokeWidth = innerStrokeWidthPx,
-                innerStrokeColor = innerStrokeColor,
+                innerStrokeColor = innerStrokeColor
             )
 
             drawVerticalLines(
@@ -426,7 +448,7 @@ internal fun GameBoard(
                 outerStrokeWidth = outerStrokeWidthPx,
                 maxWidth = maxWidth,
                 innerStrokeWidth = innerStrokeWidthPx,
-                innerStrokeColor = innerStrokeColor,
+                innerStrokeColor = innerStrokeColor
             )
 
             drawNumbers(
@@ -440,7 +462,7 @@ internal fun GameBoard(
                 isIdenticalNumberHighlight = isIdenticalNumbersHighlight,
                 numberPaint = numberPaint,
                 isQuestions = isQuestions,
-                cellSize = cellSizePx,
+                cellSize = cellSizePx
             )
 
             if (notes.isNotEmpty() && !isQuestions && isRenderNotes) {
@@ -450,7 +472,7 @@ internal fun GameBoard(
                     notes = notes,
                     cellSize = cellSizePx,
                     cellSizeDividerWidth = cellSizeDividerWidth,
-                    cellSizeDividerHeight = cellSizeDividerHeight,
+                    cellSizeDividerHeight = cellSizeDividerHeight
                 )
             }
 
@@ -463,7 +485,8 @@ internal fun GameBoard(
                         if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
                             drawRect(
                                 color = selectedCellColor.copy(alpha = 0.1f),
-                                topLeft = Offset(
+                                topLeft =
+                                Offset(
                                     x = i * sectionWidth * cellSizePx,
                                     y = j * sectionHeight * cellSizePx
                                 ),
@@ -481,13 +504,13 @@ private fun DrawScope.drawBoardFrame(
     outerStrokeColor: Color,
     outerStrokeWidth: Float,
     maxWidth: Float,
-    cornerRadius: CornerRadius,
+    cornerRadius: CornerRadius
 ) {
     drawRoundRect(
         color = outerStrokeColor,
         size = Size(maxWidth, maxWidth),
         cornerRadius = cornerRadius,
-        style = Stroke(width = outerStrokeWidth),
+        style = Stroke(width = outerStrokeWidth)
     )
 }
 
@@ -499,7 +522,7 @@ private fun DrawScope.drawHorizontalLines(
     outerStrokeWidth: Float,
     maxWidth: Float,
     innerStrokeWidth: Float,
-    innerStrokeColor: Color,
+    innerStrokeColor: Color
 ) {
     for (i in 1 until boardSize) {
         val isOuterStroke = i % innerStrokeThickness == 0
@@ -520,7 +543,7 @@ private fun DrawScope.drawVerticalLines(
     outerStrokeWidth: Float,
     maxWidth: Float,
     innerStrokeWidth: Float,
-    innerStrokeColor: Color,
+    innerStrokeColor: Color
 ) {
     for (i in 1 until boardSize) {
         val isOuterStroke = i % innerStrokeThickness == 0
@@ -540,7 +563,7 @@ private fun DrawScope.drawVerticalPositionCells(
     color: Color,
     boardSize: Int,
     cellSize: Size,
-    cellOffset: Offset,
+    cellOffset: Offset
 ) {
     for (j in 0 until boardSize) {
         drawCell(
@@ -548,9 +571,10 @@ private fun DrawScope.drawVerticalPositionCells(
             color = color,
             boardSize = boardSize,
             cellSize = cellSize,
-            cellOffset = Offset(
+            cellOffset =
+            Offset(
                 x = cellOffset.x,
-                y = j * cellSize.height,
+                y = j * cellSize.height
             )
         )
     }
@@ -561,7 +585,7 @@ private fun DrawScope.drawHorizontalPositionCells(
     color: Color,
     boardSize: Int,
     cellSize: Size,
-    cellOffset: Offset,
+    cellOffset: Offset
 ) {
     for (i in 0 until boardSize) {
         drawCell(
@@ -569,9 +593,10 @@ private fun DrawScope.drawHorizontalPositionCells(
             color = color,
             boardSize = boardSize,
             cellSize = cellSize,
-            cellOffset = Offset(
+            cellOffset =
+            Offset(
                 x = i * cellSize.width,
-                y = cellOffset.y,
+                y = cellOffset.y
             )
         )
     }
@@ -582,7 +607,7 @@ private fun DrawScope.drawCell(
     color: Color,
     boardSize: Int,
     cellSize: Size,
-    cellOffset: Offset,
+    cellOffset: Offset
 ) {
     val row = (cellOffset.x / cellSize.width).toInt()
     val col = (cellOffset.y / cellSize.height).toInt()
@@ -591,34 +616,34 @@ private fun DrawScope.drawCell(
             offset = cellOffset,
             size = cellSize,
             color = color,
-            topLeftCorner = cornerRadius,
+            topLeftCorner = cornerRadius
         )
     } else if (row == boardSize - 1 && col == 0) {
         drawRoundCellBackground(
             offset = cellOffset,
             size = cellSize,
             color = color,
-            topRightCorner = cornerRadius,
+            topRightCorner = cornerRadius
         )
     } else if (row == 0 && col == boardSize - 1) {
         drawRoundCellBackground(
             offset = cellOffset,
             size = cellSize,
             color = color,
-            bottomLeftCorner = cornerRadius,
+            bottomLeftCorner = cornerRadius
         )
     } else if (row == boardSize - 1 && col == boardSize - 1) {
         drawRoundCellBackground(
             offset = cellOffset,
             size = cellSize,
             color = color,
-            bottomRightCorner = cornerRadius,
+            bottomRightCorner = cornerRadius
         )
     } else {
         drawCellBackground(
             offset = cellOffset,
             size = cellSize,
-            color = color,
+            color = color
         )
     }
 }
@@ -626,7 +651,7 @@ private fun DrawScope.drawCell(
 private fun DrawScope.drawCellBackground(
     offset: Offset,
     size: Size,
-    color: Color,
+    color: Color
 ) {
     drawRect(
         color = color,
@@ -642,22 +667,24 @@ private fun DrawScope.drawRoundCellBackground(
     topLeftCorner: CornerRadius = CornerRadius.Zero,
     topRightCorner: CornerRadius = CornerRadius.Zero,
     bottomLeftCorner: CornerRadius = CornerRadius.Zero,
-    bottomRightCorner: CornerRadius = CornerRadius.Zero,
+    bottomRightCorner: CornerRadius = CornerRadius.Zero
 ) {
-    val path = Path().apply {
-        addRoundRect(
-            RoundRect(
-                rect = Rect(
-                    offset = offset,
-                    size = size,
-                ),
-                topLeft = topLeftCorner,
-                topRight = topRightCorner,
-                bottomLeft = bottomLeftCorner,
-                bottomRight = bottomRightCorner,
+    val path =
+        Path().apply {
+            addRoundRect(
+                RoundRect(
+                    rect =
+                    Rect(
+                        offset = offset,
+                        size = size
+                    ),
+                    topLeft = topLeftCorner,
+                    topRight = topRightCorner,
+                    bottomLeft = bottomLeftCorner,
+                    bottomRight = bottomRightCorner
+                )
             )
-        )
-    }
+        }
     drawPath(path = path, color = color)
 }
 
@@ -672,19 +699,20 @@ private fun DrawScope.drawNumbers(
     selectedCell: BoardCell,
     isQuestions: Boolean,
     isIdenticalNumberHighlight: Boolean,
-    cellSize: Float,
+    cellSize: Float
 ) {
     drawIntoCanvas { canvas ->
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
                 val number = board[i][j]
                 if (number.value != 0) {
-                    val paint = when {
-                        number.isError && isErrorsHighlight -> errorNumberPaint
-                        number.isLocked -> lockedNumberPaint
-                        (selectedCell.row >= 0 && selectedCell.col >= 0) && ((isIdenticalNumberHighlight && number.value == selectedCell.value) || (selectedCell.row == i && selectedCell.col == j)) -> selectedNumberPaint
-                        else -> numberPaint
-                    }
+                    val paint =
+                        when {
+                            number.isError && isErrorsHighlight -> errorNumberPaint
+                            number.isLocked -> lockedNumberPaint
+                            (selectedCell.row >= 0 && selectedCell.col >= 0) && ((isIdenticalNumberHighlight && number.value == selectedCell.value) || (selectedCell.row == i && selectedCell.col == j)) -> selectedNumberPaint
+                            else -> numberPaint
+                        }
 
                     val textToDraw = if (isQuestions) "?" else number.value.toString(16).uppercase()
                     val textBounds = android.graphics.Rect()
@@ -705,7 +733,7 @@ private fun DrawScope.drawNotes(
     notes: List<BoardNote>,
     cellSize: Float,
     cellSizeDividerWidth: Float,
-    cellSizeDividerHeight: Float,
+    cellSizeDividerHeight: Float
 ) {
     val noteBounds = android.graphics.Rect()
     paint.getTextBounds("1", 0, 1, noteBounds)
@@ -715,21 +743,30 @@ private fun DrawScope.drawNotes(
             val textToDraw = note.value.toString(16).uppercase()
             val noteTextMeasure = paint.measureText(textToDraw)
             val textPosX =
-                note.col * cellSize + cellSizeDividerWidth / 2f + (cellSizeDividerWidth * getNoteRowNumber(
-                    note.value,
-                    boardSize
-                )) - noteTextMeasure / 2f
+                note.col * cellSize + cellSizeDividerWidth / 2f + (
+                    cellSizeDividerWidth *
+                        getNoteRowNumber(
+                            note.value,
+                            boardSize
+                        )
+                    ) - noteTextMeasure / 2f
             val textPosY =
-                note.row * cellSize + cellSizeDividerHeight / 2f + (cellSizeDividerHeight * getNoteColumnNumber(
-                    note.value,
-                    boardSize
-                )) + noteBounds.height() / 2f
+                note.row * cellSize + cellSizeDividerHeight / 2f + (
+                    cellSizeDividerHeight *
+                        getNoteColumnNumber(
+                            note.value,
+                            boardSize
+                        )
+                    ) + noteBounds.height() / 2f
             canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
         }
     }
 }
 
-private fun getNoteColumnNumber(number: Int, size: Int): Int {
+private fun getNoteColumnNumber(
+    number: Int,
+    size: Int
+): Int {
     if (size == 9 || size == 6) {
         return when (number) {
             1, 2, 3 -> 0
@@ -748,7 +785,10 @@ private fun getNoteColumnNumber(number: Int, size: Int): Int {
     return 0
 }
 
-private fun getNoteRowNumber(number: Int, size: Int): Int {
+private fun getNoteRowNumber(
+    number: Int,
+    size: Int
+): Int {
     if (size == 9 || size == 6) {
         return when (number) {
             1, 4, 7 -> 0
@@ -787,7 +827,7 @@ private fun getSectionWidthForSize(size: Int): Int {
 }
 
 @Preview(
-    name = "Game Board Preview",
+    name = "Game Board Preview"
 )
 @Composable
 private fun GameBoardPreview(
@@ -798,32 +838,37 @@ private fun GameBoardPreview(
         board = state.board,
         selectedCell = state.selectedCell,
         onSelectCell = {},
-        notes = notes,
+        notes = notes
     )
 }
 
 internal class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
     private val parser = SudokuParser()
-    private val board = Board(
-        initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-        solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-        difficulty = GameDifficulty.INTERMEDIATE,
-        type = GameType.DEFAULT9X9,
-    )
+    private val board =
+        Board(
+            initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+            solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+            difficulty = GameDifficulty.INTERMEDIATE,
+            type = GameType.DEFAULT9X9
+        )
 
     override val values: Sequence<GameState>
-        get() = sequenceOf(
-            GameState(
-                board = parser.parseBoard(
-                    board = board.initialBoard, gameType = board.type
+        get() =
+            sequenceOf(
+                GameState(
+                    board =
+                    parser.parseBoard(
+                        board = board.initialBoard,
+                        gameType = board.type
+                    )
+                        .map { item -> item.toImmutableList() }
+                        .toImmutableList(),
+                    selectedCell =
+                    BoardCell(
+                        row = 3,
+                        col = 2,
+                        value = 3
+                    )
                 )
-                    .map { item -> item.toImmutableList() }
-                    .toImmutableList(),
-                selectedCell = BoardCell(
-                    row = 3,
-                    col = 2,
-                    value = 3,
-                ),
-            ),
-        )
+            )
 }

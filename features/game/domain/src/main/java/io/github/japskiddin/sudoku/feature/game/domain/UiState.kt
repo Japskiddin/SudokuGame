@@ -5,9 +5,13 @@ import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import kotlinx.collections.immutable.ImmutableList
 
 public sealed class UiState {
-    public class Loading(@StringRes public val message: Int) : UiState()
+    public class Loading(
+        @StringRes public val message: Int
+    ) : UiState()
 
-    public class Error(@StringRes public val message: Int) : UiState()
+    public class Error(
+        @StringRes public val message: Int
+    ) : UiState()
 
     public class Success(public val gameState: GameState) : UiState()
 
@@ -18,5 +22,5 @@ public sealed class UiState {
 
 public data class GameState(
     val board: ImmutableList<ImmutableList<BoardCell>>,
-    val selectedCell: BoardCell = BoardCell(-1, -1, 0),
+    val selectedCell: BoardCell = BoardCell(-1, -1, 0)
 )

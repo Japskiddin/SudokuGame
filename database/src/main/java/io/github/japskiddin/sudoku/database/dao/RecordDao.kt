@@ -21,7 +21,10 @@ interface RecordDao {
             " WHERE type == :type AND difficulty == :difficulty" +
             " ORDER BY time ASC"
     )
-    fun getAll(difficulty: Int, type: Int): Flow<List<RecordDBO>>
+    fun getAll(
+        difficulty: Int,
+        type: Int
+    ): Flow<List<RecordDBO>>
 
     @Query("SELECT * FROM record ORDER BY time ASC")
     fun getAllSortedByTime(): Flow<List<RecordDBO>>

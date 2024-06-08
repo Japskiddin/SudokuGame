@@ -115,7 +115,7 @@ public fun AutoSizeText(
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-    lineSpacingRatio: Float = style.lineHeight.value / style.fontSize.value,
+    lineSpacingRatio: Float = style.lineHeight.value / style.fontSize.value
 ) {
     AutoSizeText(
         text = AnnotatedString(text),
@@ -138,7 +138,7 @@ public fun AutoSizeText(
         minLines = minLines,
         onTextLayout = onTextLayout,
         style = style,
-        lineSpacingRatio = lineSpacingRatio,
+        lineSpacingRatio = lineSpacingRatio
     )
 }
 
@@ -175,7 +175,7 @@ public fun AutoSizeText(
     inlineContent: ImmutableWrapper<Map<String, InlineTextContent>> = mapOf<String, InlineTextContent>().toImmutableWrapper(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-    lineSpacingRatio: Float = style.lineHeight.value / style.fontSize.value,
+    lineSpacingRatio: Float = style.lineHeight.value / style.fontSize.value
 ) {
     // Change font scale to 1F
     CompositionLocalProvider(
@@ -183,22 +183,25 @@ public fun AutoSizeText(
     ) {
         BoxWithConstraints(
             modifier = modifier,
-            contentAlignment = alignment,
+            contentAlignment = alignment
         ) {
-            val combinedTextStyle = LocalTextStyle.current + style.copy(
-                color = color.takeIf { it.isSpecified } ?: style.color,
-                fontStyle = fontStyle ?: style.fontStyle,
-                fontWeight = fontWeight ?: style.fontWeight,
-                fontFamily = fontFamily ?: style.fontFamily,
-                letterSpacing = letterSpacing.takeIf { it.isSpecified } ?: style.letterSpacing,
-                textDecoration = textDecoration ?: style.textDecoration,
-                textAlign = when (alignment) {
-                    Alignment.TopStart, Alignment.CenterStart, Alignment.BottomStart -> TextAlign.Start
-                    Alignment.TopCenter, Alignment.Center, Alignment.BottomCenter -> TextAlign.Center
-                    Alignment.TopEnd, Alignment.CenterEnd, Alignment.BottomEnd -> TextAlign.End
-                    else -> TextAlign.Unspecified
-                },
-            )
+            val combinedTextStyle =
+                LocalTextStyle.current +
+                    style.copy(
+                        color = color.takeIf { it.isSpecified } ?: style.color,
+                        fontStyle = fontStyle ?: style.fontStyle,
+                        fontWeight = fontWeight ?: style.fontWeight,
+                        fontFamily = fontFamily ?: style.fontFamily,
+                        letterSpacing = letterSpacing.takeIf { it.isSpecified } ?: style.letterSpacing,
+                        textDecoration = textDecoration ?: style.textDecoration,
+                        textAlign =
+                        when (alignment) {
+                            Alignment.TopStart, Alignment.CenterStart, Alignment.BottomStart -> TextAlign.Start
+                            Alignment.TopCenter, Alignment.Center, Alignment.BottomCenter -> TextAlign.Center
+                            Alignment.TopEnd, Alignment.CenterEnd, Alignment.BottomEnd -> TextAlign.End
+                            else -> TextAlign.Unspecified
+                        }
+                    )
 
             val layoutDirection = LocalLayoutDirection.current
             val density = LocalDensity.current
@@ -207,43 +210,46 @@ public fun AutoSizeText(
             val shouldMoveBackward: (TextUnit) -> Boolean = {
                 shouldShrink(
                     text = text,
-                    textStyle = combinedTextStyle.copy(
+                    textStyle =
+                    combinedTextStyle.copy(
                         fontSize = it,
-                        lineHeight = it * coercedLineSpacingRatio,
+                        lineHeight = it * coercedLineSpacingRatio
                     ),
                     minLines = minLines,
                     maxLines = maxLines,
                     softWrap = softWrap,
                     layoutDirection = layoutDirection,
                     density = density,
-                    fontFamilyResolver = fontFamilyResolver,
+                    fontFamilyResolver = fontFamilyResolver
                 )
             }
 
-            val electedFontSize = kotlin.run {
-                if (suggestedFontSizesStatus == VALID)
-                    suggestedFontSizes.value
-                else
-                    remember(key1 = suggestedFontSizes) {
+            val electedFontSize =
+                kotlin.run {
+                    if (suggestedFontSizesStatus == VALID) {
                         suggestedFontSizes.value
-                            .filter { it.isSp }
-                            .takeIf { it.isNotEmpty() }
-                            ?.sortedBy { it.value }
+                    } else {
+                        remember(key1 = suggestedFontSizes) {
+                            suggestedFontSizes.value
+                                .filter { it.isSp }
+                                .takeIf { it.isNotEmpty() }
+                                ?.sortedBy { it.value }
+                        }
                     }
-            }
-                ?.findElectedValue(shouldMoveBackward = shouldMoveBackward)
-                ?: rememberCandidateFontSizesIntProgress(
-                    density = density,
-                    dpSize = DpSize(maxWidth, maxHeight),
-                    maxTextSize = maxTextSize,
-                    minTextSize = minTextSize,
-                    stepGranularityTextSize = stepGranularityTextSize,
-                ).findElectedValue(
-                    transform = { density.toSp(it) },
-                    shouldMoveBackward = shouldMoveBackward,
-                )
+                }
+                    ?.findElectedValue(shouldMoveBackward = shouldMoveBackward)
+                    ?: rememberCandidateFontSizesIntProgress(
+                        density = density,
+                        dpSize = DpSize(maxWidth, maxHeight),
+                        maxTextSize = maxTextSize,
+                        minTextSize = minTextSize,
+                        stepGranularityTextSize = stepGranularityTextSize
+                    ).findElectedValue(
+                        transform = { density.toSp(it) },
+                        shouldMoveBackward = shouldMoveBackward
+                    )
 
-            if (electedFontSize == 0.sp)
+            if (electedFontSize == 0.sp) {
                 Log.w(
                     "AutoSizeText",
                     """The text cannot be displayed. Please consider the following options:
@@ -252,6 +258,7 @@ public fun AutoSizeText(
                       |  3. Adjusting the 'minTextSize' parameter to a suitable value and ensuring the overflow parameter is set to "TextOverflow.Ellipsis".
                     """.trimMargin()
                 )
+            }
 
             Text(
                 text = text,
@@ -261,10 +268,11 @@ public fun AutoSizeText(
                 minLines = minLines,
                 inlineContent = inlineContent.value,
                 onTextLayout = onTextLayout,
-                style = combinedTextStyle.copy(
+                style =
+                combinedTextStyle.copy(
                     fontSize = electedFontSize,
-                    lineHeight = electedFontSize * coercedLineSpacingRatio,
-                ),
+                    lineHeight = electedFontSize * coercedLineSpacingRatio
+                )
             )
         }
     }
@@ -279,7 +287,7 @@ private fun BoxWithConstraintsScope.shouldShrink(
     softWrap: Boolean,
     layoutDirection: LayoutDirection,
     density: Density,
-    fontFamilyResolver: FontFamily.Resolver,
+    fontFamilyResolver: FontFamily.Resolver
 ) = TextDelegate(
     text = text,
     style = textStyle,
@@ -288,10 +296,10 @@ private fun BoxWithConstraintsScope.shouldShrink(
     softWrap = softWrap,
     overflow = TextOverflow.Clip,
     density = density,
-    fontFamilyResolver = fontFamilyResolver,
+    fontFamilyResolver = fontFamilyResolver
 ).layout(
     constraints = constraints,
-    layoutDirection = layoutDirection,
+    layoutDirection = layoutDirection
 ).hasVisualOverflow
 
 private fun BoxWithConstraintsScope.shouldShrink2(
@@ -302,7 +310,7 @@ private fun BoxWithConstraintsScope.shouldShrink2(
     softWrap: Boolean,
     density: Density,
     fontFamilyResolver: FontFamily.Resolver,
-    textMeasurer: TextMeasurer,
+    textMeasurer: TextMeasurer
 ) = textMeasurer.measure(
     text = text,
     style = textStyle,
@@ -312,7 +320,7 @@ private fun BoxWithConstraintsScope.shouldShrink2(
     constraints = constraints,
     layoutDirection = layoutDirection,
     density = density,
-    fontFamilyResolver = fontFamilyResolver,
+    fontFamilyResolver = fontFamilyResolver
 ).hasVisualOverflow
 
 @Composable
@@ -321,39 +329,42 @@ private fun rememberCandidateFontSizesIntProgress(
     dpSize: DpSize,
     minTextSize: TextUnit = TextUnit.Unspecified,
     maxTextSize: TextUnit = TextUnit.Unspecified,
-    stepGranularityTextSize: TextUnit = TextUnit.Unspecified,
+    stepGranularityTextSize: TextUnit = TextUnit.Unspecified
 ): IntProgression {
-    val max = remember(key1 = maxTextSize, key2 = dpSize, key3 = density) {
-        val intSize = density.toIntSize(dpSize)
-        min(intSize.width, intSize.height).let { max ->
-            maxTextSize
+    val max =
+        remember(key1 = maxTextSize, key2 = dpSize, key3 = density) {
+            val intSize = density.toIntSize(dpSize)
+            min(intSize.width, intSize.height).let { max ->
+                maxTextSize
+                    .takeIf { it.isSp }
+                    ?.let { density.roundToPx(it) }
+                    ?.coerceIn(range = 0..max)
+                    ?: max
+            }
+        }
+
+    val min =
+        remember(key1 = minTextSize, key2 = max, key3 = density) {
+            minTextSize
                 .takeIf { it.isSp }
                 ?.let { density.roundToPx(it) }
                 ?.coerceIn(range = 0..max)
-                ?: max
+                ?: 0
         }
-    }
 
-    val min = remember(key1 = minTextSize, key2 = max, key3 = density) {
-        minTextSize
-            .takeIf { it.isSp }
-            ?.let { density.roundToPx(it) }
-            ?.coerceIn(range = 0..max)
-            ?: 0
-    }
-
-    val step = remember(
-        stepGranularityTextSize,
-        min,
-        max,
-        density,
-    ) {
-        stepGranularityTextSize
-            .takeIf { it.isSp }
-            ?.let { density.roundToPx(it) }
-            ?.coerceIn(minimumValue = 1, maximumValue = max - min)
-            ?: 1
-    }
+    val step =
+        remember(
+            stepGranularityTextSize,
+            min,
+            max,
+            density
+        ) {
+            stepGranularityTextSize
+                .takeIf { it.isSp }
+                ?.let { density.roundToPx(it) }
+                ?.coerceIn(minimumValue = 1, maximumValue = max - min)
+                ?: 1
+        }
 
     return remember(key1 = min, key2 = max, key3 = step) {
         min..max step step
@@ -361,26 +372,28 @@ private fun rememberCandidateFontSizesIntProgress(
 }
 
 // This function works by using a binary search algorithm
-public fun <E> List<E>.findElectedValue(shouldMoveBackward: (E) -> Boolean): E = run {
-    indices.findElectedValue(
-        transform = { this[it] },
-        shouldMoveBackward = shouldMoveBackward,
-    )
-}
+public fun <E> List<E>.findElectedValue(shouldMoveBackward: (E) -> Boolean): E =
+    run {
+        indices.findElectedValue(
+            transform = { this[it] },
+            shouldMoveBackward = shouldMoveBackward
+        )
+    }
 
 // This function works by using a binary search algorithm
 private fun <E> IntProgression.findElectedValue(
     transform: (Int) -> E,
-    shouldMoveBackward: (E) -> Boolean,
+    shouldMoveBackward: (E) -> Boolean
 ) = run {
     var low = first / step
     var high = last / step
     while (low <= high) {
         val mid = low + (high - low) / 2
-        if (shouldMoveBackward(transform(mid * step)))
+        if (shouldMoveBackward(transform(mid * step))) {
             high = mid - 1
-        else
+        } else {
             low = mid + 1
+        }
     }
     transform((high * step).coerceAtLeast(minimumValue = first * step))
 }
@@ -392,10 +405,12 @@ public enum class SuggestedFontSizesStatus {
 
     public companion object {
         public val List<TextUnit>.suggestedFontSizesStatus: SuggestedFontSizesStatus
-            get() = if (isNotEmpty() && all { it.isSp } && sortedBy { it.value } == this)
-                VALID
-            else
-                INVALID
+            get() =
+                if (isNotEmpty() && all { it.isSp } && sortedBy { it.value } == this) {
+                    VALID
+                } else {
+                    INVALID
+                }
         public val ImmutableWrapper<List<TextUnit>>.rememberSuggestedFontSizesStatus: SuggestedFontSizesStatus
             @Composable get() = remember(key1 = this) { value.suggestedFontSizesStatus }
     }
@@ -412,7 +427,7 @@ public fun PreviewAutoSizeTextWithMaxLinesSetToIntMaxValue() {
                 text = "This is a bunch of text that will be auto sized",
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.CenterStart,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -431,7 +446,7 @@ public fun PreviewAutoSizeTextWithMinSizeSetTo14() {
                 minTextSize = 14.sp,
                 alignment = Alignment.CenterStart,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -466,7 +481,7 @@ public fun PreviewAutoSizeTextWithMCharacter() {
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.Center,
                 style = MaterialTheme.typography.bodyMedium,
-                lineSpacingRatio = 1F,
+                lineSpacingRatio = 1F
             )
         }
     }
@@ -482,12 +497,14 @@ public fun PreviewAutoSizeTextWithYCharacter() {
                 text = "y",
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.Center,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    lineHeightStyle = LineHeightStyle(
+                style =
+                MaterialTheme.typography.bodyMedium.copy(
+                    lineHeightStyle =
+                    LineHeightStyle(
                         alignment = LineHeightStyle.Alignment.Center,
-                        trim = Trim.Both,
+                        trim = Trim.Both
                     )
-                ),
+                )
             )
         }
     }

@@ -7,39 +7,39 @@ interface AppNavigator {
 
     suspend fun navigateBack(
         route: String? = null,
-        inclusive: Boolean = false,
+        inclusive: Boolean = false
     )
 
     fun tryNavigateBack(
         route: String? = null,
-        inclusive: Boolean = false,
+        inclusive: Boolean = false
     )
 
     suspend fun navigateTo(
         route: String,
         popUpToRoute: String? = null,
         inclusive: Boolean = false,
-        isSingleTop: Boolean = false,
+        isSingleTop: Boolean = false
     )
 
     fun tryNavigateTo(
         route: String,
         popUpToRoute: String? = null,
         inclusive: Boolean = false,
-        isSingleTop: Boolean = false,
+        isSingleTop: Boolean = false
     )
 }
 
 sealed class NavigationIntent {
     data class NavigateBack(
         val route: String? = null,
-        val inclusive: Boolean = false,
+        val inclusive: Boolean = false
     ) : NavigationIntent()
 
     data class NavigateTo(
         val route: String,
         val popUpToRoute: String? = null,
         val inclusive: Boolean = false,
-        val isSingleTop: Boolean = false,
+        val isSingleTop: Boolean = false
     ) : NavigationIntent()
 }

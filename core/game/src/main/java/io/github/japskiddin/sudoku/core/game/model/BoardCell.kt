@@ -5,5 +5,5 @@ data class BoardCell(
     val col: Int,
     var value: Int = 0,
     var isError: Boolean = false,
-    var isLocked: Boolean = false,
+    var isLocked: Boolean = false
 )

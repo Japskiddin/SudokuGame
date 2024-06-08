@@ -7,5 +7,5 @@ public enum class Difficulty {
     EASY,
     NORMAL,
     HARD,
-    EXPERT,
+    EXPERT
 }

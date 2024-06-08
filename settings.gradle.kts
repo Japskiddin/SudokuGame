@@ -40,5 +40,5 @@ include(
     ":features:home:domain",
     ":features:game:ui",
     ":features:game:domain",
-    ":navigation",
+    ":navigation"
 )

@@ -16,12 +16,12 @@ import kotlinx.serialization.Serializable
             onDelete = ForeignKey.CASCADE,
             entity = BoardDBO::class,
             parentColumns = arrayOf("uid"),
-            childColumns = arrayOf("board_uid"),
+            childColumns = arrayOf("board_uid")
         )
     ]
 )
 data class RecordDBO(
     @PrimaryKey
     @ColumnInfo(name = "board_uid") val boardUid: Long,
-    @ColumnInfo(name = "time") val time: Long,
+    @ColumnInfo(name = "time") val time: Long
 )

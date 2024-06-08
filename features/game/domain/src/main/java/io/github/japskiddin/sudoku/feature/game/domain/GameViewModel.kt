@@ -24,11 +24,13 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @HiltViewModel
-public class GameViewModel @Inject internal constructor(
+public class GameViewModel
+@Inject
+internal constructor(
     private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val appNavigator: AppNavigator,
-    private val savedState: SavedStateHandle,
+    private val savedState: SavedStateHandle
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(UiState.Initial)
     public val uiState: StateFlow<UiState>
@@ -58,7 +60,10 @@ public class GameViewModel @Inject internal constructor(
         generateGameLevel()
     }
 
-    public fun onInputCell(cell: Pair<Int, Int>, item: Int) {
+    public fun onInputCell(
+        cell: Pair<Int, Int>,
+        item: Int
+    ) {
 //     viewModelScope.launch {
 //       val level = _gameLevel.value ?: return@launch
 //       val board = level.currentBoard.copyOf()
@@ -95,18 +100,20 @@ public class GameViewModel @Inject internal constructor(
                 _uiState.update { UiState.Error(message = R.string.err_generate_level) }
                 return@launch
             }
-            val board = try {
-                getBoardUseCase.get().invoke(boardUid)
-            } catch (ex: BoardNotFoundException) {
-                _uiState.update { UiState.Error(message = R.string.err_generate_level) }
-                return@launch
-            }
+            val board =
+                try {
+                    getBoardUseCase.get().invoke(boardUid)
+                } catch (ex: BoardNotFoundException) {
+                    _uiState.update { UiState.Error(message = R.string.err_generate_level) }
+                    return@launch
+                }
             val savedGame = getSavedGameUseCase.get().invoke(board.uid)
 
             val parser = SudokuParser()
-            val list = parser.parseBoard(board.initialBoard, board.type)
-                .map { item -> item.toImmutableList() }
-                .toImmutableList()
+            val list =
+                parser.parseBoard(board.initialBoard, board.type)
+                    .map { item -> item.toImmutableList() }
+                    .toImmutableList()
             _uiState.update { Success(gameState = GameState(board = list)) }
         }
         // _isLoading.value = true

@@ -46,7 +46,7 @@ internal fun GameScreen(
         modifier = modifier,
         state = state,
         onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
-        onInputCell = { cell, item -> viewModel.onInputCell(cell, item) },
+        onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
     )
 }
 
@@ -55,29 +55,33 @@ private fun GameScreenContent(
     modifier: Modifier = Modifier,
     state: UiState,
     onSelectBoardCell: (BoardCell) -> Unit,
-    onInputCell: (Pair<Int, Int>, Int) -> Unit,
+    onInputCell: (Pair<Int, Int>, Int) -> Unit
 ) {
-    val screenModifier = Modifier
-        .fillMaxSize()
-        .then(modifier)
-        .background(Primary)
+    val screenModifier =
+        Modifier
+            .fillMaxSize()
+            .then(modifier)
+            .background(Primary)
     when (state) {
-        is UiState.Success -> Game(
-            state = state.gameState,
-            onSelectCell = onSelectBoardCell,
-            onInputCell = onInputCell,
-            modifier = screenModifier,
-        )
+        is UiState.Success ->
+            Game(
+                state = state.gameState,
+                onSelectCell = onSelectBoardCell,
+                onInputCell = onInputCell,
+                modifier = screenModifier
+            )
 
-        is UiState.Loading -> Loading(
-            modifier = screenModifier,
-            resId = state.message,
-        )
+        is UiState.Loading ->
+            Loading(
+                modifier = screenModifier,
+                resId = state.message
+            )
 
-        is UiState.Error -> Error(
-            message = state.message,
-            modifier = screenModifier,
-        )
+        is UiState.Error ->
+            Error(
+                message = state.message,
+                modifier = screenModifier
+            )
     }
 }
 
@@ -86,17 +90,18 @@ private fun Game(
     modifier: Modifier = Modifier,
     state: GameState,
     onSelectCell: (BoardCell) -> Unit,
-    onInputCell: (Pair<Int, Int>, Int) -> Unit,
+    onInputCell: (Pair<Int, Int>, Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.then(modifier),
+        modifier = Modifier.then(modifier)
     ) {
         GameBoard(
             board = state.board,
             selectedCell = state.selectedCell,
             onSelectCell = { boardCell -> onSelectCell(boardCell) },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
         )
@@ -111,7 +116,7 @@ private fun Game(
 private fun InputPanel(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
-    size: Int,
+    size: Int
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -122,10 +127,11 @@ private fun InputPanel(
                 text = i.toString(),
                 alignment = Alignment.Center,
                 lineSpacingRatio = 1F,
-                modifier = Modifier
+                modifier =
+                Modifier
                     .weight(1f)
                     .clickable { onClick(i) }
-                    .padding(4.dp),
+                    .padding(4.dp)
             )
         }
     }
@@ -134,11 +140,11 @@ private fun InputPanel(
 @Composable
 private fun Error(
     modifier: Modifier = Modifier,
-    @StringRes message: Int,
+    @StringRes message: Int
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.then(modifier),
+        modifier = Modifier.then(modifier)
     ) {
         Text(text = stringResource(id = message))
     }
@@ -154,11 +160,12 @@ private fun GameScreenPreview(
     GameScreenContent(
         state = UiState.Success(gameState = state),
         onSelectBoardCell = {},
-        onInputCell = { _cell, _value -> })
+        onInputCell = { _cell, _value -> }
+    )
 }
 
 @Preview(
-    name = "Input Panel",
+    name = "Input Panel"
 )
 @Composable
 private fun InputPanelPreview() {

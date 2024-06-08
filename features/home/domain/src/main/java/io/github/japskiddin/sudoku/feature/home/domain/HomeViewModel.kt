@@ -25,9 +25,11 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @HiltViewModel
-public class HomeViewModel @Inject internal constructor(
+public class HomeViewModel
+@Inject
+internal constructor(
     private val appNavigator: AppNavigator,
-    private val createBoardUseCase: Provider<CreateBoardUseCase>,
+    private val createBoardUseCase: Provider<CreateBoardUseCase>
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState.Initial)
     public val uiState: StateFlow<UiState>
@@ -55,12 +57,14 @@ public class HomeViewModel @Inject internal constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.update { Loading(message = R.string.preparing_game_please_wait) }
 
-            val puzzle = List(selectedType.size) { row ->
-                List(selectedType.size) { col -> BoardCell(row, col, 0) }
-            }
-            val solvedPuzzle = List(selectedType.size) { row ->
-                List(selectedType.size) { col -> BoardCell(row, col, 0) }
-            }
+            val puzzle =
+                List(selectedType.size) { row ->
+                    List(selectedType.size) { col -> BoardCell(row, col, 0) }
+                }
+            val solvedPuzzle =
+                List(selectedType.size) { row ->
+                    List(selectedType.size) { col -> BoardCell(row, col, 0) }
+                }
             val qqWingController = QQWingController()
             val generatedBoard =
                 qqWingController.generate(selectedType, selectedDifficulty) ?: return@launch
@@ -80,12 +84,13 @@ public class HomeViewModel @Inject internal constructor(
 
             withContext(Dispatchers.IO) {
                 val sudokuParser = SudokuParser()
-                val board = Board(
-                    initialBoard = sudokuParser.boardToString(puzzle),
-                    solvedBoard = sudokuParser.boardToString(solvedPuzzle),
-                    difficulty = selectedDifficulty,
-                    type = selectedType,
-                )
+                val board =
+                    Board(
+                        initialBoard = sudokuParser.boardToString(puzzle),
+                        solvedBoard = sudokuParser.boardToString(solvedPuzzle),
+                        difficulty = selectedDifficulty,
+                        type = selectedType
+                    )
                 val insertedBoardUid = createBoardUseCase.get().invoke(board)
                 navigateToGame(insertedBoardUid)
             }

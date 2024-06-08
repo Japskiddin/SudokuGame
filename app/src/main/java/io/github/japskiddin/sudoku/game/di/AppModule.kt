@@ -22,7 +22,9 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideSudokuDatabase(@ApplicationContext context: Context): SudokuDatabase {
+    fun provideSudokuDatabase(
+        @ApplicationContext context: Context
+    ): SudokuDatabase {
         return SudokuDatabase(context)
     }
 
@@ -44,7 +46,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSettingsDatastore(@ApplicationContext context: Context): SettingsDatastore {
+    fun provideSettingsDatastore(
+        @ApplicationContext context: Context
+    ): SettingsDatastore {
         return SettingsDatastore(context)
     }
 
