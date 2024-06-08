@@ -175,14 +175,13 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                 val value = puzzle[position]
                 if (possibilities[valPos] != 0) return false
                 mark(position, round, value)
-                if (logHistory || recordHistory) addHistoryItem(
-                    LogItem(
-                        round,
-                        LogType.GIVEN,
-                        value,
-                        position
+                if (logHistory || recordHistory) {
+                    addHistoryItem(
+                        LogItem(
+                            round, LogType.GIVEN, value, position
+                        )
                     )
-                )
+                }
             }
         }
         return true
@@ -234,10 +233,11 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * section.
      */
     fun getHiddenSingleCount(): Int {
-        return getLogCount(solveInstructions, LogType.HIDDEN_SINGLE_ROW) +
-            getLogCount(solveInstructions, LogType.HIDDEN_SINGLE_COLUMN) + getLogCount(
+        return getLogCount(solveInstructions, LogType.HIDDEN_SINGLE_ROW) + getLogCount(
             solveInstructions,
-            LogType.HIDDEN_SINGLE_SECTION
+            LogType.HIDDEN_SINGLE_COLUMN
+        ) + getLogCount(
+            solveInstructions, LogType.HIDDEN_SINGLE_SECTION
         )
     }
 
@@ -246,10 +246,11 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * this puzzle.
      */
     fun getNakedPairCount(): Int {
-        return getLogCount(solveInstructions, LogType.NAKED_PAIR_ROW) +
-            getLogCount(solveInstructions, LogType.NAKED_PAIR_COLUMN) + getLogCount(
+        return getLogCount(solveInstructions, LogType.NAKED_PAIR_ROW) + getLogCount(
             solveInstructions,
-            LogType.NAKED_PAIR_SECTION
+            LogType.NAKED_PAIR_COLUMN
+        ) + getLogCount(
+            solveInstructions, LogType.NAKED_PAIR_SECTION
         )
     }
 
@@ -258,10 +259,11 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      * this puzzle.
      */
     fun getHiddenPairCount(): Int {
-        return getLogCount(solveInstructions, LogType.HIDDEN_PAIR_ROW) +
-            getLogCount(solveInstructions, LogType.HIDDEN_PAIR_COLUMN) + getLogCount(
+        return getLogCount(solveInstructions, LogType.HIDDEN_PAIR_ROW) + getLogCount(
             solveInstructions,
-            LogType.HIDDEN_PAIR_SECTION
+            LogType.HIDDEN_PAIR_COLUMN
+        ) + getLogCount(
+            solveInstructions, LogType.HIDDEN_PAIR_SECTION
         )
     }
 
@@ -271,8 +273,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      */
     fun getPointingPairTripleCount(): Int {
         return getLogCount(solveInstructions, LogType.POINTING_PAIR_TRIPLE_ROW) + getLogCount(
-            solveInstructions,
-            LogType.POINTING_PAIR_TRIPLE_COLUMN
+            solveInstructions, LogType.POINTING_PAIR_TRIPLE_COLUMN
         )
     }
 
@@ -282,8 +283,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
      */
     fun getBoxLineReductionCount(): Int {
         return getLogCount(solveInstructions, LogType.ROW_BOX) + getLogCount(
-            solveInstructions,
-            LogType.COLUMN_BOX
+            solveInstructions, LogType.COLUMN_BOX
         )
     }
 
@@ -371,32 +371,26 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                 when (symmetry) {
                     Symmetry.ROTATE90 -> {
                         positionsym2 = rowColumnToCell(
-                            ROW_COL_SEC_SIZE - 1 - cellToColumn(position),
-                            cellToRow(position)
+                            ROW_COL_SEC_SIZE - 1 - cellToColumn(position), cellToRow(position)
                         )
                         positionsym3 = rowColumnToCell(
-                            cellToColumn(position),
-                            ROW_COL_SEC_SIZE - 1 - cellToRow(position)
+                            cellToColumn(position), ROW_COL_SEC_SIZE - 1 - cellToRow(position)
                         )
                         positionsym1 = rowColumnToCell(
-                            ROW_COL_SEC_SIZE - 1 - cellToRow(position),
-                            ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
+                            ROW_COL_SEC_SIZE - 1 - cellToRow(position), ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
                         )
                     }
 
                     Symmetry.ROTATE180 -> positionsym1 = rowColumnToCell(
-                        ROW_COL_SEC_SIZE - 1 - cellToRow(position),
-                        ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
+                        ROW_COL_SEC_SIZE - 1 - cellToRow(position), ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
                     )
 
                     Symmetry.MIRROR -> positionsym1 = rowColumnToCell(
-                        cellToRow(position),
-                        ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
+                        cellToRow(position), ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
                     )
 
                     Symmetry.FLIP -> positionsym1 = rowColumnToCell(
-                        ROW_COL_SEC_SIZE - 1 - cellToRow(position),
-                        cellToColumn(position)
+                        ROW_COL_SEC_SIZE - 1 - cellToRow(position), cellToColumn(position)
                     )
 
                     else -> {}
@@ -707,10 +701,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     val value = valIndex + 1
                     if (logHistory || recordHistory) addHistoryItem(
                         LogItem(
-                            round,
-                            LogType.GUESS,
-                            value,
-                            position
+                            round, LogType.GUESS, value, position
                         )
                     )
                     mark(position, round, value)
@@ -778,10 +769,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     if (doneSomething) {
                         if (logHistory || recordHistory) addHistoryItem(
                             LogItem(
-                                round,
-                                LogType.COLUMN_BOX,
-                                valIndex + 1,
-                                colStart
+                                round, LogType.COLUMN_BOX, valIndex + 1, colStart
                             )
                         )
                         return true
@@ -833,10 +821,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     if (doneSomething) {
                         if (logHistory || recordHistory) addHistoryItem(
                             LogItem(
-                                round,
-                                LogType.ROW_BOX,
-                                valIndex + 1,
-                                rowStart
+                                round, LogType.ROW_BOX, valIndex + 1, rowStart
                             )
                         )
                         return true
@@ -883,10 +868,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     if (doneSomething) {
                         if (logHistory || recordHistory) addHistoryItem(
                             LogItem(
-                                round,
-                                LogType.POINTING_PAIR_TRIPLE_ROW,
-                                valIndex + 1,
-                                rowStart
+                                round, LogType.POINTING_PAIR_TRIPLE_ROW, valIndex + 1, rowStart
                             )
                         )
                         return true
@@ -933,10 +915,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     if (doneSomething) {
                         if (logHistory || recordHistory) addHistoryItem(
                             LogItem(
-                                round,
-                                LogType.POINTING_PAIR_TRIPLE_COLUMN,
-                                valIndex + 1,
-                                colStart
+                                round, LogType.POINTING_PAIR_TRIPLE_COLUMN, valIndex + 1, colStart
                             )
                         )
                         return true
@@ -971,9 +950,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
 
     // CHECKED!
     private fun removePossibilitiesInOneFromTwo(
-        position1: Int,
-        position2: Int,
-        round: Int
+        position1: Int, position2: Int, round: Int
     ): Boolean {
         var doneSomething = false
         for (valIndex in 0 until ROW_COL_SEC_SIZE) {
@@ -1044,10 +1021,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                             if (doneSomething) {
                                 if (logHistory || recordHistory) addHistoryItem(
                                     LogItem(
-                                        round,
-                                        LogType.HIDDEN_PAIR_COLUMN,
-                                        valIndex + 1,
-                                        rowColumnToCell(r1, column)
+                                        round, LogType.HIDDEN_PAIR_COLUMN, valIndex + 1, rowColumnToCell(r1, column)
                                     )
                                 )
                                 return true
@@ -1117,10 +1091,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                             if (doneSomething) {
                                 if (logHistory || recordHistory) addHistoryItem(
                                     LogItem(
-                                        round,
-                                        LogType.HIDDEN_PAIR_SECTION,
-                                        valIndex + 1,
-                                        sectionToCell(section, si1)
+                                        round, LogType.HIDDEN_PAIR_SECTION, valIndex + 1, sectionToCell(section, si1)
                                     )
                                 )
                                 return true
@@ -1188,14 +1159,13 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                 }
                             }
                             if (doneSomething) {
-                                if (logHistory || recordHistory) addHistoryItem(
-                                    LogItem(
-                                        round,
-                                        LogType.HIDDEN_PAIR_ROW,
-                                        valIndex + 1,
-                                        rowColumnToCell(row, c1)
+                                if (logHistory || recordHistory) {
+                                    addHistoryItem(
+                                        LogItem(
+                                            round, LogType.HIDDEN_PAIR_ROW, valIndex + 1, rowColumnToCell(row, c1)
+                                        )
                                     )
-                                )
+                                }
                                 return true
                             }
                         }
@@ -1223,9 +1193,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                 for (column2 in 0 until ROW_COL_SEC_SIZE) {
                                     val position3 = rowColumnToCell(row, column2)
                                     if (position3 != position && position3 != position2 && removePossibilitiesInOneFromTwo(
-                                            position,
-                                            position3,
-                                            round
+                                            position, position3, round
                                         )
                                     ) {
                                         doneSomething = true
@@ -1234,10 +1202,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                 if (doneSomething) {
                                     if (logHistory || recordHistory) addHistoryItem(
                                         LogItem(
-                                            round,
-                                            LogType.NAKED_PAIR_ROW,
-                                            0,
-                                            position
+                                            round, LogType.NAKED_PAIR_ROW, 0, position
                                         )
                                     )
                                     return true
@@ -1248,9 +1213,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                 for (row2 in 0 until ROW_COL_SEC_SIZE) {
                                     val position3 = rowColumnToCell(row2, column)
                                     if (position3 != position && position3 != position2 && removePossibilitiesInOneFromTwo(
-                                            position,
-                                            position3,
-                                            round
+                                            position, position3, round
                                         )
                                     ) {
                                         doneSomething = true
@@ -1259,10 +1222,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                 if (doneSomething) {
                                     if (logHistory || recordHistory) addHistoryItem(
                                         LogItem(
-                                            round,
-                                            LogType.NAKED_PAIR_COLUMN,
-                                            0,
-                                            position
+                                            round, LogType.NAKED_PAIR_COLUMN, 0, position
                                         )
                                     )
                                     return true
@@ -1275,9 +1235,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                     for (j in 0 until GRID_SIZE_ROW) {
                                         val position3 = secStart + i + ROW_COL_SEC_SIZE * j
                                         if (position3 != position && position3 != position2 && removePossibilitiesInOneFromTwo(
-                                                position,
-                                                position3,
-                                                round
+                                                position, position3, round
                                             )
                                         ) {
                                             doneSomething = true
@@ -1287,10 +1245,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                                 if (doneSomething) {
                                     if (logHistory || recordHistory) addHistoryItem(
                                         LogItem(
-                                            round,
-                                            LogType.NAKED_PAIR_SECTION,
-                                            0,
-                                            position
+                                            round, LogType.NAKED_PAIR_SECTION, 0, position
                                         )
                                     )
                                     return true
@@ -1328,10 +1283,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     val value = valIndex + 1
                     if (logHistory || recordHistory) addHistoryItem(
                         LogItem(
-                            round,
-                            LogType.HIDDEN_SINGLE_ROW,
-                            value,
-                            lastPosition
+                            round, LogType.HIDDEN_SINGLE_ROW, value, lastPosition
                         )
                     )
                     mark(lastPosition, round, value)
@@ -1366,10 +1318,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     val value = valIndex + 1
                     if (logHistory || recordHistory) addHistoryItem(
                         LogItem(
-                            round,
-                            LogType.HIDDEN_SINGLE_COLUMN,
-                            value,
-                            lastPosition
+                            round, LogType.HIDDEN_SINGLE_COLUMN, value, lastPosition
                         )
                     )
                     mark(lastPosition, round, value)
@@ -1407,10 +1356,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     val value = valIndex + 1
                     if (logHistory || recordHistory) addHistoryItem(
                         LogItem(
-                            round,
-                            LogType.HIDDEN_SINGLE_SECTION,
-                            value,
-                            lastPosition
+                            round, LogType.HIDDEN_SINGLE_SECTION, value, lastPosition
                         )
                     )
                     mark(lastPosition, round, value)
@@ -1443,10 +1389,7 @@ class QQWing(type: GameType, difficulty: GameDifficulty) {
                     mark(position, round, lastValue)
                     if (logHistory || recordHistory) addHistoryItem(
                         LogItem(
-                            round,
-                            LogType.SINGLE,
-                            lastValue,
-                            position
+                            round, LogType.SINGLE, lastValue, position
                         )
                     )
                     return true

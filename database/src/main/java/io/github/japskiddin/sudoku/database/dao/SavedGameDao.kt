@@ -19,9 +19,9 @@ interface SavedGameDao {
     suspend fun get(uid: Long): SavedGameDBO?
 
     @Query(
-        "SELECT * FROM saved_game"
-            + " JOIN board ON saved_game.board_uid == board.uid"
-            + " ORDER BY uid DESC"
+        "SELECT * FROM saved_game" +
+            " JOIN board ON saved_game.board_uid == board.uid" +
+            " ORDER BY uid DESC"
     )
     fun getSavedWithBoards(): Flow<Map<SavedGameDBO, BoardDBO>>
 
@@ -29,11 +29,11 @@ interface SavedGameDao {
     fun getLast(): Flow<SavedGameDBO>
 
     @Query(
-        "SELECT * FROM saved_game"
-            + " JOIN board ON saved_game.board_uid == board.uid"
-            + " WHERE saved_game.status == 0"
-            + " ORDER BY last_played DESC"
-            + " LIMIT :limit"
+        "SELECT * FROM saved_game" +
+            " JOIN board ON saved_game.board_uid == board.uid" +
+            " WHERE saved_game.status == 0" +
+            " ORDER BY last_played DESC" +
+            " LIMIT :limit"
     )
     fun getLastPlayable(limit: Int): Flow<Map<SavedGameDBO, BoardDBO>>
 
