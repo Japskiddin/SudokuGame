@@ -39,6 +39,7 @@ internal fun HomeScreen(
         state = state,
         currentYear = viewModel.currentYear,
         onStartGameClick = { viewModel.onStartClick() },
+        onContinueGameClick = { viewModel.onContinueGameClick() },
         onSettingsClick = { viewModel.onSettingsClick() },
         onRecordsClick = { viewModel.onRecordsClick() }
     )
@@ -50,6 +51,7 @@ private fun HomeScreenContent(
     state: UiState,
     currentYear: String,
     onStartGameClick: () -> Unit,
+    onContinueGameClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
@@ -61,7 +63,9 @@ private fun HomeScreenContent(
             MainMenu(
                 modifier = screenModifier,
                 currentYear = currentYear,
+                isContinueAvailable = false,
                 onStartGameClick = onStartGameClick,
+                onContinueGameClick = onContinueGameClick,
                 onRecordsClick = onRecordsClick,
                 onSettingsClick = onSettingsClick
             )
@@ -78,8 +82,10 @@ private fun HomeScreenContent(
 private fun MainMenu(
     modifier: Modifier = Modifier,
     widthPercent: Float = .8f,
+    isContinueAvailable: Boolean,
     currentYear: String,
     onStartGameClick: () -> Unit,
+    onContinueGameClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onRecordsClick: () -> Unit
 ) {
@@ -99,7 +105,9 @@ private fun MainMenu(
                 modifier = Modifier
                     .fillMaxWidth(widthPercent)
                     .weight(1f),
+                isContinueAvailable = isContinueAvailable,
                 onStartGameClick = onStartGameClick,
+                onContinueGameClick = onContinueGameClick,
                 onSettingsClick = onSettingsClick,
                 onRecordsClick = onRecordsClick
             )
@@ -120,7 +128,9 @@ private fun MainMenu(
 private fun MainMenuPreview() {
     MainMenu(
         currentYear = "2024",
+        isContinueAvailable = true,
         onStartGameClick = {},
+        onContinueGameClick = {},
         onRecordsClick = {},
         onSettingsClick = {}
     )

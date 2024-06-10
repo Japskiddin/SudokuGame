@@ -7,9 +7,11 @@ public sealed class UiState {
         @StringRes public val message: Int
     ) : UiState()
 
-    public data object Menu : UiState()
+    public data class Menu(
+        @StringRes public val errorMessage: Int? = null
+    ) : UiState()
 
     public companion object {
-        public val Initial: UiState = Menu
+        public val Initial: UiState = Menu()
     }
 }

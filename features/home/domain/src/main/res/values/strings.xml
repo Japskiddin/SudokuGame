@@ -5,4 +5,5 @@
     <string name="settings">Settings</string>
     <string name="records">Records</string>
     <string name="preparing_game_please_wait">Preparing the game. Please wait…</string>
+    <string name="err_generate_sudoku">Failed to create game. Please try again.</string>
 </resources>
