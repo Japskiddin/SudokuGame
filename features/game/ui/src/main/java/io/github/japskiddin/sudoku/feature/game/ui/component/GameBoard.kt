@@ -273,14 +273,12 @@ internal fun GameBoard(
                     onTap = {
                         if (isEnabled) {
                             val totalOffset = it / zoom + offset
-                            val row =
-                                floor((totalOffset.y) / cellSizePx)
-                                    .toInt()
-                                    .coerceIn(board.indices)
-                            val column =
-                                floor((totalOffset.x) / cellSizePx)
-                                    .toInt()
-                                    .coerceIn(board.indices)
+                            val row = floor((totalOffset.y) / cellSizePx)
+                                .toInt()
+                                .coerceIn(board.indices)
+                            val column = floor((totalOffset.x) / cellSizePx)
+                                .toInt()
+                                .coerceIn(board.indices)
                             onSelectCell(board[row][column])
                         }
                     }
@@ -339,8 +337,7 @@ internal fun GameBoard(
                         color = cellColor,
                         boardSize = boardSize,
                         cellSize = cellSize,
-                        cellOffset =
-                        Offset(
+                        cellOffset = Offset(
                             x = cell.col * cellSizePx,
                             y = cell.row * cellSizePx
                         )
@@ -350,11 +347,10 @@ internal fun GameBoard(
 
             // закрашиваем выделенную клетку, если есть
             if (selectedCell.row >= 0 && selectedCell.col >= 0) {
-                val selectedOffset =
-                    Offset(
-                        x = selectedCell.col * cellSizePx,
-                        y = selectedCell.row * cellSizePx
-                    )
+                val selectedOffset = Offset(
+                    x = selectedCell.col * cellSizePx,
+                    y = selectedCell.row * cellSizePx
+                )
 
                 drawCell(
                     cornerRadius = cornerRadius,
@@ -392,8 +388,7 @@ internal fun GameBoard(
                                 color = selectedCellColor,
                                 boardSize = boardSize,
                                 cellSize = cellSize,
-                                cellOffset =
-                                Offset(
+                                cellOffset = Offset(
                                     x = cell.col * cellSizePx,
                                     y = cell.row * cellSizePx
                                 )
@@ -409,8 +404,7 @@ internal fun GameBoard(
                     color = selectedCellColor.copy(alpha = 0.5f),
                     boardSize = boardSize,
                     cellSize = cellSize,
-                    cellOffset =
-                    Offset(
+                    cellOffset = Offset(
                         x = it.col * cellSizePx,
                         y = it.row * cellSizePx
                     )
@@ -484,8 +478,7 @@ internal fun GameBoard(
                         ) {
                             drawRect(
                                 color = selectedCellColor.copy(alpha = 0.1f),
-                                topLeft =
-                                Offset(
+                                topLeft = Offset(
                                     x = i * sectionWidth * cellSizePx,
                                     y = j * sectionHeight * cellSizePx
                                 ),
@@ -570,8 +563,7 @@ private fun DrawScope.drawVerticalPositionCells(
             color = color,
             boardSize = boardSize,
             cellSize = cellSize,
-            cellOffset =
-            Offset(
+            cellOffset = Offset(
                 x = cellOffset.x,
                 y = j * cellSize.height
             )
@@ -592,8 +584,7 @@ private fun DrawScope.drawHorizontalPositionCells(
             color = color,
             boardSize = boardSize,
             cellSize = cellSize,
-            cellOffset =
-            Offset(
+            cellOffset = Offset(
                 x = i * cellSize.width,
                 y = cellOffset.y
             )
@@ -672,8 +663,7 @@ private fun DrawScope.drawRoundCellBackground(
         Path().apply {
             addRoundRect(
                 RoundRect(
-                    rect =
-                    Rect(
+                    rect = Rect(
                         offset = offset,
                         size = size
                     ),
