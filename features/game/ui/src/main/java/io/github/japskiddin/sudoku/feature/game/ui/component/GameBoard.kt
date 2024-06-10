@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.japskiddin.sudoku.feature.game.ui.component
 
 import android.text.TextPaint
@@ -68,25 +70,29 @@ import kotlin.math.sqrt
 internal fun GameBoard(
     modifier: Modifier = Modifier,
     board: List<List<BoardCell>>,
-    boardSize: Int = board.size,
+    @Suppress("MagicNumber")
+    gameType: GameType = when (board.size) {
+        6 -> GameType.DEFAULT6X6
+        9 -> GameType.DEFAULT9X9
+        12 -> GameType.DEFAULT12X12
+        else -> GameType.UNSPECIFIED
+    },
     selectedCell: BoardCell,
     outerCornerRadius: Dp = 12.dp,
     outerStrokeWidth: Dp = 1.5.dp,
     innerStrokeWidth: Dp = 1.dp,
-    @Suppress("MagicNumber") numberTextSize: TextUnit =
-        when (boardSize) {
-            6 -> 32.sp
-            9 -> 26.sp
-            12 -> 24.sp
-            else -> 14.sp
-        },
-    @Suppress("MagicNumber") noteTextSize: TextUnit =
-        when (boardSize) {
-            6 -> 18.sp
-            9 -> 12.sp
-            12 -> 7.sp
-            else -> 14.sp
-        },
+    numberTextSize: TextUnit = when (gameType) {
+        GameType.DEFAULT6X6 -> 32.sp
+        GameType.DEFAULT9X9 -> 26.sp
+        GameType.DEFAULT12X12 -> 24.sp
+        else -> 14.sp
+    },
+    noteTextSize: TextUnit = when (gameType) {
+        GameType.DEFAULT6X6 -> 18.sp
+        GameType.DEFAULT9X9 -> 12.sp
+        GameType.DEFAULT12X12 -> 7.sp
+        else -> 14.sp
+    },
     isIdenticalNumbersHighlight: Boolean = true,
     isErrorsHighlight: Boolean = true,
     isPositionCells: Boolean = true,
@@ -132,6 +138,8 @@ internal fun GameBoard(
             )
     ) {
         val maxWidth = constraints.maxWidth.toFloat()
+
+        val boardSize = gameType.size
 
         val cellSizePx by remember(boardSize) { mutableFloatStateOf(maxWidth / boardSize.toFloat()) }
         val cellSizeDividerWidth by remember(boardSize) {
@@ -297,6 +305,7 @@ internal fun GameBoard(
 
                             @Suppress("MagicNumber")
                             val maxRange = 3f
+
                             val newScale = (zoom * gestureZoom).coerceIn(minRange..maxRange)
 
                             offset = (offset + gestureCentroid / oldScale) -
@@ -458,7 +467,7 @@ internal fun GameBoard(
 
             if (notes.isNotEmpty() && !isQuestions && isRenderNotes) {
                 drawNotes(
-                    boardSize = boardSize,
+                    gameType = gameType,
                     paint = notePaint,
                     notes = notes,
                     cellSize = cellSizePx,
@@ -468,8 +477,8 @@ internal fun GameBoard(
             }
 
             if (isCrossHighlight) {
-                val sectionHeight = getSectionHeightForSize(boardSize)
-                val sectionWidth = getSectionWidthForSize(boardSize)
+                val sectionHeight = gameType.sectionHeight
+                val sectionWidth = gameType.sectionWidth
                 for (i in 0 until boardSize / sectionWidth) {
                     for (j in 0 until boardSize / sectionHeight) {
                         @Suppress("ComplexCondition")
@@ -659,21 +668,20 @@ private fun DrawScope.drawRoundCellBackground(
     bottomLeftCorner: CornerRadius = CornerRadius.Zero,
     bottomRightCorner: CornerRadius = CornerRadius.Zero
 ) {
-    val path =
-        Path().apply {
-            addRoundRect(
-                RoundRect(
-                    rect = Rect(
-                        offset = offset,
-                        size = size
-                    ),
-                    topLeft = topLeftCorner,
-                    topRight = topRightCorner,
-                    bottomLeft = bottomLeftCorner,
-                    bottomRight = bottomRightCorner
-                )
+    val path = Path().apply {
+        addRoundRect(
+            RoundRect(
+                rect = Rect(
+                    offset = offset,
+                    size = size
+                ),
+                topLeft = topLeftCorner,
+                topRight = topRightCorner,
+                bottomLeft = bottomLeftCorner,
+                bottomRight = bottomRightCorner
             )
-        }
+        )
+    }
     drawPath(path = path, color = color)
 }
 
@@ -726,7 +734,7 @@ private fun DrawScope.drawNumbers(
 }
 
 private fun DrawScope.drawNotes(
-    boardSize: Int,
+    gameType: GameType,
     paint: TextPaint,
     notes: List<BoardNote>,
     cellSize: Float,
@@ -747,7 +755,7 @@ private fun DrawScope.drawNotes(
                     cellSizeDividerWidth *
                         getNoteRowNumber(
                             note.value,
-                            boardSize
+                            gameType
                         )
                     ) - noteTextMeasure / 2f
             val textPosY =
@@ -755,7 +763,7 @@ private fun DrawScope.drawNotes(
                     cellSizeDividerHeight *
                         getNoteColumnNumber(
                             note.value,
-                            boardSize
+                            gameType
                         )
                     ) + noteBounds.height() / 2f
             canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
@@ -766,74 +774,46 @@ private fun DrawScope.drawNotes(
 @Suppress("MagicNumber")
 private fun getNoteColumnNumber(
     number: Int,
-    size: Int
-): Int = when (size) {
-    9, 6 -> {
-        when (number) {
-            1, 2, 3 -> 0
-            4, 5, 6 -> 1
-            7, 8, 9 -> 2
-            else -> 0
-        }
+    gameType: GameType
+): Int = when (gameType) {
+    GameType.DEFAULT9X9, GameType.DEFAULT6X6 -> when (number) {
+        1, 2, 3 -> 0
+        4, 5, 6 -> 1
+        7, 8, 9 -> 2
+        else -> 0
     }
 
-    12 -> {
-        when (number) {
-            1, 2, 3, 4 -> 0
-            5, 6, 7, 8 -> 1
-            9, 10, 11, 12 -> 2
-            else -> 0
-        }
+    GameType.DEFAULT12X12 -> when (number) {
+        1, 2, 3, 4 -> 0
+        5, 6, 7, 8 -> 1
+        9, 10, 11, 12 -> 2
+        else -> 0
     }
 
-    else -> {
-        0
-    }
+    else -> 0
 }
 
 @Suppress("MagicNumber")
 private fun getNoteRowNumber(
     number: Int,
-    size: Int
-): Int = when (size) {
-    9, 6 -> {
-        when (number) {
-            1, 4, 7 -> 0
-            2, 5, 8 -> 1
-            3, 6, 9 -> 2
-            else -> 0
-        }
+    gameType: GameType
+): Int = when (gameType) {
+    GameType.DEFAULT9X9, GameType.DEFAULT6X6 -> when (number) {
+        1, 4, 7 -> 0
+        2, 5, 8 -> 1
+        3, 6, 9 -> 2
+        else -> 0
     }
 
-    12 -> {
-        when (number) {
-            1, 5, 9 -> 0
-            2, 6, 10 -> 1
-            3, 7, 11 -> 2
-            4, 8, 12 -> 3
-            else -> 0
-        }
+    GameType.DEFAULT12X12 -> when (number) {
+        1, 5, 9 -> 0
+        2, 6, 10 -> 1
+        3, 7, 11 -> 2
+        4, 8, 12 -> 3
+        else -> 0
     }
 
-    else -> {
-        0
-    }
-}
-
-@Suppress("MagicNumber")
-private fun getSectionHeightForSize(size: Int): Int = when (size) {
-    6 -> GameType.DEFAULT6X6.sectionHeight
-    9 -> GameType.DEFAULT9X9.sectionHeight
-    12 -> GameType.DEFAULT12X12.sectionHeight
-    else -> GameType.DEFAULT9X9.sectionHeight
-}
-
-@Suppress("MagicNumber")
-private fun getSectionWidthForSize(size: Int): Int = when (size) {
-    6 -> GameType.DEFAULT6X6.sectionWidth
-    9 -> GameType.DEFAULT9X9.sectionWidth
-    12 -> GameType.DEFAULT12X12.sectionWidth
-    else -> GameType.DEFAULT9X9.sectionWidth
+    else -> 0
 }
 
 @Preview(
@@ -854,31 +834,27 @@ private fun GameBoardPreview(
 
 internal class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
     private val parser = SudokuParser()
-    private val board =
-        Board(
-            initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-            solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-            difficulty = GameDifficulty.INTERMEDIATE,
-            type = GameType.DEFAULT9X9
-        )
+    private val board = Board(
+        initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+        solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+        difficulty = GameDifficulty.INTERMEDIATE,
+        type = GameType.DEFAULT9X9
+    )
 
     override val values: Sequence<GameState>
-        get() =
-            sequenceOf(
-                GameState(
-                    board =
-                    parser.parseBoard(
-                        board = board.initialBoard,
-                        gameType = board.type
-                    )
-                        .map { item -> item.toImmutableList() }
-                        .toImmutableList(),
-                    selectedCell =
-                    BoardCell(
-                        row = 3,
-                        col = 2,
-                        value = 3
-                    )
+        get() = sequenceOf(
+            GameState(
+                board = parser.parseBoard(
+                    board = board.initialBoard,
+                    gameType = board.type
+                )
+                    .map { item -> item.toImmutableList() }
+                    .toImmutableList(),
+                selectedCell = BoardCell(
+                    row = 3,
+                    col = 2,
+                    value = 3
                 )
             )
+        )
 }
