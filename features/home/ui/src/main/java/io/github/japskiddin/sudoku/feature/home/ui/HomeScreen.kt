@@ -15,9 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.japskiddin.sudoku.core.ui.component.Loading
+import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.home.domain.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.domain.UiState
 import io.github.japskiddin.sudoku.feature.home.ui.components.Menu
@@ -121,17 +124,28 @@ private fun MainMenu(
 }
 
 @Preview(
-    name = "Main Menu",
-    showBackground = true
+    name = "Home Content"
 )
 @Composable
-private fun MainMenuPreview() {
-    MainMenu(
-        currentYear = "2024",
-        isContinueAvailable = true,
-        onStartGameClick = {},
-        onContinueGameClick = {},
-        onRecordsClick = {},
-        onSettingsClick = {}
-    )
+private fun MainContentPreview(
+    @PreviewParameter(HomeStateProvider::class) state: UiState
+) {
+    SudokuTheme {
+        HomeScreenContent(
+            state = state,
+            currentYear = "2024",
+            onStartGameClick = {},
+            onContinueGameClick = {},
+            onRecordsClick = {},
+            onSettingsClick = {}
+        )
+    }
+}
+
+private class HomeStateProvider : PreviewParameterProvider<UiState> {
+    override val values: Sequence<UiState>
+        get() = sequenceOf(
+            UiState.Loading(R.string.preparing_game_please_wait),
+            UiState.Menu()
+        )
 }
