@@ -5,12 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
+import io.github.japskiddin.sudoku.core.game.model.BoardNote
+import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.data.BoardRepository.BoardNotFoundException
+import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.domain.UiState.Loading
 import io.github.japskiddin.sudoku.feature.game.domain.UiState.Success
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.collections.immutable.toImmutableList
@@ -29,32 +34,18 @@ public class GameViewModel
 internal constructor(
     private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
+    private val insertSavedGameUseCase: Provider<InsertSavedGameUseCase>,
+    private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
     private val appNavigator: AppNavigator,
     private val savedState: SavedStateHandle
 ) : ViewModel() {
+    private lateinit var boardEntity: Board
+    private val notes = MutableStateFlow<List<BoardNote>>(emptyList())
+    private var gameBoard = MutableStateFlow(List(9) { row -> List(9) { col -> BoardCell(row, col, 0) } })
+
     private var _uiState = MutableStateFlow(UiState.Initial)
     public val uiState: StateFlow<UiState>
         get() = _uiState.asStateFlow()
-
-    // val uiState: StateFlow<UiState> = combine(
-    //   _isLoading, _gameLevel
-    // ) { isLoading, gameLevel ->
-    //   if (isLoading) {
-    //     UiState.Loading
-    //   } else {
-    //     if (gameLevel.isEmptyBoard()) {
-    //       UiState.Error(R.string.err_generate_level)
-    //     } else {
-    //       val gameLevelUi = gameLevel.toState()
-    //       UiState.Success(gameLevelUi)
-    //     }
-    //   }
-    // }
-    //   .stateIn(
-    //     scope = viewModelScope,
-    //     started = WhileUiSubscribed,
-    //     initialValue = UiState.None,
-    //   )
 
     init {
         generateGameLevel()
@@ -77,9 +68,7 @@ internal constructor(
 //     }
     }
 
-    public fun onBackButtonClicked() {
-        appNavigator.tryNavigateBack()
-    }
+    public fun onBackButtonClicked(): Unit = appNavigator.tryNavigateBack()
 
     public fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -100,7 +89,7 @@ internal constructor(
                 _uiState.update { UiState.Error(message = R.string.err_generate_level) }
                 return@launch
             }
-            val board = try {
+            boardEntity = try {
                 getBoardUseCase.get().invoke(boardUid)
             } catch (@Suppress("TooGenericExceptionCaught") ex: Exception) {
                 _uiState.update {
@@ -115,20 +104,43 @@ internal constructor(
             }
 
             @Suppress("UNUSED_VARIABLE")
-            val savedGame = getSavedGameUseCase.get().invoke(board.uid)
+            val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
 
             val parser = SudokuParser()
-            val list =
-                parser.parseBoard(board.initialBoard, board.type)
-                    .map { item -> item.toImmutableList() }
-                    .toImmutableList()
+            val list = parser.parseBoard(boardEntity.initialBoard, boardEntity.type)
+                .map { item -> item.toImmutableList() }
+                .toImmutableList()
             _uiState.update { Success(gameState = GameState(board = list)) }
+
+            saveGame()
         }
-        // _isLoading.value = true
-        // viewModelScope.launch {
-        //   _gameLevel.update { getBoardUseCaseOld.get().invoke() }
-        //   delay(1000)
-        //   _isLoading.value = false
-        // }
+    }
+
+    private suspend fun saveGame() {
+        val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+        val sudokuParser = SudokuParser()
+        if (savedGame != null) {
+            updateSavedGameUseCase.get().invoke(
+                savedGame = savedGame,
+                timer = 0L,
+                currentBoard = sudokuParser.boardToString(gameBoard.value),
+                notes = sudokuParser.notesToString(notes.value),
+                mistakes = 0,
+                lastPlayed = 0
+            )
+        } else {
+            insertSavedGameUseCase.get().invoke(
+                uid = boardEntity.uid,
+                currentBoard = sudokuParser.boardToString(gameBoard.value),
+                notes = sudokuParser.notesToString(notes.value),
+                timer = 0L,
+                actions = 0,
+                mistakes = 0,
+                lastPlayed = 0L,
+                startedAt = 0L,
+                finishedAt = 0L,
+                status = GameStatus.IN_PROGRESS,
+            )
+        }
     }
 }

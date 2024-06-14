@@ -24,7 +24,7 @@ constructor(
 
 //    public fun getWithBoards(): Flow<Map<SavedGame, BoardDBO>> = savedGameDao.getSavedWithBoards()
 
-    public fun getLast(): Flow<SavedGame?> = savedGameDao.getLast().map { it.toSavedGame() }
+    public fun getLast(): Flow<SavedGame?> = savedGameDao.getLast().map { it?.toSavedGame() }
 
     public fun getLastPlayable(limit: Int): Flow<Map<SavedGame, Board>> =
         savedGameDao.getLastPlayable(limit).map { lastPlayable ->

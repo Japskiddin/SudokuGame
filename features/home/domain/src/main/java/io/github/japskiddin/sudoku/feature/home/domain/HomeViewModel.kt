@@ -3,7 +3,7 @@ package io.github.japskiddin.sudoku.feature.home.domain
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.japskiddin.sudoku.feature.home.domain.UiState.Loading
+import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,44 +29,40 @@ internal constructor(
     private val appNavigator: AppNavigator,
     private val createBoardUseCase: Provider<CreateBoardUseCase>,
     private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
-    private val getLastGameUseCase: Provider<GetLastGameUseCase>,
-    private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>
+    private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
+    getLastGameUseCase: Provider<GetLastGameUseCase>
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(UiState.Initial)
-    public val uiState: StateFlow<UiState>
-        get() = _uiState.asStateFlow()
+    private val lastGame: StateFlow<SavedGame?> =
+        getLastGameUseCase.get().invoke().stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    private val loadingMessage = MutableStateFlow<Int?>(null)
+    private val errorMessage = MutableStateFlow<Int?>(null)
+
+    public val uiState: StateFlow<UiState> =
+        combine(lastGame, loadingMessage, errorMessage) { lastGame, loadingMessage, errorMessage ->
+            if (loadingMessage != null) {
+                UiState.Loading(message = loadingMessage)
+            } else {
+                UiState.Menu(errorMessage = errorMessage, lastGame = lastGame)
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), UiState.Initial)
+
     public val currentYear: String
         get() = getCurrentYearUseCase.get().invoke()
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update {
-                UiState.Menu()
-            }
-        }
-    }
-
     public fun onStartClick() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { Loading(message = R.string.preparing_game_please_wait) }
+            loadingMessage.update { R.string.preparing_game_please_wait }
 
             val board = try {
                 generateSudokuUseCase.get().invoke()
             } catch (ex: SudokuNotGenerated) {
-                _uiState.update {
-                    UiState.Menu(
-                        errorMessage = R.string.err_generate_sudoku
-                    )
-                }
+                errorMessage.update { R.string.err_generate_sudoku }
                 return@launch
             }
 
             val insertedBoardUid = createBoardUseCase.get().invoke(board)
+            loadingMessage.update { null }
             navigateToGame(insertedBoardUid)
-
-            _uiState.update {
-                UiState.Menu()
-            }
         }
     }
 
@@ -82,10 +78,5 @@ internal constructor(
         TODO("In Development")
     }
 
-    private fun hasCurrentGame() =
-        getLastGameUseCase.get().invoke().stateIn(viewModelScope, SharingStarted.Eagerly, null)
-
-    private fun navigateToGame(boardUid: Long) {
-        appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))
-    }
+    private fun navigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))
 }

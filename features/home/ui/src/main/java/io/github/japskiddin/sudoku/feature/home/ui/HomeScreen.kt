@@ -66,7 +66,7 @@ private fun HomeScreenContent(
             MainMenu(
                 modifier = screenModifier,
                 currentYear = currentYear,
-                isContinueAvailable = false,
+                isContinueAvailable = state.lastGame != null,
                 onStartGameClick = onStartGameClick,
                 onContinueGameClick = onContinueGameClick,
                 onRecordsClick = onRecordsClick,

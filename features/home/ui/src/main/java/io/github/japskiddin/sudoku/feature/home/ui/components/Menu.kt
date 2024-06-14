@@ -39,7 +39,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.R
 @Composable
 internal fun Menu(
     modifier: Modifier = Modifier,
-    isContinueAvailable: Boolean = false,
+    isContinueAvailable: Boolean,
     onStartGameClick: () -> Unit,
     onContinueGameClick: () -> Unit,
     onSettingsClick: () -> Unit,

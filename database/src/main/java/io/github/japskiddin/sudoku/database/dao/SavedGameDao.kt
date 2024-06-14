@@ -26,7 +26,7 @@ interface SavedGameDao {
     fun getSavedWithBoards(): Flow<Map<SavedGameDBO, BoardDBO>>
 
     @Query("SELECT * FROM saved_game ORDER BY board_uid DESC LIMIT 1")
-    fun getLast(): Flow<SavedGameDBO>
+    fun getLast(): Flow<SavedGameDBO?>
 
     @Query(
         "SELECT * FROM saved_game" +
