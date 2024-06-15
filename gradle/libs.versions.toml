@@ -6,7 +6,7 @@ androidSdk-target = "34"
 appVersion-name = "0.1.0"
 appVersion-code = "1"
 
-agp = "8.4.2"
+agp = "8.5.0"
 
 androidxAnnotation = "1.8.0"
 androidxCoreKtx = "1.13.1"

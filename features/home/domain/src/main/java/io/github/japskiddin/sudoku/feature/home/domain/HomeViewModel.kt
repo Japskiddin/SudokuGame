@@ -51,18 +51,20 @@ internal constructor(
 
     public fun onStartClick() {
         viewModelScope.launch(Dispatchers.IO) {
+            errorMessage.update { null }
             loadingMessage.update { R.string.preparing_game_please_wait }
 
             val board = try {
                 generateSudokuUseCase.get().invoke()
             } catch (ex: SudokuNotGenerated) {
                 errorMessage.update { R.string.err_generate_sudoku }
+                loadingMessage.update { null }
                 return@launch
             }
 
             val insertedBoardUid = createBoardUseCase.get().invoke(board)
-            loadingMessage.update { null }
             navigateToGame(insertedBoardUid)
+            loadingMessage.update { null }
         }
     }
 

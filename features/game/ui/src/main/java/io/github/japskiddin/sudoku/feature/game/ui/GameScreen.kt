@@ -63,7 +63,7 @@ private fun GameScreenContent(
             .then(modifier)
             .background(Primary)
     when (state) {
-        is UiState.Success ->
+        is UiState.Game ->
             Game(
                 state = state.gameState,
                 onSelectCell = onSelectBoardCell,
@@ -158,7 +158,7 @@ private fun GameScreenPreview(
     @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
 ) {
     GameScreenContent(
-        state = UiState.Success(gameState = state),
+        state = UiState.Game(gameState = state),
         onSelectBoardCell = {},
         onInputCell = { _cell, _value -> }
     )

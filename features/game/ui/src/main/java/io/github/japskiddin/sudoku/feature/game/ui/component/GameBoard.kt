@@ -60,6 +60,7 @@ import io.github.japskiddin.sudoku.core.ui.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.domain.GameState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -850,6 +851,7 @@ internal class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> 
                 )
                     .map { item -> item.toImmutableList() }
                     .toImmutableList(),
+                notes = persistentListOf(),
                 selectedCell = BoardCell(
                     row = 3,
                     col = 2,
