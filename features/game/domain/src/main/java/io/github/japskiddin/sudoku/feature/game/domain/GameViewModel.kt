@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
@@ -39,18 +40,16 @@ internal constructor(
     private val savedState: SavedStateHandle
 ) : ViewModel() {
     private lateinit var boardEntity: Board
-    private val loadingMessage = MutableStateFlow<Int?>(null)
-    private val errorMessage = MutableStateFlow<Int?>(null)
+    private val isLoading = MutableStateFlow(false)
+    private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
 
     public val uiState: StateFlow<UiState> =
-        combine(loadingMessage, errorMessage, gameState) { loadingMessage, errorMessage, gameState ->
-            if (errorMessage != null) {
-                UiState.Error(message = errorMessage)
-            } else if (loadingMessage != null) {
-                UiState.Loading(message = loadingMessage)
-            } else {
-                UiState.Game(gameState = gameState)
+        combine(isLoading, error, gameState) { isLoading, error, gameState ->
+            when {
+                error != GameError.NONE -> UiState.Error(code = error)
+                isLoading -> UiState.Loading
+                else -> UiState.Game(gameState = gameState)
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), UiState.Initial)
 
@@ -85,25 +84,21 @@ internal constructor(
 
     private fun generateGameLevel() {
         viewModelScope.launch(Dispatchers.IO) {
-            errorMessage.update { null }
-            loadingMessage.update { R.string.level_creation }
+            error.update { GameError.NONE }
+            isLoading.update { true }
 
             val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
             if (boardUid == -1L) {
-                errorMessage.update { R.string.err_generate_level }
-                loadingMessage.update { null }
+                error.update { GameError.BOARD_NOT_FOUND }
+                isLoading.update { false }
                 return@launch
             }
+
             boardEntity = try {
                 getBoardUseCase.get().invoke(boardUid)
-            } catch (@Suppress("TooGenericExceptionCaught") ex: Exception) {
-                errorMessage.update {
-                    when (ex) {
-                        is BoardNotFoundException -> R.string.err_generate_level
-                        else -> R.string.err_unknown
-                    }
-                }
-                loadingMessage.update { null }
+            } catch (ex: BoardNotFoundException) {
+                error.update { ex.toGameError() }
+                isLoading.update { false }
                 return@launch
             }
 
@@ -116,10 +111,15 @@ internal constructor(
                 .toImmutableList()
 
             gameState.update { it.copy(board = list) }
-            loadingMessage.update { null }
+            isLoading.update { false }
 
             saveGame()
         }
+    }
+
+    private fun Exception.toGameError(): GameError = when (this) {
+        is BoardNotFoundException -> GameError.BOARD_NOT_FOUND
+        else -> GameError.UNKNOWN
     }
 
     private suspend fun saveGame() {

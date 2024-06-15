@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
 import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
 import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
-import io.github.japskiddin.sudoku.feature.home.domain.ErrorCode
 import io.github.japskiddin.sudoku.feature.home.domain.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.domain.UiState
 import io.github.japskiddin.sudoku.feature.home.ui.components.Menu
@@ -89,8 +89,8 @@ private fun HomeScreenContent(
                 modifier = screenModifier,
                 message = stringResource(
                     id = when (state.code) {
-                        ErrorCode.SUDOKU_NOT_GENERATED -> R.string.err_generate_sudoku
-                        else -> R.string.err_unknown
+                        GameError.SUDOKU_NOT_GENERATED -> R.string.err_generate_sudoku
+                        else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
                     }
                 )
             )
@@ -216,6 +216,6 @@ private class HomeStateProvider : PreviewParameterProvider<UiState> {
         get() = sequenceOf(
             UiState.Menu(),
             UiState.Loading,
-            UiState.Error(code = ErrorCode.SUDOKU_NOT_GENERATED)
+            UiState.Error(code = GameError.SUDOKU_NOT_GENERATED)
         )
 }

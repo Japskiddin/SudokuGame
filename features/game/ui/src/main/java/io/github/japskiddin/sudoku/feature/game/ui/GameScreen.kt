@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.game.ui
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
@@ -74,12 +74,17 @@ private fun GameScreenContent(
         is UiState.Loading ->
             Loading(
                 modifier = screenModifier,
-                resId = state.message
+                resId = R.string.level_creation
             )
 
         is UiState.Error ->
             Error(
-                message = state.message,
+                message = stringResource(
+                    id = when (state.code) {
+                        GameError.BOARD_NOT_FOUND -> R.string.err_generate_level
+                        else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
+                    }
+                ),
                 modifier = screenModifier
             )
     }
@@ -140,13 +145,13 @@ private fun InputPanel(
 @Composable
 private fun Error(
     modifier: Modifier = Modifier,
-    @StringRes message: Int
+    message: String
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.then(modifier)
     ) {
-        Text(text = stringResource(id = message))
+        Text(text = message)
     }
 }
 

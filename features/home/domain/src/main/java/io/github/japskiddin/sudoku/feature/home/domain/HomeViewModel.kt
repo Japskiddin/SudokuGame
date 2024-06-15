@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.feature.home.domain
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
@@ -35,12 +36,12 @@ internal constructor(
     private val lastGame: StateFlow<SavedGame?> =
         getLastGameUseCase.get().invoke().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
     private val isLoading = MutableStateFlow(false)
-    private val error = MutableStateFlow(ErrorCode.NONE)
+    private val error = MutableStateFlow(GameError.NONE)
 
     public val uiState: StateFlow<UiState> =
         combine(isLoading, error, lastGame) { isLoading, error, lastGame ->
             when {
-                error != ErrorCode.NONE -> UiState.Error(code = error)
+                error != GameError.NONE -> UiState.Error(code = error)
                 isLoading -> UiState.Loading
                 else -> UiState.Menu(isContinueVisible = lastGame != null)
             }
@@ -57,7 +58,7 @@ internal constructor(
                 generateSudokuUseCase.get().invoke()
             } catch (ex: SudokuNotGeneratedException) {
                 isLoading.update { false }
-                sendError(ex)
+                error.update { ex.toGameError() }
                 return@launch
             }
 
@@ -79,13 +80,9 @@ internal constructor(
         TODO("In Development")
     }
 
-    private fun sendError(ex: Exception) {
-        error.update {
-            when (ex) {
-                is SudokuNotGeneratedException -> ErrorCode.SUDOKU_NOT_GENERATED
-                else -> ErrorCode.UNKNOWN
-            }
-        }
+    private fun Exception.toGameError(): GameError = when (this) {
+        is SudokuNotGeneratedException -> GameError.SUDOKU_NOT_GENERATED
+        else -> GameError.UNKNOWN
     }
 
     private fun navigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))

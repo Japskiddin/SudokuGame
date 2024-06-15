@@ -7,5 +7,4 @@
     <string name="continue_game">Continue</string>
     <string name="preparing_game_please_wait">Preparing the game. Please wait…</string>
     <string name="err_generate_sudoku">Failed to create game. Please try again.</string>
-    <string name="err_unknown">Unknown error.</string>
 </resources>
