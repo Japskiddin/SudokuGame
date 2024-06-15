@@ -11,25 +11,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
+import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
+import io.github.japskiddin.sudoku.core.game.qqwing.GameType
+import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
+import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
+import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.domain.GameState
 import io.github.japskiddin.sudoku.feature.game.domain.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.domain.UiState
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
-import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoardUiPreviewProvider
 import io.github.japskiddin.sudoku.feature.game.ui.component.autosizetext.AutoSizeText
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 public fun GameScreen(modifier: Modifier = Modifier) {
@@ -41,7 +48,7 @@ internal fun GameScreen(
     modifier: Modifier = Modifier,
     viewModel: GameViewModel
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     GameScreenContent(
         modifier = modifier,
         state = state,
@@ -57,36 +64,32 @@ private fun GameScreenContent(
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Pair<Int, Int>, Int) -> Unit
 ) {
-    val screenModifier =
-        Modifier
-            .fillMaxSize()
-            .then(modifier)
-            .background(Primary)
+    val screenModifier = Modifier
+        .fillMaxSize()
+        .then(modifier)
+        .background(Primary)
     when (state) {
-        is UiState.Game ->
-            Game(
-                state = state.gameState,
-                onSelectCell = onSelectBoardCell,
-                onInputCell = onInputCell,
-                modifier = screenModifier
-            )
+        is UiState.Game -> Game(
+            state = state.gameState,
+            onSelectCell = onSelectBoardCell,
+            onInputCell = onInputCell,
+            modifier = screenModifier
+        )
 
-        is UiState.Loading ->
-            Loading(
-                modifier = screenModifier,
-                resId = R.string.level_creation
-            )
+        is UiState.Loading -> Loading(
+            modifier = screenModifier,
+            resId = R.string.level_creation
+        )
 
-        is UiState.Error ->
-            Error(
-                message = stringResource(
-                    id = when (state.code) {
-                        GameError.BOARD_NOT_FOUND -> R.string.err_generate_level
-                        else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
-                    }
-                ),
-                modifier = screenModifier
-            )
+        is UiState.Error -> Error(
+            message = stringResource(
+                id = when (state.code) {
+                    GameError.BOARD_NOT_FOUND -> R.string.err_generate_level
+                    else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
+                }
+            ),
+            modifier = screenModifier
+        )
     }
 }
 
@@ -105,8 +108,7 @@ private fun Game(
             board = state.board,
             selectedCell = state.selectedCell,
             onSelectCell = { boardCell -> onSelectCell(boardCell) },
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
         )
@@ -132,8 +134,7 @@ private fun InputPanel(
                 text = i.toString(),
                 alignment = Alignment.Center,
                 lineSpacingRatio = 1F,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .weight(1f)
                     .clickable { onClick(i) }
                     .padding(4.dp)
@@ -156,23 +157,56 @@ private fun Error(
 }
 
 @Preview(
-    name = "Game Screen"
-)
-@Composable
-private fun GameScreenPreview(
-    @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
-) {
-    GameScreenContent(
-        state = UiState.Game(gameState = state),
-        onSelectBoardCell = {},
-        onInputCell = { _cell, _value -> }
-    )
-}
-
-@Preview(
     name = "Input Panel"
 )
 @Composable
 private fun InputPanelPreview() {
     InputPanel(size = 9, onClick = {})
+}
+
+@Preview(
+    name = "Home Content"
+)
+@Composable
+private fun MainContentPreview(
+    @PreviewParameter(GameStateProvider::class) state: UiState,
+) {
+    SudokuTheme {
+        GameScreenContent(
+            state = state,
+            onSelectBoardCell = {},
+            onInputCell = { _, _ -> }
+        )
+    }
+}
+
+private class GameStateProvider : PreviewParameterProvider<UiState> {
+    private val parser = SudokuParser()
+    private val board = Board(
+        initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+        solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+        difficulty = GameDifficulty.INTERMEDIATE,
+        type = GameType.DEFAULT9X9
+    )
+
+    override val values: Sequence<UiState>
+        get() = sequenceOf(
+            UiState.Game(
+                gameState = GameState(
+                    board = parser.parseBoard(
+                        board = board.initialBoard,
+                        gameType = board.type
+                    ).map { item -> item.toImmutableList() }
+                        .toImmutableList(),
+                    notes = persistentListOf(),
+                    selectedCell = BoardCell(
+                        row = 3,
+                        col = 2,
+                        value = 3
+                    )
+                )
+            ),
+            UiState.Loading,
+            UiState.Error(code = GameError.BOARD_NOT_FOUND)
+        )
 }

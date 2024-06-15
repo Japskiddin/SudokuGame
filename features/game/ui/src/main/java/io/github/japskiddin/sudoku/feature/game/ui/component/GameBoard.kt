@@ -833,7 +833,7 @@ private fun GameBoardPreview(
     )
 }
 
-internal class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
+private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
     private val parser = SudokuParser()
     private val board = Board(
         initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
