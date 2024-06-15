@@ -69,7 +69,12 @@ internal constructor(
     }
 
     public fun onContinueGameClick() {
-        TODO("In Development")
+        viewModelScope.launch(Dispatchers.IO) {
+            isLoading.update { true }
+            val boardUid = lastGame.value?.uid ?: -1L
+            navigateToGame(boardUid)
+            isLoading.update { false }
+        }
     }
 
     public fun onSettingsClick() {

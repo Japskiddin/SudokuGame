@@ -53,7 +53,7 @@ internal fun GameScreen(
         modifier = modifier,
         state = state,
         onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
-        onInputCell = { cell, item -> viewModel.onInputCell(cell, item) }
+        onInputCell = { num -> viewModel.onInputCell(num) }
     )
 }
 
@@ -62,7 +62,7 @@ private fun GameScreenContent(
     modifier: Modifier = Modifier,
     state: UiState,
     onSelectBoardCell: (BoardCell) -> Unit,
-    onInputCell: (Pair<Int, Int>, Int) -> Unit
+    onInputCell: (Int) -> Unit,
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -98,7 +98,7 @@ private fun Game(
     modifier: Modifier = Modifier,
     state: GameState,
     onSelectCell: (BoardCell) -> Unit,
-    @Suppress("UNUSED_PARAMETER") onInputCell: (Pair<Int, Int>, Int) -> Unit
+    onInputCell: (Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -114,7 +114,7 @@ private fun Game(
         )
         InputPanel(
             size = state.board.size,
-            onClick = { item -> }
+            onClick = onInputCell
         )
     }
 }
@@ -175,7 +175,7 @@ private fun GameContentPreview(
         GameScreenContent(
             state = state,
             onSelectBoardCell = {},
-            onInputCell = { _, _ -> }
+            onInputCell = { _ -> }
         )
     }
 }

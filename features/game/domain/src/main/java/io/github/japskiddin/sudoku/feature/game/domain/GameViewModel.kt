@@ -58,9 +58,17 @@ internal constructor(
     }
 
     public fun onInputCell(
-        @Suppress("UNUSED_PARAMETER") cell: Pair<Int, Int>,
-        @Suppress("UNUSED_PARAMETER") item: Int
+        num: Int
     ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            gameState.update { state ->
+                val list = state.board.map { item -> item.toMutableList() }.toMutableList()
+                list[state.selectedCell.row][state.selectedCell.col].value = num
+
+                state.copy(board = list.map { item -> item.toImmutableList() }.toImmutableList())
+            }
+            saveGame()
+        }
 //     viewModelScope.launch {
 //       val level = _gameLevel.value ?: return@launch
 //       val board = level.currentBoard.copyOf()
@@ -102,15 +110,21 @@ internal constructor(
                 return@launch
             }
 
-            @Suppress("UNUSED_VARIABLE")
             val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+            if (savedGame != null) {
+                val parser = SudokuParser()
+                val list = parser.parseBoard(savedGame.currentBoard, boardEntity.type)
+                    .map { item -> item.toImmutableList() }
+                    .toImmutableList()
+                gameState.update { it.copy(board = list) }
+            } else {
+                val parser = SudokuParser()
+                val list = parser.parseBoard(boardEntity.initialBoard, boardEntity.type)
+                    .map { item -> item.toImmutableList() }
+                    .toImmutableList()
+                gameState.update { it.copy(board = list) }
+            }
 
-            val parser = SudokuParser()
-            val list = parser.parseBoard(boardEntity.initialBoard, boardEntity.type)
-                .map { item -> item.toImmutableList() }
-                .toImmutableList()
-
-            gameState.update { it.copy(board = list) }
             isLoading.update { false }
 
             saveGame()
