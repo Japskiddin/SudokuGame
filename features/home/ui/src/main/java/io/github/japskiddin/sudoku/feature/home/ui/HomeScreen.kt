@@ -196,7 +196,7 @@ private fun HomeError(
     name = "Home Content"
 )
 @Composable
-private fun MainContentPreview(
+private fun HomeContentPreview(
     @PreviewParameter(HomeStateProvider::class) state: UiState
 ) {
     SudokuTheme {

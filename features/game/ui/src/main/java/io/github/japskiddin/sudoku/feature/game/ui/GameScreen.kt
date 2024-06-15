@@ -165,10 +165,10 @@ private fun InputPanelPreview() {
 }
 
 @Preview(
-    name = "Home Content"
+    name = "Game Content"
 )
 @Composable
-private fun MainContentPreview(
+private fun GameContentPreview(
     @PreviewParameter(GameStateProvider::class) state: UiState,
 ) {
     SudokuTheme {
