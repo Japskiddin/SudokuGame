@@ -23,11 +23,11 @@ internal class GenerateSudokuUseCase @Inject constructor() {
             List(boardSize) { col -> BoardCell(row, col, 0) }
         }
         val qqWingController = QQWingController()
-        val generatedBoard = qqWingController.generate(type, difficulty) ?: throw SudokuNotGenerated()
+        val generatedBoard = qqWingController.generate(type, difficulty) ?: throw SudokuNotGeneratedException()
         val solvedBoard = qqWingController.solve(generatedBoard, type)
 
         if (qqWingController.isImpossible || qqWingController.solutionCount != 1) {
-            throw SudokuNotGenerated()
+            throw SudokuNotGeneratedException()
         }
 
         for (i in 0 until boardSize) {
@@ -46,4 +46,4 @@ internal class GenerateSudokuUseCase @Inject constructor() {
     }
 }
 
-internal class SudokuNotGenerated(message: String = "Error with generating sudoku") : Exception(message)
+internal class SudokuNotGeneratedException(message: String = "Error with generating sudoku") : Exception(message)

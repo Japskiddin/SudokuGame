@@ -1,16 +1,14 @@
 package io.github.japskiddin.sudoku.feature.home.domain
 
-import androidx.annotation.StringRes
-import io.github.japskiddin.sudoku.data.model.SavedGame
-
 public sealed class UiState {
-    public class Loading(
-        @StringRes public val message: Int
+    public data object Loading : UiState()
+
+    public data class Error(
+        public val code: ErrorCode = ErrorCode.NONE
     ) : UiState()
 
     public data class Menu(
-        @StringRes public val errorMessage: Int? = null,
-        public val lastGame: SavedGame? = null
+        public val isContinueVisible: Boolean = false
     ) : UiState()
 
     public companion object {
