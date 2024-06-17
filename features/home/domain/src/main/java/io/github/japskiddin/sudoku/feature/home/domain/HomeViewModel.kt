@@ -56,20 +56,10 @@ internal constructor(
         get() = getCurrentYearUseCase.get().invoke()
 
     public fun onStartClick() {
-        viewModelScope.launch(Dispatchers.IO) {
-            isLoading.update { true }
-
-            val board = try {
-                generateSudokuUseCase.get().invoke()
-            } catch (ex: SudokuNotGeneratedException) {
-                isLoading.update { false }
-                error.update { ex.toGameError() }
-                return@launch
-            }
-
-            val insertedBoardUid = createBoardUseCase.get().invoke(board)
-            navigateToGame(insertedBoardUid)
-            isLoading.update { false }
+        if (lastGame.value != null) {
+            menuState.update { it.copy(isShowContinueDialog = true) }
+        } else {
+            onStartNewGame()
         }
     }
 
@@ -88,6 +78,32 @@ internal constructor(
 
     public fun onRecordsClick() {
         TODO("In Development")
+    }
+
+    public fun onDismissContinueDialog() {
+        menuState.update { it.copy(isShowContinueDialog = false) }
+    }
+
+    public fun onDismissDifficultyDialog() {
+
+    }
+
+    public fun onStartNewGame() {
+        viewModelScope.launch(Dispatchers.IO) {
+            isLoading.update { true }
+
+            val board = try {
+                generateSudokuUseCase.get().invoke()
+            } catch (ex: SudokuNotGeneratedException) {
+                isLoading.update { false }
+                error.update { ex.toGameError() }
+                return@launch
+            }
+
+            val insertedBoardUid = createBoardUseCase.get().invoke(board)
+            navigateToGame(insertedBoardUid)
+            isLoading.update { false }
+        }
     }
 
     private fun navigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))

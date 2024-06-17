@@ -3,9 +3,13 @@ package io.github.japskiddin.sudoku.core.ui.component
 import android.graphics.BlurMaskFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -15,6 +19,31 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
+
+@Composable
+fun Modifier.dialogBackground() = this.then(
+    Modifier
+        .shadow(8.dp, shape = RoundedCornerShape(16.dp))
+        .background(
+            color = OnPrimary,
+            shape = RoundedCornerShape(size = 16.dp)
+        )
+        .padding(4.dp)
+        .innerShadow(
+            shape = RoundedCornerShape(size = 12.dp),
+            color = Color.Black.copy(alpha = .8f),
+            offsetX = 2.dp,
+            offsetY = 2.dp
+        )
+        .innerShadow(
+            shape = RoundedCornerShape(size = 12.dp),
+            color = Color.White.copy(alpha = .8f),
+            offsetX = (-2).dp,
+            offsetY = (-2).dp
+        )
+        .padding(16.dp)
+)
 
 @Composable
 fun Modifier.innerShadow(

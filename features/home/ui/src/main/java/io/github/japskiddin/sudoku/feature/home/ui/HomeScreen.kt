@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,12 +27,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.ui.component.Loading
-import io.github.japskiddin.sudoku.core.ui.component.innerShadow
-import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
+import io.github.japskiddin.sudoku.core.ui.component.dialogBackground
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
 import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.home.domain.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.domain.UiState
+import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog
+import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
 import io.github.japskiddin.sudoku.feature.home.ui.components.Menu
 import io.github.japskiddin.sudoku.feature.home.ui.components.OutlineText
 
@@ -58,7 +58,13 @@ internal fun HomeScreen(
         onStartGameClick = { viewModel.onStartClick() },
         onContinueGameClick = { viewModel.onContinueGameClick() },
         onSettingsClick = { viewModel.onSettingsClick() },
-        onRecordsClick = { viewModel.onRecordsClick() }
+        onRecordsClick = { viewModel.onRecordsClick() },
+        onContinueDialogButtonClick = {
+            viewModel.onDismissContinueDialog()
+            viewModel.onStartNewGame()
+        },
+        onDismissContinueDialog = { viewModel.onDismissContinueDialog() },
+        onDismissDifficultyDialog = { viewModel.onDismissDifficultyDialog() }
     )
 }
 
@@ -70,7 +76,10 @@ private fun HomeScreenContent(
     onStartGameClick: () -> Unit,
     onContinueGameClick: () -> Unit,
     onRecordsClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    onContinueDialogButtonClick: () -> Unit,
+    onDismissContinueDialog: () -> Unit,
+    onDismissDifficultyDialog: () -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -81,10 +90,15 @@ private fun HomeScreenContent(
                 modifier = screenModifier,
                 currentYear = currentYear,
                 isShowContinueButton = state.isShowContinueButton,
+                isShowContinueDialog = state.isShowContinueDialog,
+                isShowDifficultyDialog = state.isShowDifficultyDialog,
                 onStartGameClick = onStartGameClick,
                 onContinueGameClick = onContinueGameClick,
                 onRecordsClick = onRecordsClick,
-                onSettingsClick = onSettingsClick
+                onSettingsClick = onSettingsClick,
+                onContinueDialogButtonClick = onContinueDialogButtonClick,
+                onDismissContinueDialog = onDismissContinueDialog,
+                onDismissDifficultyDialog = onDismissDifficultyDialog
             )
 
         is UiState.Error ->
@@ -111,12 +125,28 @@ private fun HomeMenu(
     modifier: Modifier = Modifier,
     widthPercent: Float = .8f,
     isShowContinueButton: Boolean,
+    isShowContinueDialog: Boolean,
+    isShowDifficultyDialog: Boolean,
     currentYear: String,
     onStartGameClick: () -> Unit,
     onContinueGameClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    onRecordsClick: () -> Unit
+    onRecordsClick: () -> Unit,
+    onContinueDialogButtonClick: () -> Unit,
+    onDismissContinueDialog: () -> Unit,
+    onDismissDifficultyDialog: () -> Unit
 ) {
+    if (isShowContinueDialog) {
+        ContinueDialog(
+            onDismiss = onDismissContinueDialog,
+            onContinueClick = onContinueDialogButtonClick
+        )
+    }
+
+    if (isShowDifficultyDialog) {
+        DifficultyDialog(onDismiss = onDismissDifficultyDialog)
+    }
+
     Box(
         modifier = Modifier
             .then(modifier)
@@ -163,24 +193,7 @@ private fun HomeError(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(16.dp)
-                .background(
-                    color = OnPrimary,
-                    shape = RoundedCornerShape(size = 16.dp)
-                )
-                .padding(4.dp)
-                .innerShadow(
-                    shape = RoundedCornerShape(size = 12.dp),
-                    color = Color.Black.copy(alpha = .8f),
-                    offsetX = 2.dp,
-                    offsetY = 2.dp
-                )
-                .innerShadow(
-                    shape = RoundedCornerShape(size = 12.dp),
-                    color = Color.White.copy(alpha = .8f),
-                    offsetX = (-2).dp,
-                    offsetY = (-2).dp
-                )
-                .padding(16.dp)
+                .dialogBackground()
         ) {
             Text(
                 text = message,
@@ -207,7 +220,10 @@ private fun HomeContentPreview(
             onStartGameClick = {},
             onContinueGameClick = {},
             onRecordsClick = {},
-            onSettingsClick = {}
+            onSettingsClick = {},
+            onContinueDialogButtonClick = {},
+            onDismissContinueDialog = {},
+            onDismissDifficultyDialog = {}
         )
     }
 }
