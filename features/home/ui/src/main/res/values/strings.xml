@@ -9,4 +9,7 @@
     <string name="err_generate_sudoku">Failed to create game. Please try again.</string>
     <string name="you_already_started_game">You already started game. If you start a new game, previous will be lost.</string>
     <string name="do_you_want_to_continue">Do you want to continue?</string>
+    <string name="start">Start</string>
+    <string name="swipe_left">Swipe left</string>
+    <string name="swipe_right">Swipe right</string>
 </resources>

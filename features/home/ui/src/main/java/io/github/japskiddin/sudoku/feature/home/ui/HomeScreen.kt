@@ -144,7 +144,10 @@ private fun HomeMenu(
     }
 
     if (isShowDifficultyDialog) {
-        DifficultyDialog(onDismiss = onDismissDifficultyDialog)
+        DifficultyDialog(
+            onDismiss = onDismissDifficultyDialog,
+            onStartClick = {}
+        )
     }
 
     Box(
