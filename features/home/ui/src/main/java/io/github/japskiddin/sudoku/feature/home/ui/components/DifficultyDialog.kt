@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.home.ui.R
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun DifficultyDialog(
@@ -21,6 +22,10 @@ internal fun DifficultyDialog(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            ItemSelector(
+                items = persistentListOf("Item 1", "Item 2", "Item 3", "Item 4"),
+                defaultItemPos = 1
+            )
             GameButton(
                 icon = null,
                 text = stringResource(id = R.string.start),

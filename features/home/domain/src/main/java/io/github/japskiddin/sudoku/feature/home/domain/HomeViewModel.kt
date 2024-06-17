@@ -59,7 +59,8 @@ internal constructor(
         if (lastGame.value != null) {
             menuState.update { it.copy(isShowContinueDialog = true) }
         } else {
-            onStartNewGame()
+            menuState.update { it.copy(isShowDifficultyDialog = true) }
+//            onStartNewGame()
         }
     }
 
