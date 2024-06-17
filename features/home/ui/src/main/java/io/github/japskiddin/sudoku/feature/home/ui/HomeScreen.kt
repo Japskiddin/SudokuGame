@@ -39,7 +39,10 @@ import io.github.japskiddin.sudoku.feature.home.ui.components.OutlineText
 
 @Composable
 public fun HomeScreen(modifier: Modifier = Modifier) {
-    HomeScreen(modifier = modifier, viewModel = hiltViewModel())
+    HomeScreen(
+        modifier = modifier,
+        viewModel = hiltViewModel()
+    )
 }
 
 @Composable
@@ -74,10 +77,10 @@ private fun HomeScreenContent(
         .then(modifier)
     when (state) {
         is UiState.Menu ->
-            MainMenu(
+            HomeMenu(
                 modifier = screenModifier,
                 currentYear = currentYear,
-                isContinueAvailable = state.isContinueVisible,
+                isShowContinueButton = state.isShowContinueButton,
                 onStartGameClick = onStartGameClick,
                 onContinueGameClick = onContinueGameClick,
                 onRecordsClick = onRecordsClick,
@@ -104,10 +107,10 @@ private fun HomeScreenContent(
 }
 
 @Composable
-private fun MainMenu(
+private fun HomeMenu(
     modifier: Modifier = Modifier,
     widthPercent: Float = .8f,
-    isContinueAvailable: Boolean,
+    isShowContinueButton: Boolean,
     currentYear: String,
     onStartGameClick: () -> Unit,
     onContinueGameClick: () -> Unit,
@@ -130,7 +133,7 @@ private fun MainMenu(
                 modifier = Modifier
                     .fillMaxWidth(widthPercent)
                     .weight(1f),
-                isContinueAvailable = isContinueAvailable,
+                isShowContinueButton = isShowContinueButton,
                 onStartGameClick = onStartGameClick,
                 onContinueGameClick = onContinueGameClick,
                 onSettingsClick = onSettingsClick,
@@ -152,15 +155,13 @@ private fun HomeError(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier =
-        Modifier
+        modifier = Modifier
             .then(modifier)
             .background(Primary)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(16.dp)
                 .background(
                     color = OnPrimary,

@@ -51,7 +51,7 @@ internal constructor(
                 isLoading -> UiState.Loading
                 else -> UiState.Game(gameState = gameState)
             }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), UiState.Initial)
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
 
     init {
         generateGameLevel()

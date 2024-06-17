@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.game.GameError
-import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.SudokuNotGeneratedException
+import io.github.japskiddin.sudoku.feature.home.domain.utils.toGameError
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.Dispatchers
@@ -33,19 +33,24 @@ internal constructor(
     private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
     getLastGameUseCase: Provider<GetLastGameUseCase>
 ) : ViewModel() {
-    private val lastGame: StateFlow<SavedGame?> =
-        getLastGameUseCase.get().invoke().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    private val lastGame = getLastGameUseCase.get().invoke()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    private val menuState = MutableStateFlow(MenuState())
     private val isLoading = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
 
     public val uiState: StateFlow<UiState> =
-        combine(isLoading, error, lastGame) { isLoading, error, lastGame ->
+        combine(isLoading, error, menuState, lastGame) { isLoading, error, menuState, lastGame ->
             when {
                 error != GameError.NONE -> UiState.Error(code = error)
                 isLoading -> UiState.Loading
-                else -> UiState.Menu(isContinueVisible = lastGame != null)
+                else -> UiState.Menu(
+                    isShowContinueButton = lastGame != null,
+                    isShowContinueDialog = menuState.isShowContinueDialog,
+                    isShowDifficultyDialog = menuState.isShowDifficultyDialog
+                )
             }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Initial)
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
 
     public val currentYear: String
         get() = getCurrentYearUseCase.get().invoke()
@@ -83,11 +88,6 @@ internal constructor(
 
     public fun onRecordsClick() {
         TODO("In Development")
-    }
-
-    private fun Exception.toGameError(): GameError = when (this) {
-        is SudokuNotGeneratedException -> GameError.SUDOKU_NOT_GENERATED
-        else -> GameError.UNKNOWN
     }
 
     private fun navigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))

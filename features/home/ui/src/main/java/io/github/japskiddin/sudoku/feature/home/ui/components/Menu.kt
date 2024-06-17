@@ -39,7 +39,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.R
 @Composable
 internal fun Menu(
     modifier: Modifier = Modifier,
-    isContinueAvailable: Boolean,
+    isShowContinueButton: Boolean,
     onStartGameClick: () -> Unit,
     onContinueGameClick: () -> Unit,
     onSettingsClick: () -> Unit,
@@ -56,7 +56,7 @@ internal fun Menu(
             outlineColor = Color.Black,
             outlineWidth = 4.dp
         )
-        if (isContinueAvailable) {
+        if (isShowContinueButton) {
             MenuButton(
                 icon = painterResource(id = R.drawable.ic_start_game),
                 text = stringResource(id = R.string.continue_game),

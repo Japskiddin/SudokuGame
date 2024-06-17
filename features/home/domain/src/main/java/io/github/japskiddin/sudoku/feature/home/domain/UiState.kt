@@ -10,7 +10,9 @@ public sealed class UiState {
     ) : UiState()
 
     public data class Menu(
-        public val isContinueVisible: Boolean = false
+        public val isShowContinueButton: Boolean = false,
+        public val isShowContinueDialog: Boolean = false,
+        public val isShowDifficultyDialog: Boolean = false
     ) : UiState()
 
     public companion object {
