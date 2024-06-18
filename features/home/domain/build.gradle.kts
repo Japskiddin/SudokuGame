@@ -18,7 +18,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.androidSdk.min.get().toInt()
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {
@@ -30,10 +29,6 @@ android {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
-    }
-
-    buildFeatures {
-        buildConfig = true
     }
 }
 

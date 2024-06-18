@@ -5,17 +5,12 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 android {
     namespace = "io.github.japskiddin.sudoku.core.game"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.androidSdk.min.get().toInt()
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {

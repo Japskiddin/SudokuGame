@@ -6,17 +6,12 @@ plugins {
     alias(libs.plugins.jetbrains.compose.compiler)
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 android {
     namespace = "io.github.japskiddin.sudoku.core.ui"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.androidSdk.min.get().toInt()
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {

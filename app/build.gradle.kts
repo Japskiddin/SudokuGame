@@ -10,10 +10,6 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 android {
     namespace = "io.github.japskiddin.sudoku.game"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
