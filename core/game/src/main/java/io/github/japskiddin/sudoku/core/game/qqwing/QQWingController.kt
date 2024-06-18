@@ -1,7 +1,5 @@
 package io.github.japskiddin.sudoku.core.game.qqwing
 
-import android.os.Process
-import android.util.Log
 import java.util.LinkedList
 import java.util.Random
 import java.util.concurrent.atomic.AtomicBoolean
@@ -142,7 +140,6 @@ class QQWingController {
 
                 @Suppress("LongMethod")
                 override fun run() {
-                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND)
                     try {
                         // Solve puzzle or generate puzzles
                         // until end of input for solving, or
@@ -215,8 +212,7 @@ class QQWingController {
                                 }
                             }
                         }
-                    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                        Log.e("QQWing", "Exception Occured", e)
+                    } catch (e: Exception) {
                         return
                     }
                 }
@@ -227,8 +223,7 @@ class QQWingController {
             for (i in threads.indices) {
                 try {
                     threads[i]!!.join()
-                } catch (e: InterruptedException) {
-                    Log.e("QQWing", "Exception Occured", e)
+                } catch (_: InterruptedException) {
                 }
             }
         }
