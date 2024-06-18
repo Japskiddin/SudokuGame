@@ -4,11 +4,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.jetbrains.kotlin.serialization)
-}
-
-kotlin {
-    jvmToolchain(17)
 }
 
 android {
@@ -17,12 +14,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.androidSdk.min.get().toInt()
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
-
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {
@@ -35,6 +26,10 @@ android {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
