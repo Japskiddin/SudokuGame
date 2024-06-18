@@ -47,7 +47,8 @@ androidSdk-target = "34"
 appVersion-name = "0.1.0"
 appVersion-code = "1"
 
-jvm = "19"
+# TODO обновить до 19 или 22
+jvm = "17"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
@@ -110,12 +111,12 @@ detekt-rules-compose = { module = "io.nlopez.compose.rules:detekt", version.ref 
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 # Project internal convention plugin
-android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
-compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin-android" }
-kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin-android" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "androidx-room" }
+compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin-android" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin-android" }
+ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+room-gradle-plugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "androidx-room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -130,3 +131,14 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "da
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 android-test = { id = "com.android.test", version.ref = "agp" }
+
+# Project internal convention plugins
+app-android-application = { id = "app.android.application", version = "unspecified" }
+#app-android-library = { id = "app.android.library", version = "unspecified" }
+#app-android-compose = { id = "app.android.compose", version = "unspecified" }
+#app-android-hilt = { id = "app.android.hilt", version = "unspecified" }
+#app-android-room = { id = "app.android.room", version = "unspecified" }
+#app-feature-ui = { id = "app.feature.ui", version = "unspecified" }
+#app-feature-domain = { id = "app.feature.domain", version = "unspecified" }
+#app-feature-data = { id = "app.feature.data", version = "unspecified" }
+#app-feature-nav = { id = "app.feature.nav", version = "unspecified" }

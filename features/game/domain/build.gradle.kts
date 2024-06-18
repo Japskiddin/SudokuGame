@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.jetbrains.compose.compiler)
 }
 
 kotlin {

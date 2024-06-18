@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.app.android.application)
     alias(libs.plugins.jetbrains.compose.compiler)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.dagger.hilt.android)
@@ -12,11 +10,9 @@ plugins {
 
 android {
     namespace = "io.github.japskiddin.sudoku.game"
-    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
         applicationId = "io.github.japskiddin.sudoku.game"
-        minSdk = libs.versions.androidSdk.min.get().toInt()
         targetSdk = libs.versions.androidSdk.target.get().toInt()
         versionCode = libs.versions.appVersion.code.get().toInt()
         versionName = libs.versions.appVersion.name.get()
@@ -97,17 +93,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-
     bundle {
         language {
             enableSplit = false
@@ -116,7 +101,6 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true
     }
 
     kotlinOptions {

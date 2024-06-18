@@ -1,35 +1,68 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     `kotlin-dsl`
 }
 
-group = "io.github.japskiddin.sudoku.buildlogic"
+group = "io.github.japskiddin.android.core.buildlogic"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.get()))
     }
 }
 
 dependencies {
-    compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.android.tools.common)
-    compileOnly(libs.compose.gradlePlugin)
-    compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.ksp.gradlePlugin)
-    compileOnly(libs.room.gradlePlugin)
-    implementation(libs.truth)
+    compileOnly(libs.android.gradle.plugin)
+    compileOnly(libs.kotlin.gradle.plugin)
 }
 
 tasks {
     validatePlugins {
         enableStricterValidation = true
         failOnWarning = true
+    }
+}
+
+gradlePlugin {
+    plugins {
+        register("androidApplication") {
+            id = "app.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+//        register("androidLibrary") {
+//            id = "app.android.library"
+//            implementationClass = "AndroidLibraryConventionPlugin"
+//        }
+//        register("androidCompose") {
+//            id = "app.android.compose"
+//            implementationClass = "AndroidComposeConventionPlugin"
+//        }
+//        register("androidHilt") {
+//            id = "app.android.hilt"
+//            implementationClass = "AndroidHiltConventionPlugin"
+//        }
+//        register("androidRoom") {
+//            id = "app.android.room"
+//            implementationClass = "AndroidRoomConventionPlugin"
+//        }
+//        register("featureUi") {
+//            id = "app.feature.ui"
+//            implementationClass = "FeatureUiConventionPlugin"
+//        }
+//        register("featureDomain") {
+//            id = "app.feature.domain"
+//            implementationClass = "FeatureDomainConventionPlugin"
+//        }
+//        register("featureData") {
+//            id = "app.feature.data"
+//            implementationClass = "FeatureDataConventionPlugin"
+//        }
+//        register("featureNav") {
+//            id = "app.feature.nav"
+//            implementationClass = "FeatureNavConventionPlugin"
+//        }
+//        register("featureDatastore") {
+//            id = "app.feature.datastore"
+//            implementationClass = "FeatureDatastoreConventionPlugin"
+//        }
     }
 }
