@@ -52,6 +52,6 @@ dependencies {
 
     implementation(projects.core.common)
     api(projects.core.game)
-    api(projects.gameData)
+    api(projects.data)
     implementation(projects.navigation)
 }

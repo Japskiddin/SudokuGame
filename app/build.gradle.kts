@@ -202,7 +202,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.datastore)
     implementation(projects.database)
-    implementation(projects.gameData)
+    implementation(projects.data)
     implementation(projects.features.home.ui)
     implementation(projects.features.home.domain)
     implementation(projects.features.game.ui)

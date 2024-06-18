@@ -8,7 +8,6 @@ plugins {
 
 kotlin {
     explicitApi = ExplicitApiMode.Strict
-    jvmToolchain(17)
 }
 
 android {
@@ -17,8 +16,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.androidSdk.min.get().toInt()
-
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {

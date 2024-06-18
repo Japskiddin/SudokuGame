@@ -35,7 +35,7 @@ include(
     ":core:common",
     ":core:game",
     ":core:ui",
-    ":game-data",
+    ":data",
     ":features:home:ui",
     ":features:home:domain",
     ":features:game:ui",
