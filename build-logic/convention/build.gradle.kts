@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     `kotlin-dsl`
 }
@@ -5,14 +7,15 @@ plugins {
 group = "io.github.japskiddin.android.core.buildlogic"
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.get()))
-    }
+    val javaVersion = JavaVersion.toVersion(libs.versions.jvm.get())
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
-dependencies {
-    compileOnly(libs.android.gradle.plugin)
-    compileOnly(libs.kotlin.gradle.plugin)
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget(libs.versions.jvm.get())
+    }
 }
 
 tasks {
@@ -20,6 +23,15 @@ tasks {
         enableStricterValidation = true
         failOnWarning = true
     }
+}
+
+dependencies {
+    compileOnly(libs.android.gradle.plugin)
+    compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.android.tools.common)
+    compileOnly(libs.compose.gradle.plugin)
+    compileOnly(libs.ksp.gradle.plugin)
+    compileOnly(libs.room.gradle.plugin)
 }
 
 gradlePlugin {
@@ -32,10 +44,10 @@ gradlePlugin {
 //            id = "app.android.library"
 //            implementationClass = "AndroidLibraryConventionPlugin"
 //        }
-//        register("androidCompose") {
-//            id = "app.android.compose"
-//            implementationClass = "AndroidComposeConventionPlugin"
-//        }
+        register("androidCompose") {
+            id = "app.android.compose"
+            implementationClass = "AndroidComposeConventionPlugin"
+        }
 //        register("androidHilt") {
 //            id = "app.android.hilt"
 //            implementationClass = "AndroidHiltConventionPlugin"

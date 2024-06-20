@@ -3,7 +3,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.app.android.application)
-    alias(libs.plugins.jetbrains.compose.compiler)
+    alias(libs.plugins.app.android.compose)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.dagger.hilt.android)
 }
@@ -13,7 +13,6 @@ android {
 
     defaultConfig {
         applicationId = "io.github.japskiddin.sudoku.game"
-        targetSdk = libs.versions.androidSdk.target.get().toInt()
         versionCode = libs.versions.appVersion.code.get().toInt()
         versionName = libs.versions.appVersion.name.get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -99,10 +98,6 @@ android {
         }
     }
 
-    buildFeatures {
-        compose = true
-    }
-
     kotlinOptions {
         allWarningsAsErrors = false
         freeCompilerArgs += listOf(
@@ -156,15 +151,7 @@ tasks.withType<JavaCompile> {
     )
 }
 
-composeCompiler {
-    enableStrongSkippingMode = true
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-}
-
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
 
