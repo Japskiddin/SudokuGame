@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.jetbrains.compose.compiler)
+    alias(libs.plugins.app.android.compose)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.google.ksp)
 }
@@ -45,14 +45,7 @@ android {
     }
 }
 
-composeCompiler {
-    enableStrongSkippingMode = true
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-}
-
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.javax.inject)
 

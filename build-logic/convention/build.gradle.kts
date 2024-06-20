@@ -40,10 +40,10 @@ gradlePlugin {
             id = "app.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-//        register("androidLibrary") {
-//            id = "app.android.library"
-//            implementationClass = "AndroidLibraryConventionPlugin"
-//        }
+        register("androidLibrary") {
+            id = "app.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
         register("androidCompose") {
             id = "app.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"

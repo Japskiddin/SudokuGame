@@ -26,10 +26,11 @@ internal fun Project.configureAndroidCompose(
             add("implementation", libs.findLibrary("androidx-compose-ui-unit").get())
             add("implementation", libs.findLibrary("androidx-compose-ui-graphics").get())
             add("implementation", libs.findLibrary("androidx-compose-material3").get())
-            add("implementation", libs.findLibrary("androidx-compose-runtime").get())
             add("implementation", libs.findLibrary("androidx-compose-ui-tooling-preview").get())
+            add("implementation", libs.findLibrary("androidx-compose-runtime").get())
 
             add("debugImplementation", libs.findLibrary("androidx-compose-ui-tooling").get())
+            add("debugImplementation", libs.findLibrary("androidx-compose-ui-test-manifest").get())
         }
     }
 
