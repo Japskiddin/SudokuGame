@@ -9,13 +9,13 @@ internal fun Project.configureAndroidHilt(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     if (commonExtension is ApplicationExtension) {
-        pluginManager.apply(libs.findPlugin("dagger-hilt-android").get().get().pluginId)
+        pluginManager.apply("com.google.dagger.hilt.android")
     }
 
     pluginManager.apply("com.google.devtools.ksp")
 
     dependencies {
         add("implementation", libs.findLibrary("dagger-hilt-android").get())
-        add("ksp", libs.findLibrary("dagger-hilt-android-compiler").get())
+        add("ksp", libs.findLibrary("dagger-hilt-compiler").get())
     }
 }

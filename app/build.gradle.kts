@@ -4,8 +4,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.app.android.application)
     alias(libs.plugins.app.android.compose)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.dagger.hilt.android)
 }
 
 android {
@@ -27,54 +25,73 @@ android {
         }
     }
 
-    val secretProperties = Properties()
-    if (project.hasProperty("Keys.repo")) {
-        val keyRepo = project.property("Keys.repo") as String
-        val projectPropsFile = file("$keyRepo/google-play-publish.properties")
-        if (projectPropsFile.exists()) {
-            val props = Properties()
-            props.load(FileInputStream(projectPropsFile))
-            secretProperties.setProperty(
-                "SIGNING_KEYSTORE_PATH",
-                file(keyRepo + props["RELEASE_STORE_FILE"]).path
-            )
-            secretProperties.setProperty(
-                "SIGNING_KEYSTORE_PASSWORD",
-                props["RELEASE_STORE_PASS"].toString()
-            )
-            secretProperties.setProperty("SIGNING_KEY_ALIAS", props["RELEASE_KEY_ALIAS"].toString())
-            secretProperties.setProperty("SIGNING_KEY_PASSWORD", props["RELEASE_KEY_PASS"].toString())
+    val secretProperties = Properties().apply {
+        if (project.hasProperty("Keys.repo")) {
+            val keyRepo = project.property("Keys.repo") as String
+            val projectPropsFile = file("$keyRepo/google-play-publish.properties")
+            if (projectPropsFile.exists()) {
+                val props = Properties().apply {
+                    load(FileInputStream(projectPropsFile))
+                }
+                setProperty(
+                    "SIGNING_KEYSTORE_PATH",
+                    file(keyRepo + props["RELEASE_STORE_FILE"]).path
+                )
+                setProperty(
+                    "SIGNING_KEYSTORE_PASSWORD",
+                    props["RELEASE_STORE_PASS"].toString()
+                )
+                setProperty(
+                    "SIGNING_KEY_ALIAS",
+                    props["RELEASE_KEY_ALIAS"].toString()
+                )
+                setProperty(
+                    "SIGNING_KEY_PASSWORD",
+                    props["RELEASE_KEY_PASS"].toString()
+                )
+            } else {
+                setProperty(
+                    "SIGNING_KEYSTORE_PATH",
+                    file("../android-signing-keystore.jks").path
+                )
+                setProperty(
+                    "SIGNING_KEYSTORE_PASSWORD",
+                    System.getenv("SIGNING_KEYSTORE_PASSWORD")
+                )
+                setProperty(
+                    "SIGNING_KEY_ALIAS",
+                    System.getenv("SIGNING_KEY_ALIAS")
+                )
+                setProperty(
+                    "SIGNING_KEY_PASSWORD",
+                    System.getenv("SIGNING_KEY_PASSWORD")
+                )
+            }
         } else {
-            secretProperties.setProperty(
+            setProperty(
                 "SIGNING_KEYSTORE_PATH",
                 file("../android-signing-keystore.jks").path
             )
-            secretProperties.setProperty(
+            setProperty(
                 "SIGNING_KEYSTORE_PASSWORD",
                 System.getenv("SIGNING_KEYSTORE_PASSWORD")
             )
-            secretProperties.setProperty("SIGNING_KEY_ALIAS", System.getenv("SIGNING_KEY_ALIAS"))
-            secretProperties.setProperty("SIGNING_KEY_PASSWORD", System.getenv("SIGNING_KEY_PASSWORD"))
+            setProperty(
+                "SIGNING_KEY_ALIAS",
+                System.getenv("SIGNING_KEY_ALIAS")
+            )
+            setProperty(
+                "SIGNING_KEY_PASSWORD",
+                System.getenv("SIGNING_KEY_PASSWORD")
+            )
         }
-    } else {
-        secretProperties.setProperty(
-            "SIGNING_KEYSTORE_PATH",
-            file("../android-signing-keystore.jks").path
-        )
-        secretProperties.setProperty(
-            "SIGNING_KEYSTORE_PASSWORD",
-            System.getenv("SIGNING_KEYSTORE_PASSWORD")
-        )
-        secretProperties.setProperty("SIGNING_KEY_ALIAS", System.getenv("SIGNING_KEY_ALIAS"))
-        secretProperties.setProperty("SIGNING_KEY_PASSWORD", System.getenv("SIGNING_KEY_PASSWORD"))
     }
-    val releaseSigning =
-        signingConfigs.create("release") {
-            storeFile = file(secretProperties["SIGNING_KEYSTORE_PATH"] as String)
-            storePassword = secretProperties["SIGNING_KEYSTORE_PASSWORD"] as String
-            keyAlias = secretProperties["SIGNING_KEY_ALIAS"] as String
-            keyPassword = secretProperties["SIGNING_KEY_PASSWORD"] as String
-        }
+    val releaseSigning = signingConfigs.create("release") {
+        storeFile = file(secretProperties["SIGNING_KEYSTORE_PATH"] as String)
+        storePassword = secretProperties["SIGNING_KEYSTORE_PASSWORD"] as String
+        keyAlias = secretProperties["SIGNING_KEY_ALIAS"] as String
+        keyPassword = secretProperties["SIGNING_KEY_PASSWORD"] as String
+    }
 
     buildTypes {
         release {
@@ -110,17 +127,16 @@ android {
 
     packaging {
         resources {
-            excludes +=
-                listOf(
-                    "/META-INF/{AL2.0,LGPL2.1}",
-                    "/kotlin/**",
-                    "META-INF/androidx.*.version",
-                    "META-INF/com.google.*.version",
-                    "META-INF/kotlinx_*.version",
-                    "kotlin-tooling-metadata.json",
-                    "DebugProbesKt.bin",
-                    "META-INF/com/android/build/gradle/*"
-                )
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/kotlin/**",
+                "META-INF/androidx.*.version",
+                "META-INF/com.google.*.version",
+                "META-INF/kotlinx_*.version",
+                "kotlin-tooling-metadata.json",
+                "DebugProbesKt.bin",
+                "META-INF/com/android/build/gradle/*"
+            )
         }
     }
 
@@ -154,8 +170,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.dagger.hilt.navigation.compose)
-    implementation(libs.dagger.hilt.android)
-    ksp(libs.dagger.hilt.compiler)
 
     implementation(projects.core.common)
     implementation(projects.core.game)
@@ -163,11 +177,11 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.database)
     implementation(projects.core.data)
+    implementation(projects.core.navigation)
     implementation(projects.features.home.ui)
     implementation(projects.features.home.domain)
     implementation(projects.features.game.ui)
     implementation(projects.features.game.domain)
-    implementation(projects.core.navigation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

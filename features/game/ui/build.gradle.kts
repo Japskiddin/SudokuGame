@@ -5,8 +5,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.app.android.compose)
-    alias(libs.plugins.dagger.hilt.android)
-    alias(libs.plugins.google.ksp)
 }
 
 kotlin {
@@ -47,7 +45,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.javax.inject)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -55,8 +52,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     implementation(libs.dagger.hilt.navigation.compose)
-    implementation(libs.dagger.hilt.android)
-    ksp(libs.dagger.hilt.compiler)
 
     implementation(projects.core.common)
     implementation(projects.core.ui)
