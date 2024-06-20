@@ -136,6 +136,7 @@ android-test = { id = "com.android.test", version.ref = "agp" }
 app-android-application = { id = "app.android.application", version = "unspecified" }
 app-android-library = { id = "app.android.library", version = "unspecified" }
 app-android-compose = { id = "app.android.compose", version = "unspecified" }
+app-jvm = { id = "app.jvm", version = "unspecified" }
 app-android-hilt = { id = "app.android.hilt", version = "unspecified" }
 app-android-room = { id = "app.android.room", version = "unspecified" }
 app-feature-ui = { id = "app.feature.ui", version = "unspecified" }

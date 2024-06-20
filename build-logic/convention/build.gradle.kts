@@ -48,6 +48,10 @@ gradlePlugin {
             id = "app.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
+        register("jvm") {
+            id = "app.jvm"
+            implementationClass = "JvmConventionPlugin"
+        }
 //        register("androidHilt") {
 //            id = "app.android.hilt"
 //            implementationClass = "AndroidHiltConventionPlugin"

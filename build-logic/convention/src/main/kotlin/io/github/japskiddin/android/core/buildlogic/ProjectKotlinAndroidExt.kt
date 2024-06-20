@@ -1,6 +1,5 @@
 package io.github.japskiddin.android.core.buildlogic
 
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -13,10 +12,6 @@ internal fun Project.configureKotlinAndroid(
 
         defaultConfig {
             minSdk = libs.findVersion("androidSdk-min").get().toString().toInt()
-        }
-
-        if (this is ApplicationExtension) {
-            defaultConfig.targetSdk = libs.findVersion("androidSdk-target").get().toString().toInt()
         }
 
         compileOptions {
