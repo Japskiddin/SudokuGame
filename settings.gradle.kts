@@ -31,15 +31,15 @@ dependencyResolutionManagement {
 rootProject.name = "Sudoku"
 include(
     ":app",
-    ":database",
-    ":datastore",
+    ":core:navigation",
+    ":core:database",
+    ":core:datastore",
     ":core:common",
     ":core:game",
     ":core:ui",
-    ":data",
+    ":core:data",
     ":features:home:ui",
     ":features:home:domain",
     ":features:game:ui",
-    ":features:game:domain",
-    ":navigation"
+    ":features:game:domain"
 )

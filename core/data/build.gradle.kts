@@ -35,6 +35,6 @@ dependencies {
     implementation(libs.javax.inject)
     implementation(projects.core.common)
     implementation(projects.core.game)
-    implementation(projects.database)
-    implementation(projects.datastore)
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
 }
