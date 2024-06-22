@@ -12,6 +12,7 @@ internal fun Project.configureAndroidRoom(
     pluginManager.run {
         apply("androidx.room")
         apply("com.google.devtools.ksp")
+        apply("org.jetbrains.kotlin.plugin.serialization")
     }
 
     commonExtension.apply {
@@ -24,5 +25,6 @@ internal fun Project.configureAndroidRoom(
         add("implementation", libs.findLibrary("androidx-room-runtime").get())
         add("implementation", libs.findLibrary("androidx-room-ktx").get())
         add("ksp", libs.findLibrary("androidx-room-compiler").get())
+        add("implementation", libs.findLibrary("jetbrains-kotlinx-serialization-json").get())
     }
 }
