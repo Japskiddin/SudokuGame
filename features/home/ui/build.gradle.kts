@@ -1,10 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.app.android.library)
     alias(libs.plugins.app.android.compose)
+    alias(libs.plugins.app.feature.ui)
 }
 
 kotlin {
@@ -13,26 +12,6 @@ kotlin {
 
 android {
     namespace = "io.github.japskiddin.sudoku.feature.home.ui"
-    compileSdk = libs.versions.androidSdk.compile.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.androidSdk.min.get().toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
 
     kotlinOptions {
         allWarningsAsErrors = false
@@ -43,15 +22,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    implementation(libs.dagger.hilt.navigation.compose)
-
-    implementation(projects.core.ui)
     implementation(projects.features.home.domain)
 }

@@ -60,10 +60,10 @@ gradlePlugin {
             id = "app.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
-//        register("featureUi") {
-//            id = "app.feature.ui"
-//            implementationClass = "FeatureUiConventionPlugin"
-//        }
+        register("featureUi") {
+            id = "app.feature.ui"
+            implementationClass = "FeatureUiConventionPlugin"
+        }
 //        register("featureDomain") {
 //            id = "app.feature.domain"
 //            implementationClass = "FeatureDomainConventionPlugin"
