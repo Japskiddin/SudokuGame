@@ -13,7 +13,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
     implementation(libs.jetbrains.kotlinx.coroutines.core)
-    api(libs.jetbrains.kotlinx.immutable)
 }

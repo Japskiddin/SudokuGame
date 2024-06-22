@@ -44,6 +44,8 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
 
+    api(libs.jetbrains.kotlinx.immutable)
+
     implementation(projects.core.common)
     api(projects.core.game)
     api(projects.core.data)

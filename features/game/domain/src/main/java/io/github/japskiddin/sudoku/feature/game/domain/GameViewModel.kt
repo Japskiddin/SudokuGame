@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
@@ -17,7 +18,6 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUs
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -30,14 +30,16 @@ import javax.inject.Provider
 
 @HiltViewModel
 public class GameViewModel
+@Suppress("LongParameterList")
 @Inject
 internal constructor(
+    private val appNavigator: AppNavigator,
+    private val appDispatchers: AppDispatchers,
+    private val savedState: SavedStateHandle,
     private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val insertSavedGameUseCase: Provider<InsertSavedGameUseCase>,
-    private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
-    private val appNavigator: AppNavigator,
-    private val savedState: SavedStateHandle
+    private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>
 ) : ViewModel() {
     private lateinit var boardEntity: Board
     private val isLoading = MutableStateFlow(false)
@@ -60,7 +62,7 @@ internal constructor(
     public fun onInputCell(
         num: Int
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(appDispatchers.io) {
             gameState.update { state ->
                 val list = state.board.map { item -> item.toMutableList() }.toMutableList()
                 list[state.selectedCell.row][state.selectedCell.col].value = num
@@ -85,13 +87,13 @@ internal constructor(
     public fun onBackButtonClicked(): Unit = appNavigator.tryNavigateBack()
 
     public fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(appDispatchers.io) {
             gameState.update { it.copy(selectedCell = boardCell) }
         }
     }
 
     private fun generateGameLevel() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(appDispatchers.io) {
             error.update { GameError.NONE }
             isLoading.update { true }
 

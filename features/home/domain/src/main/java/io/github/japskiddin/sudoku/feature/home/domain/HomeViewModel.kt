@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.feature.home.domain
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
@@ -12,7 +13,6 @@ import io.github.japskiddin.sudoku.feature.home.domain.usecase.SudokuNotGenerate
 import io.github.japskiddin.sudoku.feature.home.domain.utils.toGameError
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +28,7 @@ public class HomeViewModel
 @Inject
 internal constructor(
     private val appNavigator: AppNavigator,
+    private val appDispatchers: AppDispatchers,
     private val createBoardUseCase: Provider<CreateBoardUseCase>,
     private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
     private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
@@ -59,13 +60,13 @@ internal constructor(
         if (lastGame.value != null) {
             menuState.update { it.copy(isShowContinueDialog = true) }
         } else {
-            menuState.update { it.copy(isShowDifficultyDialog = true) }
-//            onStartNewGame()
+//            menuState.update { it.copy(isShowDifficultyDialog = true) }
+            onStartNewGame()
         }
     }
 
     public fun onContinueGameClick() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(appDispatchers.io) {
             isLoading.update { true }
             val boardUid = lastGame.value?.uid ?: -1L
             navigateToGame(boardUid)
@@ -90,7 +91,7 @@ internal constructor(
     }
 
     public fun onStartNewGame() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(appDispatchers.io) {
             isLoading.update { true }
 
             val board = try {

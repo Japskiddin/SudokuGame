@@ -33,7 +33,6 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.javax.inject)
-    implementation(projects.core.common)
     implementation(projects.core.game)
     implementation(projects.core.database)
     implementation(projects.core.datastore)

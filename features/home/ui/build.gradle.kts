@@ -52,7 +52,6 @@ dependencies {
 
     implementation(libs.dagger.hilt.navigation.compose)
 
-    implementation(projects.core.common)
     implementation(projects.core.ui)
     implementation(projects.features.home.domain)
 }
