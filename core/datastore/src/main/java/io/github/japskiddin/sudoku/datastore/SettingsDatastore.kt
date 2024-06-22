@@ -9,11 +9,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 
 class SettingsDatastore(applicationContext: Context) {
-    companion object {
-        private const val PREFERENCES_NAME = "settings"
-        private const val MISTAKES_LIMIT = 3
-    }
-
     private val Context.createDataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
     private val dataStore = applicationContext.createDataStore
 
@@ -29,4 +24,9 @@ class SettingsDatastore(applicationContext: Context) {
         dataStore.data.map { preferences ->
             preferences[mistakesLimitKey] ?: MISTAKES_LIMIT
         }
+
+    companion object {
+        private const val PREFERENCES_NAME = "settings"
+        private const val MISTAKES_LIMIT = 3
+    }
 }

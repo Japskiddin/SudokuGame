@@ -32,8 +32,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.javax.inject)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+
     implementation(projects.core.game)
     implementation(projects.core.database)
     implementation(projects.core.datastore)
+
+    implementation(libs.javax.inject)
 }

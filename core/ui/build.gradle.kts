@@ -6,7 +6,3 @@ plugins {
 android {
     namespace = "io.github.japskiddin.sudoku.core.ui"
 }
-
-dependencies {
-    implementation(libs.androidx.core.ktx)
-}
