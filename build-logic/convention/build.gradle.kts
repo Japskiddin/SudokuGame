@@ -64,21 +64,9 @@ gradlePlugin {
             id = "app.feature.ui"
             implementationClass = "FeatureUiConventionPlugin"
         }
-//        register("featureDomain") {
-//            id = "app.feature.domain"
-//            implementationClass = "FeatureDomainConventionPlugin"
-//        }
-//        register("featureData") {
-//            id = "app.feature.data"
-//            implementationClass = "FeatureDataConventionPlugin"
-//        }
-//        register("featureNav") {
-//            id = "app.feature.nav"
-//            implementationClass = "FeatureNavConventionPlugin"
-//        }
-//        register("featureDatastore") {
-//            id = "app.feature.datastore"
-//            implementationClass = "FeatureDatastoreConventionPlugin"
-//        }
+        register("featureDomain") {
+            id = "app.feature.domain"
+            implementationClass = "FeatureDomainConventionPlugin"
+        }
     }
 }

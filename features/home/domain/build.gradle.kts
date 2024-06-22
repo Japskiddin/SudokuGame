@@ -1,11 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.dagger.hilt.android)
-    alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.app.android.library)
+    alias(libs.plugins.app.android.hilt)
+    alias(libs.plugins.app.feature.domain)
 }
 
 kotlin {
@@ -14,40 +12,9 @@ kotlin {
 
 android {
     namespace = "io.github.japskiddin.sudoku.feature.home.domain"
-    compileSdk = libs.versions.androidSdk.compile.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.androidSdk.min.get().toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.javax.inject)
-
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-    implementation(libs.jetbrains.kotlinx.coroutines.android)
-
-    implementation(libs.dagger.hilt.android)
-    ksp(libs.dagger.hilt.compiler)
-
     api(libs.jetbrains.kotlinx.immutable)
-
-    implementation(projects.core.common)
     api(projects.core.game)
-    api(projects.core.data)
-    implementation(projects.core.navigation)
 }

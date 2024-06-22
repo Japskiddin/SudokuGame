@@ -22,9 +22,14 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
                 configureKotlin()
                 configureKotlinAndroid(this)
-                configureBuildTypes(this)
+                configureBuildTypes()
 
-                defaultConfig.targetSdk = libs.findVersion("androidSdk-target").get().toString().toInt()
+                defaultConfig {
+                    targetSdk = libs.findVersion("androidSdk-target").get().toString().toInt()
+                    vectorDrawables {
+                        useSupportLibrary = true
+                    }
+                }
             }
 
             configureJUnit()

@@ -16,9 +16,6 @@ android {
         versionName = libs.versions.appVersion.name.get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "sudoku-$versionName-$versionCode")
-        vectorDrawables {
-            useSupportLibrary = true
-        }
         resourceConfigurations += setOf("ru", "en")
         ndk {
             //noinspection ChromeOsAbiSupport
