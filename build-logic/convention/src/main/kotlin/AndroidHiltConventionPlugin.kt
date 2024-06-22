@@ -1,15 +1,13 @@
 import io.github.japskiddin.android.core.buildlogic.commonExtension
-import io.github.japskiddin.android.core.buildlogic.configureAndroidCompose
+import io.github.japskiddin.android.core.buildlogic.configureAndroidHilt
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class AndroidComposeConventionPlugin : Plugin<Project> {
+class AndroidHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
-
             commonExtension.apply {
-                configureAndroidCompose(this)
+                configureAndroidHilt(this)
             }
         }
     }

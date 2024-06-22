@@ -5,9 +5,7 @@ import org.gradle.api.Project
 class JvmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.run {
-                apply("org.jetbrains.kotlin.jvm")
-            }
+            pluginManager.apply("org.jetbrains.kotlin.jvm")
 
             configureKotlinJvm()
         }
