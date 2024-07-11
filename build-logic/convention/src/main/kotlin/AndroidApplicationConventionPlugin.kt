@@ -23,6 +23,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureKotlin()
                 configureKotlinAndroid(this)
                 configureBuildTypes()
+                configureJUnit(this)
 
                 defaultConfig {
                     targetSdk = libs.findVersion("androidSdk-target").get().toString().toInt()
@@ -31,8 +32,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     }
                 }
             }
-
-            configureJUnit()
         }
     }
 }

@@ -20,9 +20,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
                 configureKotlin()
                 configureKotlinAndroid(this)
+                configureJUnit(this)
             }
-
-            configureJUnit()
         }
     }
 }
