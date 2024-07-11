@@ -40,8 +40,7 @@ androidSdk-target = "34"
 appVersion-name = "0.1.0"
 appVersion-code = "1"
 
-# TODO обновить до 19 или 22
-jvm = "17"
+jvm = "21"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
