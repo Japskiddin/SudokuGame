@@ -62,6 +62,7 @@ internal constructor(
     public fun onInputCell(
         num: Int
     ) {
+        if (gameState.value.selectedCell == BoardCell.Empty) return
         viewModelScope.launch(appDispatchers.io) {
             gameState.update { state ->
                 val list = state.board.map { item -> item.toMutableList() }.toMutableList()

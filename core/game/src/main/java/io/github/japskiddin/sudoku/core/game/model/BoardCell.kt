@@ -6,4 +6,8 @@ data class BoardCell(
     var value: Int = 0,
     var isError: Boolean = false,
     var isLocked: Boolean = false
-)
+) {
+    companion object {
+        val Empty = BoardCell(-1, -1)
+    }
+}

@@ -23,7 +23,7 @@ public data class GameState(
                 }.toImmutableList()
             }.toImmutableList(),
             notes = persistentListOf(),
-            selectedCell = BoardCell(-1, -1)
+            selectedCell = BoardCell.Empty
         )
     }
 }
