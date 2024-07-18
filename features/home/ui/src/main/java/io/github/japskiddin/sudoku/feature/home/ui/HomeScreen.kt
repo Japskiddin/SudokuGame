@@ -146,7 +146,9 @@ private fun HomeMenu(
     if (isShowDifficultyDialog) {
         DifficultyDialog(
             onDismiss = onDismissDifficultyDialog,
-            onStartClick = {}
+            onStartClick = {},
+            onSelectedDifficultyChanged = {},
+            onSelectedTypeChanged = {}
         )
     }
 

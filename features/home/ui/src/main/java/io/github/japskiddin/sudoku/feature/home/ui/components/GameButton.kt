@@ -40,7 +40,7 @@ internal fun GameButton(
     foregroundPressedColor: Color = MenuButtonForegroundPressed,
     backgroundNormalColor: Color = MenuButtonBackgroundNormal,
     backgroundPressedColor: Color = MenuButtonBackgroundPressed,
-    icon: Painter?,
+    icon: Painter? = null,
     text: String,
     onClick: () -> Unit
 ) {
