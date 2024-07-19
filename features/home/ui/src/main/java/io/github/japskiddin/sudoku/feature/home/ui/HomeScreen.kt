@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.japskiddin.sudoku.core.game.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.GameError
+import io.github.japskiddin.sudoku.core.game.GameType
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.dialogBackground
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
@@ -55,16 +57,18 @@ internal fun HomeScreen(
         modifier = modifier,
         state = state,
         currentYear = viewModel.currentYear,
-        onStartGameClick = { viewModel.onStartClick() },
-        onContinueGameClick = { viewModel.onContinueGameClick() },
-        onSettingsClick = { viewModel.onSettingsClick() },
-        onRecordsClick = { viewModel.onRecordsClick() },
-        onContinueDialogButtonClick = {
-            viewModel.onDismissContinueDialog()
-            viewModel.onStartNewGame()
-        },
+        onStartButtonClick = { viewModel.onStartButtonClick() },
+        onContinueButtonClick = { viewModel.onContinueButtonClick() },
+        onSettingsButtonClick = { viewModel.onSettingsButtonClick() },
+        onRecordsButtonClick = { viewModel.onRecordsButtonClick() },
+        onContinueDialogButtonClick = { viewModel.onContinueDialogConfirm() },
+        onStartGame = { viewModel.onDifficultyDialogConfirm() },
         onDismissContinueDialog = { viewModel.onDismissContinueDialog() },
-        onDismissDifficultyDialog = { viewModel.onDismissDifficultyDialog() }
+        onDismissDifficultyDialog = { viewModel.onDismissDifficultyDialog() },
+        onSwipeDifficultyLeft = { viewModel.onSelectPreviousGameDifficulty() },
+        onSwipeDifficultyRight = { viewModel.onSelectNextGameDifficulty() },
+        onSwipeTypeLeft = { viewModel.onSelectPreviousGameType() },
+        onSwipeTypeRight = { viewModel.onSelectNextGameType() }
     )
 }
 
@@ -73,13 +77,18 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: UiState,
     currentYear: String,
-    onStartGameClick: () -> Unit,
-    onContinueGameClick: () -> Unit,
-    onRecordsClick: () -> Unit,
-    onSettingsClick: () -> Unit,
+    onStartButtonClick: () -> Unit,
+    onContinueButtonClick: () -> Unit,
+    onRecordsButtonClick: () -> Unit,
+    onSettingsButtonClick: () -> Unit,
+    onStartGame: () -> Unit,
     onContinueDialogButtonClick: () -> Unit,
     onDismissContinueDialog: () -> Unit,
-    onDismissDifficultyDialog: () -> Unit
+    onDismissDifficultyDialog: () -> Unit,
+    onSwipeDifficultyLeft: () -> Unit,
+    onSwipeDifficultyRight: () -> Unit,
+    onSwipeTypeLeft: () -> Unit,
+    onSwipeTypeRight: () -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -92,13 +101,20 @@ private fun HomeScreenContent(
                 isShowContinueButton = state.isShowContinueButton,
                 isShowContinueDialog = state.isShowContinueDialog,
                 isShowDifficultyDialog = state.isShowDifficultyDialog,
-                onStartGameClick = onStartGameClick,
-                onContinueGameClick = onContinueGameClick,
-                onRecordsClick = onRecordsClick,
-                onSettingsClick = onSettingsClick,
+                selectedDifficulty = state.selectedDifficulty,
+                selectedType = state.selectedType,
+                onStartButtonClick = onStartButtonClick,
+                onContinueButtonClick = onContinueButtonClick,
+                onRecordsButtonClick = onRecordsButtonClick,
+                onSettingsButtonClick = onSettingsButtonClick,
+                onStartGame = onStartGame,
                 onContinueDialogButtonClick = onContinueDialogButtonClick,
                 onDismissContinueDialog = onDismissContinueDialog,
-                onDismissDifficultyDialog = onDismissDifficultyDialog
+                onDismissDifficultyDialog = onDismissDifficultyDialog,
+                onSwipeDifficultyLeft = onSwipeDifficultyLeft,
+                onSwipeDifficultyRight = onSwipeDifficultyRight,
+                onSwipeTypeLeft = onSwipeTypeLeft,
+                onSwipeTypeRight = onSwipeTypeRight
             )
 
         is UiState.Error ->
@@ -127,14 +143,21 @@ private fun HomeMenu(
     isShowContinueButton: Boolean,
     isShowContinueDialog: Boolean,
     isShowDifficultyDialog: Boolean,
+    selectedDifficulty: GameDifficulty,
+    selectedType: GameType,
     currentYear: String,
-    onStartGameClick: () -> Unit,
-    onContinueGameClick: () -> Unit,
-    onSettingsClick: () -> Unit,
-    onRecordsClick: () -> Unit,
+    onStartButtonClick: () -> Unit,
+    onContinueButtonClick: () -> Unit,
+    onSettingsButtonClick: () -> Unit,
+    onRecordsButtonClick: () -> Unit,
     onContinueDialogButtonClick: () -> Unit,
+    onStartGame: () -> Unit,
     onDismissContinueDialog: () -> Unit,
-    onDismissDifficultyDialog: () -> Unit
+    onDismissDifficultyDialog: () -> Unit,
+    onSwipeDifficultyLeft: () -> Unit,
+    onSwipeDifficultyRight: () -> Unit,
+    onSwipeTypeLeft: () -> Unit,
+    onSwipeTypeRight: () -> Unit
 ) {
     if (isShowContinueDialog) {
         ContinueDialog(
@@ -145,10 +168,14 @@ private fun HomeMenu(
 
     if (isShowDifficultyDialog) {
         DifficultyDialog(
+            selectedDifficulty = selectedDifficulty,
+            selectedType = selectedType,
             onDismiss = onDismissDifficultyDialog,
-            onStartClick = {},
-            onSelectedDifficultyChanged = {},
-            onSelectedTypeChanged = {}
+            onStartClick = onStartGame,
+            onSwipeDifficultyLeft = onSwipeDifficultyLeft,
+            onSwipeDifficultyRight = onSwipeDifficultyRight,
+            onSwipeTypeLeft = onSwipeTypeLeft,
+            onSwipeTypeRight = onSwipeTypeRight
         )
     }
 
@@ -169,10 +196,10 @@ private fun HomeMenu(
                     .fillMaxWidth(widthPercent)
                     .weight(1f),
                 isShowContinueButton = isShowContinueButton,
-                onStartGameClick = onStartGameClick,
-                onContinueGameClick = onContinueGameClick,
-                onSettingsClick = onSettingsClick,
-                onRecordsClick = onRecordsClick
+                onStartGameClick = onStartButtonClick,
+                onContinueGameClick = onContinueButtonClick,
+                onSettingsClick = onSettingsButtonClick,
+                onRecordsClick = onRecordsButtonClick
             )
             OutlineText(
                 text = currentYear,
@@ -222,13 +249,18 @@ private fun HomeContentPreview(
         HomeScreenContent(
             state = state,
             currentYear = "2024",
-            onStartGameClick = {},
-            onContinueGameClick = {},
-            onRecordsClick = {},
-            onSettingsClick = {},
+            onStartButtonClick = {},
+            onContinueButtonClick = {},
+            onRecordsButtonClick = {},
+            onSettingsButtonClick = {},
+            onStartGame = {},
             onContinueDialogButtonClick = {},
             onDismissContinueDialog = {},
-            onDismissDifficultyDialog = {}
+            onDismissDifficultyDialog = {},
+            onSwipeDifficultyLeft = {},
+            onSwipeDifficultyRight = {},
+            onSwipeTypeLeft = {},
+            onSwipeTypeRight = {}
         )
     }
 }

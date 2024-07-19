@@ -14,32 +14,47 @@ import io.github.japskiddin.sudoku.core.game.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.home.ui.R
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun DifficultyDialog(
-    difficulties: ImmutableList<GameDifficulty>,
-    types: ImmutableList<GameType>,
+    selectedDifficulty: GameDifficulty,
+    selectedType: GameType,
     onDismiss: () -> Unit,
     onStartClick: () -> Unit,
-    onSelectedDifficultyChanged: (Int) -> Unit,
-    onSelectedTypeChanged: (Int) -> Unit,
+    onSwipeDifficultyLeft: () -> Unit,
+    onSwipeDifficultyRight: () -> Unit,
+    onSwipeTypeLeft: () -> Unit,
+    onSwipeTypeRight: () -> Unit
 ) {
     GameDialog(onDismiss = onDismiss) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val difficulties = persistentListOf(
+                GameDifficulty.EASY,
+                GameDifficulty.INTERMEDIATE,
+                GameDifficulty.HARD,
+                GameDifficulty.EXPERT
+            )
+            val types = persistentListOf(
+                GameType.DEFAULT6X6,
+                GameType.DEFAULT9X9,
+                GameType.DEFAULT12X12
+            )
+
             ItemSelector(
-                items = persistentListOf("Item 1", "Item 2", "Item 3", "Item 4"),
-                defaultItemPos = 1,
-                onSelectedItemChanged = onSelectedDifficultyChanged
+                currentItem = stringResource(id = selectedDifficulty.resName),
+                itemPos = difficulties.indexOf(selectedDifficulty),
+                onSwipeLeft = onSwipeDifficultyLeft,
+                onSwipeRight = onSwipeDifficultyRight
             )
             Spacer(modifier = Modifier.height(16.dp))
             ItemSelector(
-                items = persistentListOf("Item 1", "Item 2", "Item 3", "Item 4"),
-                defaultItemPos = 1,
-                onSelectedItemChanged = onSelectedTypeChanged
+                currentItem = selectedType.title,
+                itemPos = types.indexOf(selectedType),
+                onSwipeLeft = onSwipeTypeLeft,
+                onSwipeRight = onSwipeTypeRight
             )
             Spacer(modifier = Modifier.height(16.dp))
             GameButton(
@@ -57,10 +72,14 @@ internal fun DifficultyDialog(
 private fun DifficultyDialogPreview() {
     SudokuTheme {
         DifficultyDialog(
+            selectedDifficulty = GameDifficulty.EASY,
+            selectedType = GameType.DEFAULT9X9,
             onDismiss = {},
             onStartClick = {},
-            onSelectedDifficultyChanged = {},
-            onSelectedTypeChanged = {}
+            onSwipeDifficultyLeft = {},
+            onSwipeDifficultyRight = {},
+            onSwipeTypeLeft = {},
+            onSwipeTypeRight = {}
         )
     }
 }

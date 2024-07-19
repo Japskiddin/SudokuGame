@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 internal class GenerateSudokuUseCase @Inject constructor() {
     operator fun invoke(
-        type: GameType = GameType.DEFAULT9X9,
-        difficulty: GameDifficulty = GameDifficulty.INTERMEDIATE
+        type: GameType,
+        difficulty: GameDifficulty
     ): Board {
         val sudokuParser = SudokuParser()
         val boardSize = type.size

@@ -5,10 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,79 +27,72 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.japskiddin.sudoku.core.game.GameDifficulty
 import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.home.ui.R
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ItemSelector(
     modifier: Modifier = Modifier,
-    items: ImmutableList<String>,
-    defaultItemPos: Int,
-    textSize: TextUnit = 14.sp,
-    buttonSize: Dp = 24.dp,
-    onSelectedItemChanged: (Int) -> Unit,
+    currentItem: String,
+    itemPos: Int,
+    textSize: TextUnit = 16.sp,
+    buttonSize: Dp = 36.dp,
+    swipeDuration: Int = 220,
+    textColor: Color = Color.Black,
+    iconTint: Color = Color.Black,
+    onSwipeLeft: () -> Unit,
+    onSwipeRight: () -> Unit
 ) {
-    var currentItemPos by remember { mutableIntStateOf(defaultItemPos) }
-
     // TODO: добавить настройку цвета для текста и иконок
 
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_arrow_left),
-            contentDescription = stringResource(id = R.string.swipe_left),
-            modifier = Modifier
-                .size(buttonSize)
-                .clickable {
-                    if (currentItemPos <= 0) {
-                        currentItemPos = items.count() - 1
-                    } else {
-                        currentItemPos--
-                    }
-                    onSelectedItemChanged(currentItemPos)
-                }
-        )
+        IconButton(
+            onClick = { onSwipeLeft() },
+            modifier = Modifier.size(buttonSize)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_left),
+                tint = iconTint,
+                contentDescription = stringResource(id = R.string.swipe_left)
+            )
+        }
         AnimatedContent(
-            targetState = currentItemPos,
+            targetState = itemPos,
             transitionSpec = {
-                val duration = 220
-                if (initialState > targetState) {
-                    slideInHorizontally(animationSpec = tween(duration)) { it } togetherWith
-                        slideOutHorizontally(animationSpec = tween(duration)) { -it }
+                if (initialState >= targetState) {
+                    slideInHorizontally(animationSpec = tween(swipeDuration)) { -it } togetherWith
+                        slideOutHorizontally(animationSpec = tween(swipeDuration)) { it }
                 } else {
-                    slideInHorizontally(animationSpec = tween(duration)) { -it } togetherWith
-                        slideOutHorizontally(animationSpec = tween(duration)) { it }
+                    slideInHorizontally(animationSpec = tween(swipeDuration)) { it } togetherWith
+                        slideOutHorizontally(animationSpec = tween(swipeDuration)) { -it }
                 }
             },
             label = "Animated Text",
             modifier = Modifier.weight(1f)
-        ) { pos ->
+        ) { _ ->
             Text(
-                text = items[pos],
+                text = currentItem,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black,
+                color = textColor,
                 fontSize = textSize
             )
         }
-        Image(
-            painter = painterResource(id = R.drawable.ic_arrow_right),
-            contentDescription = stringResource(id = R.string.swipe_right),
-            modifier = Modifier
-                .size(buttonSize)
-                .clickable {
-                    if (currentItemPos >= items.count() - 1) {
-                        currentItemPos = 0
-                    } else {
-                        currentItemPos++
-                    }
-                    onSelectedItemChanged(currentItemPos)
-                }
-        )
+        IconButton(
+            onClick = { onSwipeRight() },
+            modifier = Modifier.size(buttonSize)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_right),
+                tint = iconTint,
+                contentDescription = stringResource(id = R.string.swipe_right)
+            )
+        }
     }
 }
 
@@ -109,11 +102,33 @@ internal fun ItemSelector(
 )
 @Composable
 private fun ItemSelectorPreview() {
+    val difficulties = persistentListOf(
+        GameDifficulty.EASY,
+        GameDifficulty.INTERMEDIATE,
+        GameDifficulty.HARD,
+        GameDifficulty.EXPERT
+    )
+    var currentItemPos by remember { mutableIntStateOf(1) }
+    val currentItem = difficulties[currentItemPos]
+
     SudokuTheme {
         ItemSelector(
-            items = persistentListOf("Item 1", "Item 2", "Item 3", "Item 4"),
-            defaultItemPos = 1,
-            onSelectedItemChanged = {},
+            currentItem = stringResource(id = currentItem.resName),
+            itemPos = difficulties.indexOf(currentItem),
+            onSwipeLeft = {
+                if (currentItemPos <= 0) {
+                    currentItemPos = difficulties.count() - 1
+                } else {
+                    currentItemPos--
+                }
+            },
+            onSwipeRight = {
+                if (currentItemPos >= difficulties.count() - 1) {
+                    currentItemPos = 0
+                } else {
+                    currentItemPos++
+                }
+            }
         )
     }
 }
