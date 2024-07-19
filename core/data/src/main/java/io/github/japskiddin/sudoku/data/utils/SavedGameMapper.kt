@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.data.utils
 
-import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
+import io.github.japskiddin.sudoku.core.game.GameStatus
 import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.database.model.SavedGameDBO
 

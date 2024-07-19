@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.game.qqwing
+package io.github.japskiddin.sudoku.core.game
 
 // @formatter:off
 /*
@@ -20,10 +20,10 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-enum class GameDifficulty {
-    UNSPECIFIED,
-    EASY,
-    INTERMEDIATE,
-    HARD,
-    EXPERT,
+enum class GameDifficulty(val resName: Int) {
+    UNSPECIFIED(resName = R.string.difficulty_unspecified),
+    EASY(resName = R.string.difficulty_easy),
+    INTERMEDIATE(resName = R.string.difficulty_intermediate),
+    HARD(resName = R.string.difficulty_hard),
+    EXPERT(resName = R.string.difficulty_expert)
 }

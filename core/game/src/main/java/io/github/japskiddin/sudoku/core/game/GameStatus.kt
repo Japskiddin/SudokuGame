@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.game.qqwing
+package io.github.japskiddin.sudoku.core.game
 
 enum class GameStatus {
     IN_PROGRESS,

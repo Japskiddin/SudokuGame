@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.data.model
 
 import androidx.annotation.Keep
-import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.qqwing.GameType
+import io.github.japskiddin.sudoku.core.game.GameDifficulty
+import io.github.japskiddin.sudoku.core.game.GameType
 
 @Keep
 public data class Board(

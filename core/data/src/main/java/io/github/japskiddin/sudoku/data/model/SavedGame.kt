@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.data.model
 
 import androidx.annotation.Keep
-import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
+import io.github.japskiddin.sudoku.core.game.GameStatus
 
 @Keep
 public data class SavedGame(

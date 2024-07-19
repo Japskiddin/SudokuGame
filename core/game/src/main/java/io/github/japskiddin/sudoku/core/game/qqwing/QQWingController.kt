@@ -1,5 +1,7 @@
 package io.github.japskiddin.sudoku.core.game.qqwing
 
+import io.github.japskiddin.sudoku.core.game.GameDifficulty
+import io.github.japskiddin.sudoku.core.game.GameType
 import java.util.LinkedList
 import java.util.Random
 import java.util.concurrent.atomic.AtomicBoolean

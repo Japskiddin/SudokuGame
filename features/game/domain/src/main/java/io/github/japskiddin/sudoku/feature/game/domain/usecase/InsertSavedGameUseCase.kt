@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
-import io.github.japskiddin.sudoku.core.game.qqwing.GameStatus
+import io.github.japskiddin.sudoku.core.game.GameStatus
 import io.github.japskiddin.sudoku.data.SavedGameRepository
 import io.github.japskiddin.sudoku.data.model.SavedGame
 import javax.inject.Inject

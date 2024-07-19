@@ -47,10 +47,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.japskiddin.sudoku.core.game.GameDifficulty
+import io.github.japskiddin.sudoku.core.game.GameType
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.BoardNote
-import io.github.japskiddin.sudoku.core.game.qqwing.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.qqwing.GameType
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
 import io.github.japskiddin.sudoku.core.ui.theme.BoardCellNormal
