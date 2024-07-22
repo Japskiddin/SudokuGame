@@ -11,22 +11,22 @@ import io.github.japskiddin.sudoku.database.model.SavedGameDBO
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface SavedGameDao {
+public interface SavedGameDao {
     @Query("SELECT * FROM saved_game")
-    fun getAll(): Flow<List<SavedGameDBO>>
+    public fun getAll(): Flow<List<SavedGameDBO>>
 
     @Query("SELECT * FROM saved_game WHERE board_uid == :uid")
-    suspend fun get(uid: Long): SavedGameDBO?
+    public suspend fun get(uid: Long): SavedGameDBO?
 
     @Query(
         "SELECT * FROM saved_game" +
             " JOIN board ON saved_game.board_uid == board.uid" +
             " ORDER BY uid DESC"
     )
-    fun getSavedWithBoards(): Flow<Map<SavedGameDBO, BoardDBO>>
+    public fun getSavedWithBoards(): Flow<Map<SavedGameDBO, BoardDBO>>
 
     @Query("SELECT * FROM saved_game ORDER BY board_uid DESC LIMIT 1")
-    fun getLast(): Flow<SavedGameDBO?>
+    public fun getLast(): Flow<SavedGameDBO?>
 
     @Query(
         "SELECT * FROM saved_game" +
@@ -35,17 +35,17 @@ interface SavedGameDao {
             " ORDER BY last_played DESC" +
             " LIMIT :limit"
     )
-    fun getLastPlayable(limit: Int): Flow<Map<SavedGameDBO, BoardDBO>>
+    public fun getLastPlayable(limit: Int): Flow<Map<SavedGameDBO, BoardDBO>>
 
     @Insert
-    suspend fun insert(savedGame: SavedGameDBO): Long
+    public suspend fun insert(savedGame: SavedGameDBO): Long
 
     @Insert
-    suspend fun insert(savedGames: List<SavedGameDBO>): List<Long>
+    public suspend fun insert(savedGames: List<SavedGameDBO>): List<Long>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(savedGame: SavedGameDBO)
+    public suspend fun update(savedGame: SavedGameDBO)
 
     @Delete
-    suspend fun delete(savedGame: SavedGameDBO)
+    public suspend fun delete(savedGame: SavedGameDBO)
 }

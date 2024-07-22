@@ -1,15 +1,15 @@
 package io.github.japskiddin.sudoku.core.game.model
 
-data class BoardCell(
+public data class BoardCell(
     val row: Int,
     val col: Int,
     var value: Int = 0,
     var isError: Boolean = false,
     var isLocked: Boolean = false
 ) {
-    companion object {
-        val Empty = BoardCell(-1, -1)
+    public companion object {
+        public val Empty: BoardCell = BoardCell(-1, -1)
     }
 }
 
-fun BoardCell.isEmpty() = this == BoardCell.Empty
+public fun BoardCell.isEmpty(): Boolean = this == BoardCell.Empty

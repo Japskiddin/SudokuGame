@@ -11,15 +11,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Suppress("TooManyFunctions")
 @Dao
-interface BoardDao {
+public interface BoardDao {
     @Query("SELECT * FROM board")
-    fun getAll(): Flow<List<BoardDBO>>
+    public fun getAll(): Flow<List<BoardDBO>>
 
     @Query("SELECT * from board WHERE difficulty == :gameDifficulty")
-    fun getAll(gameDifficulty: Int): Flow<List<BoardDBO>>
+    public fun getAll(gameDifficulty: Int): Flow<List<BoardDBO>>
 
     @Query("SELECT * from board")
-    fun getAllList(): List<BoardDBO>
+    public fun getAllList(): List<BoardDBO>
 
     @Query(
         "SELECT * FROM board" +
@@ -27,29 +27,29 @@ interface BoardDao {
             " WHERE difficulty == :difficulty" +
             " ORDER BY uid DESC"
     )
-    fun getBoardsWithSavedGames(difficulty: Int): Flow<Map<BoardDBO, SavedGameDBO>>
+    public fun getBoardsWithSavedGames(difficulty: Int): Flow<Map<BoardDBO, SavedGameDBO>>
 
     @Query("SELECT * FROM board WHERE uid == :uid")
-    suspend fun get(uid: Long): BoardDBO?
+    public suspend fun get(uid: Long): BoardDBO?
 
     @Query("DELETE FROM board")
-    suspend fun deleteAll()
+    public suspend fun deleteAll()
 
     @Insert
-    suspend fun insert(boards: List<BoardDBO>): List<Long>
+    public suspend fun insert(boards: List<BoardDBO>): List<Long>
 
     @Insert
-    suspend fun insert(board: BoardDBO): Long
+    public suspend fun insert(board: BoardDBO): Long
 
     @Delete
-    suspend fun delete(board: BoardDBO)
+    public suspend fun delete(board: BoardDBO)
 
     @Delete
-    suspend fun delete(boards: List<BoardDBO>)
+    public suspend fun delete(boards: List<BoardDBO>)
 
     @Update
-    suspend fun update(board: BoardDBO)
+    public suspend fun update(board: BoardDBO)
 
     @Update
-    suspend fun update(boards: List<BoardDBO>)
+    public suspend fun update(boards: List<BoardDBO>)
 }

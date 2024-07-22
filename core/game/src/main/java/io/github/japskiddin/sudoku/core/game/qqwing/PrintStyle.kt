@@ -20,7 +20,7 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-enum class PrintStyle {
+public enum class PrintStyle {
     ONE_LINE,
     COMPACT,
     READABLE,

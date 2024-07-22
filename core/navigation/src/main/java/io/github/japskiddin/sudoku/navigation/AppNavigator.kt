@@ -2,27 +2,27 @@ package io.github.japskiddin.sudoku.navigation
 
 import kotlinx.coroutines.channels.Channel
 
-interface AppNavigator {
-    val navigationChannel: Channel<NavigationIntent>
+public interface AppNavigator {
+    public val navigationChannel: Channel<NavigationIntent>
 
-    suspend fun navigateBack(
+    public suspend fun navigateBack(
         route: String? = null,
         inclusive: Boolean = false
     )
 
-    fun tryNavigateBack(
+    public fun tryNavigateBack(
         route: String? = null,
         inclusive: Boolean = false
     )
 
-    suspend fun navigateTo(
+    public suspend fun navigateTo(
         route: String,
         popUpToRoute: String? = null,
         inclusive: Boolean = false,
         isSingleTop: Boolean = false
     )
 
-    fun tryNavigateTo(
+    public fun tryNavigateTo(
         route: String,
         popUpToRoute: String? = null,
         inclusive: Boolean = false,

@@ -8,12 +8,12 @@ import io.github.japskiddin.sudoku.database.model.RecordDBO
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RecordDao {
+public interface RecordDao {
     @Query("SELECT * FROM record WHERE board_uid == :uid")
-    suspend fun get(uid: Long): RecordDBO
+    public suspend fun get(uid: Long): RecordDBO
 
     @Query("SELECT * from record")
-    fun getAll(): Flow<List<RecordDBO>>
+    public fun getAll(): Flow<List<RecordDBO>>
 
     @Query(
         "SELECT * FROM record" +
@@ -21,20 +21,20 @@ interface RecordDao {
             " WHERE type == :type AND difficulty == :difficulty" +
             " ORDER BY time ASC"
     )
-    fun getAll(
+    public fun getAll(
         difficulty: Int,
         type: Int
     ): Flow<List<RecordDBO>>
 
     @Query("SELECT * FROM record ORDER BY time ASC")
-    fun getAllSortedByTime(): Flow<List<RecordDBO>>
+    public fun getAllSortedByTime(): Flow<List<RecordDBO>>
 
     @Insert
-    suspend fun insert(record: RecordDBO): Long
+    public suspend fun insert(record: RecordDBO): Long
 
     @Insert
-    suspend fun insert(records: List<RecordDBO>): List<Long>
+    public suspend fun insert(records: List<RecordDBO>): List<Long>
 
     @Delete
-    suspend fun delete(record: RecordDBO)
+    public suspend fun delete(record: RecordDBO)
 }

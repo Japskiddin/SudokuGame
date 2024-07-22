@@ -9,14 +9,14 @@ import java.util.Date
 
 @Entity(tableName = "history")
 @Keep
-data class HistoryDBO(
+public data class HistoryDBO(
     @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo("date") val date: Date,
     @Embedded(prefix = "level.") val level: Level
 )
 
 @Keep
-data class Level(
+public data class Level(
     @ColumnInfo("playtime") val playtime: Long,
     @ColumnInfo("default_board") val defaultBoard: String,
     @ColumnInfo("current_board") val currentBoard: String,

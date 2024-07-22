@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.ui.theme.Primary
 
 @Composable
-fun Loading(
+public fun Loading(
     modifier: Modifier = Modifier,
     text: String
 ) {
@@ -32,7 +32,7 @@ fun Loading(
 }
 
 @Composable
-fun Loading(
+public fun Loading(
     modifier: Modifier = Modifier,
     @StringRes resId: Int
 ) {
@@ -43,7 +43,7 @@ fun Loading(
 }
 
 @Composable
-internal fun LoadingContent(
+private fun LoadingContent(
     modifier: Modifier = Modifier,
     text: String
 ) {
@@ -82,7 +82,7 @@ internal fun LoadingContent(
     name = "Loading"
 )
 @Composable
-internal fun LoadingPreview() {
+private fun LoadingPreview() {
     Loading(
         text = "Please, wait..."
     )

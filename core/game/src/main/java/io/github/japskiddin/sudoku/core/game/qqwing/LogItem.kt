@@ -29,12 +29,12 @@ import io.github.japskiddin.sudoku.core.game.qqwing.QQWing.Companion.cellToRow
  * later printing out the solve history or gathering statistics about how hard
  * the puzzle was to solve.
  */
-class LogItem {
+public class LogItem {
     /**
      * The recursion level at which this item was gathered. Used for backing out
      * log items solve branches that don't lead to a solution.
      */
-    var round = 0
+    public var round: Int = 0
         private set
     /**
      * Get the type of this log item.
@@ -42,7 +42,7 @@ class LogItem {
     /**
      * The type of log message that will determine the message printed.
      */
-    var type: LogType? = null
+    public var type: LogType? = null
         private set
 
     /**
@@ -55,14 +55,14 @@ class LogItem {
     /**
      * position on the board at which the value (if any) was set.
      */
-    var position = 0
+    public var position: Int = 0
         private set
 
-    constructor(r: Int, t: LogType) {
+    public constructor(r: Int, t: LogType) {
         init(r, t, 0, -1)
     }
 
-    constructor(r: Int, t: LogType, v: Int, p: Int) {
+    public constructor(r: Int, t: LogType, v: Int, p: Int) {
         init(r, t, v, p)
     }
 
@@ -78,26 +78,26 @@ class LogItem {
         position = p
     }
 
-    fun print() {
+    public fun print() {
         print(this)
     }
 
     /**
      * Get the row (1 indexed), or -1 if no row
      */
-    val row: Int
+    public val row: Int
         get() = if (position <= -1) -1 else cellToRow(position) + 1
 
     /**
      * Get the column (1 indexed), or -1 if no column
      */
-    val column: Int
+    public val column: Int
         get() = if (position <= -1) -1 else cellToColumn(position) + 1
 
     /**
      * Get the value, or -1 if no value
      */
-    fun getValue(): Int {
+    public fun getValue(): Int {
         return if (value <= 0) -1 else value
     }
 
@@ -105,7 +105,7 @@ class LogItem {
      * Print the current log item. The message used is determined by the type of
      * log item.
      */
-    val description: String
+    public val description: String
         get() {
             val sb = StringBuilder()
             sb.append("Round: ").append(round)

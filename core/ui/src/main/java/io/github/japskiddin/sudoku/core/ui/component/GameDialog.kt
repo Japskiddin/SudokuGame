@@ -14,7 +14,7 @@ import androidx.compose.ui.window.DialogProperties
 import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 
 @Composable
-fun GameDialog(
+public fun GameDialog(
     onDismiss: () -> Unit,
     content: @Composable () -> Unit
 ) {

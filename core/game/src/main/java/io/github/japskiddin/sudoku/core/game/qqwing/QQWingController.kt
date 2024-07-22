@@ -27,16 +27,16 @@ import java.util.concurrent.atomic.AtomicInteger
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-class QQWingController {
-    val options = QQWingOptions()
+public class QQWingController {
+    public val options: QQWingOptions = QQWingOptions()
     private var level: IntArray? = null
     private var solution: IntArray = IntArray(81)
     private val generated = LinkedList<IntArray>()
-    var isImpossible = false
+    public var isImpossible: Boolean = false
         private set
-    var solutionCount = 0
+    public var solutionCount: Int = 0
 
-    fun generate(type: GameType, difficulty: GameDifficulty): IntArray? {
+    public fun generate(type: GameType, difficulty: GameDifficulty): IntArray? {
         generated.clear()
         options.gameDifficulty = difficulty
         options.action = Action.GENERATE
@@ -48,7 +48,7 @@ class QQWingController {
         return generated.poll()
     }
 
-    fun generateMultiple(
+    public fun generateMultiple(
         type: GameType,
         difficulty: GameDifficulty,
         amount: Int
@@ -74,7 +74,7 @@ class QQWingController {
      * @return the generated sudoku
      */
     @JvmOverloads
-    fun generateFromSeed(
+    public fun generateFromSeed(
         seed: Int,
         challengePermission: Double = 1.0,
         challengeIterations: Int = 1
@@ -106,7 +106,7 @@ class QQWingController {
         return generated.poll()
     }
 
-    fun solve(gameBoard: IntArray?, gameType: GameType): IntArray {
+    public fun solve(gameBoard: IntArray?, gameType: GameType): IntArray {
         isImpossible = false
         level = gameBoard
         options.needNow = true
@@ -231,30 +231,30 @@ class QQWingController {
         }
     }
 
-    class QQWingOptions {
+    public class QQWingOptions {
         // defaults for options
-        var needNow = false
+        public var needNow: Boolean = false
 
         @Suppress("unused")
-        var printPuzzle = false
-        var printSolution = false
-        var printHistory = false
-        var printInstructions = false
+        public var printPuzzle: Boolean = false
+        public var printSolution: Boolean = false
+        public var printHistory: Boolean = false
+        public var printInstructions: Boolean = false
 
         @Suppress("unused")
-        var timer = false
+        public var timer: Boolean = false
 
         @Suppress("unused")
-        var countSolutions = false
-        var action = Action.NONE
-        var logHistory = false
-        var printStyle = PrintStyle.READABLE
-        var numberToGenerate = 1
-        var printStats = false
-        var gameDifficulty = GameDifficulty.UNSPECIFIED
-        var gameType = GameType.UNSPECIFIED
-        var symmetry = Symmetry.NONE
-        var threads = Runtime.getRuntime().availableProcessors()
+        public var countSolutions: Boolean = false
+        public var action: Action = Action.NONE
+        public var logHistory: Boolean = false
+        public var printStyle: PrintStyle = PrintStyle.READABLE
+        public var numberToGenerate: Int = 1
+        public var printStats: Boolean = false
+        public var gameDifficulty: GameDifficulty = GameDifficulty.UNSPECIFIED
+        public var gameType: GameType = GameType.UNSPECIFIED
+        public var symmetry: Symmetry = Symmetry.NONE
+        public var threads: Int = Runtime.getRuntime().availableProcessors()
     }
 
     private fun getPuzzleToSolve(puzzle: IntArray?): Boolean {

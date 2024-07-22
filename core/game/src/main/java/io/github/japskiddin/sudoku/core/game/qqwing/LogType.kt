@@ -20,7 +20,7 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-enum class LogType(val description: String) {
+public enum class LogType(public val description: String) {
     GIVEN("Mark given"),
     SINGLE("Mark only possibility for cell"),
     HIDDEN_SINGLE_ROW("Mark single possibility for value in row"),

@@ -20,7 +20,7 @@ package io.github.japskiddin.sudoku.core.game.qqwing
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-enum class Symmetry {
+public enum class Symmetry {
     NONE,
     ROTATE90,
     ROTATE180,
@@ -28,8 +28,8 @@ enum class Symmetry {
     FLIP,
     RANDOM;
 
-    companion object {
-        operator fun get(name: String?): Symmetry? {
+    public companion object {
+        public operator fun get(name: String?): Symmetry? {
             var s = name ?: return null
             return try {
                 s = s.uppercase()

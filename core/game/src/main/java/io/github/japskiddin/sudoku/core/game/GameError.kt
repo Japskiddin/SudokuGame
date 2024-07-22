@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.core.game
 
-enum class GameError {
+public enum class GameError {
     NONE,
     UNKNOWN,
     BOARD_NOT_FOUND,

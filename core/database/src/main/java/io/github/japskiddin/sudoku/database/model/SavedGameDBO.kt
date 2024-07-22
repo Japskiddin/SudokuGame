@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
         )
     ]
 )
-data class SavedGameDBO(
+public data class SavedGameDBO(
     @PrimaryKey
     @ColumnInfo(name = "board_uid") val uid: Long,
     @ColumnInfo(name = "current_board") val currentBoard: String,

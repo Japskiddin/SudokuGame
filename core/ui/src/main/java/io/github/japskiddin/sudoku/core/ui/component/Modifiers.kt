@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 
 @Composable
-fun Modifier.dialogBackground() = this.then(
+public fun Modifier.dialogBackground(): Modifier = this.then(
     Modifier
         .shadow(8.dp, shape = RoundedCornerShape(16.dp))
         .background(
@@ -46,14 +46,14 @@ fun Modifier.dialogBackground() = this.then(
 )
 
 @Composable
-fun Modifier.innerShadow(
+public fun Modifier.innerShadow(
     shape: Shape,
     color: Color = Color.Black,
     blur: Dp = 4.dp,
     offsetY: Dp = 1.dp,
     offsetX: Dp = 1.dp,
     spread: Dp = 0.dp
-) = drawWithContent {
+): Modifier = drawWithContent {
     drawContent()
 
     val rect = Rect(Offset.Zero, size)

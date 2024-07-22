@@ -4,16 +4,16 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class AppNavigatorImpl
+public class AppNavigatorImpl
 @Inject
 constructor() : AppNavigator {
-    override val navigationChannel =
-        Channel<NavigationIntent>(
+    public override val navigationChannel: Channel<NavigationIntent> =
+        Channel(
             capacity = Int.MAX_VALUE,
             onBufferOverflow = BufferOverflow.DROP_LATEST
         )
 
-    override suspend fun navigateBack(
+    public override suspend fun navigateBack(
         route: String?,
         inclusive: Boolean
     ) {
@@ -25,7 +25,7 @@ constructor() : AppNavigator {
         )
     }
 
-    override fun tryNavigateBack(
+    public override fun tryNavigateBack(
         route: String?,
         inclusive: Boolean
     ) {
@@ -37,7 +37,7 @@ constructor() : AppNavigator {
         )
     }
 
-    override suspend fun navigateTo(
+    public override suspend fun navigateTo(
         route: String,
         popUpToRoute: String?,
         inclusive: Boolean,
@@ -53,7 +53,7 @@ constructor() : AppNavigator {
         )
     }
 
-    override fun tryNavigateTo(
+    public override fun tryNavigateTo(
         route: String,
         popUpToRoute: String?,
         inclusive: Boolean,

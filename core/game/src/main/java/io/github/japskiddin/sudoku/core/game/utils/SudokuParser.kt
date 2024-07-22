@@ -5,11 +5,11 @@ import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.BoardNote
 
 // TODO переписать в SudokuMapper
-class SudokuParser {
+public class SudokuParser {
     private val emptySeparators = listOf('0', '.')
     private val radix = 13
 
-    fun parseBoard(
+    public fun parseBoard(
         board: String,
         gameType: GameType,
         locked: Boolean = false,
@@ -48,7 +48,7 @@ class SudokuParser {
      * @return Sudoku in string
      */
     @Suppress("MagicNumber", "NestedBlockDepth")
-    fun boardToString(
+    public fun boardToString(
         boardList: List<List<BoardCell>>,
         emptySeparator: Char = '0'
     ): String {
@@ -70,7 +70,7 @@ class SudokuParser {
         return boardString
     }
 
-    fun boardToString(
+    public fun boardToString(
         board: IntArray,
         emptySeparator: Char = '0'
     ): String {
@@ -82,7 +82,7 @@ class SudokuParser {
     }
 
     @Suppress("MagicNumber")
-    fun parseNotes(notesString: String): List<BoardNote> {
+    public fun parseNotes(notesString: String): List<BoardNote> {
         val boardNotes = mutableListOf<BoardNote>()
         var i = 0
         while (i < notesString.length) {
@@ -98,7 +98,7 @@ class SudokuParser {
         return boardNotes
     }
 
-    fun notesToString(boardNotes: List<BoardNote>): String {
+    public fun notesToString(boardNotes: List<BoardNote>): String {
         var notesString = ""
         // row,col,number;row,col,number....row,col,number;
         // e.g 0,3,1;0,3,5;7,7,5;
@@ -114,4 +114,4 @@ class SudokuParser {
     }
 }
 
-class BoardParseException(message: String) : Exception(message)
+public class BoardParseException(message: String) : Exception(message)

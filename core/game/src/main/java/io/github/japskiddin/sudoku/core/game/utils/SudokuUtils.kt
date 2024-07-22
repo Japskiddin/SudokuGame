@@ -3,13 +3,13 @@ package io.github.japskiddin.sudoku.core.game.utils
 import io.github.japskiddin.sudoku.core.game.GameType
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 
-fun isValidCell(
+public fun isValidCell(
     board: List<List<BoardCell>>,
     solvedBoard: List<List<BoardCell>>,
     cell: BoardCell
-) = solvedBoard[cell.row][cell.col].value != board[cell.row][cell.col].value
+): Boolean = solvedBoard[cell.row][cell.col].value != board[cell.row][cell.col].value
 
-fun isValidCellDynamic(
+public fun isValidCellDynamic(
     board: List<List<BoardCell>>,
     cell: BoardCell,
     type: GameType
@@ -34,9 +34,9 @@ fun isValidCellDynamic(
     return true
 }
 
-fun getBoxRowRange(cell: BoardCell, sectionHeight: Int): IntRange =
+public fun getBoxRowRange(cell: BoardCell, sectionHeight: Int): IntRange =
     cell.row - cell.row % sectionHeight until (cell.row - cell.row % sectionHeight) + sectionHeight
 
-fun getBoxColRange(cell: BoardCell, sectionWidth: Int): IntRange =
+public fun getBoxColRange(cell: BoardCell, sectionWidth: Int): IntRange =
     cell.col - cell.col % sectionWidth until (cell.col - cell.col % sectionWidth) + sectionWidth
 

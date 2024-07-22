@@ -30,16 +30,16 @@ internal abstract class SudokuRoomDatabase : RoomDatabase() {
     abstract fun savedGameDao(): SavedGameDao
 }
 
-class SudokuDatabase internal constructor(private val database: SudokuRoomDatabase) {
-    val recordDao: RecordDao
+public class SudokuDatabase internal constructor(private val database: SudokuRoomDatabase) {
+    public val recordDao: RecordDao
         get() = database.recordDao()
-    val boardDao: BoardDao
+    public val boardDao: BoardDao
         get() = database.boardDao()
-    val savedGameDao: SavedGameDao
+    public val savedGameDao: SavedGameDao
         get() = database.savedGameDao()
 }
 
-fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
+public fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
     val sudokuRoomDatabase =
         Room.databaseBuilder(
             checkNotNull(applicationContext.applicationContext),

@@ -1,10 +1,10 @@
 package io.github.japskiddin.sudoku.core.game
 
-enum class GameType(
-    val size: Int,
-    val sectionHeight: Int,
-    val sectionWidth: Int,
-    val title: String
+public enum class GameType(
+    public val size: Int,
+    public val sectionHeight: Int,
+    public val sectionWidth: Int,
+    public val title: String
 ) {
     UNSPECIFIED(size = 1, sectionHeight = 1, sectionWidth = 1, title = "1x1"),
     DEFAULT6X6(size = 6, sectionHeight = 2, sectionWidth = 3, title = "6x6"),

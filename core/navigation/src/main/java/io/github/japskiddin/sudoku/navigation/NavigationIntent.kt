@@ -1,12 +1,12 @@
 package io.github.japskiddin.sudoku.navigation
 
-sealed class NavigationIntent {
-    data class NavigateBack(
+public sealed class NavigationIntent {
+    public data class NavigateBack(
         val route: String? = null,
         val inclusive: Boolean = false
     ) : NavigationIntent()
 
-    data class NavigateTo(
+    public data class NavigateTo(
         val route: String,
         val popUpToRoute: String? = null,
         val inclusive: Boolean = false,

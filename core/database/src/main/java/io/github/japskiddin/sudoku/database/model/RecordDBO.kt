@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
         )
     ]
 )
-data class RecordDBO(
+public data class RecordDBO(
     @PrimaryKey
     @ColumnInfo(name = "board_uid") val boardUid: Long,
     @ColumnInfo(name = "time") val time: Long

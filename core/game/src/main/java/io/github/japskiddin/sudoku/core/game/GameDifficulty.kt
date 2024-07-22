@@ -20,7 +20,7 @@ package io.github.japskiddin.sudoku.core.game
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-enum class GameDifficulty(val resName: Int) {
+public enum class GameDifficulty(public val resName: Int) {
     UNSPECIFIED(resName = R.string.difficulty_unspecified),
     EASY(resName = R.string.difficulty_easy),
     INTERMEDIATE(resName = R.string.difficulty_intermediate),

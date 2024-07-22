@@ -2,30 +2,30 @@ package io.github.japskiddin.sudoku.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+public val Purple80: Color = Color(0xFFD0BCFF)
+public val PurpleGrey80: Color = Color(0xFFCCC2DC)
+public val Pink80: Color = Color(0xFFEFB8C8)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+public val Purple40: Color = Color(0xFF6650a4)
+public val PurpleGrey40: Color = Color(0xFF625b71)
+public val Pink40: Color = Color(0xFF7D5260)
 
-val Primary = Color(0xFFFAA468)
-val OnPrimary = Color(0xFFFFFFFF)
+public val Primary: Color = Color(0xFFFAA468)
+public val OnPrimary: Color = Color(0xFFFFFFFF)
 
-val PrimaryDark = Color(0xFF8A4E24)
-val OnPrimaryDark = Color(0xFFFFFFFF)
+public val PrimaryDark: Color = Color(0xFF8A4E24)
+public val OnPrimaryDark: Color = Color(0xFFFFFFFF)
 
-val MenuButtonForegroundNormal = Color(0xFF68BEFA)
-val MenuButtonForegroundPressed = Color(0xFF428EC2)
+public val MenuButtonForegroundNormal: Color = Color(0xFF68BEFA)
+public val MenuButtonForegroundPressed: Color = Color(0xFF428EC2)
 
-val MenuButtonBackgroundNormal = Color(0xFF235F89)
-val MenuButtonBackgroundPressed = Color(0xFF10354F)
+public val MenuButtonBackgroundNormal: Color = Color(0xFF235F89)
+public val MenuButtonBackgroundPressed: Color = Color(0xFF10354F)
 
-val OnMenuButton = Color(0xFFFFFFFF)
+public val OnMenuButton: Color = Color(0xFFFFFFFF)
 
-val BoardCellNormal = Color(0xFFFFFFFF)
-val BoardCellSelected = Color(0xFF68BEFA)
+public val BoardCellNormal: Color = Color(0xFFFFFFFF)
+public val BoardCellSelected: Color = Color(0xFF68BEFA)
 
-val BoardNumberNormal = Color(0xFF000000)
-val BoardNumberSelected = Color(0xFFFFFFFF)
+public val BoardNumberNormal: Color = Color(0xFF000000)
+public val BoardNumberSelected: Color = Color(0xFFFFFFFF)
