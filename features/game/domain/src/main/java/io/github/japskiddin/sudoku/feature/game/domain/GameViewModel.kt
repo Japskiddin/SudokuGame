@@ -11,6 +11,9 @@ import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.model.isEmpty
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
+import io.github.japskiddin.sudoku.core.game.utils.isValidCell
+import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
+import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.data.BoardRepository.BoardNotFoundException
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.data.model.SavedGame
@@ -18,8 +21,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.utils.toImmutable
-import io.github.japskiddin.sudoku.feature.game.domain.utils.toMutable
+import io.github.japskiddin.sudoku.feature.game.domain.utils.copyBoard
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +31,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -64,44 +65,65 @@ internal constructor(
     }
 
     public fun onInputCell(
-        num: Int
+        value: Int
     ) {
         if (gameState.value.selectedCell.isEmpty()) return
-        viewModelScope.launch(appDispatchers.io) {
-            gameState.update { state ->
-                val selectedCell = state.selectedCell
-                val list = state.board.toMutable()
-                val cell = list[selectedCell.row][selectedCell.col]
-                if (cell.isLocked) return@launch
-                cell.value = num
-                state.copy(board = list.toImmutable())
+        gameState.update { state ->
+            val selectedCell = state.selectedCell.copy()
+            val newBoard = copyBoard(state.board)
+            val cell = newBoard[selectedCell.row][selectedCell.col]
+            if (cell.isLocked) return
+            cell.value = value
+
+            if (value == 0) {
+                cell.isError = false
+                selectedCell.isError = false
+            } else {
+//                if (mistakesMethod == 0) {
+                newBoard[cell.row][cell.col].isError =
+                    !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
+                newBoard.forEach { cells ->
+                    cells.forEach { cell ->
+                        if (cell.value != 0 && cell.isError) {
+                            cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                        }
+                    }
+                }
+//                } else if (mistakesMethod == 1) {
+//                val solvedBoard = gameState.value.solvedBoard
+//                cell.isError = isValidCell(newBoard, solvedBoard, cell)
+//            }
+
+                selectedCell.isError = cell.isError
             }
+
+            state.copy(board = newBoard.toImmutable(), selectedCell = selectedCell)
+        }
+
+        viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
     }
 
-    public fun onBackButtonClicked(): Unit = appNavigator.tryNavigateBack()
+    public fun onBackButtonClick(): Unit = appNavigator.tryNavigateBack()
 
     public fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
-        viewModelScope.launch(appDispatchers.io) {
-            gameState.update { it.copy(selectedCell = boardCell) }
-        }
+        gameState.update { it.copy(selectedCell = boardCell) }
     }
 
     private fun generateGameLevel() {
         val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
+        if (boardUid == -1L) {
+            error.update { GameError.BOARD_NOT_FOUND }
+            isLoading.update { false }
+            return
+        }
+
         val sudokuParser = SudokuParser()
+        error.update { GameError.NONE }
+        isLoading.update { true }
 
         viewModelScope.launch(appDispatchers.io) {
-            error.update { GameError.NONE }
-            isLoading.update { true }
-
-            if (boardUid == -1L) {
-                error.update { GameError.BOARD_NOT_FOUND }
-                isLoading.update { false }
-                return@launch
-            }
-
             boardEntity = try {
                 getBoardUseCase.get().invoke(boardUid)
             } catch (ex: BoardNotFoundException) {
@@ -123,9 +145,7 @@ internal constructor(
                 val solvedBoard = sudokuParser.parseBoard(boardEntity.solvedBoard, boardEntity.type)
                 gameState.update { it.copy(solvedBoard = solvedBoard.toImmutable()) }
             } else {
-                withContext(appDispatchers.main) {
-                    solveBoard()
-                }
+                solveBoard()
             }
 
             if (savedGame != null) {
@@ -183,28 +203,27 @@ internal constructor(
                 if (gameBoard[i][j].value != 0 && !gameBoard[i][j].isLocked) {
 //                    if (mistakesMethod.value == 1) {
 //                        gameBoard[i][j].error =
-//                            !sudokuUtils.isValidCellDynamic(
+//                            !isValidCellDynamic(
 //                                board = gameBoard,
 //                                cell = gameBoard[i][j],
 //                                type = boardEntity.type
 //                            )
 //                    } else {
-                    gameBoard[i][j].isError =
-                        isValidCell(gameBoard, gameBoard[i][j])[i][j].isError
+                    val solvedBoard = gameState.value.solvedBoard
+                    gameBoard[i][j].isError = isValidCell(gameBoard, solvedBoard, gameBoard[i][j])
 //                    }
                 }
             }
         }
 
-        viewModelScope.launch(appDispatchers.io) {
-            gameState.update { it.copy(board = gameBoard.toImmutable()) }
-        }
+        gameState.update { it.copy(board = gameBoard.toImmutable()) }
     }
 
     private fun solveBoard() {
         val qqWing = QQWingController()
         val size = boardEntity.type.size
-        val boardToSolve = boardEntity.initialBoard.map { it.digitToInt(13) }.toIntArray()
+        val radix = 13
+        val boardToSolve = boardEntity.initialBoard.map { it.digitToInt(radix) }.toIntArray()
         val solved = qqWing.solve(boardToSolve, boardEntity.type)
 
         val newSolvedBoard = MutableList(size) { row ->
@@ -236,21 +255,4 @@ internal constructor(
 
         gameState.update { it.copy(solvedBoard = newSolvedBoard.toImmutable()) }
     }
-
-    private fun isValidCell(
-        board: MutableList<MutableList<BoardCell>> = copyCurrentBoard(),
-        cell: BoardCell
-    ): MutableList<MutableList<BoardCell>> {
-        val solvedBoard = gameState.value.solvedBoard
-        if (solvedBoard.isNotEmpty()) {
-            board[cell.row][cell.col].isError =
-                solvedBoard[cell.row][cell.col].value != board[cell.row][cell.col].value
-        } else {
-            solveBoard()
-        }
-        return board
-    }
-
-    private fun copyCurrentBoard(): MutableList<MutableList<BoardCell>> =
-        gameState.value.board.map { items -> items.map { item -> item.copy() }.toMutableList() }.toMutableList()
 }
