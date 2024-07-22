@@ -848,8 +848,17 @@ private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
                 board = parser.parseBoard(
                     board = board.initialBoard,
                     gameType = board.type
-                )
-                    .map { item -> item.toImmutableList() }
+                ).map { item -> item.toImmutableList() }
+                    .toImmutableList(),
+                initialBoard = parser.parseBoard(
+                    board = board.initialBoard,
+                    gameType = board.type
+                ).map { item -> item.toImmutableList() }
+                    .toImmutableList(),
+                solvedBoard = parser.parseBoard(
+                    board = board.initialBoard,
+                    gameType = board.type
+                ).map { item -> item.toImmutableList() }
                     .toImmutableList(),
                 notes = persistentListOf(),
                 selectedCell = BoardCell(

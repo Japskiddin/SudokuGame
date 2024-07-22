@@ -11,3 +11,5 @@ data class BoardCell(
         val Empty = BoardCell(-1, -1)
     }
 }
+
+fun BoardCell.isEmpty() = this == BoardCell.Empty

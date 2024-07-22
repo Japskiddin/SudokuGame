@@ -198,6 +198,16 @@ private class GameStateProvider : PreviewParameterProvider<UiState> {
                         gameType = board.type
                     ).map { item -> item.toImmutableList() }
                         .toImmutableList(),
+                    initialBoard = parser.parseBoard(
+                        board = board.initialBoard,
+                        gameType = board.type
+                    ).map { item -> item.toImmutableList() }
+                        .toImmutableList(),
+                    solvedBoard = parser.parseBoard(
+                        board = board.initialBoard,
+                        gameType = board.type
+                    ).map { item -> item.toImmutableList() }
+                        .toImmutableList(),
                     notes = persistentListOf(),
                     selectedCell = BoardCell(
                         row = 3,

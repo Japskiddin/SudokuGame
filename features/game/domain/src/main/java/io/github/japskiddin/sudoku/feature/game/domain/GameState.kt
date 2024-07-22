@@ -8,6 +8,8 @@ import kotlinx.collections.immutable.toImmutableList
 
 public data class GameState(
     val board: ImmutableList<ImmutableList<BoardCell>>,
+    val initialBoard: ImmutableList<ImmutableList<BoardCell>>,
+    val solvedBoard: ImmutableList<ImmutableList<BoardCell>>,
     val notes: ImmutableList<BoardNote>,
     val selectedCell: BoardCell
 ) {
@@ -22,6 +24,8 @@ public data class GameState(
                     )
                 }.toImmutableList()
             }.toImmutableList(),
+            initialBoard = emptyList<ImmutableList<BoardCell>>().toImmutableList(),
+            solvedBoard = emptyList<ImmutableList<BoardCell>>().toImmutableList(),
             notes = persistentListOf(),
             selectedCell = BoardCell.Empty
         )
