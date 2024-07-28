@@ -73,7 +73,6 @@ public class QQWingController {
      * accepted with a probability of 100%
      * @return the generated sudoku
      */
-    @JvmOverloads
     public fun generateFromSeed(
         seed: Int,
         challengePermission: Double = 1.0,
