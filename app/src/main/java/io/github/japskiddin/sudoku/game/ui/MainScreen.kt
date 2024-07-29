@@ -2,7 +2,6 @@ package io.github.japskiddin.sudoku.game.ui
 
 import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -49,9 +48,7 @@ private fun MainScreenContent(
 
     SudokuTheme {
         Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .safeDrawingPadding(),
+            modifier = modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             NavHost(
