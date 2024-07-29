@@ -10,6 +10,7 @@ androidx-activity-compose = "1.9.1"
 androidx-compose-bom = "2024.06.00"
 androidx-room = "2.6.1"
 androidx-datastore = "1.1.1"
+androidx-splashscreen = "1.0.1"
 
 kotlin-android = "2.0.0"
 kotlinx-coroutines = "1.9.0-RC"
@@ -46,6 +47,7 @@ jvm = "21"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
+androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
 
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso-core" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }

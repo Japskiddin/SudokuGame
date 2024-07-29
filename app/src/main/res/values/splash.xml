@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Sudoku.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_animated_logo</item>
+        <item name="windowSplashScreenBackground">@color/atomic_tangerine</item>
+        <item name="postSplashScreenTheme">@style/Theme.Sudoku</item>
+    </style>
+
+</resources>
