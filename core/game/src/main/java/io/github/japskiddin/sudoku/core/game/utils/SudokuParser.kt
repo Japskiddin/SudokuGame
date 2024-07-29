@@ -20,20 +20,18 @@ public class SudokuParser {
         }
 
         val size = gameType.size
-        val listBoard =
-            MutableList(size) { row ->
-                MutableList(size) { col ->
-                    BoardCell(row, col, 0)
-                }
+        val listBoard = MutableList(size) { row ->
+            MutableList(size) { col ->
+                BoardCell(row, col, 0)
             }
+        }
 
         for (i in board.indices) {
-            val value =
-                if (emptySeparator != null) {
-                    if (board[i] == emptySeparator) 0 else boardDigitToInt(board[i])
-                } else {
-                    if (board[i] in emptySeparators) 0 else boardDigitToInt(board[i])
-                }
+            val value = if (emptySeparator != null) {
+                if (board[i] == emptySeparator) 0 else boardDigitToInt(board[i])
+            } else {
+                if (board[i] in emptySeparators) 0 else boardDigitToInt(board[i])
+            }
 
             listBoard[i / size][i % size].value = value
             listBoard[i / size][i % size].isLocked = locked
@@ -55,16 +53,15 @@ public class SudokuParser {
         var boardString = ""
         boardList.forEach { cells ->
             cells.forEach { cell ->
-                boardString +=
-                    if (cell.value <= 9) {
-                        if (cell.value != 0) {
-                            cell.value.toString()
-                        } else {
-                            emptySeparator
-                        }
+                boardString += if (cell.value <= 9) {
+                    if (cell.value != 0) {
+                        cell.value.toString()
                     } else {
-                        cell.value.toString(radix)
+                        emptySeparator
                     }
+                } else {
+                    cell.value.toString(radix)
+                }
             }
         }
         return boardString
@@ -109,9 +106,7 @@ public class SudokuParser {
         return notesString
     }
 
-    private fun boardDigitToInt(char: Char): Int {
-        return char.digitToInt(radix)
-    }
+    private fun boardDigitToInt(char: Char): Int = char.digitToInt(radix)
 }
 
 public class BoardParseException(message: String) : Exception(message)

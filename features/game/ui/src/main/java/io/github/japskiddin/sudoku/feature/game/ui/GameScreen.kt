@@ -1,11 +1,9 @@
 package io.github.japskiddin.sudoku.feature.game.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,7 +32,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.GameState
 import io.github.japskiddin.sudoku.feature.game.domain.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.domain.UiState
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
-import io.github.japskiddin.sudoku.feature.game.ui.component.autosizetext.AutoSizeText
+import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -120,30 +118,6 @@ private fun Game(
 }
 
 @Composable
-private fun InputPanel(
-    modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit,
-    size: Int
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        for (i in 1..size) {
-            AutoSizeText(
-                text = i.toString(),
-                alignment = Alignment.Center,
-                lineSpacingRatio = 1F,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { onClick(i) }
-                    .padding(4.dp)
-            )
-        }
-    }
-}
-
-@Composable
 private fun Error(
     modifier: Modifier = Modifier,
     message: String
@@ -154,14 +128,6 @@ private fun Error(
     ) {
         Text(text = message)
     }
-}
-
-@Preview(
-    name = "Input Panel"
-)
-@Composable
-private fun InputPanelPreview() {
-    InputPanel(size = 9, onClick = {})
 }
 
 @Preview(
@@ -188,26 +154,19 @@ private class GameStateProvider : PreviewParameterProvider<UiState> {
         difficulty = GameDifficulty.INTERMEDIATE,
         type = GameType.DEFAULT9X9
     )
+    private val parsedBoard = parser.parseBoard(
+        board = board.initialBoard,
+        gameType = board.type
+    ).map { item -> item.toImmutableList() }
+        .toImmutableList()
 
     override val values: Sequence<UiState>
         get() = sequenceOf(
             UiState.Game(
                 gameState = GameState(
-                    board = parser.parseBoard(
-                        board = board.initialBoard,
-                        gameType = board.type
-                    ).map { item -> item.toImmutableList() }
-                        .toImmutableList(),
-                    initialBoard = parser.parseBoard(
-                        board = board.initialBoard,
-                        gameType = board.type
-                    ).map { item -> item.toImmutableList() }
-                        .toImmutableList(),
-                    solvedBoard = parser.parseBoard(
-                        board = board.initialBoard,
-                        gameType = board.type
-                    ).map { item -> item.toImmutableList() }
-                        .toImmutableList(),
+                    board = parsedBoard,
+                    initialBoard = parsedBoard,
+                    solvedBoard = parsedBoard,
                     notes = persistentListOf(),
                     selectedCell = BoardCell(
                         row = 3,

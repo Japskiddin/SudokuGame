@@ -60,6 +60,7 @@ import io.github.japskiddin.sudoku.core.ui.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.domain.GameState
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.ceil
@@ -70,7 +71,7 @@ import kotlin.math.sqrt
 @Composable
 internal fun GameBoard(
     modifier: Modifier = Modifier,
-    board: List<List<BoardCell>>,
+    board: ImmutableList<ImmutableList<BoardCell>>,
     @Suppress("MagicNumber")
     gameType: GameType = when (board.size) {
         6 -> GameType.DEFAULT6X6
@@ -841,25 +842,18 @@ private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
         difficulty = GameDifficulty.INTERMEDIATE,
         type = GameType.DEFAULT9X9
     )
+    private val parsedBoard = parser.parseBoard(
+        board = board.initialBoard,
+        gameType = board.type
+    ).map { item -> item.toImmutableList() }
+        .toImmutableList()
 
     override val values: Sequence<GameState>
         get() = sequenceOf(
             GameState(
-                board = parser.parseBoard(
-                    board = board.initialBoard,
-                    gameType = board.type
-                ).map { item -> item.toImmutableList() }
-                    .toImmutableList(),
-                initialBoard = parser.parseBoard(
-                    board = board.initialBoard,
-                    gameType = board.type
-                ).map { item -> item.toImmutableList() }
-                    .toImmutableList(),
-                solvedBoard = parser.parseBoard(
-                    board = board.initialBoard,
-                    gameType = board.type
-                ).map { item -> item.toImmutableList() }
-                    .toImmutableList(),
+                board = parsedBoard,
+                initialBoard = parsedBoard,
+                solvedBoard = parsedBoard,
                 notes = persistentListOf(),
                 selectedCell = BoardCell(
                     row = 3,
