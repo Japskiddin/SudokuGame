@@ -36,6 +36,7 @@ include(
     ":core:datastore",
     ":core:common",
     ":core:game",
+    ":core:designsystem",
     ":core:ui",
     ":core:data",
     ":features:home:ui",

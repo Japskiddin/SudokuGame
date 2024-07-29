@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.japskiddin.sudoku.core.ui.theme.OnPrimary
+import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 
 @Composable
 public fun Modifier.dialogBackground(): Modifier = this.then(

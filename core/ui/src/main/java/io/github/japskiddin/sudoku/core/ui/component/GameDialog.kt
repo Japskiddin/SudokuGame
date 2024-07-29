@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 
 @Composable
 public fun GameDialog(

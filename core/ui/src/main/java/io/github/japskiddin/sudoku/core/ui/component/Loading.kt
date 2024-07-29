@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.ui.theme.Primary
+import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 
 @Composable
 public fun Loading(

@@ -10,9 +10,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.japskiddin.sudoku.core.ui"
-}
-
-dependencies {
-    implementation(projects.core.designsystem)
+    namespace = "io.github.japskiddin.sudoku.core.designsystem"
 }

@@ -19,14 +19,14 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
+import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.GameError
 import io.github.japskiddin.sudoku.core.game.GameType
 import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.ui.component.Loading
-import io.github.japskiddin.sudoku.core.ui.theme.Primary
-import io.github.japskiddin.sudoku.core.ui.theme.SudokuTheme
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.feature.game.domain.GameState
 import io.github.japskiddin.sudoku.feature.game.domain.GameViewModel

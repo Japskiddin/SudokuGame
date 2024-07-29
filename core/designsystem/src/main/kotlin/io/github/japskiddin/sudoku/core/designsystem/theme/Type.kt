@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.ui.theme
+package io.github.japskiddin.sudoku.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

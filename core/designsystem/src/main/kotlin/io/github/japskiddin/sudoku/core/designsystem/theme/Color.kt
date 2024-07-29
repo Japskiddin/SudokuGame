@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.ui.theme
+package io.github.japskiddin.sudoku.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

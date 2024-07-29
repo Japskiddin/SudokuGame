@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonBackgroundNormal
-import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonBackgroundPressed
-import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundNormal
-import io.github.japskiddin.sudoku.core.ui.theme.MenuButtonForegroundPressed
-import io.github.japskiddin.sudoku.core.ui.theme.OnMenuButton
+import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundNormal
+import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundPressed
+import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundNormal
+import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundPressed
+import io.github.japskiddin.sudoku.core.designsystem.theme.OnMenuButton
 import io.github.japskiddin.sudoku.feature.home.ui.R
 
 @Composable

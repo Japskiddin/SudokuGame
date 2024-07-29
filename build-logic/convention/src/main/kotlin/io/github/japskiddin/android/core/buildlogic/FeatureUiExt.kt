@@ -12,5 +12,6 @@ internal fun Project.configureFeatureUi() {
         add("implementation", libs.findLibrary("androidx-lifecycle-runtime-compose").get())
         add("implementation", libs.findLibrary("dagger-hilt-navigation-compose").get())
         add("implementation", project(":core:ui"))
+        add("implementation", project(":core:designsystem"))
     }
 }
