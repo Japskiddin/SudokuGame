@@ -13,9 +13,7 @@ internal class GenerateSudokuUseCase @Inject constructor() {
         type: GameType,
         difficulty: GameDifficulty
     ): Board {
-        val sudokuParser = SudokuParser()
         val boardSize = type.size
-
         val puzzle = List(boardSize) { row ->
             List(boardSize) { col -> BoardCell(row, col, 0) }
         }
@@ -37,6 +35,7 @@ internal class GenerateSudokuUseCase @Inject constructor() {
             }
         }
 
+        val sudokuParser = SudokuParser()
         return Board(
             initialBoard = sudokuParser.boardToString(puzzle),
             solvedBoard = sudokuParser.boardToString(solvedPuzzle),
