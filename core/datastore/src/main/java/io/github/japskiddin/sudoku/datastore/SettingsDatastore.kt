@@ -25,7 +25,7 @@ public class SettingsDatastore(applicationContext: Context) {
         preferences[mistakesEnabledKey] ?: DEFAULT_MISTAKES_ENABLED
     }
 
-    public companion object {
+    private companion object {
         private const val PREFERENCES_NAME = "settings"
 
         private const val KEY_MISTAKES_ENABLED = "mistakes_limit"

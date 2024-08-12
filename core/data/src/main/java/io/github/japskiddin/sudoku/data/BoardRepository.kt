@@ -10,7 +10,9 @@ import javax.inject.Inject
 
 public class BoardRepository
 @Inject
-constructor(private val boardDao: BoardDao) {
+constructor(
+    private val boardDao: BoardDao
+) {
     public fun getAll(): Flow<List<Board>> =
         boardDao.getAll().map { list ->
             list.map { boardDBO -> boardDBO.toBoard() }
