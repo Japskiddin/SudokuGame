@@ -19,7 +19,7 @@ public interface BoardDao {
     public fun getAll(gameDifficulty: Int): Flow<List<BoardDBO>>
 
     @Query("SELECT * from board")
-    public fun getAllList(): List<BoardDBO>
+    public suspend fun getAllList(): List<BoardDBO>
 
     @Query(
         "SELECT * FROM board" +
