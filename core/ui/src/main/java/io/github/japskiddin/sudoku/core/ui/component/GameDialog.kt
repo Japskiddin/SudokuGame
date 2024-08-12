@@ -32,7 +32,7 @@ public fun GameDialog(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(36.dp)
                     .dialogBackground(),
                 contentAlignment = Alignment.Center
             ) {
