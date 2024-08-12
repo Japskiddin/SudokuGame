@@ -98,17 +98,10 @@ internal constructor(
 
     public fun onDifficultyDialogConfirm() {
         menuState.update { it.copy(isShowDifficultyDialog = false) }
-        onStartNewGame()
+        startNewGame()
     }
 
-    public fun onContinueButtonClick() {
-        viewModelScope.launch(appDispatchers.io) {
-            isLoading.update { true }
-            val boardUid = lastGame.value?.uid ?: -1L
-            navigateToGame(boardUid)
-            isLoading.update { false }
-        }
-    }
+    public fun onContinueButtonClick(): Unit = tryNavigateToGame(boardUid = lastGame.value?.uid ?: -1L)
 
     public fun onSettingsButtonClick() {
         TODO("In Development")
@@ -170,15 +163,11 @@ internal constructor(
         }
     }
 
-    public fun onDismissContinueDialog() {
-        menuState.update { it.copy(isShowContinueDialog = false) }
-    }
+    public fun onDismissContinueDialog(): Unit = menuState.update { it.copy(isShowContinueDialog = false) }
 
-    public fun onDismissDifficultyDialog() {
-        menuState.update { it.copy(isShowDifficultyDialog = false) }
-    }
+    public fun onDismissDifficultyDialog(): Unit = menuState.update { it.copy(isShowDifficultyDialog = false) }
 
-    public fun onStartNewGame() {
+    private fun startNewGame() {
         viewModelScope.launch(appDispatchers.io) {
             isLoading.update { true }
 
@@ -188,16 +177,18 @@ internal constructor(
                     type = gameState.value.selectedType
                 )
             } catch (ex: SudokuNotGeneratedException) {
-                isLoading.update { false }
                 error.update { ex.toGameError() }
                 return@launch
+            } finally {
+                isLoading.update { false }
             }
 
             val insertedBoardUid = createBoardUseCase.get().invoke(board)
             navigateToGame(insertedBoardUid)
-            isLoading.update { false }
         }
     }
 
-    private fun navigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid = boardUid))
+    private fun tryNavigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid))
+
+    private suspend fun navigateToGame(boardUid: Long) = appNavigator.navigateTo(Destination.GameScreen(boardUid))
 }
