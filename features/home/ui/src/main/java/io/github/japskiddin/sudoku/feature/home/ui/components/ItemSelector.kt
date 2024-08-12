@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.japskiddin.sudoku.core.designsystem.theme.OnDialogSurface
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.GameDifficulty
 import io.github.japskiddin.sudoku.feature.home.ui.R
@@ -40,13 +41,11 @@ internal fun ItemSelector(
     textSize: TextUnit = 16.sp,
     buttonSize: Dp = 36.dp,
     swipeDuration: Int = 220,
-    textColor: Color = Color.Black,
-    iconTint: Color = Color.Black,
+    textColor: Color = OnDialogSurface,
+    iconTint: Color = OnDialogSurface,
     onSwipeLeft: () -> Unit,
     onSwipeRight: () -> Unit
 ) {
-    // TODO: добавить настройку цвета для текста и иконок
-
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -74,7 +73,7 @@ internal fun ItemSelector(
             },
             label = "Animated Text",
             modifier = Modifier.weight(1f)
-        ) { _ ->
+        ) { value: Int ->
             Text(
                 text = currentItem,
                 textAlign = TextAlign.Center,

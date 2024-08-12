@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.japskiddin.sudoku.core.designsystem.theme.OnDialogSurface
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.feature.home.ui.R
@@ -27,12 +28,14 @@ internal fun ContinueDialog(
             Text(
                 text = stringResource(id = R.string.you_already_started_game),
                 fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = OnDialogSurface
             )
             Text(
                 text = stringResource(id = R.string.do_you_want_to_continue),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
+                color = OnDialogSurface,
                 modifier = Modifier.padding(top = 16.dp)
             )
             GameButton(

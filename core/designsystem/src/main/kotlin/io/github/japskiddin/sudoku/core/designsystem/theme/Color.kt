@@ -24,6 +24,9 @@ public val MenuButtonBackgroundPressed: Color = Color(0xFF10354F)
 
 public val OnMenuButton: Color = Color(0xFFFFFFFF)
 
+public val DialogSurface: Color = Color(0xFFFFFFFF)
+public val OnDialogSurface: Color = Color(0xFF000000)
+
 public val BoardCellNormal: Color = Color(0xFFFFFFFF)
 public val BoardCellSelected: Color = Color(0xFF68BEFA)
 
