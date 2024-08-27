@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel
+internal class SplashViewModel
 @Inject
 constructor() : ViewModel() {
     private val _isShowSplashScreen = MutableStateFlow(true)
@@ -23,7 +23,7 @@ constructor() : ViewModel() {
         }
     }
 
-    companion object {
+    private companion object {
         private const val SPLASH_SCREEN_DURATION = 3000L
     }
 }

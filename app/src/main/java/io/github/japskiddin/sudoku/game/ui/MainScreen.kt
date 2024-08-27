@@ -23,15 +23,21 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    MainScreen(modifier = modifier, viewModel = hiltViewModel())
+    MainScreen(
+        modifier = modifier,
+        viewModel = hiltViewModel()
+    )
 }
 
 @Composable
-internal fun MainScreen(
+private fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel
 ) {
-    MainScreenContent(modifier = modifier, navigationChannel = viewModel.navigationChannel)
+    MainScreenContent(
+        modifier = modifier,
+        navigationChannel = viewModel.navigationChannel
+    )
 }
 
 @Composable
@@ -67,7 +73,7 @@ private fun MainScreenContent(
 }
 
 @Composable
-internal fun NavigationEffects(
+private fun NavigationEffects(
     navigationChannel: Channel<NavigationIntent>,
     navHostController: NavHostController
 ) {
