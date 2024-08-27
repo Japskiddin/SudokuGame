@@ -7,20 +7,20 @@ androidx-annotation = "1.8.2"
 androidx-core-ktx = "1.13.1"
 androidx-lifecycle = "2.8.4"
 androidx-activity-compose = "1.9.1"
-androidx-compose-bom = "2024.06.00"
+androidx-compose-bom = "2024.08.00"
 androidx-room = "2.6.1"
 androidx-datastore = "1.1.1"
 androidx-splashscreen = "1.0.1"
 
-kotlin-android = "2.0.10"
-kotlinx-coroutines = "1.9.0-RC"
-kotlinx-serialization-json = "1.7.0"
+kotlin-android = "2.0.20"
+kotlinx-coroutines = "1.9.0-RC.2"
+kotlinx-serialization-json = "1.7.1"
 kotlinx-immutable = "0.3.7"
 
 bundletool = "1.17.1"
-ksp = "2.0.0-1.0.21"
+ksp = "2.0.20-1.0.24"
 
-dagger = "2.51.1"
+dagger = "2.52"
 hilt = "1.2.0"
 javax-inject = "1"
 
@@ -35,8 +35,8 @@ detekt-rules-compose = "0.4.3"
 # Used directly in gradle plugins
 
 androidSdk-min = "21"
-androidSdk-compile = "34"
-androidSdk-target = "34"
+androidSdk-compile = "35"
+androidSdk-target = "35"
 
 appVersion-name = "0.1.1"
 appVersion-code = "2"

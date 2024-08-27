@@ -23,71 +23,52 @@ android {
         }
     }
 
-    val secretProperties = Properties().apply {
-        if (project.hasProperty("Keys.repo")) {
-            val keyRepo = project.property("Keys.repo") as String
-            val projectPropsFile = file("$keyRepo/google-play-publish.properties")
-            if (projectPropsFile.exists()) {
-                val props = Properties().apply {
-                    load(FileInputStream(projectPropsFile))
-                }
-                setProperty(
-                    "SIGNING_KEYSTORE_PATH",
-                    file(keyRepo + props["RELEASE_STORE_FILE"]).path
-                )
-                setProperty(
-                    "SIGNING_KEYSTORE_PASSWORD",
-                    props["RELEASE_STORE_PASS"].toString()
-                )
-                setProperty(
-                    "SIGNING_KEY_ALIAS",
-                    props["RELEASE_KEY_ALIAS"].toString()
-                )
-                setProperty(
-                    "SIGNING_KEY_PASSWORD",
-                    props["RELEASE_KEY_PASS"].toString()
-                )
-            } else {
-                setProperty(
-                    "SIGNING_KEYSTORE_PATH",
-                    file("../android-signing-keystore.jks").path
-                )
-                setProperty(
-                    "SIGNING_KEYSTORE_PASSWORD",
-                    System.getenv("SIGNING_KEYSTORE_PASSWORD")
-                )
-                setProperty(
-                    "SIGNING_KEY_ALIAS",
-                    System.getenv("SIGNING_KEY_ALIAS")
-                )
-                setProperty(
-                    "SIGNING_KEY_PASSWORD",
-                    System.getenv("SIGNING_KEY_PASSWORD")
-                )
+    val keysRepo: String = if (project.hasProperty("Keys.repo")) {
+        project.property("Keys.repo") as String
+    } else {
+        ""
+    }
+    val keystoreProperties: Properties? = if (keysRepo.isNotBlank()) {
+        val projectPropsFile = file("$keysRepo/google-play-publish.properties")
+        if (projectPropsFile.exists()) {
+            Properties().apply {
+                load(FileInputStream(projectPropsFile))
             }
+        } else {
+            null
+        }
+    } else {
+        null
+    }
+    val secretProperties = Properties().apply {
+        if (keystoreProperties != null) {
+            setProperty(
+                "SIGNING_KEYSTORE_PATH",
+                file(keysRepo + keystoreProperties["RELEASE_STORE_FILE"]).path
+            )
+            setProperty(
+                "SIGNING_KEYSTORE_PASSWORD",
+                keystoreProperties["RELEASE_STORE_PASS"].toString()
+            )
+            setProperty("SIGNING_KEY_ALIAS", keystoreProperties["RELEASE_KEY_ALIAS"].toString())
+            setProperty("SIGNING_KEY_PASSWORD", keystoreProperties["RELEASE_KEY_PASS"].toString())
         } else {
             setProperty(
                 "SIGNING_KEYSTORE_PATH",
-                file("../android-signing-keystore.jks").path
+                file("../keys/android-signing-keystore.jks").path
             )
             setProperty(
                 "SIGNING_KEYSTORE_PASSWORD",
                 System.getenv("SIGNING_KEYSTORE_PASSWORD")
             )
-            setProperty(
-                "SIGNING_KEY_ALIAS",
-                System.getenv("SIGNING_KEY_ALIAS")
-            )
-            setProperty(
-                "SIGNING_KEY_PASSWORD",
-                System.getenv("SIGNING_KEY_PASSWORD")
-            )
+            setProperty("SIGNING_KEY_ALIAS", System.getenv("SIGNING_KEY_ALIAS"))
+            setProperty("SIGNING_KEY_PASSWORD", System.getenv("SIGNING_KEY_PASSWORD"))
         }
     }
     val releaseSigning = signingConfigs.create("release") {
         storeFile = file(secretProperties["SIGNING_KEYSTORE_PATH"] as String)
-        storePassword = secretProperties["SIGNING_KEYSTORE_PASSWORD"] as String
         keyAlias = secretProperties["SIGNING_KEY_ALIAS"] as String
+        storePassword = secretProperties["SIGNING_KEYSTORE_PASSWORD"] as String
         keyPassword = secretProperties["SIGNING_KEY_PASSWORD"] as String
     }
 
@@ -147,16 +128,6 @@ android {
                 output.outputFileName = outputFileName
             }
     }
-}
-
-tasks.withType<JavaCompile> {
-    val compilerArgs = options.compilerArgs
-    compilerArgs.addAll(
-        listOf(
-            "-Xlint:unchecked",
-            "-Xlint:deprecation"
-        )
-    )
 }
 
 dependencies {
