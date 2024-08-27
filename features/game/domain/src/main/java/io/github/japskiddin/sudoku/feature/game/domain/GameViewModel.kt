@@ -14,7 +14,7 @@ import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.game.utils.toImmutable
-import io.github.japskiddin.sudoku.data.BoardRepository.BoardNotFoundException
+import io.github.japskiddin.sudoku.data.BoardNotFoundException
 import io.github.japskiddin.sudoku.data.model.Board
 import io.github.japskiddin.sudoku.data.model.SavedGame
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase

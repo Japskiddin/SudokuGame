@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.data.BoardRepository
+import io.github.japskiddin.sudoku.data.BoardRepositoryImpl
 import io.github.japskiddin.sudoku.data.SavedGameRepository
 import io.github.japskiddin.sudoku.database.SudokuDatabase
 import io.github.japskiddin.sudoku.database.dao.BoardDao
@@ -30,7 +31,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideBoardRepository(boardDao: BoardDao): BoardRepository = BoardRepository(boardDao)
+    fun provideBoardRepository(boardDao: BoardDao): BoardRepository = BoardRepositoryImpl(boardDao)
 
     @Provides
     @Singleton
