@@ -48,7 +48,7 @@ public fun HomeScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun HomeScreen(
+private fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel
 ) {

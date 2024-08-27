@@ -42,7 +42,7 @@ public fun GameScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun GameScreen(
+private fun GameScreen(
     modifier: Modifier = Modifier,
     viewModel: GameViewModel
 ) {
