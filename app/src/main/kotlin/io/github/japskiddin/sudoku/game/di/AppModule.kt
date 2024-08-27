@@ -10,6 +10,7 @@ import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.data.BoardRepository
 import io.github.japskiddin.sudoku.data.BoardRepositoryImpl
 import io.github.japskiddin.sudoku.data.SavedGameRepository
+import io.github.japskiddin.sudoku.data.SavedGameRepositoryImpl
 import io.github.japskiddin.sudoku.database.SudokuDatabase
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
@@ -39,7 +40,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository = SavedGameRepository(savedGameDao)
+    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository =
+        SavedGameRepositoryImpl(savedGameDao)
 
     @Provides
     @Singleton
