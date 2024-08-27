@@ -111,7 +111,7 @@ private fun Game(
                 .fillMaxWidth()
         )
         InputPanel(
-            size = state.board.size,
+            board = state.board,
             onClick = onInputCell
         )
     }
