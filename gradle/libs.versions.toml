@@ -123,4 +123,5 @@ app-jvm = { id = "app.jvm", version = "unspecified" }
 app-android-hilt = { id = "app.android.hilt", version = "unspecified" }
 app-android-room = { id = "app.android.room", version = "unspecified" }
 app-feature-ui = { id = "app.feature.ui", version = "unspecified" }
+app-feature-ui-logic = { id = "app.feature.ui.logic", version = "unspecified" }
 app-feature-domain = { id = "app.feature.domain", version = "unspecified" }

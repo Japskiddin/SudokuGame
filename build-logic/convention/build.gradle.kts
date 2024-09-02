@@ -64,6 +64,10 @@ gradlePlugin {
             id = "app.feature.ui"
             implementationClass = "FeatureUiConventionPlugin"
         }
+        register("featureUiLogic") {
+            id = "app.feature.ui.logic"
+            implementationClass = "FeatureUiLogicConventionPlugin"
+        }
         register("featureDomain") {
             id = "app.feature.domain"
             implementationClass = "FeatureDomainConventionPlugin"

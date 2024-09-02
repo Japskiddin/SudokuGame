@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
     alias(libs.plugins.app.android.library)
-    alias(libs.plugins.app.android.hilt)
     alias(libs.plugins.app.feature.domain)
 }
 
