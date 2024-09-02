@@ -40,6 +40,7 @@ include(
     ":core:ui",
     ":core:data",
     ":features:home:ui",
+    ":features:home:ui-logic",
     ":features:home:domain",
     ":features:game:ui",
     ":features:game:ui-logic",
