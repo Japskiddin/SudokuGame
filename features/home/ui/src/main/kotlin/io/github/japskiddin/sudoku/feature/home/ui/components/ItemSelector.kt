@@ -31,6 +31,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.OnDialogSurface
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.GameDifficulty
 import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.feature.home.ui.utils.getName
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -112,7 +113,7 @@ private fun ItemSelectorPreview() {
 
     SudokuTheme {
         ItemSelector(
-            currentItem = stringResource(id = currentItem.resName),
+            currentItem = stringResource(id = currentItem.getName()),
             itemPos = difficulties.indexOf(currentItem),
             onSwipeLeft = {
                 if (currentItemPos <= 0) {

@@ -14,6 +14,7 @@ import io.github.japskiddin.sudoku.core.game.GameDifficulty
 import io.github.japskiddin.sudoku.core.game.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.feature.home.ui.utils.getName
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -44,7 +45,7 @@ internal fun DifficultyDialog(
             )
 
             ItemSelector(
-                currentItem = stringResource(id = selectedDifficulty.resName),
+                currentItem = stringResource(id = selectedDifficulty.getName()),
                 itemPos = difficulties.indexOf(selectedDifficulty),
                 onSwipeLeft = onSwipeDifficultyLeft,
                 onSwipeRight = onSwipeDifficultyRight

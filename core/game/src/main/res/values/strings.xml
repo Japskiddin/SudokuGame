@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="difficulty_unspecified">Unspecified</string>
-    <string name="difficulty_easy">Easy</string>
-    <string name="difficulty_intermediate">Intermediate</string>
-    <string name="difficulty_hard">Hard</string>
-    <string name="difficulty_expert">Expert</string>
-</resources>
