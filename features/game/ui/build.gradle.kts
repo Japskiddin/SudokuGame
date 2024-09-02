@@ -22,5 +22,5 @@ android {
 }
 
 dependencies {
-    implementation(projects.features.game.domain)
+    implementation(projects.features.game.uiLogic)
 }

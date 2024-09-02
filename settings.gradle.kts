@@ -42,5 +42,6 @@ include(
     ":features:home:ui",
     ":features:home:domain",
     ":features:game:ui",
+    ":features:game:ui-logic",
     ":features:game:domain"
 )
