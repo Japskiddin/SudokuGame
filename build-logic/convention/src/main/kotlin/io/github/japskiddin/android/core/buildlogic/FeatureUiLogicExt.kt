@@ -12,6 +12,5 @@ internal fun Project.configureFeatureUiLogic() {
         add("implementation", libs.findLibrary("jetbrains-kotlinx-coroutines-android").get())
         add("implementation", project(":core:common"))
         add("implementation", project(":core:navigation"))
-        add("api", project(":core:data"))
     }
 }

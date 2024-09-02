@@ -23,4 +23,5 @@ android {
 
 dependencies {
     implementation(projects.features.game.uiLogic)
+    implementation(projects.core.data)
 }
