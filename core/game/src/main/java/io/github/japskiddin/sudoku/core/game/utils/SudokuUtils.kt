@@ -16,9 +16,8 @@ public fun isValidCellDynamic(
 ): Boolean {
     for (i in getBoxRowRange(cell, type.sectionHeight)) {
         for (j in getBoxColRange(cell, type.sectionWidth)) {
-            if (board[i][j].value != 0 && board[i][j].value == cell.value &&
-                (i != cell.row || j != cell.col)
-            ) {
+            val value = board[i][j].value
+            if (value != 0 && value == cell.value && (i != cell.row || j != cell.col)) {
                 return false
             }
         }
