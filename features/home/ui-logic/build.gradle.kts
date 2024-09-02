@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 plugins {
     alias(libs.plugins.app.android.library)
     alias(libs.plugins.app.android.hilt)
-    alias(libs.plugins.app.feature.domain)
+    alias(libs.plugins.app.feature.ui.logic)
 }
 
 kotlin {
@@ -16,6 +16,6 @@ android {
 
 dependencies {
     api(libs.jetbrains.kotlinx.immutable)
-    api(projects.features.home.domain)
+    implementation(projects.features.home.domain)
     api(projects.core.game)
 }
