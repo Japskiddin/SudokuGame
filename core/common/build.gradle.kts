@@ -1,15 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-    alias(libs.plugins.app.android.library)
+    alias(libs.plugins.app.jvm)
 }
 
 kotlin {
     explicitApi = ExplicitApiMode.Strict
-}
-
-android {
-    namespace = "io.github.japskiddin.sudoku.core.common"
 }
 
 dependencies {

@@ -142,6 +142,7 @@ dependencies {
     implementation(libs.dagger.hilt.navigation.compose)
 
     implementation(projects.core.common)
+    implementation(projects.core.commonAndroid)
     implementation(projects.core.model)
     implementation(projects.core.domain)
     implementation(projects.core.game)

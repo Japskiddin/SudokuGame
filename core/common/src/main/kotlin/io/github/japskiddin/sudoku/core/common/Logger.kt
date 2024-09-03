@@ -1,7 +1,5 @@
 package io.github.japskiddin.sudoku.core.common
 
-import android.util.Log
-
 public interface Logger {
     public fun d(
         tag: String,
@@ -13,21 +11,3 @@ public interface Logger {
         message: String
     )
 }
-
-@Suppress("FunctionName")
-public fun AndroidLogcatLogger(): Logger =
-    object : Logger {
-        override fun d(
-            tag: String,
-            message: String
-        ) {
-            Log.d(tag, message)
-        }
-
-        override fun e(
-            tag: String,
-            message: String
-        ) {
-            Log.e(tag, message)
-        }
-    }

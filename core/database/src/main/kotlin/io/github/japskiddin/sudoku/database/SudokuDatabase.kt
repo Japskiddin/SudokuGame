@@ -37,6 +37,10 @@ public class SudokuDatabase internal constructor(private val database: SudokuRoo
         get() = database.boardDao()
     public val savedGameDao: SavedGameDao
         get() = database.savedGameDao()
+
+    internal companion object {
+        internal const val DATABASE_NAME = "sudoku"
+    }
 }
 
 public fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
@@ -44,7 +48,7 @@ public fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
         Room.databaseBuilder(
             checkNotNull(applicationContext.applicationContext),
             SudokuRoomDatabase::class.java,
-            "sudoku"
+            SudokuDatabase.DATABASE_NAME
         ).build()
     return SudokuDatabase(sudokuRoomDatabase)
 }
