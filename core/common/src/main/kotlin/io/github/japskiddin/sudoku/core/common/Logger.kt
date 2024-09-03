@@ -14,6 +14,7 @@ public interface Logger {
     )
 }
 
+@Suppress("FunctionName")
 public fun AndroidLogcatLogger(): Logger =
     object : Logger {
         override fun d(

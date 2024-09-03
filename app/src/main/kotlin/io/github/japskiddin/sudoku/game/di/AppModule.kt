@@ -6,7 +6,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.japskiddin.sudoku.core.common.AndroidLogcatLogger
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
+import io.github.japskiddin.sudoku.core.common.Logger
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.data.BoardRepositoryImpl
@@ -62,4 +64,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppNavigator(): AppNavigator = AppNavigatorImpl()
+
+    @Provides
+    fun provideLogger(): Logger = AndroidLogcatLogger()
 }
