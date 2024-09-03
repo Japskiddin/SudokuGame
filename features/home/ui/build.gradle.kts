@@ -23,5 +23,4 @@ android {
 
 dependencies {
     implementation(projects.features.home.uiLogic)
-    implementation(projects.core.model)
 }

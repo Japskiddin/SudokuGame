@@ -17,5 +17,4 @@ android {
 dependencies {
     api(libs.jetbrains.kotlinx.immutable)
     implementation(projects.features.home.domain)
-    api(projects.core.game)
 }
