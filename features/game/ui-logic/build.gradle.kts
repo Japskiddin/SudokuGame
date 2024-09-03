@@ -17,5 +17,5 @@ android {
 dependencies {
     api(libs.jetbrains.kotlinx.immutable)
     implementation(projects.features.game.domain)
-    api(projects.core.game)
+    api(projects.core.game) // TODO implementation instead / remove from preview
 }
