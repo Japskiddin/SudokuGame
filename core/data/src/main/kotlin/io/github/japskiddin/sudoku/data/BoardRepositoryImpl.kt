@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.data
 
-import io.github.japskiddin.sudoku.core.domain.BoardNotFoundException
+import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.data.utils.toBoard

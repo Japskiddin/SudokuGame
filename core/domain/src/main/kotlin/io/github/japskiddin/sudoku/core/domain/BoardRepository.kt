@@ -8,5 +8,3 @@ public interface BoardRepository {
     public suspend fun get(uid: Long): Board
     public suspend fun insert(board: Board): Long
 }
-
-public class BoardNotFoundException(message: String) : Exception(message)

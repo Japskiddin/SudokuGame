@@ -13,5 +13,5 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.common)
+    api(projects.core.common)
 }

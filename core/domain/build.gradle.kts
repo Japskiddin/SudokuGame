@@ -11,5 +11,5 @@ kotlin {
 dependencies {
     api(libs.javax.inject)
     api(libs.jetbrains.kotlinx.coroutines.core)
-    implementation(projects.core.model)
+    api(projects.core.model)
 }

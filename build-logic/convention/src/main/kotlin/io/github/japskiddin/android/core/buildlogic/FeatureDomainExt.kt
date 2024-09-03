@@ -5,7 +5,6 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureFeatureDomain() {
     dependencies {
-        add("api", project(":core:domain"))
-        add("api", project(":core:model"))
+        add("implementation", project(":core:domain"))
     }
 }

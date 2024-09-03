@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
-import io.github.japskiddin.sudoku.core.domain.BoardNotFoundException
+import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell

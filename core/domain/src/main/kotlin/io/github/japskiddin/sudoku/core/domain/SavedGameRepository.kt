@@ -14,5 +14,3 @@ public interface SavedGameRepository {
     public suspend fun update(savedGame: SavedGame)
     public suspend fun delete(savedGame: SavedGame)
 }
-
-public class SavedGameNotFoundException(message: String) : Exception(message)
