@@ -5,6 +5,7 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureFeatureDomain() {
     dependencies {
+        add("implementation", libs.findLibrary("javax-inject").get())
         add("implementation", project(":core:domain"))
     }
 }

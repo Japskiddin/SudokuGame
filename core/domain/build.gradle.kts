@@ -9,7 +9,6 @@ kotlin {
 }
 
 dependencies {
-    api(libs.javax.inject)
     api(libs.jetbrains.kotlinx.coroutines.core)
     api(projects.core.model)
 }
