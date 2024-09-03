@@ -10,4 +10,5 @@ kotlin {
 
 dependencies {
     implementation(libs.jetbrains.kotlinx.immutable)
+    implementation(projects.core.model)
 }

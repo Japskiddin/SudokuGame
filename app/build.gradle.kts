@@ -142,6 +142,8 @@ dependencies {
     implementation(libs.dagger.hilt.navigation.compose)
 
     implementation(projects.core.common)
+    implementation(projects.core.model)
+    implementation(projects.core.domain)
     implementation(projects.core.game)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
@@ -150,8 +152,10 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.navigation)
     implementation(projects.features.home.ui)
+    implementation(projects.features.home.uiLogic)
     implementation(projects.features.home.domain)
     implementation(projects.features.game.ui)
+    implementation(projects.features.game.uiLogic)
     implementation(projects.features.game.domain)
 
     testImplementation(libs.junit)

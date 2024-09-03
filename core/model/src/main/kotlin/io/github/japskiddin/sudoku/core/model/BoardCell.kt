@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.game.model
+package io.github.japskiddin.sudoku.core.model
 
 public data class BoardCell(
     val row: Int,

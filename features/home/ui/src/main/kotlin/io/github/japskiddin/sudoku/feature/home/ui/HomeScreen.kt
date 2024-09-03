@@ -27,9 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.game.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.GameError
-import io.github.japskiddin.sudoku.core.game.GameType
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameError
+import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.dialogBackground
 import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog

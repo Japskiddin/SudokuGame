@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.game
+package io.github.japskiddin.sudoku.core.model
 
 public enum class GameType(
     public val size: Int,

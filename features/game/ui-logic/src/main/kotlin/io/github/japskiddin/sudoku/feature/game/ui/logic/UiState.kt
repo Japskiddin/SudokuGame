@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
-import io.github.japskiddin.sudoku.core.game.GameError
+import io.github.japskiddin.sudoku.core.model.GameError
 
 public sealed class UiState {
     public data object Loading : UiState()

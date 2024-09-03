@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
-import io.github.japskiddin.sudoku.core.game.model.BoardCell
-import io.github.japskiddin.sudoku.core.game.model.BoardNote
+import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardNote
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList

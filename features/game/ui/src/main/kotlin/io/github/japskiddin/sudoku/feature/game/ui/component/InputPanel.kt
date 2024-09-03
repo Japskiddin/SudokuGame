@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.game.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.GameType
-import io.github.japskiddin.sudoku.core.game.model.BoardCell
 import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
-import io.github.japskiddin.sudoku.data.model.Board
+import io.github.japskiddin.sudoku.core.model.Board
+import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 

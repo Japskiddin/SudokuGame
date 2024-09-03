@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.core.game.utils
 
-import io.github.japskiddin.sudoku.core.game.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardCell
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 

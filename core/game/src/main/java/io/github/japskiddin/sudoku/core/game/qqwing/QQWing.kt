@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.core.game.qqwing
 
-import io.github.japskiddin.sudoku.core.game.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.GameType
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameType
 import java.util.Arrays
 import java.util.Collections
 import java.util.Random

@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
-import io.github.japskiddin.sudoku.core.game.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.GameError
-import io.github.japskiddin.sudoku.core.game.GameType
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameError
+import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase

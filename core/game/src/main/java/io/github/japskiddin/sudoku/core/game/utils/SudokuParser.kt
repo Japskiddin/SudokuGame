@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.core.game.utils
 
-import io.github.japskiddin.sudoku.core.game.GameType
-import io.github.japskiddin.sudoku.core.game.model.BoardCell
-import io.github.japskiddin.sudoku.core.game.model.BoardNote
+import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardNote
+import io.github.japskiddin.sudoku.core.model.GameType
 
 // TODO переписать в SudokuMapper
 public class SudokuParser {

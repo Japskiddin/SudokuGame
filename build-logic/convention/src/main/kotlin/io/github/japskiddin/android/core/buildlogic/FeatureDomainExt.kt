@@ -5,9 +5,7 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureFeatureDomain() {
     dependencies {
-        add("implementation", libs.findLibrary("androidx-core-ktx").get())
-        add("implementation", libs.findLibrary("javax-inject").get())
-        add("implementation", libs.findLibrary("jetbrains-kotlinx-coroutines-core").get())
-        add("api", project(":core:data"))
+        add("api", project(":core:domain"))
+        add("api", project(":core:model"))
     }
 }

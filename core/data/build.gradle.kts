@@ -16,7 +16,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
 
-    implementation(projects.core.game)
+    implementation(projects.core.model)
+    implementation(projects.core.domain)
     implementation(projects.core.database)
     implementation(projects.core.datastore)
 

@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.feature.home.ui.utils
 
 import androidx.annotation.StringRes
-import io.github.japskiddin.sudoku.core.game.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.feature.home.ui.R
 
 @StringRes

@@ -1,10 +1,5 @@
-package io.github.japskiddin.sudoku.data.model
+package io.github.japskiddin.sudoku.core.model
 
-import androidx.annotation.Keep
-import io.github.japskiddin.sudoku.core.game.GameDifficulty
-import io.github.japskiddin.sudoku.core.game.GameType
-
-@Keep
 public data class Board(
     val uid: Long = ID_NONE,
     val initialBoard: String,

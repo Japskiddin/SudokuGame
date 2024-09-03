@@ -35,6 +35,8 @@ include(
     ":core:database",
     ":core:datastore",
     ":core:common",
+    ":core:model",
+    ":core:domain",
     ":core:game",
     ":core:designsystem",
     ":core:ui",

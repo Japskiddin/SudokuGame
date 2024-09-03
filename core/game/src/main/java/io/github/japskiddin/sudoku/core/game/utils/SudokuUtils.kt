@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.core.game.utils
 
-import io.github.japskiddin.sudoku.core.game.GameType
-import io.github.japskiddin.sudoku.core.game.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.GameType
 
 public fun isValidCell(
     board: List<List<BoardCell>>,
