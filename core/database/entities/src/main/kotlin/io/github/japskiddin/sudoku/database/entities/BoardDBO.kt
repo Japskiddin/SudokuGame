@@ -1,12 +1,10 @@
-package io.github.japskiddin.sudoku.database.model
+package io.github.japskiddin.sudoku.database.entities
 
 import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
-@Serializable
 @Keep
 @Entity(
     tableName = "board"

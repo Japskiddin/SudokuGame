@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import io.github.japskiddin.sudoku.database.model.RecordDBO
+import io.github.japskiddin.sudoku.database.entities.RecordDBO
 import kotlinx.coroutines.flow.Flow
 
 @Dao

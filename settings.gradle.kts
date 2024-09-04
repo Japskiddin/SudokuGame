@@ -32,7 +32,8 @@ rootProject.name = "Sudoku"
 include(
     ":app",
     ":core:navigation",
-    ":core:database",
+    ":core:database:data",
+    ":core:database:entities",
     ":core:datastore",
     ":core:common",
     ":core:common-android",

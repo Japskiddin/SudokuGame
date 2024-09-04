@@ -3,7 +3,7 @@ package io.github.japskiddin.sudoku.data.utils
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
-import io.github.japskiddin.sudoku.database.model.BoardDBO
+import io.github.japskiddin.sudoku.database.entities.BoardDBO
 
 internal fun Board.toBoardDBO() =
     BoardDBO(

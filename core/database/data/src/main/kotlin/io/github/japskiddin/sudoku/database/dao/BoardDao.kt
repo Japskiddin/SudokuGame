@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import io.github.japskiddin.sudoku.database.model.BoardDBO
-import io.github.japskiddin.sudoku.database.model.SavedGameDBO
+import io.github.japskiddin.sudoku.database.entities.BoardDBO
+import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("TooManyFunctions")

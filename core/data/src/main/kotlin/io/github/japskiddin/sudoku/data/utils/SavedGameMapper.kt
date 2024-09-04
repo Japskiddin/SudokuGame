@@ -2,7 +2,7 @@ package io.github.japskiddin.sudoku.data.utils
 
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.SavedGame
-import io.github.japskiddin.sudoku.database.model.SavedGameDBO
+import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
 
 internal fun SavedGame.toSavedGameDBO() =
     SavedGameDBO(

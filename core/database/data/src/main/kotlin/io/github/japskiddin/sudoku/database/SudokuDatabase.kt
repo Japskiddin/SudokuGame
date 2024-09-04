@@ -8,9 +8,9 @@ import androidx.room.TypeConverters
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.RecordDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
-import io.github.japskiddin.sudoku.database.model.BoardDBO
-import io.github.japskiddin.sudoku.database.model.RecordDBO
-import io.github.japskiddin.sudoku.database.model.SavedGameDBO
+import io.github.japskiddin.sudoku.database.entities.BoardDBO
+import io.github.japskiddin.sudoku.database.entities.RecordDBO
+import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
 import io.github.japskiddin.sudoku.database.utils.DateConverter
 
 @Database(
