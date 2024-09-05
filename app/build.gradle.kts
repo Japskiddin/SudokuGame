@@ -88,13 +88,6 @@ android {
         }
     }
 
-    kotlinOptions {
-        allWarningsAsErrors = false
-        freeCompilerArgs += listOf(
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-        )
-    }
-
     lint {
         abortOnError = false
     }
@@ -132,6 +125,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.fragment)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.splashscreen)
 

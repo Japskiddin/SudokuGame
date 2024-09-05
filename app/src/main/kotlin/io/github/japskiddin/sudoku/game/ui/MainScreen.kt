@@ -1,9 +1,12 @@
 package io.github.japskiddin.sudoku.game.ui
 
 import android.app.Activity
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -53,11 +56,13 @@ private fun MainScreenContent(
     )
 
     SudokuTheme {
-        Surface(
-            modifier = modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            contentWindowInsets = WindowInsets.safeContent,
+            containerColor = MaterialTheme.colorScheme.background
+        ) { innerPadding ->
             NavHost(
+                modifier = Modifier.consumeWindowInsets(innerPadding),
                 navController = navController,
                 startDestination = Destination.HomeScreen
             ) {

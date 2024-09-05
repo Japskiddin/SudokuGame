@@ -72,6 +72,7 @@ private fun HomeScreen(
     )
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
@@ -136,6 +137,7 @@ private fun HomeScreenContent(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun HomeMenu(
     modifier: Modifier = Modifier,

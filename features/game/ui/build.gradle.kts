@@ -12,13 +12,6 @@ kotlin {
 
 android {
     namespace = "io.github.japskiddin.sudoku.feature.game.ui"
-
-    kotlinOptions {
-        allWarningsAsErrors = false
-        freeCompilerArgs += listOf(
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-        )
-    }
 }
 
 dependencies {
