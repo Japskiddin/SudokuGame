@@ -18,10 +18,14 @@ import io.github.japskiddin.sudoku.feature.home.ui.R
 
 @Composable
 internal fun ContinueDialog(
+    modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     onContinueClick: () -> Unit
 ) {
-    GameDialog(onDismiss = onDismiss) {
+    GameDialog(
+        modifier = modifier,
+        onDismiss = onDismiss
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

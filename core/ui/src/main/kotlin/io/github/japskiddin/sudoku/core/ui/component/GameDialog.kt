@@ -15,6 +15,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 
 @Composable
 public fun GameDialog(
+    modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -32,6 +33,7 @@ public fun GameDialog(
         ) {
             Box(
                 modifier = Modifier
+                    .then(modifier)
                     .padding(36.dp)
                     .dialogBackground(),
                 contentAlignment = Alignment.Center

@@ -67,7 +67,7 @@ private fun MainScreenContent(
                 startDestination = Destination.HomeScreen
             ) {
                 composable(destination = Destination.HomeScreen) {
-                    HomeScreen()
+                    HomeScreen(contentPadding = innerPadding)
                 }
                 composable(destination = Destination.GameScreen) {
                     GameScreen()
