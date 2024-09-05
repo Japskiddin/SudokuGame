@@ -3,10 +3,10 @@ package io.github.japskiddin.sudoku.feature.home.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,13 +41,9 @@ import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
 
 @Composable
-public fun HomeScreen(
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues
-) {
+public fun HomeScreen(modifier: Modifier = Modifier) {
     HomeScreen(
         modifier = modifier,
-        contentPadding = contentPadding,
         viewModel = hiltViewModel()
     )
 }
@@ -55,13 +51,11 @@ public fun HomeScreen(
 @Composable
 private fun HomeScreen(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues,
     viewModel: HomeViewModel
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreenContent(
         modifier = modifier,
-        contentPadding = contentPadding,
         state = state,
         currentYear = viewModel.currentYear,
         onStartButtonClick = { viewModel.onStartButtonClick() },
@@ -83,7 +77,6 @@ private fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues,
     state: UiState,
     currentYear: String,
     onStartButtonClick: () -> Unit,
@@ -106,7 +99,6 @@ private fun HomeScreenContent(
         is UiState.Menu ->
             HomeMenu(
                 modifier = screenModifier,
-                contentPadding = contentPadding,
                 currentYear = currentYear,
                 isShowContinueButton = state.isShowContinueButton,
                 isShowContinueDialog = state.isShowContinueDialog,
@@ -150,7 +142,6 @@ private fun HomeScreenContent(
 @Composable
 private fun HomeMenu(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues,
     widthPercent: Float = .8f,
     isShowContinueButton: Boolean,
     isShowContinueDialog: Boolean,
@@ -173,7 +164,6 @@ private fun HomeMenu(
 ) {
     if (isShowContinueDialog) {
         ContinueDialog(
-            modifier = Modifier.padding(contentPadding),
             onDismiss = onDismissContinueDialog,
             onContinueClick = onContinueDialogButtonClick
         )
@@ -181,7 +171,6 @@ private fun HomeMenu(
 
     if (isShowDifficultyDialog) {
         DifficultyDialog(
-            modifier = Modifier.padding(contentPadding),
             selectedDifficulty = selectedDifficulty,
             selectedType = selectedType,
             onDismiss = onDismissDifficultyDialog,
@@ -200,7 +189,7 @@ private fun HomeMenu(
                 painter = painterResource(id = R.drawable.home_background),
                 contentScale = ContentScale.Crop
             )
-            .padding(contentPadding)
+            .safeDrawingPadding()
             .padding(16.dp)
     ) {
         Column(
@@ -235,6 +224,7 @@ private fun HomeError(
         modifier = Modifier
             .then(modifier)
             .background(Primary)
+            .safeDrawingPadding()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -263,7 +253,6 @@ private fun HomeContentPreview(
     SudokuTheme {
         HomeScreenContent(
             state = state,
-            contentPadding = PaddingValues(),
             currentYear = "2024",
             onStartButtonClick = {},
             onContinueButtonClick = {},

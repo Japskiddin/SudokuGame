@@ -19,7 +19,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun DifficultyDialog(
-    modifier: Modifier = Modifier,
     selectedDifficulty: GameDifficulty,
     selectedType: GameType,
     onDismiss: () -> Unit,
@@ -29,10 +28,7 @@ internal fun DifficultyDialog(
     onSwipeTypeLeft: () -> Unit,
     onSwipeTypeRight: () -> Unit
 ) {
-    GameDialog(
-        modifier = modifier,
-        onDismiss = onDismiss
-    ) {
+    GameDialog(onDismiss = onDismiss) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

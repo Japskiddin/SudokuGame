@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ private fun LoadingContent(
         modifier = Modifier
             .then(modifier)
             .background(Primary)
+            .safeContentPadding()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,7 +40,10 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 public fun GameScreen(modifier: Modifier = Modifier) {
-    GameScreen(modifier = modifier, viewModel = hiltViewModel())
+    GameScreen(
+        modifier = modifier,
+        viewModel = hiltViewModel()
+    )
 }
 
 @Composable
@@ -100,7 +105,9 @@ private fun Game(
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.then(modifier)
+        modifier = Modifier
+            .then(modifier)
+            .safeDrawingPadding()
     ) {
         GameBoard(
             board = state.board,
@@ -124,7 +131,9 @@ private fun Error(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.then(modifier)
+        modifier = Modifier
+            .then(modifier)
+            .safeContentPadding()
     ) {
         Text(text = message)
     }
