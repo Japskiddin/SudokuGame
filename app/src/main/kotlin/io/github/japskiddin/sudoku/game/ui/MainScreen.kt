@@ -57,7 +57,7 @@ private fun MainScreenContent(
 
     SudokuTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentWindowInsets = WindowInsets.safeContent,
             containerColor = MaterialTheme.colorScheme.background
         ) { innerPadding ->
