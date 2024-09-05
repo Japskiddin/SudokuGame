@@ -9,7 +9,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.japskiddin.sudoku.game.ui.MainScreen
 import io.github.japskiddin.sudoku.game.ui.SplashViewModel
-import io.github.japskiddin.sudoku.game.utils.hideSystemUi
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -23,7 +22,6 @@ class MainActivity : ComponentActivity() {
         }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        hideSystemUi()
         setContent {
             MainScreen()
         }
