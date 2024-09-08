@@ -11,9 +11,9 @@ fun Project.configureJUnit(
         defaultConfig {
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
-    }
 
-    dependencies {
-        add("testImplementation", libs.findLibrary("junit").get())
+        dependencies {
+            add("testImplementation", libs.findLibrary("junit").get())
+        }
     }
 }
