@@ -32,6 +32,7 @@ dependencies {
     compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.ksp.gradle.plugin)
     compileOnly(libs.room.gradle.plugin)
+    compileOnly(libs.detekt.gradle.plugin)
 }
 
 gradlePlugin {
@@ -51,6 +52,10 @@ gradlePlugin {
         register("jvm") {
             id = "app.jvm"
             implementationClass = "JvmConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "app.android.detekt"
+            implementationClass = "AndroidDetektConventionPlugin"
         }
         register("androidHilt") {
             id = "app.android.hilt"

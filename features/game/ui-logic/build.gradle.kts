@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.app.android.library)
     alias(libs.plugins.app.android.hilt)
     alias(libs.plugins.app.feature.ui.logic)
+    alias(libs.plugins.app.android.detekt)
 }
 
 kotlin {
