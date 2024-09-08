@@ -2,8 +2,7 @@ package io.github.japskiddin.sudoku.core.game.qqwing
 
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
-import java.util.LinkedList
-import java.util.Random
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -141,80 +140,76 @@ public class QQWingController {
 
                 @Suppress("LongMethod")
                 override fun run() {
-                    try {
-                        // Solve puzzle or generate puzzles
-                        // until end of input for solving, or
-                        // until we have generated the specified number.
-                        while (!done.get()) {
-                            // Record whether the puzzle was possible or not,
-                            // so that we don't try to solve impossible givens.
-                            var havePuzzle: Boolean
-                            if (options.action == Action.GENERATE) {
-                                // Generate a puzzle
-                                havePuzzle = qqWing.generatePuzzleSymmetry(options.symmetry)
-                            } else {
-                                // Read the next puzzle on STDIN
-                                val puzzle = IntArray(QQWing.BOARD_SIZE)
-                                if (getPuzzleToSolve(puzzle)) {
-                                    havePuzzle = qqWing.setPuzzle(puzzle)
-                                    if (havePuzzle) {
-                                        puzzleCount.getAndDecrement()
-                                    } else {
-                                        // Puzzle to solve is impossible.
-                                        isImpossible = true
-                                    }
-                                } else {
-                                    // Set loop to terminate when nothing is
-                                    // left on STDIN
-                                    havePuzzle = false
-                                    done.set(true)
-                                }
-                            }
-
-                            if (havePuzzle) {
-                                solutionCount = qqWing.countSolutionsLimited()
-
-                                // Solve the puzzle
-                                @Suppress("ComplexCondition")
-                                if (options.printSolution ||
-                                    options.printHistory ||
-                                    options.printStats ||
-                                    options.printInstructions ||
-                                    options.gameDifficulty !== GameDifficulty.UNSPECIFIED
-                                ) {
-                                    qqWing.solve()
-                                    solution = qqWing.solution
-                                }
-
-                                // Bail out if it didn't meet the difficulty
-                                // standards for generation
-                                if (options.action == Action.GENERATE) {
-                                    if (options.gameDifficulty != GameDifficulty.UNSPECIFIED &&
-                                        options.gameDifficulty != qqWing.calculateDifficulty()
-                                    ) {
-                                        havePuzzle = false
-                                        // check if other threads have
-                                        // finished the job
-                                        if (puzzleCount.get() >= options.numberToGenerate) {
-                                            done.set(true)
-                                        }
-                                    } else {
-                                        val numDone = puzzleCount.incrementAndGet()
-                                        if (numDone >= options.numberToGenerate) {
-                                            done.set(true)
-                                        }
-                                        if (numDone > options.numberToGenerate) {
-                                            havePuzzle = false
-                                        }
-                                    }
-                                }
+                    // Solve puzzle or generate puzzles
+                    // until end of input for solving, or
+                    // until we have generated the specified number.
+                    while (!done.get()) {
+                        // Record whether the puzzle was possible or not,
+                        // so that we don't try to solve impossible givens.
+                        var havePuzzle: Boolean
+                        if (options.action == Action.GENERATE) {
+                            // Generate a puzzle
+                            havePuzzle = qqWing.generatePuzzleSymmetry(options.symmetry)
+                        } else {
+                            // Read the next puzzle on STDIN
+                            val puzzle = IntArray(QQWing.BOARD_SIZE)
+                            if (getPuzzleToSolve(puzzle)) {
+                                havePuzzle = qqWing.setPuzzle(puzzle)
                                 if (havePuzzle) {
-                                    generated.add(qqWing.puzzle)
+                                    puzzleCount.getAndDecrement()
+                                } else {
+                                    // Puzzle to solve is impossible.
+                                    isImpossible = true
                                 }
+                            } else {
+                                // Set loop to terminate when nothing is
+                                // left on STDIN
+                                havePuzzle = false
+                                done.set(true)
                             }
                         }
-                    } catch (e: Exception) {
-                        return
+
+                        if (havePuzzle) {
+                            solutionCount = qqWing.countSolutionsLimited()
+
+                            // Solve the puzzle
+                            @Suppress("ComplexCondition")
+                            if (options.printSolution ||
+                                options.printHistory ||
+                                options.printStats ||
+                                options.printInstructions ||
+                                options.gameDifficulty !== GameDifficulty.UNSPECIFIED
+                            ) {
+                                qqWing.solve()
+                                solution = qqWing.solution
+                            }
+
+                            // Bail out if it didn't meet the difficulty
+                            // standards for generation
+                            if (options.action == Action.GENERATE) {
+                                if (options.gameDifficulty != GameDifficulty.UNSPECIFIED &&
+                                    options.gameDifficulty != qqWing.calculateDifficulty()
+                                ) {
+                                    havePuzzle = false
+                                    // check if other threads have
+                                    // finished the job
+                                    if (puzzleCount.get() >= options.numberToGenerate) {
+                                        done.set(true)
+                                    }
+                                } else {
+                                    val numDone = puzzleCount.incrementAndGet()
+                                    if (numDone >= options.numberToGenerate) {
+                                        done.set(true)
+                                    }
+                                    if (numDone > options.numberToGenerate) {
+                                        havePuzzle = false
+                                    }
+                                }
+                            }
+                            if (havePuzzle) {
+                                generated.add(qqWing.puzzle)
+                            }
+                        }
                     }
                 }
             })

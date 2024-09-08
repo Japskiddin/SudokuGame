@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 public class HomeViewModel
 @Inject

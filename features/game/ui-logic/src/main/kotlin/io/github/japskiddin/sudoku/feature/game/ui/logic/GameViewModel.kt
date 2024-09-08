@@ -222,6 +222,8 @@ internal constructor(
     private fun solveBoard() {
         val qqWing = QQWingController()
         val size = boardEntity.type.size
+
+        @Suppress("MagicNumber")
         val radix = 13
         val boardToSolve = boardEntity.initialBoard.map { it.digitToInt(radix) }.toIntArray()
         val solved = qqWing.solve(boardToSolve, boardEntity.type)
