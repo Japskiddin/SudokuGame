@@ -1,6 +1,7 @@
 import io.github.japskiddin.android.core.buildlogic.applicationExtension
 import io.github.japskiddin.android.core.buildlogic.configureBuildTypes
 import io.github.japskiddin.android.core.buildlogic.configureJUnit
+import io.github.japskiddin.android.core.buildlogic.configureJUnitAndroid
 import io.github.japskiddin.android.core.buildlogic.configureKotlin
 import io.github.japskiddin.android.core.buildlogic.configureKotlinAndroid
 import io.github.japskiddin.android.core.buildlogic.libs
@@ -23,7 +24,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureKotlin()
                 configureKotlinAndroid(this)
                 configureBuildTypes()
-                configureJUnit(this)
+                configureJUnitAndroid(this)
+                configureJUnit()
 
                 defaultConfig {
                     targetSdk = libs.findVersion("androidSdk-target").get().toString().toInt()

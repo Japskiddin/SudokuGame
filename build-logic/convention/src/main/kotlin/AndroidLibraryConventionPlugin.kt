@@ -1,4 +1,5 @@
 import io.github.japskiddin.android.core.buildlogic.configureJUnit
+import io.github.japskiddin.android.core.buildlogic.configureJUnitAndroid
 import io.github.japskiddin.android.core.buildlogic.configureKotlin
 import io.github.japskiddin.android.core.buildlogic.configureKotlinAndroid
 import io.github.japskiddin.android.core.buildlogic.libraryExtension
@@ -20,7 +21,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
                 configureKotlin()
                 configureKotlinAndroid(this)
-                configureJUnit(this)
+                configureJUnitAndroid(this)
+                configureJUnit()
             }
         }
     }
