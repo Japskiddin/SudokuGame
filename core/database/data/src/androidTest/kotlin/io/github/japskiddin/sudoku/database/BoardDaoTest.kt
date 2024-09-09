@@ -55,6 +55,67 @@ class BoardDaoTest {
     }
 
     @Test
+    fun insertBoardsList_returnsTrue() = runBlocking {
+        val boards = listOf(
+            createDummyBoard(1),
+            createDummyBoard(2),
+            createDummyBoard(3)
+        )
+
+        boardDao.insert(boards)
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            boardDao.getAll().collect {
+                assertThat(it).isEqualTo(boards)
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    @Test
+    fun deleteBoard_returnsTrue() = runBlocking {
+        val board = createDummyBoard(1)
+
+        boardDao.insert(board)
+        boardDao.delete(board)
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            boardDao.getAll().collect {
+                assertThat(it).doesNotContain(board)
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    @Test
+    fun deleteBoardsList_returnsTrue() = runBlocking {
+        val boards = listOf(
+            createDummyBoard(1),
+            createDummyBoard(2),
+            createDummyBoard(3)
+        )
+
+        boardDao.insert(boards)
+        boardDao.delete(boards)
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            boardDao.getAll().collect {
+                assertThat(it).doesNotContain(boards)
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    @Test
     fun deleteAllBoards_returnsTrue() = runBlocking {
         val firstBoard = createDummyBoard(1)
         val secondBoard = createDummyBoard(2)
@@ -87,6 +148,37 @@ class BoardDaoTest {
 
         val result = boardDao.get(updatedBoard.uid)
         assertThat(result?.difficulty).isEqualTo(updatedBoard.difficulty)
+    }
+
+    @Test
+    fun updateBoardsList_returnsTrue() = runBlocking {
+        val boards = listOf(
+            createDummyBoard(1),
+            createDummyBoard(2),
+            createDummyBoard(3)
+        )
+
+        boardDao.insert(boards)
+
+        val updatedBoards = listOf(
+            boards[0].copy(difficulty = 3),
+            boards[1].copy(difficulty = 4),
+            boards[2].copy(difficulty = 1)
+        )
+
+        boardDao.update(updatedBoards)
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            boardDao.getAll().collect {
+                it.forEachIndexed { index, board ->
+                    assertThat(board).isEqualTo(updatedBoards[index])
+                }
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
     }
 
     private fun createDummyBoard(uid: Long): BoardDBO = BoardDBO(
