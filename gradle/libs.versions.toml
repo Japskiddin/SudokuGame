@@ -27,9 +27,11 @@ hilt = "1.2.0"
 javax-inject = "1"
 
 junit = "4.13.2"
+google-truth = "1.4.4"
 
 androidx-test-ext-junit = "1.2.1"
 androidx-test-espresso-core = "3.6.1"
+androidx-arch-core-testing = "2.2.0"
 
 detekt = "1.23.6"
 detekt-rules-compose = "0.4.11"
@@ -55,6 +57,7 @@ androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.re
 
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso-core" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
+androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
 
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
@@ -95,6 +98,7 @@ dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compo
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
+google-truth = { module = "com.google.truth:truth", version.ref = "google-truth" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-rules-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-rules-compose" }

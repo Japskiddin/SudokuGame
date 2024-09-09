@@ -11,6 +11,13 @@ fun Project.configureJUnitAndroid(
         defaultConfig {
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
+
+        dependencies {
+            add("androidTestImplementation", libs.findLibrary("androidx-test-espresso-core").get())
+            add("androidTestImplementation", libs.findLibrary("androidx-test-ext-junit").get())
+            add("androidTestImplementation", libs.findLibrary("androidx-arch-core-testing").get())
+            add("androidTestImplementation", libs.findLibrary("google-truth").get())
+        }
     }
 }
 
