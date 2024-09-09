@@ -44,11 +44,10 @@ public class SudokuDatabase internal constructor(private val database: SudokuRoo
 }
 
 public fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
-    val sudokuRoomDatabase =
-        Room.databaseBuilder(
-            checkNotNull(applicationContext.applicationContext),
-            SudokuRoomDatabase::class.java,
-            SudokuDatabase.DATABASE_NAME
-        ).build()
+    val sudokuRoomDatabase = Room.databaseBuilder(
+        checkNotNull(applicationContext.applicationContext),
+        SudokuRoomDatabase::class.java,
+        SudokuDatabase.DATABASE_NAME
+    ).build()
     return SudokuDatabase(sudokuRoomDatabase)
 }

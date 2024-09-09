@@ -16,10 +16,9 @@ public class SavedGameRepositoryImpl
 constructor(
     private val savedGameDao: SavedGameDao
 ) : SavedGameRepository {
-    override fun getAll(): Flow<List<SavedGame>> =
-        savedGameDao.getAll().map { list ->
-            list.map { savedGameDBO -> savedGameDBO.toSavedGame() }
-        }
+    override fun getAll(): Flow<List<SavedGame>> = savedGameDao.getAll().map { list ->
+        list.map { savedGameDBO -> savedGameDBO.toSavedGame() }
+    }
 
     override suspend fun get(uid: Long): SavedGame? = savedGameDao.get(uid)?.toSavedGame()
 

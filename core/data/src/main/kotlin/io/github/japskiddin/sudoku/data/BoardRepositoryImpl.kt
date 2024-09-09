@@ -15,14 +15,12 @@ public class BoardRepositoryImpl
 constructor(
     private val boardDao: BoardDao
 ) : BoardRepository {
-    override fun getAll(): Flow<List<Board>> =
-        boardDao.getAll().map { list ->
-            list.map { boardDBO -> boardDBO.toBoard() }
-        }
+    override fun getAll(): Flow<List<Board>> = boardDao.getAll().map { list ->
+        list.map { boardDBO -> boardDBO.toBoard() }
+    }
 
-    override suspend fun get(uid: Long): Board =
-        boardDao.get(uid)?.toBoard()
-            ?: throw BoardNotFoundException("Board with $uid not found")
+    override suspend fun get(uid: Long): Board = boardDao.get(uid)?.toBoard()
+        ?: throw BoardNotFoundException("Board with $uid not found")
 
     override suspend fun insert(board: Board): Long = boardDao.insert(board.toBoardDBO())
 }
