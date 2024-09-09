@@ -18,9 +18,6 @@ public interface BoardDao {
     @Query("SELECT * from board WHERE difficulty == :gameDifficulty")
     public fun getAll(gameDifficulty: Int): Flow<List<BoardDBO>>
 
-    @Query("SELECT * from board")
-    public suspend fun getAllList(): List<BoardDBO>
-
     @Query(
         "SELECT * FROM board" +
             " LEFT OUTER JOIN saved_game ON board.uid = saved_game.board_uid" +
