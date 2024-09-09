@@ -40,6 +40,7 @@ class BoardDaoTest {
     @Test
     fun insertBoard_returnsTrue() = runBlocking {
         val board = createDummyBoard(1)
+
         boardDao.insert(board)
 
         val latch = CountDownLatch(1)
@@ -60,13 +61,32 @@ class BoardDaoTest {
 
         boardDao.insert(firstBoard)
         boardDao.insert(secondBoard)
-
         boardDao.deleteAll()
 
         val latch = CountDownLatch(1)
         val job = async(Dispatchers.IO) {
-            boardDao.getal
+            boardDao.getAll().collect {
+                assertThat(it).doesNotContain(firstBoard)
+                assertThat(it).doesNotContain(secondBoard)
+                latch.countDown()
+            }
         }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    @Test
+    fun updateBoard_returnsTrue() = runBlocking {
+        val board = createDummyBoard(1)
+
+        boardDao.insert(board)
+
+        val updatedBoard = board.copy(difficulty = 3)
+
+        boardDao.update(updatedBoard)
+
+        val result = boardDao.get(updatedBoard.uid)
+        assertThat(result?.difficulty).isEqualTo(updatedBoard.difficulty)
     }
 
     private fun createDummyBoard(uid: Long): BoardDBO = BoardDBO(
