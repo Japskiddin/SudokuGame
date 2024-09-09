@@ -181,11 +181,42 @@ class BoardDaoTest {
         job.cancelAndJoin()
     }
 
-    private fun createDummyBoard(uid: Long): BoardDBO = BoardDBO(
+    @Test
+    fun getBoardsWithCurrentDifficulty() = runBlocking {
+        val currentDifficulty = 2
+
+        val boards = listOf(
+            createDummyBoard(uid = 1, difficulty = 2),
+            createDummyBoard(uid = 2, difficulty = 1),
+            createDummyBoard(uid = 3, difficulty = 2)
+        )
+
+        boardDao.insert(boards)
+
+        val filteredBoards = boards.filter { it.difficulty == currentDifficulty }
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            boardDao.getAll(difficulty = currentDifficulty).collect {
+                assertThat(it).isEqualTo(filteredBoards)
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    private fun createDummyBoard(
+        uid: Long,
+        initialBoard: String = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+        solvedBoard: String = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
+        difficulty: Int = 2,
+        type: Int = 2
+    ): BoardDBO = BoardDBO(
         uid = uid,
-        initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-        solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
-        difficulty = 2,
-        type = 2
+        initialBoard = initialBoard,
+        solvedBoard = solvedBoard,
+        difficulty = difficulty,
+        type = type
     )
 }

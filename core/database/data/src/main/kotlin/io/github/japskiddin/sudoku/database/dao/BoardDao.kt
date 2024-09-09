@@ -15,8 +15,8 @@ public interface BoardDao {
     @Query("SELECT * FROM board")
     public fun getAll(): Flow<List<BoardDBO>>
 
-    @Query("SELECT * from board WHERE difficulty == :gameDifficulty")
-    public fun getAll(gameDifficulty: Int): Flow<List<BoardDBO>>
+    @Query("SELECT * from board WHERE difficulty == :difficulty")
+    public fun getAll(difficulty: Int): Flow<List<BoardDBO>>
 
     @Query(
         "SELECT * FROM board" +
