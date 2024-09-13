@@ -59,9 +59,8 @@ import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
-import io.github.japskiddin.sudoku.feature.game.ui.logic.GameState
+import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -823,7 +822,7 @@ private fun getNoteRowNumber(
 )
 @Composable
 private fun GameBoardPreview(
-    @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameState
+    @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameUiState
 ) {
     val notes: List<BoardNote> = listOf(BoardNote(row = 2, col = 2, value = 5))
     GameBoard(
@@ -834,7 +833,7 @@ private fun GameBoardPreview(
     )
 }
 
-private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
+private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameUiState> {
     private val parser = SudokuParser()
     private val board = Board(
         initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
@@ -848,13 +847,10 @@ private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameState> {
     ).map { item -> item.toImmutableList() }
         .toImmutableList()
 
-    override val values: Sequence<GameState>
+    override val values: Sequence<GameUiState>
         get() = sequenceOf(
-            GameState(
+            GameUiState(
                 board = parsedBoard,
-                initialBoard = parsedBoard,
-                solvedBoard = parsedBoard,
-                notes = persistentListOf(),
                 selectedCell = BoardCell(
                     row = 3,
                     col = 2,

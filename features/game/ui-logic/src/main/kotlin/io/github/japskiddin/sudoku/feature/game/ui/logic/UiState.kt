@@ -10,7 +10,7 @@ public sealed class UiState {
     ) : UiState()
 
     public data class Game(
-        public val gameState: GameState = GameState.Initial
+        public val gameState: GameUiState = GameUiState.Initial
     ) : UiState()
 
     public companion object {

@@ -22,6 +22,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCa
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
+import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,7 +57,7 @@ internal constructor(
         when {
             error != GameError.NONE -> UiState.Error(code = error)
             isLoading -> UiState.Loading
-            else -> UiState.Game(gameState = gameState)
+            else -> UiState.Game(gameState = gameState.toUiState())
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
 

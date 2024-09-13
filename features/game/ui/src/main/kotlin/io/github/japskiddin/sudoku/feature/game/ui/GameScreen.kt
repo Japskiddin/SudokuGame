@@ -31,10 +31,10 @@ import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
-import io.github.japskiddin.sudoku.feature.game.ui.logic.GameState
+import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
+import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -98,7 +98,7 @@ private fun GameScreenContent(
 @Composable
 private fun Game(
     modifier: Modifier = Modifier,
-    state: GameState,
+    state: GameUiState,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit
 ) {
@@ -116,10 +116,10 @@ private fun Game(
                 .padding(12.dp)
                 .fillMaxWidth()
         )
-//        InputPanel(
-//            board = state.board,
-//            onClick = onInputCell
-//        )
+        InputPanel(
+            board = state.board,
+            onClick = onInputCell
+        )
     }
 }
 
@@ -171,11 +171,8 @@ private class GameStateProvider : PreviewParameterProvider<UiState> {
     override val values: Sequence<UiState>
         get() = sequenceOf(
             UiState.Game(
-                gameState = GameState(
+                gameState = GameUiState(
                     board = parsedBoard,
-                    initialBoard = parsedBoard,
-                    solvedBoard = parsedBoard,
-                    notes = persistentListOf(),
                     selectedCell = BoardCell(
                         row = 3,
                         col = 2,
