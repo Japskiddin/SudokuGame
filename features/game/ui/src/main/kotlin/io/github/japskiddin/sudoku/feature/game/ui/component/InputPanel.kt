@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -24,68 +23,75 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.math.sqrt
 
 @Composable
 internal fun InputPanel(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
-    board: ImmutableList<ImmutableList<BoardCell>>
+    board: String,
+    gameType: GameType
 ) {
-    @Suppress("MagicNumber")
-    val gameType: GameType = when (board.size) {
-        6 -> GameType.DEFAULT6X6
-        9 -> GameType.DEFAULT9X9
-        12 -> GameType.DEFAULT12X12
-        else -> GameType.UNSPECIFIED
-    }
-    @Suppress("MagicNumber")
-    if (gameType.size > 9) {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                @Suppress("MagicNumber")
-                for (i in 1..9) {
-                    InputButton(
-                        onClick = { onClick(i) },
-                        value = i.toString(),
-                        counter = "0"
-                    )
-                }
-            }
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                @Suppress("MagicNumber")
-                for (i in 10..12) {
-                    InputButton(
-                        onClick = { onClick(i) },
-                        value = i.toString(),
-                        counter = "0"
-                    )
-                }
-            }
-        }
+    if (gameType == GameType.DEFAULT12X12) {
+        TwoColumnInputPanel(
+            modifier = modifier,
+            onClick = { value -> onClick(value) },
+            board = board
+        )
     } else {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            for (i in 1..gameType.size) {
-                InputButton(
-                    onClick = { onClick(i) },
-                    value = i.toString(),
-                    counter = "0"
-                )
-            }
+        InputPanelContent(
+            modifier = modifier,
+            onClick = { value -> onClick(value) },
+            values = IntRange(start = 1, endInclusive = gameType.size),
+            board = board
+        )
+    }
+}
+
+@Composable
+private fun TwoColumnInputPanel(
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
+    board: String,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        InputPanelContent(
+            modifier = modifier,
+            onClick = { value -> onClick(value) },
+            values = IntRange(start = 1, endInclusive = 9),
+            board = board
+        )
+        InputPanelContent(
+            modifier = modifier,
+            onClick = { value -> onClick(value) },
+            values = IntRange(start = 10, endInclusive = 12),
+            board = board
+        )
+    }
+}
+
+@Composable
+private fun InputPanelContent(
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
+    values: IntRange,
+    board: String
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        for (i in values) {
+            val count = board.countBoardByValue(i.toString())
+            InputButton(
+                onClick = { onClick(i) },
+                value = i.toString(),
+                counter = count
+            )
         }
     }
 }
@@ -95,7 +101,7 @@ private fun InputButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     value: String,
-    counter: String,
+    counter: Int,
     valueTextSize: TextUnit = 16.sp,
     counterTextSize: TextUnit = 10.sp
 ) {
@@ -110,22 +116,24 @@ private fun InputButton(
             fontSize = valueTextSize
         )
         Text(
-            text = counter,
+            text = counter.toString(),
             fontSize = counterTextSize
         )
     }
 }
+
+private fun String.countBoardByValue(value: String) =
+    sqrt(count().toFloat()).toInt() - toCharArray().count { it.toString() == value }
 
 @Preview(
     name = "Input Panel",
     showBackground = true
 )
 @Composable
-private fun InputPanelPreview(
-    @PreviewParameter(InputPanelPreviewProvider::class) board: ImmutableList<ImmutableList<BoardCell>>
-) {
+private fun InputPanelPreview() {
     InputPanel(
-        board = board,
+        board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580",
+        gameType = GameType.DEFAULT9X9,
         onClick = {}
     )
 }
@@ -140,7 +148,7 @@ private fun InputButtonPreview() {
         InputButton(
             onClick = {},
             value = "2",
-            counter = "3"
+            counter = 3
         )
     }
 }

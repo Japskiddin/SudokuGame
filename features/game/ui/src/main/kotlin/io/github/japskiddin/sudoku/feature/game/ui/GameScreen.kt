@@ -31,7 +31,6 @@ import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
-import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
@@ -117,10 +116,10 @@ private fun Game(
                 .padding(12.dp)
                 .fillMaxWidth()
         )
-        InputPanel(
-            board = state.board,
-            onClick = onInputCell
-        )
+//        InputPanel(
+//            board = state.board,
+//            onClick = onInputCell
+//        )
     }
 }
 

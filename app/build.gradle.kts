@@ -15,7 +15,6 @@ android {
         applicationId = "io.github.japskiddin.sudoku.game"
         versionCode = libs.versions.appVersion.code.get().toInt()
         versionName = libs.versions.appVersion.name.get()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "sudoku-$versionName-$versionCode")
         resourceConfigurations += setOf("ru", "en")
         ndk {
