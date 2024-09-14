@@ -143,7 +143,7 @@ private fun Error(
 )
 @Composable
 private fun GameContentPreview(
-    @PreviewParameter(GameStateProvider::class) state: UiState,
+    @PreviewParameter(UiStateProvider::class) state: UiState,
 ) {
     SudokuTheme {
         GameScreenContent(
@@ -154,7 +154,7 @@ private fun GameContentPreview(
     }
 }
 
-private class GameStateProvider : PreviewParameterProvider<UiState> {
+private class UiStateProvider : PreviewParameterProvider<UiState> {
     private val parser = SudokuParser()
     private val board = Board(
         initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
