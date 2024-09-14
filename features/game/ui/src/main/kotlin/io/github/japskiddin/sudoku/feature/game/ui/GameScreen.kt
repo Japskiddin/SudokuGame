@@ -23,11 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.game.utils.convertToList
-import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
-import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
@@ -35,6 +32,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
+import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 
 @Composable
 public fun GameScreen(modifier: Modifier = Modifier) {
@@ -162,14 +160,11 @@ private fun GameContentPreview(
 }
 
 private class UiStateProvider : PreviewParameterProvider<UiState> {
-    private val board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580"
-    private val parsedBoard = board.convertToList(GameType.DEFAULT9X9).toImmutable()
-
     override val values: Sequence<UiState>
         get() = sequenceOf(
             UiState.Game(
                 gameState = GameUiState(
-                    board = parsedBoard,
+                    board = getSampleBoardForPreview(),
                     selectedCell = BoardCell(
                         row = 3,
                         col = 2,

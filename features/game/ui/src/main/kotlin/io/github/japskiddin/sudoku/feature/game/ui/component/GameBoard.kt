@@ -41,8 +41,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -52,15 +50,15 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.BoardCellSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
+import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
-import io.github.japskiddin.sudoku.core.game.utils.convertToList
-import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
+import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -814,31 +812,22 @@ private fun getNoteRowNumber(
     name = "Game Board Preview"
 )
 @Composable
-private fun GameBoardPreview(
-    @PreviewParameter(GameBoardUiPreviewProvider::class) state: GameUiState
-) {
+private fun GameBoardPreview() {
     val notes: List<BoardNote> = listOf(BoardNote(row = 2, col = 2, value = 5))
-    GameBoard(
-        board = state.board,
-        selectedCell = state.selectedCell,
-        onSelectCell = {},
-        notes = notes
-    )
-}
-
-private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameUiState> {
-    private val board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580"
-    private val parsedBoard = board.convertToList(GameType.DEFAULT9X9).toImmutable()
-
-    override val values: Sequence<GameUiState>
-        get() = sequenceOf(
-            GameUiState(
-                board = parsedBoard,
-                selectedCell = BoardCell(
-                    row = 3,
-                    col = 2,
-                    value = 3
-                )
-            )
+    val state = GameUiState(
+        board = getSampleBoardForPreview(),
+        selectedCell = BoardCell(
+            row = 3,
+            col = 2,
+            value = 3
         )
+    )
+    SudokuTheme {
+        GameBoard(
+            board = state.board,
+            selectedCell = state.selectedCell,
+            onSelectCell = {},
+            notes = notes
+        )
+    }
 }

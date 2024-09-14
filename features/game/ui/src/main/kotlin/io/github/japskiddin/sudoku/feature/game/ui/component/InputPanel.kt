@@ -18,10 +18,9 @@ import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
-import io.github.japskiddin.sudoku.core.game.utils.convertToList
-import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
+import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 
 @Composable
 internal fun InputPanel(
@@ -150,12 +149,9 @@ private fun BoardList.countByValue(
 )
 @Composable
 private fun InputPanelPreview() {
-    val board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580"
-    val parsedBoard = board.convertToList(GameType.DEFAULT9X9).toImmutable()
-
     SudokuTheme {
         InputPanel(
-            board = parsedBoard,
+            board = getSampleBoardForPreview(),
             onClick = {}
         )
     }
