@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
+import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import kotlinx.collections.immutable.ImmutableList
@@ -7,9 +8,9 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 internal data class GameState(
-    val board: ImmutableList<ImmutableList<BoardCell>>,
-    val initialBoard: ImmutableList<ImmutableList<BoardCell>>,
-    val solvedBoard: ImmutableList<ImmutableList<BoardCell>>,
+    val board: BoardList,
+    val initialBoard: BoardList,
+    val solvedBoard: BoardList,
     val notes: ImmutableList<BoardNote>,
     val selectedCell: BoardCell
 ) {

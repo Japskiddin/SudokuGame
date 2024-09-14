@@ -1,11 +1,11 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
+import io.github.japskiddin.sudoku.core.game.utils.BoardList
+import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.BoardCell
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 public data class GameUiState(
-    val board: ImmutableList<ImmutableList<BoardCell>>,
+    val board: BoardList,
     val selectedCell: BoardCell
 ) {
     public companion object {
@@ -14,11 +14,10 @@ public data class GameUiState(
                 List(9) { col ->
                     BoardCell(
                         row,
-                        col,
-                        0
+                        col
                     )
-                }.toImmutableList()
-            }.toImmutableList(),
+                }
+            }.toImmutable(),
             selectedCell = BoardCell.Empty
         )
     }

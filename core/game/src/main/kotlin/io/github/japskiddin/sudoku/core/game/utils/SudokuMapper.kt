@@ -11,7 +11,7 @@ public fun String.convertToList(
     gameType: GameType,
     locked: Boolean = false,
     emptySeparator: Char? = null
-): List<List<BoardCell>> {
+): BoardList {
     if (isEmpty()) {
         throw BoardParseException(message = "Input string is empty")
     }
@@ -43,7 +43,7 @@ public fun String.convertToList(
  * @return Sudoku in string
  */
 @Suppress("MagicNumber", "NestedBlockDepth")
-public fun List<List<BoardCell>>.convertToString(
+public fun BoardList.convertToString(
     emptySeparator: Char = '0'
 ): String {
     val sb = StringBuilder()

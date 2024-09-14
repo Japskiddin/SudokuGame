@@ -4,14 +4,14 @@ import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
 
 public fun isValidCell(
-    board: List<List<BoardCell>>,
-    solvedBoard: List<List<BoardCell>>,
+    board: BoardList,
+    solvedBoard: BoardList,
     cell: BoardCell
 ): Boolean = solvedBoard[cell.row][cell.col].value != board[cell.row][cell.col].value
 
 @Suppress("ReturnCount")
 public fun isValidCellDynamic(
-    board: List<List<BoardCell>>,
+    board: BoardList,
     cell: BoardCell,
     type: GameType
 ): Boolean {

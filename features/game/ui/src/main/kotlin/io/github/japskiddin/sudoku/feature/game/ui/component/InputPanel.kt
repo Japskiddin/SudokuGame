@@ -19,19 +19,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.Board
-import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun InputPanel(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
-    board: ImmutableList<ImmutableList<BoardCell>>,
+    board: BoardList,
     @Suppress("MagicNumber")
     gameType: GameType = when (board.size) {
         6 -> GameType.DEFAULT6X6
@@ -60,7 +59,7 @@ internal fun InputPanel(
 private fun TwoColumnInputPanel(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
-    board: ImmutableList<ImmutableList<BoardCell>>,
+    board: BoardList,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -86,7 +85,7 @@ private fun InputPanelContent(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
     values: IntRange,
-    board: ImmutableList<ImmutableList<BoardCell>>
+    board: BoardList
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -94,7 +93,7 @@ private fun InputPanelContent(
         horizontalArrangement = Arrangement.Center
     ) {
         for (i in values) {
-            val counter = countBoardByValue(board, i)
+            val counter = board.countByValue(i)
             InputButton(
                 value = i.toString(),
                 counter = counter,
@@ -141,17 +140,14 @@ private fun InputButton(
     }
 }
 
-private fun countBoardByValue(
-    list: ImmutableList<ImmutableList<BoardCell>>,
+private fun BoardList.countByValue(
     value: Int
 ): Int {
-    var count = 0
-    list.forEach { cells ->
-        cells.forEach { cell ->
-            if (cell.value == value) count++
-        }
+    var foundValues = 0
+    forEach { cells ->
+        foundValues += cells.count { cell -> cell.value == value }
     }
-    return list.count() - count
+    return count() - foundValues
 }
 
 @Preview(
@@ -161,7 +157,7 @@ private fun countBoardByValue(
 )
 @Composable
 private fun InputPanelPreview(
-    @PreviewParameter(InputPanelPreviewProvider::class) board: ImmutableList<ImmutableList<BoardCell>>
+    @PreviewParameter(InputPanelPreviewProvider::class) board: BoardList
 ) {
     InputPanel(
         board = board,
@@ -184,7 +180,7 @@ private fun InputButtonPreview() {
     }
 }
 
-private class InputPanelPreviewProvider : PreviewParameterProvider<ImmutableList<ImmutableList<BoardCell>>> {
+private class InputPanelPreviewProvider : PreviewParameterProvider<BoardList> {
     private val board = Board(
         initialBoard = "760000009040500800090006364500040041904070000836900000000080900000006007407000580",
         solvedBoard = "768432159143569872295817364572348691914675238836921745651784923389256417427193586",
@@ -193,6 +189,6 @@ private class InputPanelPreviewProvider : PreviewParameterProvider<ImmutableList
     )
     private val parsedBoard = board.initialBoard.convertToList(board.type).toImmutable()
 
-    override val values: Sequence<ImmutableList<ImmutableList<BoardCell>>>
+    override val values: Sequence<BoardList>
         get() = sequenceOf(parsedBoard)
 }

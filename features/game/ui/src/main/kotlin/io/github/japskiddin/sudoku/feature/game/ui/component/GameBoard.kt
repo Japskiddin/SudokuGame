@@ -52,6 +52,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.BoardCellSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
+import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.Board
@@ -61,7 +62,6 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
-import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -70,7 +70,7 @@ import kotlin.math.sqrt
 @Composable
 internal fun GameBoard(
     modifier: Modifier = Modifier,
-    board: ImmutableList<ImmutableList<BoardCell>>,
+    board: BoardList,
     @Suppress("MagicNumber")
     gameType: GameType = when (board.size) {
         6 -> GameType.DEFAULT6X6
@@ -689,7 +689,7 @@ private fun DrawScope.drawRoundCellBackground(
 @Suppress("CyclomaticComplexMethod")
 private fun DrawScope.drawNumbers(
     boardSize: Int,
-    board: List<List<BoardCell>>,
+    board: BoardList,
     isErrorsHighlight: Boolean,
     errorNumberPaint: TextPaint,
     lockedNumberPaint: TextPaint,
