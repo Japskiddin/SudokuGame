@@ -7,7 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
-import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
+import io.github.japskiddin.sudoku.core.game.utils.convertToList
+import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.game.utils.toImmutable
@@ -120,7 +121,6 @@ internal constructor(
             return
         }
 
-        val sudokuParser = SudokuParser()
         error.update { GameError.NONE }
         isLoading.update { true }
 
@@ -134,7 +134,7 @@ internal constructor(
             }
 
             val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
-            val initialBoard = sudokuParser.parseBoard(boardEntity.initialBoard, boardEntity.type)
+            val initialBoard = boardEntity.initialBoard.convertToList(boardEntity.type)
             initialBoard.forEach { cells ->
                 cells.forEach { cell ->
                     cell.isLocked = cell.value != 0
@@ -143,7 +143,7 @@ internal constructor(
             gameState.update { it.copy(initialBoard = initialBoard.toImmutable()) }
 
             if (boardEntity.solvedBoard.isNotBlank() && !boardEntity.solvedBoard.contains("0")) {
-                val solvedBoard = sudokuParser.parseBoard(boardEntity.solvedBoard, boardEntity.type)
+                val solvedBoard = boardEntity.solvedBoard.convertToList(boardEntity.type)
                 gameState.update { it.copy(solvedBoard = solvedBoard.toImmutable()) }
             } else {
                 solveBoard()
@@ -168,21 +168,20 @@ internal constructor(
 
     private suspend fun saveGame() {
         val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
-        val sudokuParser = SudokuParser()
         if (savedGame != null) {
             updateSavedGameUseCase.get().invoke(
                 savedGame = savedGame,
                 timer = 0L,
-                currentBoard = sudokuParser.boardToString(gameState.value.board),
-                notes = sudokuParser.notesToString(gameState.value.notes),
+                currentBoard = gameState.value.board.convertToString(),
+                notes = gameState.value.notes.convertToString(),
                 mistakes = 0,
                 lastPlayed = 0
             )
         } else {
             insertSavedGameUseCase.get().invoke(
                 uid = boardEntity.uid,
-                currentBoard = sudokuParser.boardToString(gameState.value.board),
-                notes = sudokuParser.notesToString(gameState.value.notes),
+                currentBoard = gameState.value.board.convertToString(),
+                notes = gameState.value.notes.convertToString(),
                 timer = 0L,
                 actions = 0,
                 mistakes = 0,
@@ -195,8 +194,7 @@ internal constructor(
     }
 
     private fun restoreSavedGame(savedGame: SavedGame) {
-        val sudokuParser = SudokuParser()
-        val gameBoard = sudokuParser.parseBoard(savedGame.currentBoard, boardEntity.type)
+        val gameBoard = savedGame.currentBoard.convertToList(boardEntity.type)
         val initialBoard = gameState.value.initialBoard
         for (i in gameBoard.indices) {
             for (j in gameBoard.indices) {
@@ -229,8 +227,8 @@ internal constructor(
         val boardToSolve = boardEntity.initialBoard.map { it.digitToInt(radix) }.toIntArray()
         val solved = qqWing.solve(boardToSolve, boardEntity.type)
 
-        val newSolvedBoard = MutableList(size) { row ->
-            MutableList(size) { col ->
+        val newSolvedBoard = List(size) { row ->
+            List(size) { col ->
                 BoardCell(
                     row,
                     col,
@@ -245,7 +243,6 @@ internal constructor(
         }
 
         viewModelScope.launch(appDispatchers.io) {
-            val sudokuParser = SudokuParser()
 //            updateBoardUseCase(boardEntity.copy(solvedBoard = sudokuParser.boardToString(newSolvedBoard)))
         }
 

@@ -52,7 +52,8 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.BoardCellSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
-import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
+import io.github.japskiddin.sudoku.core.game.utils.convertToList
+import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
@@ -61,7 +62,6 @@ import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -834,18 +834,13 @@ private fun GameBoardPreview(
 }
 
 private class GameBoardUiPreviewProvider : PreviewParameterProvider<GameUiState> {
-    private val parser = SudokuParser()
     private val board = Board(
         initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
         solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
         difficulty = GameDifficulty.INTERMEDIATE,
         type = GameType.DEFAULT9X9
     )
-    private val parsedBoard = parser.parseBoard(
-        board = board.initialBoard,
-        gameType = board.type
-    ).map { item -> item.toImmutableList() }
-        .toImmutableList()
+    private val parsedBoard = board.initialBoard.convertToList(board.type).toImmutable()
 
     override val values: Sequence<GameUiState>
         get() = sequenceOf(

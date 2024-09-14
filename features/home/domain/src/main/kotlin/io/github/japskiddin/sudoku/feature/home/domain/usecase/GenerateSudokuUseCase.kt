@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.feature.home.domain.usecase
 
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
-import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
+import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
@@ -35,10 +35,9 @@ public class GenerateSudokuUseCase @Inject constructor() {
             }
         }
 
-        val sudokuParser = SudokuParser()
         return Board(
-            initialBoard = sudokuParser.boardToString(puzzle),
-            solvedBoard = sudokuParser.boardToString(solvedPuzzle),
+            initialBoard = puzzle.convertToString(),
+            solvedBoard = solvedPuzzle.convertToString(),
             difficulty = difficulty,
             type = type
         )

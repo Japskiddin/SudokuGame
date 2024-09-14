@@ -23,7 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.game.utils.SudokuParser
+import io.github.japskiddin.sudoku.core.game.utils.convertToList
+import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
@@ -35,7 +36,6 @@ import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 public fun GameScreen(modifier: Modifier = Modifier) {
@@ -155,18 +155,13 @@ private fun GameContentPreview(
 }
 
 private class UiStateProvider : PreviewParameterProvider<UiState> {
-    private val parser = SudokuParser()
     private val board = Board(
         initialBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
         solvedBoard = "413004789741303043187031208703146980548700456478841230860200004894300064701187050",
         difficulty = GameDifficulty.INTERMEDIATE,
         type = GameType.DEFAULT9X9
     )
-    private val parsedBoard = parser.parseBoard(
-        board = board.initialBoard,
-        gameType = board.type
-    ).map { item -> item.toImmutableList() }
-        .toImmutableList()
+    private val parsedBoard = board.initialBoard.convertToList(board.type).toImmutable()
 
     override val values: Sequence<UiState>
         get() = sequenceOf(
