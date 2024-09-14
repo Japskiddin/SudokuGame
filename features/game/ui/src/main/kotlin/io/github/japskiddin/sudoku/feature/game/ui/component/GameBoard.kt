@@ -60,6 +60,7 @@ import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
+import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -69,13 +70,7 @@ import kotlin.math.sqrt
 internal fun GameBoard(
     modifier: Modifier = Modifier,
     board: BoardList,
-    @Suppress("MagicNumber")
-    gameType: GameType = when (board.size) {
-        6 -> GameType.DEFAULT6X6
-        9 -> GameType.DEFAULT9X9
-        12 -> GameType.DEFAULT12X12
-        else -> GameType.UNSPECIFIED
-    },
+    gameType: GameType = findGameTypeBySize(board.size),
     selectedCell: BoardCell,
     outerCornerRadius: Dp = 12.dp,
     outerStrokeWidth: Dp = 1.5.dp,

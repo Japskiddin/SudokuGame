@@ -23,19 +23,14 @@ import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 
 @Composable
 internal fun InputPanel(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
     board: BoardList,
-    @Suppress("MagicNumber")
-    gameType: GameType = when (board.size) {
-        6 -> GameType.DEFAULT6X6
-        9 -> GameType.DEFAULT9X9
-        12 -> GameType.DEFAULT12X12
-        else -> GameType.UNSPECIFIED
-    }
+    gameType: GameType = findGameTypeBySize(board.size)
 ) {
     if (gameType == GameType.DEFAULT12X12) {
         TwoColumnInputPanel(
