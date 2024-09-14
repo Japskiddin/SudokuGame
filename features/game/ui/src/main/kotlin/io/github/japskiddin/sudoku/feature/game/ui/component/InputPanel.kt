@@ -12,8 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,11 +88,13 @@ private fun InputPanelContent(
             InputButton(
                 value = i.toString(),
                 counter = counter,
-                modifier = Modifier.clickable {
-                    if (counter > 0) {
-                        onClick(i)
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+                        if (counter > 0) {
+                            onClick(i)
+                        }
                     }
-                }
             )
         }
     }
@@ -149,13 +149,16 @@ private fun BoardList.countByValue(
     backgroundColor = 0xFFFAA468
 )
 @Composable
-private fun InputPanelPreview(
-    @PreviewParameter(BoardPreviewProvider::class) board: BoardList
-) {
-    InputPanel(
-        board = board,
-        onClick = {}
-    )
+private fun InputPanelPreview() {
+    val board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580"
+    val parsedBoard = board.convertToList(GameType.DEFAULT9X9).toImmutable()
+
+    SudokuTheme {
+        InputPanel(
+            board = parsedBoard,
+            onClick = {}
+        )
+    }
 }
 
 @Preview(
@@ -171,12 +174,4 @@ private fun InputButtonPreview() {
             counter = 3
         )
     }
-}
-
-private class BoardPreviewProvider : PreviewParameterProvider<BoardList> {
-    private val board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580"
-    private val parsedBoard = board.convertToList(GameType.DEFAULT9X9).toImmutable()
-
-    override val values: Sequence<BoardList>
-        get() = sequenceOf(parsedBoard)
 }
