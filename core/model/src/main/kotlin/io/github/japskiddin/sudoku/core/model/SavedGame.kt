@@ -8,8 +8,8 @@ public data class SavedGame(
     val mistakes: Int,
     val timer: Long,
     val lastPlayed: Long,
-    val startedAt: Long,
-    val finishedAt: Long,
+    val startedTime: Long,
+    val finishedTime: Long,
     val status: GameStatus
 ) {
     public companion object {

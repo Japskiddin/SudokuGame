@@ -2,7 +2,7 @@
     "formatVersion": 1,
     "database": {
         "version": 1,
-        "identityHash": "a417d8810699c35cdf7cc75c50acfed8",
+        "identityHash": "ff5b0878253314cf1ad90b27a4adfdb8",
         "entities": [
             {
                 "tableName": "record",
@@ -44,7 +44,7 @@
             },
             {
                 "tableName": "saved_game",
-                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `board` TEXT NOT NULL, `notes` TEXT NOT NULL, `actions` INTEGER NOT NULL DEFAULT 0, `mistakes` INTEGER NOT NULL DEFAULT 0, `timer` INTEGER NOT NULL DEFAULT 0, `last_played` INTEGER NOT NULL DEFAULT 0, `started_at` INTEGER NOT NULL DEFAULT 0, `finished_at` INTEGER NOT NULL DEFAULT 0, `status` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `board` TEXT NOT NULL, `notes` TEXT NOT NULL, `actions` INTEGER NOT NULL DEFAULT 0, `mistakes` INTEGER NOT NULL DEFAULT 0, `timer` INTEGER NOT NULL DEFAULT 0, `last_played` INTEGER NOT NULL DEFAULT 0, `started_time` INTEGER NOT NULL DEFAULT 0, `finished_time` INTEGER NOT NULL DEFAULT 0, `status` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
                 "fields": [
                     {
                         "fieldPath": "uid",
@@ -93,15 +93,15 @@
                         "defaultValue": "0"
                     },
                     {
-                        "fieldPath": "startedAt",
-                        "columnName": "started_at",
+                        "fieldPath": "startedTime",
+                        "columnName": "started_time",
                         "affinity": "INTEGER",
                         "notNull": true,
                         "defaultValue": "0"
                     },
                     {
-                        "fieldPath": "finishedAt",
-                        "columnName": "finished_at",
+                        "fieldPath": "finishedTime",
+                        "columnName": "finished_time",
                         "affinity": "INTEGER",
                         "notNull": true,
                         "defaultValue": "0"
@@ -183,7 +183,7 @@
         "views": [],
         "setupQueries": [
             "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a417d8810699c35cdf7cc75c50acfed8')"
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff5b0878253314cf1ad90b27a4adfdb8')"
         ]
     }
 }

@@ -6,6 +6,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+/**
+ * Модель для сохранения запущенной игры.
+ */
 @Keep
 @Entity(
     tableName = "saved_game",
@@ -27,7 +30,7 @@ public data class SavedGameDBO(
     @ColumnInfo(name = "mistakes", defaultValue = "0") val mistakes: Int = 0,
     @ColumnInfo(name = "timer", defaultValue = "0") val timer: Long,
     @ColumnInfo(name = "last_played", defaultValue = "0") val lastPlayed: Long,
-    @ColumnInfo(name = "started_at", defaultValue = "0") val startedAt: Long,
-    @ColumnInfo(name = "finished_at", defaultValue = "0") val finishedAt: Long,
+    @ColumnInfo(name = "started_time", defaultValue = "0") val startedTime: Long,
+    @ColumnInfo(name = "finished_time", defaultValue = "0") val finishedTime: Long,
     @ColumnInfo(name = "status", defaultValue = "0") val status: Int = 0
 )

@@ -31,8 +31,8 @@ constructor(
                 mistakes = mistakes,
                 timer = timer,
                 lastPlayed = lastPlayed,
-                startedAt = startedAt,
-                finishedAt = finishedAt,
+                startedTime = startedAt,
+                finishedTime = finishedAt,
                 status = status
             )
         )

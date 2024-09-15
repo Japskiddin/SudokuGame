@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Модель для сохранения сгенерированных судоку.
+ */
 @Keep
 @Entity(
     tableName = "board"

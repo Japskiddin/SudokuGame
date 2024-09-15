@@ -6,6 +6,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+/**
+ * Модель для сохранения сыгранных судоку.
+ */
 @Keep
 @Entity(
     tableName = "record",

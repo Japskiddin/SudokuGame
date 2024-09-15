@@ -13,8 +13,8 @@ internal fun SavedGame.toSavedGameDBO() =
         mistakes = this.mistakes,
         timer = this.timer,
         lastPlayed = this.lastPlayed,
-        startedAt = this.startedAt,
-        finishedAt = this.finishedAt,
+        startedTime = this.startedTime,
+        finishedTime = this.finishedTime,
         status = this.status.toInt()
     )
 
@@ -27,8 +27,8 @@ internal fun SavedGameDBO.toSavedGame() =
         mistakes = this.mistakes,
         timer = this.timer,
         lastPlayed = this.lastPlayed,
-        startedAt = this.startedAt,
-        finishedAt = this.finishedAt,
+        startedTime = this.startedTime,
+        finishedTime = this.finishedTime,
         status = this.status.toGameStatus()
     )
 
