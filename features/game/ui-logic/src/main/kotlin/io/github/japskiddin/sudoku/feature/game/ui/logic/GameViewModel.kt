@@ -79,15 +79,15 @@ internal constructor(
     public fun onBackButtonClick(): Unit = appNavigator.tryNavigateBack()
 
     private fun generateGameLevel() {
+        error.update { GameError.NONE }
+        isLoading.update { true }
+
         val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
         if (boardUid == -1L) {
             error.update { GameError.BOARD_NOT_FOUND }
             isLoading.update { false }
             return
         }
-
-        error.update { GameError.NONE }
-        isLoading.update { true }
 
         viewModelScope.launch(appDispatchers.io) {
             boardEntity = try {
