@@ -12,7 +12,7 @@ constructor(
 ) {
     public suspend operator fun invoke(
         uid: Long,
-        currentBoard: String,
+        board: String,
         notes: String,
         actions: Int,
         mistakes: Int,
@@ -25,7 +25,7 @@ constructor(
         savedGameRepository.insert(
             SavedGame(
                 uid = uid,
-                currentBoard = currentBoard,
+                board = board,
                 notes = notes,
                 actions = actions,
                 mistakes = mistakes,

@@ -98,7 +98,6 @@ internal constructor(
                 return@launch
             }
 
-            val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
             val initialBoard = boardEntity.initialBoard.convertToList(boardEntity.type)
             initialBoard.forEach { cells ->
                 cells.forEach { cell ->
@@ -114,6 +113,7 @@ internal constructor(
                 solveBoard()
             }
 
+            val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
             if (savedGame != null) {
                 restoreSavedGame(savedGame)
             } else {
@@ -171,7 +171,7 @@ internal constructor(
             updateSavedGameUseCase.get().invoke(
                 savedGame = savedGame,
                 timer = 0L,
-                currentBoard = gameState.value.board.convertToString(),
+                board = gameState.value.board.convertToString(),
                 notes = gameState.value.notes.convertToString(),
                 mistakes = 0,
                 lastPlayed = 0
@@ -179,7 +179,7 @@ internal constructor(
         } else {
             insertSavedGameUseCase.get().invoke(
                 uid = boardEntity.uid,
-                currentBoard = gameState.value.board.convertToString(),
+                board = gameState.value.board.convertToString(),
                 notes = gameState.value.notes.convertToString(),
                 timer = 0L,
                 actions = 0,
@@ -193,7 +193,7 @@ internal constructor(
     }
 
     private fun restoreSavedGame(savedGame: SavedGame) {
-        val gameBoard = savedGame.currentBoard.convertToList(boardEntity.type)
+        val gameBoard = savedGame.board.convertToList(boardEntity.type)
         val initialBoard = gameState.value.initialBoard
         for (i in gameBoard.indices) {
             for (j in gameBoard.indices) {

@@ -7,7 +7,7 @@ import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
 internal fun SavedGame.toSavedGameDBO() =
     SavedGameDBO(
         uid = this.uid,
-        currentBoard = this.currentBoard,
+        board = this.board,
         notes = this.notes,
         actions = this.actions,
         mistakes = this.mistakes,
@@ -21,7 +21,7 @@ internal fun SavedGame.toSavedGameDBO() =
 internal fun SavedGameDBO.toSavedGame() =
     SavedGame(
         uid = this.uid,
-        currentBoard = this.currentBoard,
+        board = this.board,
         notes = this.notes,
         actions = this.actions,
         mistakes = this.mistakes,

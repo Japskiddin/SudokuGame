@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
 public data class SavedGameDBO(
     @PrimaryKey
     @ColumnInfo(name = "board_uid") val uid: Long,
-    @ColumnInfo(name = "current_board") val currentBoard: String,
+    @ColumnInfo(name = "board") val board: String,
     @ColumnInfo(name = "notes") val notes: String,
     @ColumnInfo(name = "actions", defaultValue = "0") val actions: Int = 0,
     @ColumnInfo(name = "mistakes", defaultValue = "0") val mistakes: Int = 0,

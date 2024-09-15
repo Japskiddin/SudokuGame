@@ -12,7 +12,7 @@ constructor(
     public suspend operator fun invoke(
         savedGame: SavedGame,
         timer: Long,
-        currentBoard: String,
+        board: String,
         notes: String,
         mistakes: Int,
         lastPlayed: Long
@@ -20,7 +20,7 @@ constructor(
         savedGameRepository.update(
             savedGame.copy(
                 timer = timer,
-                currentBoard = currentBoard,
+                board = board,
                 notes = notes,
                 mistakes = mistakes,
                 lastPlayed = lastPlayed
