@@ -7,6 +7,14 @@ import io.github.japskiddin.sudoku.core.model.GameType
 private const val RADIX: Int = 13
 private val defaultSeparators = listOf('0', '.')
 
+public fun BoardList.initiate() {
+    forEach { cells ->
+        cells.forEach { cell ->
+            cell.isLocked = cell.value != 0
+        }
+    }
+}
+
 public fun String.convertToList(
     gameType: GameType,
     locked: Boolean = false,

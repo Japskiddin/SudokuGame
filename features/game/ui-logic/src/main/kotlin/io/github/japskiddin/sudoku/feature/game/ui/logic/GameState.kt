@@ -9,8 +9,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal data class GameState(
     val board: BoardList,
-    val initialBoard: BoardList,
-    val solvedBoard: BoardList,
     val notes: ImmutableList<BoardNote>,
     val selectedCell: BoardCell
 ) {
@@ -21,8 +19,6 @@ internal data class GameState(
                     BoardCell(row, col)
                 }
             }.toImmutable(),
-            initialBoard = emptyList<List<BoardCell>>().toImmutable(),
-            solvedBoard = emptyList<List<BoardCell>>().toImmutable(),
             notes = persistentListOf(),
             selectedCell = BoardCell.Empty
         )

@@ -3,6 +3,8 @@ package io.github.japskiddin.sudoku.core.game.utils
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
 
+public fun String.isSudokuFilled(): Boolean = isNotBlank() && !contains("0")
+
 public fun isValidCell(
     board: BoardList,
     solvedBoard: BoardList,
@@ -33,6 +35,7 @@ public fun isValidCellDynamic(
             return false
         }
     }
+
     return true
 }
 

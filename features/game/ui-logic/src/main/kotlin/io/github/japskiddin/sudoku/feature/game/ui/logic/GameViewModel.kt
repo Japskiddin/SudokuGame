@@ -7,8 +7,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
+import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.convertToString
+import io.github.japskiddin.sudoku.core.game.utils.initiate
+import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.game.utils.toImmutable
@@ -16,11 +19,11 @@ import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
-import io.github.japskiddin.sudoku.core.model.SavedGame
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameError
@@ -48,9 +51,12 @@ internal constructor(
     private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val insertSavedGameUseCase: Provider<InsertSavedGameUseCase>,
-    private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>
+    private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
+    private val restoreGameUseCase: Provider<RestoreGameUseCase>
 ) : ViewModel() {
     private lateinit var boardEntity: Board
+    private lateinit var initialBoard: BoardList
+    private lateinit var solvedBoard: BoardList
 
     private val isLoading = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
@@ -98,36 +104,31 @@ internal constructor(
                 return@launch
             }
 
-            val initialBoard = boardEntity.board.convertToList(boardEntity.type)
-            initialBoard.forEach { cells ->
-                cells.forEach { cell ->
-                    cell.isLocked = cell.value != 0
-                }
-            }
-            gameState.update { it.copy(initialBoard = initialBoard.toImmutable()) }
+            initialBoard = boardEntity.board.convertToList(boardEntity.type)
+            initialBoard.initiate()
 
-            if (boardEntity.solvedBoard.isNotBlank() && !boardEntity.solvedBoard.contains("0")) {
-                val solvedBoard = boardEntity.solvedBoard.convertToList(boardEntity.type)
-                gameState.update { it.copy(solvedBoard = solvedBoard.toImmutable()) }
+            if (boardEntity.solvedBoard.isSudokuFilled()) {
+                solvedBoard = boardEntity.solvedBoard.convertToList(boardEntity.type)
             } else {
                 solveBoard()
             }
 
             val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
-            if (savedGame != null) {
-                restoreSavedGame(savedGame)
+            val board: BoardList = if (savedGame != null) {
+                val restoredBoard = restoreGameUseCase.get().invoke(savedGame, boardEntity, initialBoard, solvedBoard)
+                restoredBoard
             } else {
-                gameState.update { it.copy(board = initialBoard.toImmutable()) }
+                initialBoard
             }
-
-            isLoading.update { false }
-
+            gameState.update { it.copy(board = board.toImmutable()) }
             saveGame()
+            isLoading.update { false }
         }
     }
 
-    private fun inputValueToCell(value: Int) {
+    private fun inputValueToCell(value: Int, mistakesMethod: Int = 2) {
         if (gameState.value.selectedCell.isEmpty()) return
+
         gameState.update { state ->
             val selectedCell = state.selectedCell.copy()
             val newBoard = copyBoard(state.board)
@@ -139,20 +140,19 @@ internal constructor(
                 cell.isError = false
                 selectedCell.isError = false
             } else {
-//                if (mistakesMethod == 0) {
-                newBoard[cell.row][cell.col].isError =
-                    !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
-                newBoard.forEach { cells ->
-                    cells.forEach { cell ->
-                        if (cell.value != 0 && cell.isError) {
-                            cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                if (mistakesMethod == 1) {
+                    newBoard[cell.row][cell.col].isError =
+                        !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
+                    newBoard.forEach { cells ->
+                        cells.forEach { cell ->
+                            if (cell.value != 0 && cell.isError) {
+                                cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                            }
                         }
                     }
+                } else if (mistakesMethod == 2) {
+                    cell.isError = isValidCell(newBoard, solvedBoard, cell)
                 }
-//                } else if (mistakesMethod == 1) {
-//                val solvedBoard = gameState.value.solvedBoard
-//                cell.isError = isValidCell(newBoard, solvedBoard, cell)
-//            }
 
                 selectedCell.isError = cell.isError
             }
@@ -192,31 +192,6 @@ internal constructor(
         }
     }
 
-    private fun restoreSavedGame(savedGame: SavedGame) {
-        val gameBoard = savedGame.board.convertToList(boardEntity.type)
-        val initialBoard = gameState.value.initialBoard
-        for (i in gameBoard.indices) {
-            for (j in gameBoard.indices) {
-                gameBoard[i][j].isLocked = initialBoard[i][j].isLocked
-                if (gameBoard[i][j].value != 0 && !gameBoard[i][j].isLocked) {
-//                    if (mistakesMethod.value == 1) {
-//                        gameBoard[i][j].error =
-//                            !isValidCellDynamic(
-//                                board = gameBoard,
-//                                cell = gameBoard[i][j],
-//                                type = boardEntity.type
-//                            )
-//                    } else {
-                    val solvedBoard = gameState.value.solvedBoard
-                    gameBoard[i][j].isError = isValidCell(gameBoard, solvedBoard, gameBoard[i][j])
-//                    }
-                }
-            }
-        }
-
-        gameState.update { it.copy(board = gameBoard.toImmutable()) }
-    }
-
     private fun solveBoard() {
         val qqWing = QQWingController()
         val size = boardEntity.type.size
@@ -226,14 +201,14 @@ internal constructor(
         val boardToSolve = boardEntity.board.map { it.digitToInt(radix) }.toIntArray()
         val solved = qqWing.solve(boardToSolve, boardEntity.type)
 
-        val newSolvedBoard = List(size) { row ->
+        solvedBoard = List(size) { row ->
             List(size) { col ->
                 BoardCell(row, col)
             }
         }
         for (i in 0 until size) {
             for (j in 0 until size) {
-                newSolvedBoard[i][j].value = solved[i * size + j]
+                solvedBoard[i][j].value = solved[i * size + j]
             }
         }
 
@@ -241,13 +216,11 @@ internal constructor(
 //            updateBoardUseCase(boardEntity.copy(solvedBoard = sudokuParser.boardToString(newSolvedBoard)))
         }
 
-        val initialBoard = gameState.value.initialBoard
-        for (i in newSolvedBoard.indices) {
-            for (j in newSolvedBoard.indices) {
-                newSolvedBoard[i][j].isLocked = initialBoard[i][j].isLocked
+        val initialBoard = gameState.value.board
+        for (i in solvedBoard.indices) {
+            for (j in solvedBoard.indices) {
+                solvedBoard[i][j].isLocked = initialBoard[i][j].isLocked
             }
         }
-
-        gameState.update { it.copy(solvedBoard = newSolvedBoard.toImmutable()) }
     }
 }
