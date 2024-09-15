@@ -15,7 +15,7 @@ androidx-datastore = "1.1.1"
 androidx-splashscreen = "1.0.1"
 
 kotlin-android = "2.0.20"
-kotlinx-coroutines = "1.9.0-RC.2"
+kotlinx-coroutines = "1.9.0"
 kotlinx-serialization-json = "1.7.2"
 kotlinx-immutable = "0.3.7"
 
@@ -23,7 +23,7 @@ bundletool = "1.17.1"
 ksp = "2.0.20-1.0.24"
 
 dagger-hilt = "2.52"
-hilt = "1.2.0"
+dagger-hilt-navigation-compose = "1.2.0"
 javax-inject = "1"
 
 junit = "4.13.2"
@@ -96,7 +96,7 @@ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "a
 # DI Hilt
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-hilt" }
-dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
+dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "dagger-hilt-navigation-compose" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 
 # Testing
