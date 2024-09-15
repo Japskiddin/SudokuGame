@@ -152,9 +152,4 @@ dependencies {
     implementation(projects.features.game.ui)
     implementation(projects.features.game.uiLogic)
     implementation(projects.features.game.domain)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(libs.androidx.test.ext.junit)
 }
