@@ -72,6 +72,7 @@ internal constructor(
         when (action) {
             is UiAction.InputCell -> inputValueToCell(action.value)
             is UiAction.SelectBoardCell -> gameState.update { it.copy(selectedCell = action.cell) }
+            is UiAction.EraseBoardCell -> inputValueToCell(0)
         }
     }
 
