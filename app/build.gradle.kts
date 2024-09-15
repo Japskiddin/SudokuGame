@@ -125,18 +125,14 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.annotation)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.splashscreen)
 
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
     implementation(libs.dagger.hilt.navigation.compose)
 
-    implementation(projects.core.common)
     implementation(projects.core.commonAndroid)
     implementation(projects.core.domain)
     implementation(projects.core.game)
@@ -146,9 +142,11 @@ dependencies {
     implementation(projects.core.database.data)
     implementation(projects.core.data)
     implementation(projects.core.navigation)
+
     implementation(projects.features.home.ui)
     implementation(projects.features.home.uiLogic)
     implementation(projects.features.home.domain)
+
     implementation(projects.features.game.ui)
     implementation(projects.features.game.uiLogic)
     implementation(projects.features.game.domain)
