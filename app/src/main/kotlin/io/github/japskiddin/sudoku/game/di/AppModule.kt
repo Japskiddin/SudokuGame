@@ -9,13 +9,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.Logger
-import io.github.japskiddin.sudoku.core.domain.BoardRepository
-import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
-import io.github.japskiddin.sudoku.data.BoardRepositoryImpl
-import io.github.japskiddin.sudoku.data.SavedGameRepositoryImpl
-import io.github.japskiddin.sudoku.database.SudokuDatabase
-import io.github.japskiddin.sudoku.database.dao.BoardDao
-import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.AppNavigatorImpl
@@ -26,36 +19,9 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideSudokuDatabase(
-        @ApplicationContext context: Context
-    ): SudokuDatabase {
-        return SudokuDatabase(context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBoardRepository(boardDao: BoardDao): BoardRepository = BoardRepositoryImpl(boardDao)
-
-    @Provides
-    @Singleton
-    fun provideBoardDao(sudokuDatabase: SudokuDatabase): BoardDao = sudokuDatabase.boardDao
-
-    @Provides
-    @Singleton
-    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository =
-        SavedGameRepositoryImpl(savedGameDao)
-
-    @Provides
-    @Singleton
-    fun provideSavedGameDao(sudokuDatabase: SudokuDatabase): SavedGameDao = sudokuDatabase.savedGameDao
-
-    @Provides
-    @Singleton
     fun provideSettingsDatastore(
         @ApplicationContext context: Context
-    ): SettingsDatastore {
-        return SettingsDatastore(context)
-    }
+    ): SettingsDatastore = SettingsDatastore(context)
 
     @Provides
     @Singleton
@@ -66,5 +32,6 @@ object AppModule {
     fun provideAppNavigator(): AppNavigator = AppNavigatorImpl()
 
     @Provides
+    @Singleton
     fun provideLogger(): Logger = AndroidLogcatLogger()
 }
