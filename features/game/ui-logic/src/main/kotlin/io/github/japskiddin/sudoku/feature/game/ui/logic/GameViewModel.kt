@@ -23,6 +23,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCa
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
+import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameError
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
@@ -50,6 +51,7 @@ internal constructor(
     private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>
 ) : ViewModel() {
     private lateinit var boardEntity: Board
+
     private val isLoading = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
@@ -66,52 +68,14 @@ internal constructor(
         generateGameLevel()
     }
 
-    public fun onInputCell(
-        value: Int
-    ) {
-        if (gameState.value.selectedCell.isEmpty()) return
-        gameState.update { state ->
-            val selectedCell = state.selectedCell.copy()
-            val newBoard = copyBoard(state.board)
-            val cell = newBoard[selectedCell.row][selectedCell.col]
-            if (cell.isLocked) return
-            cell.value = value
-
-            if (value == 0) {
-                cell.isError = false
-                selectedCell.isError = false
-            } else {
-//                if (mistakesMethod == 0) {
-                newBoard[cell.row][cell.col].isError =
-                    !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
-                newBoard.forEach { cells ->
-                    cells.forEach { cell ->
-                        if (cell.value != 0 && cell.isError) {
-                            cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
-                        }
-                    }
-                }
-//                } else if (mistakesMethod == 1) {
-//                val solvedBoard = gameState.value.solvedBoard
-//                cell.isError = isValidCell(newBoard, solvedBoard, cell)
-//            }
-
-                selectedCell.isError = cell.isError
-            }
-
-            state.copy(board = newBoard.toImmutable(), selectedCell = selectedCell)
-        }
-
-        viewModelScope.launch(appDispatchers.io) {
-            saveGame()
+    public fun onAction(action: UiAction) {
+        when (action) {
+            is UiAction.InputCell -> inputValueToCell(action.value)
+            is UiAction.SelectBoardCell -> gameState.update { it.copy(selectedCell = action.cell) }
         }
     }
 
     public fun onBackButtonClick(): Unit = appNavigator.tryNavigateBack()
-
-    public fun onUpdateSelectedBoardCell(boardCell: BoardCell) {
-        gameState.update { it.copy(selectedCell = boardCell) }
-    }
 
     private fun generateGameLevel() {
         val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
@@ -161,9 +125,43 @@ internal constructor(
         }
     }
 
-    private fun Exception.toGameError(): GameError = when (this) {
-        is BoardNotFoundException -> GameError.BOARD_NOT_FOUND
-        else -> GameError.UNKNOWN
+    private fun inputValueToCell(value: Int) {
+        if (gameState.value.selectedCell.isEmpty()) return
+        gameState.update { state ->
+            val selectedCell = state.selectedCell.copy()
+            val newBoard = copyBoard(state.board)
+            val cell = newBoard[selectedCell.row][selectedCell.col]
+            if (cell.isLocked) return
+            cell.value = value
+
+            if (value == 0) {
+                cell.isError = false
+                selectedCell.isError = false
+            } else {
+//                if (mistakesMethod == 0) {
+                newBoard[cell.row][cell.col].isError =
+                    !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
+                newBoard.forEach { cells ->
+                    cells.forEach { cell ->
+                        if (cell.value != 0 && cell.isError) {
+                            cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                        }
+                    }
+                }
+//                } else if (mistakesMethod == 1) {
+//                val solvedBoard = gameState.value.solvedBoard
+//                cell.isError = isValidCell(newBoard, solvedBoard, cell)
+//            }
+
+                selectedCell.isError = cell.isError
+            }
+
+            state.copy(board = newBoard.toImmutable(), selectedCell = selectedCell)
+        }
+
+        viewModelScope.launch(appDispatchers.io) {
+            saveGame()
+        }
     }
 
     private suspend fun saveGame() {
@@ -229,11 +227,7 @@ internal constructor(
 
         val newSolvedBoard = List(size) { row ->
             List(size) { col ->
-                BoardCell(
-                    row,
-                    col,
-                    0
-                )
+                BoardCell(row, col)
             }
         }
         for (i in 0 until size) {

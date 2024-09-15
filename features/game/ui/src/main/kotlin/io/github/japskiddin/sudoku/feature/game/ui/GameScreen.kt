@@ -31,6 +31,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
+import io.github.japskiddin.sudoku.feature.game.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 
@@ -51,8 +52,8 @@ private fun GameScreen(
     GameScreenContent(
         modifier = modifier,
         state = state,
-        onSelectBoardCell = { boardCell -> viewModel.onUpdateSelectedBoardCell(boardCell) },
-        onInputCell = { num -> viewModel.onInputCell(num) }
+        onSelectBoardCell = { cell -> viewModel.onAction(UiAction.SelectBoardCell(cell)) },
+        onInputCell = { value -> viewModel.onAction(UiAction.InputCell(value)) }
     )
 }
 
@@ -160,18 +161,18 @@ private fun GameContentPreview(
 }
 
 private class UiStateProvider : PreviewParameterProvider<UiState> {
+    private val gameState: GameUiState = GameUiState(
+        board = getSampleBoardForPreview(),
+        selectedCell = BoardCell(
+            row = 3,
+            col = 2,
+            value = 3
+        )
+    )
+
     override val values: Sequence<UiState>
         get() = sequenceOf(
-            UiState.Game(
-                gameState = GameUiState(
-                    board = getSampleBoardForPreview(),
-                    selectedCell = BoardCell(
-                        row = 3,
-                        col = 2,
-                        value = 3
-                    )
-                )
-            ),
+            UiState.Game(gameState = gameState),
             UiState.Loading,
             UiState.Error(code = GameError.BOARD_NOT_FOUND)
         )

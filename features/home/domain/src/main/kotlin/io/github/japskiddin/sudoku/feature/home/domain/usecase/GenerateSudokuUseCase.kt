@@ -15,10 +15,14 @@ public class GenerateSudokuUseCase @Inject constructor() {
     ): Board {
         val boardSize = type.size
         val puzzle = List(boardSize) { row ->
-            List(boardSize) { col -> BoardCell(row, col, 0) }
+            List(boardSize) { col ->
+                BoardCell(row, col)
+            }
         }
         val solvedPuzzle = List(boardSize) { row ->
-            List(boardSize) { col -> BoardCell(row, col, 0) }
+            List(boardSize) { col ->
+                BoardCell(row, col)
+            }
         }
         val qqWingController = QQWingController()
         val generatedBoard = qqWingController.generate(type, difficulty) ?: throw SudokuNotGeneratedException()

@@ -1,11 +1,11 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
+import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 internal data class GameState(
     val board: BoardList,
@@ -18,15 +18,11 @@ internal data class GameState(
         val Initial: GameState = GameState(
             board = List(9) { row ->
                 List(9) { col ->
-                    BoardCell(
-                        row,
-                        col,
-                        0
-                    )
-                }.toImmutableList()
-            }.toImmutableList(),
-            initialBoard = emptyList<ImmutableList<BoardCell>>().toImmutableList(),
-            solvedBoard = emptyList<ImmutableList<BoardCell>>().toImmutableList(),
+                    BoardCell(row, col)
+                }
+            }.toImmutable(),
+            initialBoard = emptyList<List<BoardCell>>().toImmutable(),
+            solvedBoard = emptyList<List<BoardCell>>().toImmutable(),
             notes = persistentListOf(),
             selectedCell = BoardCell.Empty
         )

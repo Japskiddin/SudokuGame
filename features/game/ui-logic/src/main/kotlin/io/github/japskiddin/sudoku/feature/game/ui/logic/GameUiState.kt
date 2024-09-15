@@ -12,10 +12,7 @@ public data class GameUiState(
         public val Initial: GameUiState = GameUiState(
             board = List(9) { row ->
                 List(9) { col ->
-                    BoardCell(
-                        row,
-                        col
-                    )
+                    BoardCell(row, col)
                 }
             }.toImmutable(),
             selectedCell = BoardCell.Empty
