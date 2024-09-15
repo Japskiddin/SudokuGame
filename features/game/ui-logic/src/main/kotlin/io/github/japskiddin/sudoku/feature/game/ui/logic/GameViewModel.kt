@@ -98,7 +98,7 @@ internal constructor(
                 return@launch
             }
 
-            val initialBoard = boardEntity.initialBoard.convertToList(boardEntity.type)
+            val initialBoard = boardEntity.board.convertToList(boardEntity.type)
             initialBoard.forEach { cells ->
                 cells.forEach { cell ->
                     cell.isLocked = cell.value != 0
@@ -223,7 +223,7 @@ internal constructor(
 
         @Suppress("MagicNumber")
         val radix = 13
-        val boardToSolve = boardEntity.initialBoard.map { it.digitToInt(radix) }.toIntArray()
+        val boardToSolve = boardEntity.board.map { it.digitToInt(radix) }.toIntArray()
         val solved = qqWing.solve(boardToSolve, boardEntity.type)
 
         val newSolvedBoard = List(size) { row ->

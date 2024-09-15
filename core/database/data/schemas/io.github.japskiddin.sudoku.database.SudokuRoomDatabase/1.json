@@ -2,7 +2,7 @@
     "formatVersion": 1,
     "database": {
         "version": 1,
-        "identityHash": "11cd82ddc8121082082b1953675524cf",
+        "identityHash": "a417d8810699c35cdf7cc75c50acfed8",
         "entities": [
             {
                 "tableName": "record",
@@ -137,7 +137,7 @@
             },
             {
                 "tableName": "board",
-                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `initial_board` TEXT NOT NULL, `solved_board` TEXT NOT NULL, `difficulty` INTEGER NOT NULL, `type` INTEGER NOT NULL)",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `board` TEXT NOT NULL, `solved_board` TEXT NOT NULL, `difficulty` INTEGER NOT NULL, `type` INTEGER NOT NULL)",
                 "fields": [
                     {
                         "fieldPath": "uid",
@@ -146,8 +146,8 @@
                         "notNull": true
                     },
                     {
-                        "fieldPath": "initialBoard",
-                        "columnName": "initial_board",
+                        "fieldPath": "board",
+                        "columnName": "board",
                         "affinity": "TEXT",
                         "notNull": true
                     },
@@ -183,7 +183,7 @@
         "views": [],
         "setupQueries": [
             "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '11cd82ddc8121082082b1953675524cf')"
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a417d8810699c35cdf7cc75c50acfed8')"
         ]
     }
 }

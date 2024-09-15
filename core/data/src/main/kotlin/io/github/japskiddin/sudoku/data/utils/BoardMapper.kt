@@ -8,7 +8,7 @@ import io.github.japskiddin.sudoku.database.entities.BoardDBO
 internal fun Board.toBoardDBO() =
     BoardDBO(
         uid = this.uid,
-        initialBoard = this.initialBoard,
+        board = this.board,
         solvedBoard = this.solvedBoard,
         difficulty = this.difficulty.toInt(),
         type = this.type.toInt()
@@ -17,7 +17,7 @@ internal fun Board.toBoardDBO() =
 internal fun BoardDBO.toBoard() =
     Board(
         uid = this.uid,
-        initialBoard = this.initialBoard,
+        board = this.board,
         solvedBoard = this.solvedBoard,
         difficulty = this.difficulty.toGameDifficulty(),
         type = this.type.toGameType()

@@ -40,7 +40,7 @@ public class GenerateSudokuUseCase @Inject constructor() {
         }
 
         return Board(
-            initialBoard = puzzle.convertToString(),
+            board = puzzle.convertToString(),
             solvedBoard = solvedPuzzle.convertToString(),
             difficulty = difficulty,
             type = type

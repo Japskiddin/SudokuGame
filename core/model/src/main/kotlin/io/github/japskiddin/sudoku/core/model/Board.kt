@@ -2,7 +2,7 @@ package io.github.japskiddin.sudoku.core.model
 
 public data class Board(
     val uid: Long = ID_NONE,
-    val initialBoard: String,
+    val board: String,
     val solvedBoard: String,
     val difficulty: GameDifficulty,
     val type: GameType
