@@ -7,6 +7,7 @@ import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.MistakesMethod
 import io.github.japskiddin.sudoku.core.model.SavedGame
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ public class RestoreGameUseCase @Inject constructor() {
         boardEntity: Board,
         initialBoard: BoardList,
         solvedBoard: BoardList,
-        mistakesMethod: Int = 2
+        mistakesMethod: MistakesMethod = MistakesMethod.CLASSIC
     ): BoardList {
         val type = boardEntity.type
         val restoredBoard = savedGame.board.convertToList(type)
@@ -38,21 +39,21 @@ public class RestoreGameUseCase @Inject constructor() {
     private fun restoreCell(
         cell: BoardCell,
         initialCell: BoardCell,
-        mistakesMethod: Int,
+        mistakesMethod: MistakesMethod,
         type: GameType,
         restoredBoard: BoardList,
         solvedBoard: BoardList
     ) {
         cell.isLocked = initialCell.isLocked
         if (cell.value != 0 && !cell.isLocked) {
-            if (mistakesMethod == 1) {
-                cell.isError = !isValidCellDynamic(
+            cell.isError = when (mistakesMethod) {
+                MistakesMethod.MODERN -> !isValidCellDynamic(
                     board = restoredBoard,
                     cell = cell,
                     type = type
                 )
-            } else {
-                cell.isError = isValidCell(restoredBoard, solvedBoard, cell)
+
+                MistakesMethod.CLASSIC -> isValidCell(restoredBoard, solvedBoard, cell)
             }
         }
     }

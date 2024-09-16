@@ -18,6 +18,7 @@ import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
+import io.github.japskiddin.sudoku.core.model.MistakesMethod
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
@@ -76,6 +77,7 @@ internal constructor(
             is UiAction.InputCell -> inputValueToCell(action.value)
             is UiAction.SelectBoardCell -> gameState.update { it.copy(selectedCell = action.cell) }
             is UiAction.EraseBoardCell -> inputValueToCell(0)
+            is UiAction.ResetBoard -> resetBoard()
         }
     }
 
@@ -124,7 +126,7 @@ internal constructor(
         }
     }
 
-    private fun inputValueToCell(value: Int, mistakesMethod: Int = 2) {
+    private fun inputValueToCell(value: Int, mistakesMethod: MistakesMethod = MistakesMethod.CLASSIC) {
         if (gameState.value.selectedCell.isEmpty()) return
 
         gameState.update { state ->
@@ -138,18 +140,20 @@ internal constructor(
                 cell.isError = false
                 selectedCell.isError = false
             } else {
-                if (mistakesMethod == 1) {
-                    newBoard[cell.row][cell.col].isError =
-                        !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
-                    newBoard.forEach { cells ->
-                        cells.forEach { cell ->
-                            if (cell.value != 0 && cell.isError) {
-                                cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                when (mistakesMethod) {
+                    MistakesMethod.MODERN -> {
+                        newBoard[cell.row][cell.col].isError =
+                            !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
+                        newBoard.forEach { cells ->
+                            cells.forEach { cell ->
+                                if (cell.value != 0 && cell.isError) {
+                                    cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                                }
                             }
                         }
                     }
-                } else if (mistakesMethod == 2) {
-                    cell.isError = isValidCell(newBoard, gameState.value.solvedBoard, cell)
+
+                    MistakesMethod.CLASSIC -> cell.isError = isValidCell(newBoard, gameState.value.solvedBoard, cell)
                 }
 
                 selectedCell.isError = cell.isError
@@ -157,6 +161,14 @@ internal constructor(
 
             state.copy(board = newBoard, selectedCell = selectedCell)
         }
+
+        viewModelScope.launch(appDispatchers.io) {
+            saveGame()
+        }
+    }
+
+    private fun resetBoard() {
+        gameState.update { it.copy(board = it.initialBoard) }
 
         viewModelScope.launch(appDispatchers.io) {
             saveGame()

@@ -6,4 +6,5 @@ public sealed class UiAction {
     public data class InputCell(val value: Int) : UiAction()
     public data class SelectBoardCell(val cell: BoardCell) : UiAction()
     public data object EraseBoardCell : UiAction()
+    public data object ResetBoard : UiAction()
 }
