@@ -55,7 +55,9 @@ private fun GameScreen(
         onSelectBoardCell = { cell -> viewModel.onAction(UiAction.SelectBoardCell(cell)) },
         onInputCell = { value -> viewModel.onAction(UiAction.InputCell(value)) },
         onEraserClick = { viewModel.onAction(UiAction.EraseBoardCell) },
-        onResetClick = { viewModel.onAction(UiAction.ResetBoard) }
+        onResetClick = { viewModel.onAction(UiAction.ResetBoard) },
+        onUndoClick = { viewModel.onAction(UiAction.Undo) },
+        onRedoClick = { viewModel.onAction(UiAction.Redo) }
     )
 }
 
@@ -66,7 +68,9 @@ private fun GameScreenContent(
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onEraserClick: () -> Unit,
-    onResetClick: () -> Unit
+    onResetClick: () -> Unit,
+    onUndoClick: () -> Unit,
+    onRedoClick: () -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -79,6 +83,8 @@ private fun GameScreenContent(
             onInputCell = onInputCell,
             onEraserClick = onEraserClick,
             onResetClick = onResetClick,
+            onUndoClick = onUndoClick,
+            onRedoClick = onRedoClick,
             modifier = screenModifier
         )
 
@@ -106,7 +112,9 @@ private fun Game(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onEraserClick: () -> Unit,
-    onResetClick: () -> Unit
+    onResetClick: () -> Unit,
+    onUndoClick: () -> Unit,
+    onRedoClick: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -127,7 +135,8 @@ private fun Game(
             onEraserClick = onEraserClick,
             onResetClick = onResetClick,
             onNoteClick = {},
-            onUndoClick = {}
+            onUndoClick = onUndoClick,
+            onRedoClick = onRedoClick
         )
         InputPanel(
             modifier = Modifier.fillMaxWidth(),
@@ -165,7 +174,9 @@ private fun GameContentPreview(
             onSelectBoardCell = {},
             onInputCell = { _ -> },
             onEraserClick = {},
-            onResetClick = {}
+            onResetClick = {},
+            onUndoClick = {},
+            onRedoClick = {}
         )
     }
 }

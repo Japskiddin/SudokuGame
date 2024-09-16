@@ -31,6 +31,7 @@ internal fun ToolPanel(
     onEraserClick: () -> Unit,
     onNoteClick: () -> Unit,
     onUndoClick: () -> Unit,
+    onRedoClick: () -> Unit,
     onResetClick: () -> Unit
 ) {
     Row(
@@ -49,6 +50,12 @@ internal fun ToolPanel(
             onClick = onUndoClick,
             text = stringResource(id = R.string.tool_undo),
             icon = painterResource(id = R.drawable.ic_tool_undo)
+        )
+        ToolButton(
+            modifier = Modifier.weight(1f),
+            onClick = onRedoClick,
+            text = stringResource(id = R.string.tool_redo),
+            icon = painterResource(id = R.drawable.ic_tool_redo)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
@@ -110,6 +117,7 @@ private fun ToolPanelPreview() {
             onEraserClick = {},
             onNoteClick = {},
             onUndoClick = {},
+            onRedoClick = {},
             onResetClick = {}
         )
     }

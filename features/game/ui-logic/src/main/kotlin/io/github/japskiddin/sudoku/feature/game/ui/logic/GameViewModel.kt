@@ -56,6 +56,8 @@ internal constructor(
 ) : ViewModel() {
     private lateinit var boardEntity: Board
 
+    private lateinit var gameHistoryManager: GameHistoryManager
+
     private val isLoading = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
@@ -78,6 +80,8 @@ internal constructor(
             is UiAction.SelectBoardCell -> gameState.update { it.copy(selectedCell = action.cell) }
             is UiAction.EraseBoardCell -> inputValueToCell(0)
             is UiAction.ResetBoard -> resetBoard()
+            is UiAction.Undo -> undoBoard()
+            is UiAction.Redo -> redoBoard()
         }
     }
 
@@ -122,6 +126,7 @@ internal constructor(
             }
             gameState.update { it.copy(board = board) }
             isLoading.update { false }
+            gameHistoryManager = GameHistoryManager(GameHistory(board = board, notes = listOf()))
             saveGame()
         }
     }
@@ -161,7 +166,7 @@ internal constructor(
 
             state.copy(board = newBoard, selectedCell = selectedCell)
         }
-
+        addToGameHistory()
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
@@ -169,10 +174,32 @@ internal constructor(
 
     private fun resetBoard() {
         gameState.update { it.copy(board = it.initialBoard) }
-
+        addToGameHistory()
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
+    }
+
+    private fun undoBoard() {
+        val gameHistory = gameHistoryManager.undo()
+        updateBoardFromHistory(gameHistory)
+    }
+
+    private fun redoBoard() {
+        gameHistoryManager.redo()?.let { gameHistory -> updateBoardFromHistory(gameHistory) }
+    }
+
+    private fun updateBoardFromHistory(gameHistory: GameHistory) {
+        gameState.update { it.copy(board = gameHistory.board, notes = gameHistory.notes) }
+        viewModelScope.launch(appDispatchers.io) {
+            saveGame()
+        }
+    }
+
+    private fun addToGameHistory() {
+        val gameState = gameState.value
+        val gameHistory = GameHistory(board = gameState.board, notes = gameState.notes)
+        gameHistoryManager.addState(gameHistory)
     }
 
     private suspend fun saveGame() {
