@@ -20,121 +20,121 @@ fun VersionCatalog.version(version: Versions): VersionConstraint = findVersion(v
 
 fun Project.findProject(project: Projects): Project = project(project.path)
 
-enum class Libraries(val alias: String) {
+sealed class Libraries(val alias: String) {
     /* region App */
 
-    AndroidXCoreKtx(alias = "androidx-core-ktx"),
+    object AndroidXCoreKtx : Libraries(alias = "androidx-core-ktx")
 
     /* endregion */
 
     /* region Compose */
 
-    AndroidXComposeBom(alias = "androidx-compose-bom"),
-    AndroidXComposeFoundation(alias = "androidx-compose-foundation"),
-    AndroidXComposeAnimation(alias = "androidx-compose-animation"),
-    AndroidXComposeUi(alias = "androidx-compose-ui"),
-    AndroidXComposeUiUnit(alias = "androidx-compose-ui-unit"),
-    AndroidXComposeUiGraphics(alias = "androidx-compose-ui-graphics"),
-    AndroidXComposeUiToolingPreview(alias = "androidx-compose-ui-tooling-preview"),
-    AndroidXComposeMaterial3(alias = "androidx-compose-material3"),
-    AndroidXComposeRuntime(alias = "androidx-compose-runtime"),
+    object AndroidXComposeBom : Libraries(alias = "androidx-compose-bom")
+    object AndroidXComposeFoundation : Libraries(alias = "androidx-compose-foundation")
+    object AndroidXComposeAnimation : Libraries(alias = "androidx-compose-animation")
+    object AndroidXComposeUi : Libraries(alias = "androidx-compose-ui")
+    object AndroidXComposeUiUnit : Libraries(alias = "androidx-compose-ui-unit")
+    object AndroidXComposeUiGraphics : Libraries(alias = "androidx-compose-ui-graphics")
+    object AndroidXComposeUiToolingPreview : Libraries(alias = "androidx-compose-ui-tooling-preview")
+    object AndroidXComposeMaterial3 : Libraries(alias = "androidx-compose-material3")
+    object AndroidXComposeRuntime : Libraries(alias = "androidx-compose-runtime")
 
     /* region Compose Debug */
 
-    AndroidXComposeUiTooling(alias = "androidx-compose-ui-tooling"),
-    AndroidXComposeUiTestManifest(alias = "androidx-compose-ui-test-manifest"),
+    object AndroidXComposeUiTooling : Libraries(alias = "androidx-compose-ui-tooling")
+    object AndroidXComposeUiTestManifest : Libraries(alias = "androidx-compose-ui-test-manifest")
 
     /* endregion */
 
     /* region Compose Testing */
 
-    AndroidXComposeUiTestJUnit4(alias = "androidx-compose-ui-test-junit4"),
+    object AndroidXComposeUiTestJUnit4 : Libraries(alias = "androidx-compose-ui-test-junit4")
 
     /* endregion */
 
     /* region Kotlin */
 
-    JetbrainsKotlinXCoroutinesCore(alias = "jetbrains-kotlinx-coroutines-core"),
-    JetbrainsKotlinXCoroutinesAndroid(alias = "jetbrains-kotlinx-coroutines-android"),
+    object JetbrainsKotlinXCoroutinesCore : Libraries(alias = "jetbrains-kotlinx-coroutines-core")
+    object JetbrainsKotlinXCoroutinesAndroid : Libraries(alias = "jetbrains-kotlinx-coroutines-android")
 
     /* endregion */
 
     /* endregion */
 
     /* region Lifecycle */
-    AndroidXLifecycleRuntimeKtx(alias = "androidx-lifecycle-runtime-ktx"),
-    AndroidXLifecycleRuntimeCompose(alias = "androidx-lifecycle-runtime-compose"),
-    AndroidXLifecycleViewmodelCompose(alias = "androidx-lifecycle-viewmodel-compose"),
-    AndroidXLifecycleViewmodelKtx(alias = "androidx-lifecycle-viewmodel-ktx"),
+    object AndroidXLifecycleRuntimeKtx : Libraries(alias = "androidx-lifecycle-runtime-ktx")
+    object AndroidXLifecycleRuntimeCompose : Libraries(alias = "androidx-lifecycle-runtime-compose")
+    object AndroidXLifecycleViewmodelCompose : Libraries(alias = "androidx-lifecycle-viewmodel-compose")
+    object AndroidXLifecycleViewmodelKtx : Libraries(alias = "androidx-lifecycle-viewmodel-ktx")
 
     /* endregion */
 
     /* region Room */
 
-    AndroidXRoomRuntime(alias = "androidx-room-runtime"),
-    AndroidXRoomCompiler(alias = "androidx-room-compiler"),
-    AndroidXRoomKtx(alias = "androidx-room-ktx"),
+    object AndroidXRoomRuntime : Libraries(alias = "androidx-room-runtime")
+    object AndroidXRoomCompiler : Libraries(alias = "androidx-room-compiler")
+    object AndroidXRoomKtx : Libraries(alias = "androidx-room-ktx")
 
     /* endregion */
 
     /* region DataStore */
 
-    AndroidXDatastorePreferences(alias = "androidx-datastore-preferences"),
-    AndroidXDatastore(alias = "androidx-datastore"),
+    object AndroidXDatastorePreferences : Libraries(alias = "androidx-datastore-preferences")
+    object AndroidXDatastore : Libraries(alias = "androidx-datastore")
 
     /* endregion */
 
     /* region DI Hilt */
 
-    DaggerHiltAndroid(alias = "dagger-hilt-android"),
-    DaggerHiltCompiler(alias = "dagger-hilt-compiler"),
-    DaggerHiltNavigationCompose(alias = "dagger-hilt-navigation-compose"),
-    JavaXInject(alias = "javax-inject"),
+    object DaggerHiltAndroid : Libraries(alias = "dagger-hilt-android")
+    object DaggerHiltCompiler : Libraries(alias = "dagger-hilt-compiler")
+    object DaggerHiltNavigationCompose : Libraries(alias = "dagger-hilt-navigation-compose")
+    object JavaXInject : Libraries(alias = "javax-inject")
 
     /* endregion */
 
     /* region Testing */
 
-    AndroidXTestEspressoCore(alias = "androidx-test-espresso-core"),
-    AndroidXTestExtJUnit(alias = "androidx-test-ext-junit"),
-    AndroidXArchCoreTesting(alias = "androidx-arch-core-testing"),
-    JUnit(alias = "junit"),
-    GoogleTruth(alias = "google-truth"),
+    object AndroidXTestEspressoCore : Libraries(alias = "androidx-test-espresso-core")
+    object AndroidXTestExtJUnit : Libraries(alias = "androidx-test-ext-junit")
+    object AndroidXArchCoreTesting : Libraries(alias = "androidx-arch-core-testing")
+    object JUnit : Libraries(alias = "junit")
+    object GoogleTruth : Libraries(alias = "google-truth")
 
     /* endregion */
 
     /* region Detekt */
 
-    DetektFormatting(alias = "detekt-formatting"),
-    DetektRulesCompose(alias = "detekt-rules-compose")
+    object DetektFormatting : Libraries(alias = "detekt-formatting")
+    object DetektRulesCompose : Libraries(alias = "detekt-rules-compose")
 
     /* endregion */
 }
 
-enum class Plugins(val alias: String) {
-    AndroidApplication(alias = "android-application"),
-    AndroidLibrary(alias = "android-library"),
-    JetbrainsKotlinAndroid(alias = "jetbrains-kotlin-android"),
-    JetbrainsKotlinJvm(alias = "jetbrains-kotlin-jvm"),
-    JetbrainsComposeCompiler(alias = "jetbrains-compose-compiler"),
-    GoogleDevtoolsKsp(alias = "google-devtools-ksp"),
-    DaggerHiltAndroid(alias = "dagger-hilt-android"),
-    AndroidXRoom(alias = "androidx-room"),
-    Detekt(alias = "detekt")
+sealed class Plugins(val alias: String) {
+    object AndroidApplication : Plugins(alias = "android-application")
+    object AndroidLibrary : Plugins(alias = "android-library")
+    object JetbrainsKotlinAndroid : Plugins(alias = "jetbrains-kotlin-android")
+    object JetbrainsKotlinJvm : Plugins(alias = "jetbrains-kotlin-jvm")
+    object JetbrainsComposeCompiler : Plugins(alias = "jetbrains-compose-compiler")
+    object GoogleDevtoolsKsp : Plugins(alias = "google-devtools-ksp")
+    object DaggerHiltAndroid : Plugins(alias = "dagger-hilt-android")
+    object AndroidXRoom : Plugins(alias = "androidx-room")
+    object Detekt : Plugins(alias = "detekt")
 }
 
-enum class Versions(val alias: String) {
-    Jvm(alias = "jvm"),
-    AndroidSdkMin(alias = "androidSdk-min"),
-    AndroidSdkCompile(alias = "androidSdk-compile"),
-    AndroidSdkTarget(alias = "androidSdk-target")
+sealed class Versions(val alias: String) {
+    object Jvm : Versions(alias = "jvm")
+    object AndroidSdkMin : Versions(alias = "androidSdk-min")
+    object AndroidSdkCompile : Versions(alias = "androidSdk-compile")
+    object AndroidSdkTarget : Versions(alias = "androidSdk-target")
 }
 
-enum class Projects(val path: String) {
-    CoreDomain(path = ":core:domain"),
-    CoreUi(path = ":core:ui"),
-    CoreCommonAndroid(path = ":core:common-android"),
-    CoreNavigation(path = ":core:navigation"),
-    CoreModel(path = ":core:model"),
-    CoreDatabaseEntities(path = ":core:database:entities")
+sealed class Projects(val path: String) {
+    object CoreDomain : Projects(path = ":core:domain")
+    object CoreUi : Projects(path = ":core:ui")
+    object CoreCommonAndroid : Projects(path = ":core:common-android")
+    object CoreNavigation : Projects(path = ":core:navigation")
+    object CoreModel : Projects(path = ":core:model")
+    object CoreDatabaseEntities : Projects(path = ":core:database:entities")
 }
