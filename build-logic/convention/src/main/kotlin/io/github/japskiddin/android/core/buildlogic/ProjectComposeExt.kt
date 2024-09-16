@@ -34,20 +34,21 @@ internal fun Project.configureAndroidCompose(
         }
 
         dependencies {
-            val bom = libs.findLibrary("androidx-compose-bom").get()
+            val bom = platform(libs.library(Libraries.AndroidXComposeBom))
+            implementation(bom)
+            androidTestImplementation(bom)
 
-            add("implementation", platform(bom))
-            add("androidTestImplementation", platform(bom))
+            implementation(libs.library(Libraries.AndroidXComposeAnimation))
+            implementation(libs.library(Libraries.AndroidXComposeFoundation))
+            implementation(libs.library(Libraries.AndroidXComposeUi))
+            implementation(libs.library(Libraries.AndroidXComposeUiUnit))
+            implementation(libs.library(Libraries.AndroidXComposeUiGraphics))
+            implementation(libs.library(Libraries.AndroidXComposeUiToolingPreview))
+            implementation(libs.library(Libraries.AndroidXComposeMaterial3))
+            implementation(libs.library(Libraries.AndroidXComposeRuntime))
 
-            add("implementation", libs.findLibrary("androidx-compose-ui").get())
-            add("implementation", libs.findLibrary("androidx-compose-ui-unit").get())
-            add("implementation", libs.findLibrary("androidx-compose-ui-graphics").get())
-            add("implementation", libs.findLibrary("androidx-compose-material3").get())
-            add("implementation", libs.findLibrary("androidx-compose-ui-tooling-preview").get())
-            add("implementation", libs.findLibrary("androidx-compose-runtime").get())
-
-            add("debugImplementation", libs.findLibrary("androidx-compose-ui-tooling").get())
-            add("debugImplementation", libs.findLibrary("androidx-compose-ui-test-manifest").get())
+            debugImplementation(libs.library(Libraries.AndroidXComposeUiTooling))
+            debugImplementation(libs.library(Libraries.AndroidXComposeUiTestManifest))
         }
     }
 }

@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.configure
 
 internal fun Project.configureKotlinJvm() {
     extensions.configure<JavaPluginExtension> {
-        val javaVersion = JavaVersion.toVersion(libs.findVersion("jvm").get())
+        val javaVersion = JavaVersion.toVersion(libs.version(Versions.Jvm))
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }

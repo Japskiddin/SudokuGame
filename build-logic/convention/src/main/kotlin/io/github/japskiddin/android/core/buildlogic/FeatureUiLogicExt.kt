@@ -5,13 +5,14 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureFeatureUiLogic() {
     dependencies {
-        add("implementation", libs.findLibrary("androidx-core-ktx").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-compose").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-ktx").get())
-        add("implementation", libs.findLibrary("jetbrains-kotlinx-coroutines-android").get())
-        add("implementation", project(":core:common-android"))
-        add("implementation", project(":core:navigation"))
-        add("api", project(":core:model"))
+        implementation(libs.library(Libraries.AndroidXCoreKtx))
+        implementation(libs.library(Libraries.AndroidXLifecycleRuntimeKtx))
+        implementation(libs.library(Libraries.AndroidXLifecycleViewmodelCompose))
+        implementation(libs.library(Libraries.AndroidXLifecycleViewmodelKtx))
+        implementation(libs.library(Libraries.JetbrainsKotlinXCoroutinesCore))
+        implementation(libs.library(Libraries.JetbrainsKotlinXCoroutinesAndroid))
+        implementation(findProject(Projects.CoreCommonAndroid))
+        implementation(findProject(Projects.CoreNavigation))
+        api(findProject(Projects.CoreModel))
     }
 }

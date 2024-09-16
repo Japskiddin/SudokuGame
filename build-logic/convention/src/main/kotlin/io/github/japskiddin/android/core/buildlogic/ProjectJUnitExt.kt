@@ -13,14 +13,14 @@ fun Project.configureJUnitAndroid(
         }
 
         dependencies {
-            add("androidTestImplementation", libs.findLibrary("androidx-test-espresso-core").get())
-            add("androidTestImplementation", libs.findLibrary("androidx-test-ext-junit").get())
-            add("androidTestImplementation", libs.findLibrary("androidx-arch-core-testing").get())
-            add("androidTestImplementation", libs.findLibrary("google-truth").get())
+            androidTestImplementation(libs.library(Libraries.AndroidXTestEspressoCore))
+            androidTestImplementation(libs.library(Libraries.AndroidXTestExtJUnit))
+            androidTestImplementation(libs.library(Libraries.AndroidXArchCoreTesting))
+            androidTestImplementation(libs.library(Libraries.GoogleTruth))
 
-            if (pluginManager.hasPlugin(libs.findPlugin("jetbrains-compose-compiler").get().get().pluginId)) {
-                add("androidTestImplementation", platform(libs.findLibrary("androidx-compose-bom").get()))
-                add("androidTestImplementation", libs.findLibrary("androidx-compose-ui-test-junit4").get())
+            if (pluginManager.hasPlugin(libs.plugin(Plugins.JetbrainsComposeCompiler))) {
+                androidTestImplementation(platform(libs.library(Libraries.AndroidXComposeBom)))
+                androidTestImplementation(libs.library(Libraries.AndroidXComposeUiTestJUnit4))
             }
         }
     }
@@ -28,6 +28,6 @@ fun Project.configureJUnitAndroid(
 
 fun Project.configureJUnit() {
     dependencies {
-        add("testImplementation", libs.findLibrary("junit").get())
+        testImplementation(libs.library(Libraries.JUnit))
     }
 }

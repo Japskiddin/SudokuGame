@@ -8,14 +8,14 @@ internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
-        compileSdk = libs.findVersion("androidSdk-compile").get().toString().toInt()
+        compileSdk = libs.version(Versions.AndroidSdkCompile).toString().toInt()
 
         defaultConfig {
-            minSdk = libs.findVersion("androidSdk-min").get().toString().toInt()
+            minSdk = libs.version(Versions.AndroidSdkMin).toString().toInt()
         }
 
         compileOptions {
-            val javaVersion = JavaVersion.toVersion(libs.findVersion("jvm").get())
+            val javaVersion = JavaVersion.toVersion(libs.version(Versions.Jvm))
             sourceCompatibility = javaVersion
             targetCompatibility = javaVersion
         }

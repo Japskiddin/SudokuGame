@@ -1,3 +1,5 @@
+import io.github.japskiddin.android.core.buildlogic.Plugins
+import io.github.japskiddin.android.core.buildlogic.Versions
 import io.github.japskiddin.android.core.buildlogic.applicationExtension
 import io.github.japskiddin.android.core.buildlogic.configureBuildTypes
 import io.github.japskiddin.android.core.buildlogic.configureJUnit
@@ -5,6 +7,8 @@ import io.github.japskiddin.android.core.buildlogic.configureJUnitAndroid
 import io.github.japskiddin.android.core.buildlogic.configureKotlin
 import io.github.japskiddin.android.core.buildlogic.configureKotlinAndroid
 import io.github.japskiddin.android.core.buildlogic.libs
+import io.github.japskiddin.android.core.buildlogic.plugin
+import io.github.japskiddin.android.core.buildlogic.version
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -12,8 +16,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.run {
-                apply("com.android.application")
-                apply("org.jetbrains.kotlin.android")
+                apply(libs.plugin(Plugins.AndroidApplication))
+                apply(libs.plugin(Plugins.JetbrainsKotlinAndroid))
             }
 
             requireNotNull(applicationExtension).apply {
@@ -28,7 +32,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureJUnit()
 
                 defaultConfig {
-                    targetSdk = libs.findVersion("androidSdk-target").get().toString().toInt()
+                    targetSdk = libs.version(Versions.AndroidSdkTarget).toString().toInt()
                     vectorDrawables {
                         useSupportLibrary = true
                     }

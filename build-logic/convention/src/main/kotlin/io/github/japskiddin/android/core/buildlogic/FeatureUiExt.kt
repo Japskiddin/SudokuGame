@@ -5,12 +5,12 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureFeatureUi() {
     dependencies {
-        add("implementation", libs.findLibrary("androidx-core-ktx").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-compose").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-ktx").get())
-        add("implementation", libs.findLibrary("androidx-lifecycle-runtime-compose").get())
-        add("implementation", libs.findLibrary("dagger-hilt-navigation-compose").get())
-        add("implementation", project(":core:ui"))
+        implementation(libs.library(Libraries.AndroidXCoreKtx))
+        implementation(libs.library(Libraries.AndroidXLifecycleRuntimeKtx))
+        implementation(libs.library(Libraries.AndroidXLifecycleViewmodelCompose))
+        implementation(libs.library(Libraries.AndroidXLifecycleViewmodelKtx))
+        implementation(libs.library(Libraries.AndroidXLifecycleRuntimeCompose))
+        implementation(libs.library(Libraries.DaggerHiltNavigationCompose))
+        implementation(findProject(Projects.CoreUi))
     }
 }

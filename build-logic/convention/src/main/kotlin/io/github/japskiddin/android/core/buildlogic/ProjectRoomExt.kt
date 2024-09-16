@@ -15,10 +15,10 @@ internal fun Project.configureAndroidRoom(
         }
 
         dependencies {
-            add("implementation", libs.findLibrary("androidx-room-runtime").get())
-            add("implementation", libs.findLibrary("androidx-room-ktx").get())
-            add("ksp", libs.findLibrary("androidx-room-compiler").get())
-            add("api", project(":core:database:entities"))
+            implementation(libs.library(Libraries.AndroidXRoomRuntime))
+            implementation(libs.library(Libraries.AndroidXRoomKtx))
+            ksp(libs.library(Libraries.AndroidXRoomCompiler))
+            api(findProject(Projects.CoreDatabaseEntities))
         }
     }
 }

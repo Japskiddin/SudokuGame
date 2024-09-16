@@ -23,9 +23,9 @@ internal fun Project.configureDetekt() {
     }
 
     dependencies {
-        add("detektPlugins", libs.findLibrary("detekt-formatting").get())
-        if (pluginManager.hasPlugin(libs.findPlugin("jetbrains-compose-compiler").get().get().pluginId)) {
-            add("detektPlugins", libs.findLibrary("detekt-rules-compose").get())
+        detektPlugins(libs.library(Libraries.DetektFormatting))
+        if (pluginManager.hasPlugin(libs.plugin(Plugins.JetbrainsComposeCompiler))) {
+            detektPlugins(libs.library(Libraries.DetektRulesCompose))
         }
     }
 }

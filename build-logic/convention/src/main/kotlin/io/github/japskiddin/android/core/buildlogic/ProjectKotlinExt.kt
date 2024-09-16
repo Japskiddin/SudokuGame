@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.configureKotlin() {
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvm").get().toString()))
+            jvmTarget.set(JvmTarget.fromTarget(libs.version(Versions.Jvm).toString()))
         }
     }
 }
