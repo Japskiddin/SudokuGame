@@ -54,7 +54,8 @@ private fun GameScreen(
         state = state,
         onSelectBoardCell = { cell -> viewModel.onAction(UiAction.SelectBoardCell(cell)) },
         onInputCell = { value -> viewModel.onAction(UiAction.InputCell(value)) },
-        onEraserClick = { viewModel.onAction(UiAction.EraseBoardCell) }
+        onEraserClick = { viewModel.onAction(UiAction.EraseBoardCell) },
+        onResetClick = { viewModel.onAction(UiAction.ResetBoard) }
     )
 }
 
@@ -64,7 +65,8 @@ private fun GameScreenContent(
     state: UiState,
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
-    onEraserClick: () -> Unit
+    onEraserClick: () -> Unit,
+    onResetClick: () -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -76,6 +78,7 @@ private fun GameScreenContent(
             onSelectCell = onSelectBoardCell,
             onInputCell = onInputCell,
             onEraserClick = onEraserClick,
+            onResetClick = onResetClick,
             modifier = screenModifier
         )
 
@@ -102,7 +105,8 @@ private fun Game(
     state: GameUiState,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
-    onEraserClick: () -> Unit
+    onEraserClick: () -> Unit,
+    onResetClick: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -121,7 +125,7 @@ private fun Game(
         ToolPanel(
             modifier = Modifier.fillMaxWidth(),
             onEraserClick = onEraserClick,
-            onResetClick = {},
+            onResetClick = onResetClick,
             onNoteClick = {},
             onUndoClick = {}
         )
@@ -160,7 +164,8 @@ private fun GameContentPreview(
             state = state,
             onSelectBoardCell = {},
             onInputCell = { _ -> },
-            onEraserClick = {}
+            onEraserClick = {},
+            onResetClick = {}
         )
     }
 }
