@@ -14,7 +14,6 @@ import io.github.japskiddin.sudoku.core.game.utils.initiate
 import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
-import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
@@ -55,8 +54,6 @@ internal constructor(
     private val restoreGameUseCase: Provider<RestoreGameUseCase>
 ) : ViewModel() {
     private lateinit var boardEntity: Board
-    private lateinit var initialBoard: BoardList
-    private lateinit var solvedBoard: BoardList
 
     private val isLoading = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
@@ -64,9 +61,9 @@ internal constructor(
 
     public val uiState: StateFlow<UiState> = combine(isLoading, error, gameState) { isLoading, error, gameState ->
         when {
-            error != GameError.NONE -> UiState.Error(code = error)
             isLoading -> UiState.Loading
-            else -> UiState.Game(gameState = gameState.toUiState())
+            error != GameError.NONE -> UiState.Error(error)
+            else -> UiState.Game(gameState.toUiState())
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
 
@@ -85,7 +82,6 @@ internal constructor(
     public fun onBackButtonClick(): Unit = appNavigator.tryNavigateBack()
 
     private fun generateGameLevel() {
-        error.update { GameError.NONE }
         isLoading.update { true }
 
         val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
@@ -104,14 +100,16 @@ internal constructor(
                 return@launch
             }
 
-            initialBoard = boardEntity.board.convertToList(boardEntity.type)
+            val initialBoard = boardEntity.board.convertToList(boardEntity.type)
             initialBoard.initiate()
+            gameState.update { it.copy(initialBoard = initialBoard) }
 
-            if (boardEntity.solvedBoard.isSudokuFilled()) {
-                solvedBoard = boardEntity.solvedBoard.convertToList(boardEntity.type)
+            val solvedBoard = if (boardEntity.solvedBoard.isSudokuFilled()) {
+                boardEntity.solvedBoard.convertToList(boardEntity.type)
             } else {
-                solveBoard()
+                solveBoard(initialBoard)
             }
+            gameState.update { it.copy(solvedBoard = solvedBoard) }
 
             val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
             val board: BoardList = if (savedGame != null) {
@@ -120,9 +118,9 @@ internal constructor(
             } else {
                 initialBoard
             }
-            gameState.update { it.copy(board = board.toImmutable()) }
-            saveGame()
+            gameState.update { it.copy(board = board) }
             isLoading.update { false }
+            saveGame()
         }
     }
 
@@ -151,13 +149,13 @@ internal constructor(
                         }
                     }
                 } else if (mistakesMethod == 2) {
-                    cell.isError = isValidCell(newBoard, solvedBoard, cell)
+                    cell.isError = isValidCell(newBoard, gameState.value.solvedBoard, cell)
                 }
 
                 selectedCell.isError = cell.isError
             }
 
-            state.copy(board = newBoard.toImmutable(), selectedCell = selectedCell)
+            state.copy(board = newBoard, selectedCell = selectedCell)
         }
 
         viewModelScope.launch(appDispatchers.io) {
@@ -192,23 +190,23 @@ internal constructor(
         }
     }
 
-    private fun solveBoard() {
+    private fun solveBoard(initialBoard: BoardList): BoardList {
         val qqWing = QQWingController()
         val size = boardEntity.type.size
 
         @Suppress("MagicNumber")
         val radix = 13
         val boardToSolve = boardEntity.board.map { it.digitToInt(radix) }.toIntArray()
-        val solved = qqWing.solve(boardToSolve, boardEntity.type)
+        val solvedArray = qqWing.solve(boardToSolve, boardEntity.type)
 
-        solvedBoard = List(size) { row ->
+        val solvedBoard = List(size) { row ->
             List(size) { col ->
                 BoardCell(row, col)
             }
         }
         for (i in 0 until size) {
             for (j in 0 until size) {
-                solvedBoard[i][j].value = solved[i * size + j]
+                solvedBoard[i][j].value = solvedArray[i * size + j]
             }
         }
 
@@ -216,11 +214,12 @@ internal constructor(
 //            updateBoardUseCase(boardEntity.copy(solvedBoard = sudokuParser.boardToString(newSolvedBoard)))
         }
 
-        val initialBoard = gameState.value.board
         for (i in solvedBoard.indices) {
             for (j in solvedBoard.indices) {
                 solvedBoard[i][j].isLocked = initialBoard[i][j].isLocked
             }
         }
+
+        return solvedBoard
     }
 }

@@ -1,7 +1,8 @@
 package io.github.japskiddin.sudoku.feature.game.ui.utils
 
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
+import io.github.japskiddin.sudoku.core.game.utils.BoardImmutableList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
+import io.github.japskiddin.sudoku.core.game.utils.toImmutable
 import io.github.japskiddin.sudoku.core.model.GameType
 
 internal fun findGameTypeBySize(size: Int): GameType = when (size) {
@@ -12,7 +13,7 @@ internal fun findGameTypeBySize(size: Int): GameType = when (size) {
     else -> throw IllegalArgumentException("Incorrect game type size")
 }
 
-internal fun getSampleBoardForPreview(): BoardList {
+internal fun getSampleBoardForPreview(): BoardImmutableList {
     val board = "760000009040500800090006364500040041904070000836900000000080900000006007407000580"
-    return board.convertToList(GameType.DEFAULT9X9)
+    return board.convertToList(GameType.DEFAULT9X9).toImmutable()
 }
