@@ -5,7 +5,7 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureFeatureDomain() {
     dependencies {
-        implementation(libs.library(Libraries.JavaXInject))
-        implementation(findProject(Projects.CoreDomain))
+        implementation(libs.javax.inject)
+        implementation(project(":core:domain"))
     }
 }

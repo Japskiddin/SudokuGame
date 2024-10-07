@@ -1,30 +1,29 @@
-import io.github.japskiddin.android.core.buildlogic.Plugins
+import io.github.japskiddin.android.core.buildlogic.androidConfig
 import io.github.japskiddin.android.core.buildlogic.configureJUnit
 import io.github.japskiddin.android.core.buildlogic.configureJUnitAndroid
-import io.github.japskiddin.android.core.buildlogic.configureKotlin
 import io.github.japskiddin.android.core.buildlogic.configureKotlinAndroid
-import io.github.japskiddin.android.core.buildlogic.libraryExtension
+import io.github.japskiddin.android.core.buildlogic.configureKotlinJvm
 import io.github.japskiddin.android.core.buildlogic.libs
-import io.github.japskiddin.android.core.buildlogic.plugin
+import io.github.japskiddin.android.core.buildlogic.plugins
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.run {
-                apply(libs.plugin(Plugins.AndroidLibrary))
-                apply(libs.plugin(Plugins.JetbrainsKotlinAndroid))
+            plugins {
+                apply(libs.plugins.android.library.get().pluginId)
+                apply(libs.plugins.jetbrains.kotlin.android.get().pluginId)
             }
 
-            requireNotNull(libraryExtension).apply {
+            androidConfig {
                 buildFeatures {
                     buildConfig = true
                 }
 
-                configureKotlin()
+                configureKotlinJvm()
                 configureKotlinAndroid(this)
-                configureJUnitAndroid(this)
+                configureJUnitAndroid()
                 configureJUnit()
             }
         }

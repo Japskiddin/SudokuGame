@@ -4,8 +4,8 @@ import java.util.*
 plugins {
     alias(libs.plugins.app.android.application)
     alias(libs.plugins.app.android.compose)
-    alias(libs.plugins.app.android.hilt)
-    alias(libs.plugins.app.android.detekt)
+    alias(libs.plugins.app.hilt)
+    alias(libs.plugins.app.detekt)
 }
 
 android {
@@ -77,24 +77,12 @@ android {
             signingConfig = releaseSigning
         }
         debug {
-            versionNameSuffix = "-DEBUG"
             signingConfig = releaseSigning
-        }
-    }
-
-    bundle {
-        language {
-            enableSplit = false
         }
     }
 
     lint {
         abortOnError = false
-    }
-
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
     }
 
     packaging {

@@ -1,15 +1,15 @@
 [versions]
-agp = "8.6.0"
+agp = "8.7.0"
 
-android-tools = "31.6.0"
+android-tools = "31.7.0"
 
 androidx-annotation = "1.8.2"
 androidx-core-ktx = "1.13.1"
-androidx-lifecycle = "2.8.5"
+androidx-lifecycle = "2.8.6"
 androidx-activity = "1.9.2"
-androidx-fragment = "1.8.3"
+androidx-fragment = "1.8.4"
 androidx-activity-compose = "1.9.2"
-androidx-compose-bom = "2024.09.01"
+androidx-compose-bom = "2024.09.03"
 androidx-room = "2.6.1"
 androidx-datastore = "1.1.1"
 androidx-splashscreen = "1.0.1"
@@ -48,15 +48,16 @@ appVersion-code = "2"
 jvm = "21"
 
 [libraries]
-# App
+# region App
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
+# endregion
 
-# Compose
+# region Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation" }
@@ -68,54 +69,64 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+# endregion
 
-# Compose Testing
+# region Compose Testing
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+# endregion
 
-# Kotlin
+# region Kotlin
 jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-android" }
 jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 jetbrains-kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-immutable" }
+# endregion
 
-# Lifecycle
+# region Lifecycle
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+# endregion
 
-# Room
+# region Room
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "androidx-room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
+# endregion
 
-# DataStore
+# region DataStore
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidx-datastore" }
+# endregion
 
-# DI Hilt
+# region DI Hilt
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-hilt" }
 dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "dagger-hilt-navigation-compose" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+# endregion
 
-# Testing
+# region Testing
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso-core" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
 junit = { module = "junit:junit", version.ref = "junit" }
 google-truth = { module = "com.google.truth:truth", version.ref = "google-truth" }
+# endregion
 
-# Detekt
+# region Detekt
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-rules-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-rules-compose" }
+# endregion
 
-# Others
+# region Others
 bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bundletool" }
+# endregion
 
-# Project internal convention plugin
+# region Project internal convention plugin
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 android-tools-common = { module = "com.android.tools:common", version.ref = "android-tools" }
 compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin-android" }
@@ -123,6 +134,7 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "androidx-room" }
 detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+# endretion
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -137,14 +149,15 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "da
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
-# Project internal convention plugins
+# region Project internal convention plugins
 app-android-application = { id = "app.android.application", version = "unspecified" }
 app-android-library = { id = "app.android.library", version = "unspecified" }
 app-android-compose = { id = "app.android.compose", version = "unspecified" }
-app-android-detekt = { id = "app.android.detekt", version = "unspecified" }
+app-detekt = { id = "app.detekt", version = "unspecified" }
 app-jvm = { id = "app.jvm", version = "unspecified" }
-app-android-hilt = { id = "app.android.hilt", version = "unspecified" }
-app-android-room = { id = "app.android.room", version = "unspecified" }
+app-hilt = { id = "app.hilt", version = "unspecified" }
+app-room = { id = "app.room", version = "unspecified" }
 app-feature-ui = { id = "app.feature.ui", version = "unspecified" }
 app-feature-ui-logic = { id = "app.feature.ui.logic", version = "unspecified" }
 app-feature-domain = { id = "app.feature.domain", version = "unspecified" }
+# endregion

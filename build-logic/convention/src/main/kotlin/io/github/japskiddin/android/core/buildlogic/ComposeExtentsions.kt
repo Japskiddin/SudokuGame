@@ -1,6 +1,5 @@
 package io.github.japskiddin.android.core.buildlogic
 
-import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.assign
@@ -9,9 +8,9 @@ import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
+    androidExtension: AndroidExtension,
 ) {
-    commonExtension.apply {
+    androidExtension.apply {
         buildFeatures {
             compose = true
         }
@@ -34,21 +33,21 @@ internal fun Project.configureAndroidCompose(
         }
 
         dependencies {
-            val bom = platform(libs.library(Libraries.AndroidXComposeBom))
+            val bom = platform(libs.androidx.compose.bom)
             implementation(bom)
             androidTestImplementation(bom)
 
-            implementation(libs.library(Libraries.AndroidXComposeAnimation))
-            implementation(libs.library(Libraries.AndroidXComposeFoundation))
-            implementation(libs.library(Libraries.AndroidXComposeUi))
-            implementation(libs.library(Libraries.AndroidXComposeUiUnit))
-            implementation(libs.library(Libraries.AndroidXComposeUiGraphics))
-            implementation(libs.library(Libraries.AndroidXComposeUiToolingPreview))
-            implementation(libs.library(Libraries.AndroidXComposeMaterial3))
-            implementation(libs.library(Libraries.AndroidXComposeRuntime))
+            implementation(libs.androidx.compose.animation)
+            implementation(libs.androidx.compose.foundation)
+            implementation(libs.androidx.compose.ui)
+            implementation(libs.androidx.compose.ui.unit)
+            implementation(libs.androidx.compose.ui.graphics)
+            implementation(libs.androidx.compose.ui.tooling.preview)
+            implementation(libs.androidx.compose.material3)
+            implementation(libs.androidx.compose.runtime)
 
-            debugImplementation(libs.library(Libraries.AndroidXComposeUiTooling))
-            debugImplementation(libs.library(Libraries.AndroidXComposeUiTestManifest))
+            debugImplementation(libs.androidx.compose.ui.tooling)
+            debugImplementation(libs.androidx.compose.ui.test.manifest)
         }
     }
 }

@@ -23,9 +23,9 @@ internal fun Project.configureDetekt() {
     }
 
     dependencies {
-        detektPlugins(libs.library(Libraries.DetektFormatting))
-        if (pluginManager.hasPlugin(libs.plugin(Plugins.JetbrainsComposeCompiler))) {
-            detektPlugins(libs.library(Libraries.DetektRulesCompose))
+        detektPlugins(libs.detekt.formatting)
+        if (pluginManager.hasPlugin(libs.plugins.jetbrains.compose.compiler.get().pluginId)) {
+            detektPlugins(libs.detekt.rules.compose)
         }
     }
 }

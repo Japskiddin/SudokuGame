@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
     alias(libs.plugins.app.android.library)
-    alias(libs.plugins.app.android.hilt)
+    alias(libs.plugins.app.hilt)
     alias(libs.plugins.app.feature.ui.logic)
-    alias(libs.plugins.app.android.detekt)
+    alias(libs.plugins.app.detekt)
 }
 
 kotlin {
