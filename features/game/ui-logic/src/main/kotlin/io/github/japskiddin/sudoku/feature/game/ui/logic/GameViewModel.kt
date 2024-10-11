@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
-import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.convertToString
@@ -15,7 +14,6 @@ import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.model.Board
-import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
@@ -24,6 +22,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameError
@@ -40,6 +39,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 public class GameViewModel
 @Suppress("LongParameterList")
@@ -52,7 +52,8 @@ internal constructor(
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val insertSavedGameUseCase: Provider<InsertSavedGameUseCase>,
     private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
-    private val restoreGameUseCase: Provider<RestoreGameUseCase>
+    private val restoreGameUseCase: Provider<RestoreGameUseCase>,
+    private val solveBoardUseCase: Provider<SolveBoardUseCase>
 ) : ViewModel() {
     private lateinit var boardEntity: Board
 
@@ -114,7 +115,7 @@ internal constructor(
             val solvedBoard = if (boardEntity.solvedBoard.isSudokuFilled()) {
                 boardEntity.solvedBoard.convertToList(boardEntity.type)
             } else {
-                solveBoard(initialBoard)
+                solveBoardUseCase.get().invoke(boardEntity.board, boardEntity.type, initialBoard)
             }
             gameState.update { it.copy(solvedBoard = solvedBoard) }
 
@@ -232,38 +233,5 @@ internal constructor(
                 status = GameStatus.IN_PROGRESS,
             )
         }
-    }
-
-    private fun solveBoard(initialBoard: BoardList): BoardList {
-        val qqWing = QQWingController()
-        val size = boardEntity.type.size
-
-        @Suppress("MagicNumber")
-        val radix = 13
-        val boardToSolve = boardEntity.board.map { it.digitToInt(radix) }.toIntArray()
-        val solvedArray = qqWing.solve(boardToSolve, boardEntity.type)
-
-        val solvedBoard = List(size) { row ->
-            List(size) { col ->
-                BoardCell(row, col)
-            }
-        }
-        for (i in 0 until size) {
-            for (j in 0 until size) {
-                solvedBoard[i][j].value = solvedArray[i * size + j]
-            }
-        }
-
-        viewModelScope.launch(appDispatchers.io) {
-//            updateBoardUseCase(boardEntity.copy(solvedBoard = sudokuParser.boardToString(newSolvedBoard)))
-        }
-
-        for (i in solvedBoard.indices) {
-            for (j in solvedBoard.indices) {
-                solvedBoard[i][j].isLocked = initialBoard[i][j].isLocked
-            }
-        }
-
-        return solvedBoard
     }
 }
