@@ -85,15 +85,16 @@ private fun InputPanelContent(
         for (i in values) {
             val counter = board.countByValue(i)
             InputButton(
-                value = i.toString(),
+                value = i,
                 counter = counter,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        if (counter > 0) {
-                            onClick(i)
-                        }
-                    }
+                modifier = if (counter > 0) {
+                    Modifier
+                        .weight(1f)
+                        .clickable { onClick(i) }
+                } else {
+                    Modifier
+                        .weight(1f)
+                }
             )
         }
     }
@@ -102,11 +103,11 @@ private fun InputPanelContent(
 @Composable
 private fun InputButton(
     modifier: Modifier = Modifier,
-    value: String,
+    value: Int,
     counter: Int,
     valueTextSize: TextUnit = 16.sp,
     counterTextSize: TextUnit = 10.sp,
-    textColor: Color = OnPrimary
+    textColor: Color = OnPrimary,
 ) {
     Column(
         modifier = Modifier
@@ -117,10 +118,10 @@ private fun InputButton(
         val color = if (counter > 0) {
             textColor
         } else {
-            textColor.copy(alpha = 0.2f)
+            textColor.copy(alpha = 0.4f)
         }
         Text(
-            text = value,
+            text = value.toString(),
             fontSize = valueTextSize,
             color = color
         )
@@ -166,7 +167,7 @@ private fun InputPanelPreview() {
 private fun InputButtonPreview() {
     SudokuTheme {
         InputButton(
-            value = "2",
+            value = 2,
             counter = 3
         )
     }
