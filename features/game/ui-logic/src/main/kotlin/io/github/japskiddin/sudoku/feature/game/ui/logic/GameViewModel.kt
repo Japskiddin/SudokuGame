@@ -151,6 +151,7 @@ internal constructor(
             val cell = newBoard[selectedCell.row][selectedCell.col]
             if (cell.isLocked) return
             cell.value = value
+            selectedCell.value = value
 
             if (value == 0) {
                 cell.isError = false

@@ -63,6 +63,10 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
 
+private const val MinZoomRange = 1f
+private const val MaxZoomRange = 3f
+private const val Radix = 16
+
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun GameBoard(
@@ -130,42 +134,26 @@ internal fun GameBoard(
             )
     ) {
         val maxWidth = constraints.maxWidth.toFloat()
-
         val boardSize = gameType.size
 
-        val cellSizePx by remember(boardSize) { mutableFloatStateOf(maxWidth / boardSize.toFloat()) }
-        val cellSizeDividerWidth by remember(boardSize) {
-            mutableFloatStateOf(
-                cellSizePx /
-                    ceil(
-                        sqrt(
-                            boardSize.toFloat()
-                        )
-                    )
-            )
-        }
-        val cellSizeDividerHeight by remember(boardSize) {
-            mutableFloatStateOf(
-                cellSizePx /
-                    floor(
-                        sqrt(
-                            boardSize.toFloat()
-                        )
-                    )
-            )
+        val cellSizePx by remember(boardSize) {
+            mutableFloatStateOf(maxWidth / boardSize.toFloat())
         }
 
-        val verticalInnerStrokeThickness by remember(
-            boardSize
-        ) { mutableIntStateOf(floor(sqrt(boardSize.toFloat())).toInt()) }
+        val cellSizeDividerWidth by remember(boardSize) {
+            mutableFloatStateOf(cellSizePx / ceil(sqrt(boardSize.toFloat())))
+        }
+
+        val cellSizeDividerHeight by remember(boardSize) {
+            mutableFloatStateOf(cellSizePx / floor(sqrt(boardSize.toFloat())))
+        }
+
+        val verticalInnerStrokeThickness by remember(boardSize) {
+            mutableIntStateOf(floor(sqrt(boardSize.toFloat())).toInt())
+        }
+
         val horizontalInnerStrokeThickness by remember(boardSize) {
-            mutableIntStateOf(
-                ceil(
-                    sqrt(
-                        boardSize.toFloat()
-                    )
-                ).toInt()
-            )
+            mutableIntStateOf(ceil(sqrt(boardSize.toFloat())).toInt())
         }
 
         var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
@@ -292,13 +280,7 @@ internal fun GameBoard(
                         if (isEnabled) {
                             val oldScale = zoom
 
-                            @Suppress("MagicNumber")
-                            val minRange = 1f
-
-                            @Suppress("MagicNumber")
-                            val maxRange = 3f
-
-                            val newScale = (zoom * gestureZoom).coerceIn(minRange..maxRange)
+                            val newScale = (zoom * gestureZoom).coerceIn(MinZoomRange..MaxZoomRange)
 
                             offset = (offset + gestureCentroid / oldScale) -
                                 (gestureCentroid / newScale + gesturePan / oldScale)
@@ -710,9 +692,7 @@ private fun DrawScope.drawNumbers(
                         else -> numberPaint
                     }
 
-                    @Suppress("MagicNumber")
-                    val radix = 16
-                    val textToDraw = if (isQuestions) "?" else number.value.toString(radix).uppercase()
+                    val textToDraw = if (isQuestions) "?" else number.value.toString(Radix).uppercase()
                     val textBounds = android.graphics.Rect()
                     numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
                     val textWidth = paint.measureText(textToDraw)
@@ -736,28 +716,16 @@ private fun DrawScope.drawNotes(
     val noteBounds = android.graphics.Rect()
     paint.getTextBounds("1", 0, 1, noteBounds)
 
-    @Suppress("MagicNumber")
-    val radix = 16
     drawIntoCanvas { canvas ->
         notes.forEach { note ->
-            val textToDraw = note.value.toString(radix).uppercase()
+            val textToDraw = note.value.toString(Radix).uppercase()
             val noteTextMeasure = paint.measureText(textToDraw)
-            val textPosX =
-                note.col * cellSize + cellSizeDividerWidth / 2f + (
-                    cellSizeDividerWidth *
-                        getNoteRowNumber(
-                            note.value,
-                            gameType
-                        )
-                    ) - noteTextMeasure / 2f
-            val textPosY =
-                note.row * cellSize + cellSizeDividerHeight / 2f + (
-                    cellSizeDividerHeight *
-                        getNoteColumnNumber(
-                            note.value,
-                            gameType
-                        )
-                    ) + noteBounds.height() / 2f
+            val noteRowNumber = getNoteRowNumber(note.value, gameType)
+            val textPosX = note.col * cellSize + cellSizeDividerWidth / 2f +
+                (cellSizeDividerWidth * noteRowNumber) - noteTextMeasure / 2f
+            val noteColumnNumber = getNoteColumnNumber(note.value, gameType)
+            val textPosY = note.row * cellSize + cellSizeDividerHeight / 2f +
+                (cellSizeDividerHeight * noteColumnNumber) + noteBounds.height() / 2f
             canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
         }
     }
