@@ -28,11 +28,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.R
 @Composable
 internal fun ToolPanel(
     modifier: Modifier = Modifier,
-    onEraserClick: () -> Unit,
-    onNoteClick: () -> Unit,
-    onUndoClick: () -> Unit,
-    onRedoClick: () -> Unit,
-    onResetClick: () -> Unit
+    onToolClick: (ToolAction) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -41,31 +37,31 @@ internal fun ToolPanel(
     ) {
         ToolButton(
             modifier = Modifier.weight(1f),
-            onClick = onEraserClick,
+            onClick = { onToolClick(ToolAction.ERASER) },
             text = stringResource(id = R.string.tool_eraser),
             icon = painterResource(id = R.drawable.ic_tool_eraser)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
-            onClick = onUndoClick,
+            onClick = { onToolClick(ToolAction.UNDO) },
             text = stringResource(id = R.string.tool_undo),
             icon = painterResource(id = R.drawable.ic_tool_undo)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
-            onClick = onRedoClick,
+            onClick = { onToolClick(ToolAction.REDO) },
             text = stringResource(id = R.string.tool_redo),
             icon = painterResource(id = R.drawable.ic_tool_redo)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
-            onClick = onNoteClick,
+            onClick = { onToolClick(ToolAction.NOTE) },
             text = stringResource(id = R.string.tool_note),
             icon = painterResource(id = R.drawable.ic_tool_note)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
-            onClick = onResetClick,
+            onClick = { onToolClick(ToolAction.RESET) },
             text = stringResource(id = R.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset)
         )
@@ -114,11 +110,7 @@ private fun ToolButton(
 private fun ToolPanelPreview() {
     SudokuTheme {
         ToolPanel(
-            onEraserClick = {},
-            onNoteClick = {},
-            onUndoClick = {},
-            onRedoClick = {},
-            onResetClick = {}
+            onToolClick = {}
         )
     }
 }

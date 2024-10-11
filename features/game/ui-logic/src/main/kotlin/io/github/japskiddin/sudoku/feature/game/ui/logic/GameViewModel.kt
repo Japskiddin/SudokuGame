@@ -82,6 +82,7 @@ internal constructor(
             is UiAction.ResetBoard -> resetBoard()
             is UiAction.Undo -> undoBoard()
             is UiAction.Redo -> redoBoard()
+            is UiAction.Note -> notesBoard()
         }
     }
 
@@ -183,6 +184,10 @@ internal constructor(
     private fun undoBoard() {
         val gameHistory = gameHistoryManager.undo()
         updateBoardFromHistory(gameHistory)
+    }
+
+    private fun notesBoard() {
+        TODO("Not Implemented")
     }
 
     private fun redoBoard() {

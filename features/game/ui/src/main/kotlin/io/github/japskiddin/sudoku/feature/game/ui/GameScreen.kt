@@ -28,6 +28,7 @@ import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
+import io.github.japskiddin.sudoku.feature.game.ui.component.ToolAction
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
@@ -54,10 +55,16 @@ private fun GameScreen(
         state = state,
         onSelectBoardCell = { cell -> viewModel.onAction(UiAction.SelectBoardCell(cell)) },
         onInputCell = { value -> viewModel.onAction(UiAction.InputCell(value)) },
-        onEraserClick = { viewModel.onAction(UiAction.EraseBoardCell) },
-        onResetClick = { viewModel.onAction(UiAction.ResetBoard) },
-        onUndoClick = { viewModel.onAction(UiAction.Undo) },
-        onRedoClick = { viewModel.onAction(UiAction.Redo) }
+        onToolClick = { action ->
+            val uiAction = when (action) {
+                ToolAction.ERASER -> UiAction.EraseBoardCell
+                ToolAction.NOTE -> UiAction.Note
+                ToolAction.RESET -> UiAction.ResetBoard
+                ToolAction.UNDO -> UiAction.Undo
+                ToolAction.REDO -> UiAction.Redo
+            }
+            viewModel.onAction(uiAction)
+        }
     )
 }
 
@@ -67,10 +74,7 @@ private fun GameScreenContent(
     state: UiState,
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
-    onEraserClick: () -> Unit,
-    onResetClick: () -> Unit,
-    onUndoClick: () -> Unit,
-    onRedoClick: () -> Unit
+    onToolClick: (ToolAction) -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -81,10 +85,7 @@ private fun GameScreenContent(
             state = state.gameState,
             onSelectCell = onSelectBoardCell,
             onInputCell = onInputCell,
-            onEraserClick = onEraserClick,
-            onResetClick = onResetClick,
-            onUndoClick = onUndoClick,
-            onRedoClick = onRedoClick,
+            onToolClick = onToolClick,
             modifier = screenModifier
         )
 
@@ -111,10 +112,7 @@ private fun Game(
     state: GameUiState,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
-    onEraserClick: () -> Unit,
-    onResetClick: () -> Unit,
-    onUndoClick: () -> Unit,
-    onRedoClick: () -> Unit
+    onToolClick: (ToolAction) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -132,11 +130,7 @@ private fun Game(
         )
         ToolPanel(
             modifier = Modifier.fillMaxWidth(),
-            onEraserClick = onEraserClick,
-            onResetClick = onResetClick,
-            onNoteClick = {},
-            onUndoClick = onUndoClick,
-            onRedoClick = onRedoClick
+            onToolClick = onToolClick
         )
         InputPanel(
             modifier = Modifier.fillMaxWidth(),
@@ -173,10 +167,7 @@ private fun GameContentPreview(
             state = state,
             onSelectBoardCell = {},
             onInputCell = { _ -> },
-            onEraserClick = {},
-            onResetClick = {},
-            onUndoClick = {},
-            onRedoClick = {}
+            onToolClick = {}
         )
     }
 }

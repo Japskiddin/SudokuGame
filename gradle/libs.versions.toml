@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.0"
+kotlin-android = "2.0.20"
 
 android-tools = "31.7.0"
 
@@ -14,7 +15,6 @@ androidx-room = "2.6.1"
 androidx-datastore = "1.1.1"
 androidx-splashscreen = "1.0.1"
 
-kotlin-android = "2.0.20"
 kotlinx-coroutines = "1.9.0"
 kotlinx-serialization-json = "1.7.2"
 kotlinx-immutable = "0.3.7"
