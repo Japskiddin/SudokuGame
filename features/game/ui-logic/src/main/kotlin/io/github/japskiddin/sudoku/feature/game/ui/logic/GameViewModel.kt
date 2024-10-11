@@ -18,6 +18,7 @@ import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
 import io.github.japskiddin.sudoku.core.model.isEmpty
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
@@ -53,19 +54,27 @@ internal constructor(
     private val insertSavedGameUseCase: Provider<InsertSavedGameUseCase>,
     private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
-    private val solveBoardUseCase: Provider<SolveBoardUseCase>
+    private val solveBoardUseCase: Provider<SolveBoardUseCase>,
+    private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>
 ) : ViewModel() {
     private lateinit var boardEntity: Board
 
     private lateinit var gameHistoryManager: GameHistoryManager
 
     private val isLoading = MutableStateFlow(false)
+    private val isCompleted = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
 
-    public val uiState: StateFlow<UiState> = combine(isLoading, error, gameState) { isLoading, error, gameState ->
+    public val uiState: StateFlow<UiState> = combine(
+        isLoading,
+        isCompleted,
+        error,
+        gameState
+    ) { isLoading, isCompleted, error, gameState ->
         when {
             isLoading -> UiState.Loading
+            isCompleted -> UiState.Complete
             error != GameError.NONE -> UiState.Error(error)
             else -> UiState.Game(gameState.toUiState())
         }
@@ -169,6 +178,7 @@ internal constructor(
             state.copy(board = newBoard, selectedCell = selectedCell)
         }
         addToGameHistory()
+        checkGameCompleted()
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
@@ -206,6 +216,23 @@ internal constructor(
         val gameState = gameState.value
         val gameHistory = GameHistory(board = gameState.board, notes = gameState.notes)
         gameHistoryManager.addState(gameHistory)
+    }
+
+    private fun checkGameCompleted() {
+        checkBoardSolved()
+        val gameState = gameState.value
+        isCompleted.update { checkGameCompletedUseCase.get().invoke(gameState.board, gameState.solvedBoard) }
+    }
+
+    private fun checkBoardSolved() {
+        if (gameState.value.solvedBoard.isEmpty()) {
+            val solvedBoard = solveBoardUseCase.get().invoke(
+                boardEntity.board,
+                boardEntity.type,
+                gameState.value.initialBoard
+            )
+            gameState.update { it.copy(solvedBoard = solvedBoard) }
+        }
     }
 
     private suspend fun saveGame() {

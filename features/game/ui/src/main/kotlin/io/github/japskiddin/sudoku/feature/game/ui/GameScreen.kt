@@ -89,6 +89,10 @@ private fun GameScreenContent(
             modifier = screenModifier
         )
 
+        is UiState.Complete -> Complete(
+            modifier = screenModifier
+        )
+
         is UiState.Loading -> Loading(
             modifier = screenModifier,
             resId = R.string.level_creation
@@ -152,6 +156,20 @@ private fun Error(
             .safeContentPadding()
     ) {
         Text(text = message)
+    }
+}
+
+@Composable
+private fun Complete(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .then(modifier)
+            .safeContentPadding()
+    ) {
+        Text(text = stringResource(id = R.string.game_completed))
     }
 }
 

@@ -13,6 +13,8 @@ public sealed class UiState {
         public val gameState: GameUiState = GameUiState.Initial
     ) : UiState()
 
+    public data object Complete : UiState()
+
     public companion object {
         public val Initial: UiState = Loading
     }

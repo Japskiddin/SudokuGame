@@ -5,6 +5,8 @@ import io.github.japskiddin.sudoku.core.model.GameType
 
 public fun String.isSudokuFilled(): Boolean = isNotBlank() && !contains("0")
 
+public fun String.isSudokuNotFilled(): Boolean = isBlank() || contains("0")
+
 public fun isValidCell(
     board: BoardList,
     solvedBoard: BoardList,
