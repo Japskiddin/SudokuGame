@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun Menu(
@@ -27,7 +28,7 @@ internal fun Menu(
         verticalArrangement = Arrangement.Center
     ) {
         OutlineText(
-            text = stringResource(id = R.string.title),
+            text = stringResource(id = CoreUiR.string.app_name),
             textStyle = MaterialTheme.typography.titleLarge,
             fillColor = Color.White,
             outlineColor = Color.Black,
@@ -36,26 +37,26 @@ internal fun Menu(
         if (isShowContinueButton) {
             GameButton(
                 icon = painterResource(id = R.drawable.ic_start),
-                text = stringResource(id = R.string.continue_game),
+                text = stringResource(id = CoreUiR.string.continue_game),
                 onClick = onContinueGameClick,
                 modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
             )
         }
         GameButton(
             icon = painterResource(id = R.drawable.ic_start),
-            text = stringResource(id = R.string.start_game),
+            text = stringResource(id = CoreUiR.string.start_game),
             onClick = onStartGameClick,
             modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
         )
         GameButton(
             icon = painterResource(id = R.drawable.ic_settings),
-            text = stringResource(id = R.string.settings),
+            text = stringResource(id = CoreUiR.string.settings),
             onClick = onSettingsClick,
             modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
         )
         GameButton(
             icon = painterResource(id = R.drawable.ic_records),
-            text = stringResource(id = R.string.records),
+            text = stringResource(id = CoreUiR.string.records),
             onClick = onRecordsClick,
             modifier = Modifier.padding(top = 8.dp)
         )

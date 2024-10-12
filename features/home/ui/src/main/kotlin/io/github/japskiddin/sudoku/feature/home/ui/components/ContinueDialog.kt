@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnDialogSurface
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
-import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun ContinueDialog(
@@ -26,13 +26,13 @@ internal fun ContinueDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.you_already_started_game),
+                text = stringResource(id = CoreUiR.string.you_already_started_game),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
                 color = OnDialogSurface
             )
             Text(
-                text = stringResource(id = R.string.do_you_want_to_continue),
+                text = stringResource(id = CoreUiR.string.do_you_want_to_continue),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
                 color = OnDialogSurface,
@@ -40,7 +40,7 @@ internal fun ContinueDialog(
             )
             GameButton(
                 icon = null,
-                text = stringResource(id = R.string.continue_game),
+                text = stringResource(id = CoreUiR.string.continue_game),
                 onClick = onContinueClick,
                 modifier = Modifier.padding(top = 16.dp)
             )

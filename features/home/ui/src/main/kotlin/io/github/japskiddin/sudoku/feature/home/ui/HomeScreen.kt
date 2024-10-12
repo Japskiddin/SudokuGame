@@ -40,6 +40,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.components.Menu
 import io.github.japskiddin.sudoku.feature.home.ui.components.OutlineText
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 public fun HomeScreen(modifier: Modifier = Modifier) {
@@ -125,8 +126,8 @@ private fun HomeScreenContent(
                 modifier = screenModifier,
                 message = stringResource(
                     id = when (state.code) {
-                        GameError.SUDOKU_NOT_GENERATED -> R.string.err_generate_sudoku
-                        else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
+                        GameError.SUDOKU_NOT_GENERATED -> CoreUiR.string.err_generate_sudoku
+                        else -> CoreUiR.string.err_unknown
                     }
                 )
             )
@@ -134,7 +135,7 @@ private fun HomeScreenContent(
         is UiState.Loading ->
             Loading(
                 modifier = screenModifier,
-                resId = R.string.preparing_game_please_wait
+                resId = CoreUiR.string.preparing_game_please_wait
             )
     }
 }

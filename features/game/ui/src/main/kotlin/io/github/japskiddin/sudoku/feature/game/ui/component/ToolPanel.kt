@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.game.ui.R
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun ToolPanel(
@@ -38,31 +39,31 @@ internal fun ToolPanel(
         ToolButton(
             modifier = Modifier.weight(1f),
             onClick = { onToolClick(ToolAction.ERASER) },
-            text = stringResource(id = R.string.tool_eraser),
+            text = stringResource(id = CoreUiR.string.tool_eraser),
             icon = painterResource(id = R.drawable.ic_tool_eraser)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
             onClick = { onToolClick(ToolAction.UNDO) },
-            text = stringResource(id = R.string.tool_undo),
+            text = stringResource(id = CoreUiR.string.tool_undo),
             icon = painterResource(id = R.drawable.ic_tool_undo)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
             onClick = { onToolClick(ToolAction.REDO) },
-            text = stringResource(id = R.string.tool_redo),
+            text = stringResource(id = CoreUiR.string.tool_redo),
             icon = painterResource(id = R.drawable.ic_tool_redo)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
             onClick = { onToolClick(ToolAction.NOTE) },
-            text = stringResource(id = R.string.tool_note),
+            text = stringResource(id = CoreUiR.string.tool_note),
             icon = painterResource(id = R.drawable.ic_tool_note)
         )
         ToolButton(
             modifier = Modifier.weight(1f),
             onClick = { onToolClick(ToolAction.RESET) },
-            text = stringResource(id = R.string.tool_reset),
+            text = stringResource(id = CoreUiR.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset)
         )
     }

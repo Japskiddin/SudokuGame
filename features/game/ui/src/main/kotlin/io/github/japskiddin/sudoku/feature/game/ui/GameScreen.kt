@@ -35,6 +35,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 public fun GameScreen(modifier: Modifier = Modifier) {
@@ -95,13 +96,13 @@ private fun GameScreenContent(
 
         is UiState.Loading -> Loading(
             modifier = screenModifier,
-            resId = R.string.level_creation
+            resId = CoreUiR.string.level_creation
         )
 
         is UiState.Error -> Error(
             message = stringResource(
                 id = when (state.code) {
-                    GameError.BOARD_NOT_FOUND -> R.string.err_generate_level
+                    GameError.BOARD_NOT_FOUND -> CoreUiR.string.err_generate_level
                     else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
                 }
             ),
@@ -169,7 +170,7 @@ private fun Complete(
             .then(modifier)
             .safeContentPadding()
     ) {
-        Text(text = stringResource(id = R.string.game_completed))
+        Text(text = stringResource(id = CoreUiR.string.game_completed))
     }
 }
 

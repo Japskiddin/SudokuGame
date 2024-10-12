@@ -33,6 +33,7 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.feature.home.ui.R
 import io.github.japskiddin.sudoku.feature.home.ui.utils.getName
 import kotlinx.collections.immutable.persistentListOf
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun ItemSelector(
@@ -58,7 +59,7 @@ internal fun ItemSelector(
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_left),
                 tint = iconTint,
-                contentDescription = stringResource(id = R.string.swipe_left)
+                contentDescription = stringResource(id = CoreUiR.string.swipe_left)
             )
         }
         AnimatedContent(
@@ -90,7 +91,7 @@ internal fun ItemSelector(
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_right),
                 tint = iconTint,
-                contentDescription = stringResource(id = R.string.swipe_right)
+                contentDescription = stringResource(id = CoreUiR.string.swipe_right)
             )
         }
     }

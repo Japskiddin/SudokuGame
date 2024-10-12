@@ -13,9 +13,9 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
-import io.github.japskiddin.sudoku.feature.home.ui.R
 import io.github.japskiddin.sudoku.feature.home.ui.utils.getName
 import kotlinx.collections.immutable.persistentListOf
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun DifficultyDialog(
@@ -59,7 +59,7 @@ internal fun DifficultyDialog(
             )
             Spacer(modifier = Modifier.height(16.dp))
             GameButton(
-                text = stringResource(id = R.string.start),
+                text = stringResource(id = CoreUiR.string.start),
                 onClick = onStartClick
             )
         }

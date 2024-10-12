@@ -33,6 +33,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundN
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundPressed
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnMenuButton
 import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun GameButton(
@@ -159,7 +160,7 @@ private fun Modifier.drawBorder(
 private fun GameButtonPreview() {
     GameButton(
         icon = painterResource(id = R.drawable.ic_start),
-        text = stringResource(id = R.string.start_game),
+        text = stringResource(id = CoreUiR.string.start_game),
         onClick = {}
     )
 }
