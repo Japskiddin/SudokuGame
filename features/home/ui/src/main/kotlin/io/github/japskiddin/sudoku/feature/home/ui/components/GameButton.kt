@@ -158,7 +158,7 @@ private fun Modifier.drawBorder(
 @Composable
 private fun GameButtonPreview() {
     GameButton(
-        icon = painterResource(id = R.drawable.ic_start_game),
+        icon = painterResource(id = R.drawable.ic_start),
         text = stringResource(id = R.string.start_game),
         onClick = {}
     )

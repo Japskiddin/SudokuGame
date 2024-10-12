@@ -35,26 +35,26 @@ internal fun Menu(
         )
         if (isShowContinueButton) {
             GameButton(
-                icon = painterResource(id = R.drawable.ic_start_game),
+                icon = painterResource(id = R.drawable.ic_start),
                 text = stringResource(id = R.string.continue_game),
                 onClick = onContinueGameClick,
                 modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
             )
         }
         GameButton(
-            icon = painterResource(id = R.drawable.ic_start_game),
+            icon = painterResource(id = R.drawable.ic_start),
             text = stringResource(id = R.string.start_game),
             onClick = onStartGameClick,
             modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
         )
         GameButton(
-            icon = painterResource(id = R.drawable.ic_start_game),
+            icon = painterResource(id = R.drawable.ic_settings),
             text = stringResource(id = R.string.settings),
             onClick = onSettingsClick,
             modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
         )
         GameButton(
-            icon = painterResource(id = R.drawable.ic_start_game),
+            icon = painterResource(id = R.drawable.ic_records),
             text = stringResource(id = R.string.records),
             onClick = onRecordsClick,
             modifier = Modifier.padding(top = 8.dp)
