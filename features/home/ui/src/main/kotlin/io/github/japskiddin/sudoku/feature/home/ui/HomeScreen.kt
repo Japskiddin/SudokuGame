@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -207,6 +208,7 @@ private fun HomeMenu(
             )
             OutlineText(
                 text = currentYear,
+                textStyle = MaterialTheme.typography.titleSmall,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )

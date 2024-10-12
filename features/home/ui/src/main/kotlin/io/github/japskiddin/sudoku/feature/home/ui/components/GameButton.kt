@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -25,9 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundPressed
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundNormal
@@ -44,7 +43,6 @@ internal fun GameButton(
     backgroundPressedColor: Color = MenuButtonBackgroundPressed,
     icon: Painter? = null,
     text: String,
-    textSize: TextUnit = 16.sp,
     iconSize: Dp = 24.dp,
     onClick: () -> Unit
 ) {
@@ -86,7 +84,6 @@ internal fun GameButton(
             icon = icon,
             text = text,
             textColor = OnMenuButton,
-            textSize = textSize,
             iconSize = iconSize,
             outlineColor = buttonBackgroundColor
         )
@@ -98,7 +95,6 @@ private fun GameButtonContent(
     modifier: Modifier = Modifier,
     icon: Painter?,
     text: String,
-    textSize: TextUnit,
     iconSize: Dp,
     textColor: Color,
     outlineColor: Color
@@ -106,7 +102,8 @@ private fun GameButtonContent(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(all = 12.dp)
+            .padding(all = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (icon != null) {
             Image(
@@ -117,7 +114,7 @@ private fun GameButtonContent(
         }
         OutlineText(
             text = text,
-            textSize = textSize,
+            textStyle = MaterialTheme.typography.labelMedium,
             fillColor = textColor,
             outlineColor = outlineColor,
             modifier = Modifier

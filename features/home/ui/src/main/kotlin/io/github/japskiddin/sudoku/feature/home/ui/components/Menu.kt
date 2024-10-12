@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.feature.home.ui.R
 
 @Composable
@@ -28,7 +28,7 @@ internal fun Menu(
     ) {
         OutlineText(
             text = stringResource(id = R.string.title),
-            textSize = 48.sp,
+            textStyle = MaterialTheme.typography.titleLarge,
             fillColor = Color.White,
             outlineColor = Color.Black,
             outlineWidth = 4.dp
