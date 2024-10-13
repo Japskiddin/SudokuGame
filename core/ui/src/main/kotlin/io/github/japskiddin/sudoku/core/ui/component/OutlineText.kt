@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.home.ui.components
+package io.github.japskiddin.sudoku.core.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun OutlineText(
+public fun OutlineText(
     modifier: Modifier = Modifier,
     text: String,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,

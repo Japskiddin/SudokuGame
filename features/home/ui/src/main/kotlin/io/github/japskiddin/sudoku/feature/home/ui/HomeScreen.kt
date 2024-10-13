@@ -34,12 +34,12 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
-import io.github.japskiddin.sudoku.core.ui.component.dialogBackground
+import io.github.japskiddin.sudoku.core.ui.component.OutlineText
+import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog
 import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
-import io.github.japskiddin.sudoku.feature.home.ui.components.GameButton
-import io.github.japskiddin.sudoku.feature.home.ui.components.OutlineText
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
@@ -265,7 +265,7 @@ private fun Error(
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
-                icon = painterResource(id = R.drawable.ic_close),
+                icon = painterResource(id = CoreUiR.drawable.ic_close),
                 text = stringResource(id = CoreUiR.string.close)
             ) { onClose() }
         }

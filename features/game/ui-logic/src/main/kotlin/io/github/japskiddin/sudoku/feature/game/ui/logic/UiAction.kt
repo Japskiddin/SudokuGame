@@ -10,4 +10,5 @@ public sealed class UiAction {
     public data object Undo : UiAction()
     public data object Redo : UiAction()
     public data object Note : UiAction()
+    public data object CloseError : UiAction()
 }

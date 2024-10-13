@@ -55,7 +55,7 @@ import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameType
-import io.github.japskiddin.sudoku.core.ui.component.innerShadow
+import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview

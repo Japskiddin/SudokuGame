@@ -4,17 +4,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -25,7 +29,9 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
+import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
+import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
@@ -65,7 +71,8 @@ private fun GameScreen(
                 ToolAction.REDO -> UiAction.Redo
             }
             viewModel.onAction(uiAction)
-        }
+        },
+        onErrorClose = { viewModel.onAction(UiAction.CloseError) }
     )
 }
 
@@ -75,7 +82,8 @@ private fun GameScreenContent(
     state: UiState,
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
-    onToolClick: (ToolAction) -> Unit
+    onToolClick: (ToolAction) -> Unit,
+    onErrorClose: () -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -100,13 +108,9 @@ private fun GameScreenContent(
         )
 
         is UiState.Error -> Error(
-            message = stringResource(
-                id = when (state.code) {
-                    GameError.BOARD_NOT_FOUND -> CoreUiR.string.err_generate_level
-                    else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
-                }
-            ),
-            modifier = screenModifier
+            errorCode = state.code,
+            modifier = screenModifier,
+            onClose = onErrorClose
         )
     }
 }
@@ -148,15 +152,42 @@ private fun Game(
 @Composable
 private fun Error(
     modifier: Modifier = Modifier,
-    message: String
+    errorCode: GameError,
+    onClose: () -> Unit
 ) {
+    // TODO: Вынести в общий модуль
+    val message = stringResource(
+        id = when (errorCode) {
+            GameError.BOARD_NOT_FOUND -> CoreUiR.string.err_generate_level
+            else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
+        }
+    )
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .safeContentPadding()
+            .background(Primary)
+            .safeDrawingPadding()
     ) {
-        Text(text = message)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(16.dp)
+                .dialogBackground()
+        ) {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyLarge,
+                color = Primary,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            GameButton(
+                icon = painterResource(id = CoreUiR.drawable.ic_close),
+                text = stringResource(id = CoreUiR.string.close)
+            ) { onClose() }
+        }
     }
 }
 
@@ -168,9 +199,22 @@ private fun Complete(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .safeContentPadding()
+            .background(Primary)
+            .safeDrawingPadding()
     ) {
-        Text(text = stringResource(id = CoreUiR.string.game_completed))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(16.dp)
+                .dialogBackground()
+        ) {
+            Text(
+                text = stringResource(id = CoreUiR.string.game_completed),
+                style = MaterialTheme.typography.bodyLarge,
+                color = Primary,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -186,7 +230,8 @@ private fun GameContentPreview(
             state = state,
             onSelectBoardCell = {},
             onInputCell = { _ -> },
-            onToolClick = {}
+            onToolClick = {},
+            onErrorClose = {}
         )
     }
 }
@@ -205,6 +250,7 @@ private class UiStateProvider : PreviewParameterProvider<UiState> {
         get() = sequenceOf(
             UiState.Game(gameState = gameState),
             UiState.Loading,
-            UiState.Error(code = GameError.BOARD_NOT_FOUND)
+            UiState.Error(code = GameError.BOARD_NOT_FOUND),
+            UiState.Complete
         )
 }

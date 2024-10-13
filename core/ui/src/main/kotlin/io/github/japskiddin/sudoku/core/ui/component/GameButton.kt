@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.home.ui.components
+package io.github.japskiddin.sudoku.core.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
@@ -32,11 +32,10 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundP
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundPressed
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnMenuButton
-import io.github.japskiddin.sudoku.feature.home.ui.R
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import io.github.japskiddin.sudoku.core.ui.R
 
 @Composable
-internal fun GameButton(
+public fun GameButton(
     modifier: Modifier = Modifier,
     foregroundNormalColor: Color = MenuButtonForegroundNormal,
     foregroundPressedColor: Color = MenuButtonForegroundPressed,
@@ -164,8 +163,8 @@ private fun Modifier.drawBorder(
 @Composable
 private fun GameButtonPreview() {
     GameButton(
-        icon = painterResource(id = R.drawable.ic_start),
-        text = stringResource(id = CoreUiR.string.start_game),
+        text = stringResource(id = R.string.start_game),
+        icon = painterResource(id = R.drawable.ic_close),
         onClick = {}
     )
 }

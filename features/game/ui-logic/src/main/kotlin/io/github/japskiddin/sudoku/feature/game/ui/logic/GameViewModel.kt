@@ -94,6 +94,7 @@ internal constructor(
             is UiAction.Undo -> undoBoard()
             is UiAction.Redo -> redoBoard()
             is UiAction.Note -> notesBoard()
+            is UiAction.CloseError -> onBackButtonClick()
         }
     }
 

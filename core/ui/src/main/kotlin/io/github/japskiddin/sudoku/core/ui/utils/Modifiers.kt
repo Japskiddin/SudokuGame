@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.ui.component
+package io.github.japskiddin.sudoku.core.ui.utils
 
 import android.graphics.BlurMaskFilter
 import android.graphics.PorterDuff
