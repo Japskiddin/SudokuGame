@@ -4,21 +4,21 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 
 @Composable
@@ -63,18 +63,16 @@ private fun LoadingContent(
         ) {
             Text(
                 text = text,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Primary,
                 textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(16.dp))
             LinearProgressIndicator(
                 trackColor = Primary.copy(alpha = .2f),
                 color = Primary,
                 strokeCap = StrokeCap.Round,
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .height(8.dp)
+                modifier = Modifier.height(8.dp)
             )
         }
     }
