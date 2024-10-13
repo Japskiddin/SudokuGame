@@ -68,13 +68,16 @@ private fun HomeScreen(
         onSettingsButtonClick = { viewModel.onAction(UiAction.ShowSettings) },
         onRecordsButtonClick = { viewModel.onAction(UiAction.ShowRecords) },
         onContinueDialogConfirm = { viewModel.onAction(UiAction.ContinueDialogConfirm) },
-        onDifficultyDialogConfirm = { viewModel.onAction(UiAction.DifficultyDialogConfirm) },
+        onDifficultyDialogConfirm = { difficulty, type ->
+            viewModel.onAction(
+                UiAction.DifficultyDialogConfirm(
+                    difficulty,
+                    type
+                )
+            )
+        },
         onDismissContinueDialog = { viewModel.onAction(UiAction.ContinueDialogDismiss) },
         onDismissDifficultyDialog = { viewModel.onAction(UiAction.DifficultyDialogDismiss) },
-        onSwipeDifficultyLeft = { viewModel.onAction(UiAction.SelectPreviousGameDifficulty) },
-        onSwipeDifficultyRight = { viewModel.onAction(UiAction.SelectNextGameDifficulty) },
-        onSwipeTypeLeft = { viewModel.onAction(UiAction.SelectPreviousGameType) },
-        onSwipeTypeRight = { viewModel.onAction(UiAction.SelectNextGameType) },
         onErrorClose = { viewModel.onAction(UiAction.CloseError) }
     )
 }
@@ -89,14 +92,10 @@ private fun HomeScreenContent(
     onContinueButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onDifficultyDialogConfirm: () -> Unit,
+    onDifficultyDialogConfirm: (GameDifficulty, GameType) -> Unit,
     onContinueDialogConfirm: () -> Unit,
     onDismissContinueDialog: () -> Unit,
     onDismissDifficultyDialog: () -> Unit,
-    onSwipeDifficultyLeft: () -> Unit,
-    onSwipeDifficultyRight: () -> Unit,
-    onSwipeTypeLeft: () -> Unit,
-    onSwipeTypeRight: () -> Unit,
     onErrorClose: () -> Unit
 ) {
     val screenModifier = Modifier
@@ -119,11 +118,7 @@ private fun HomeScreenContent(
                 onDifficultyDialogConfirm = onDifficultyDialogConfirm,
                 onContinueDialogConfirm = onContinueDialogConfirm,
                 onDismissContinueDialog = onDismissContinueDialog,
-                onDismissDifficultyDialog = onDismissDifficultyDialog,
-                onSwipeDifficultyLeft = onSwipeDifficultyLeft,
-                onSwipeDifficultyRight = onSwipeDifficultyRight,
-                onSwipeTypeLeft = onSwipeTypeLeft,
-                onSwipeTypeRight = onSwipeTypeRight
+                onDismissDifficultyDialog = onDismissDifficultyDialog
             )
 
         is UiState.Error ->
@@ -157,13 +152,9 @@ private fun Menu(
     onSettingsButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
     onContinueDialogConfirm: () -> Unit,
-    onDifficultyDialogConfirm: () -> Unit,
+    onDifficultyDialogConfirm: (GameDifficulty, GameType) -> Unit,
     onDismissContinueDialog: () -> Unit,
-    onDismissDifficultyDialog: () -> Unit,
-    onSwipeDifficultyLeft: () -> Unit,
-    onSwipeDifficultyRight: () -> Unit,
-    onSwipeTypeLeft: () -> Unit,
-    onSwipeTypeRight: () -> Unit
+    onDismissDifficultyDialog: () -> Unit
 ) {
     if (isShowContinueDialog) {
         ContinueDialog(
@@ -177,11 +168,7 @@ private fun Menu(
             selectedDifficulty = selectedDifficulty,
             selectedType = selectedType,
             onDismiss = onDismissDifficultyDialog,
-            onConfirm = onDifficultyDialogConfirm,
-            onSwipeDifficultyLeft = onSwipeDifficultyLeft,
-            onSwipeDifficultyRight = onSwipeDifficultyRight,
-            onSwipeTypeLeft = onSwipeTypeLeft,
-            onSwipeTypeRight = onSwipeTypeRight
+            onConfirm = onDifficultyDialogConfirm
         )
     }
 
@@ -300,14 +287,10 @@ private fun HomeContentPreview(
             onContinueButtonClick = {},
             onRecordsButtonClick = {},
             onSettingsButtonClick = {},
-            onDifficultyDialogConfirm = {},
+            onDifficultyDialogConfirm = { _, _ -> },
             onContinueDialogConfirm = {},
             onDismissContinueDialog = {},
             onDismissDifficultyDialog = {},
-            onSwipeDifficultyLeft = {},
-            onSwipeDifficultyRight = {},
-            onSwipeTypeLeft = {},
-            onSwipeTypeRight = {},
             onErrorClose = {}
         )
     }

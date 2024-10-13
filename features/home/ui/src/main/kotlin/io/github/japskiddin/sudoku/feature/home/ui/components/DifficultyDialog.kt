@@ -4,6 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,11 +28,7 @@ internal fun DifficultyDialog(
     selectedDifficulty: GameDifficulty,
     selectedType: GameType,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    onSwipeDifficultyLeft: () -> Unit,
-    onSwipeDifficultyRight: () -> Unit,
-    onSwipeTypeLeft: () -> Unit,
-    onSwipeTypeRight: () -> Unit
+    onConfirm: (GameDifficulty, GameType) -> Unit
 ) {
     val difficulties = persistentListOf(
         GameDifficulty.EASY,
@@ -42,29 +42,60 @@ internal fun DifficultyDialog(
         GameType.DEFAULT12X12
     )
 
+    var difficulty by remember { mutableStateOf(selectedDifficulty) }
+    var type by remember { mutableStateOf(selectedType) }
+
     GameDialog(onDismiss = onDismiss) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ItemSelector(
-                currentItem = stringResource(id = selectedDifficulty.getName()),
-                itemPos = difficulties.indexOf(selectedDifficulty),
-                onSwipeLeft = onSwipeDifficultyLeft,
-                onSwipeRight = onSwipeDifficultyRight
+                currentItem = stringResource(id = difficulty.getName()),
+                itemPos = difficulties.indexOf(difficulty),
+                onSwipeLeft = {
+                    val index = difficulties.indexOf(difficulty)
+                    difficulty = if (index <= 0) {
+                        difficulties.last()
+                    } else {
+                        difficulties[index - 1]
+                    }
+                },
+                onSwipeRight = {
+                    val index = difficulties.indexOf(difficulty)
+                    difficulty = if (index >= difficulties.lastIndex) {
+                        difficulties.first()
+                    } else {
+                        difficulties[index + 1]
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             ItemSelector(
-                currentItem = selectedType.title,
-                itemPos = types.indexOf(selectedType),
-                onSwipeLeft = onSwipeTypeLeft,
-                onSwipeRight = onSwipeTypeRight
+                currentItem = type.title,
+                itemPos = types.indexOf(type),
+                onSwipeLeft = {
+                    val index = types.indexOf(type)
+                    type = if (index <= 0) {
+                        types.last()
+                    } else {
+                        types[index - 1]
+                    }
+                },
+                onSwipeRight = {
+                    val index = types.indexOf(type)
+                    type = if (index >= types.lastIndex) {
+                        types.first()
+                    } else {
+                        types[index + 1]
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
                 text = stringResource(id = CoreUiR.string.start),
                 icon = painterResource(id = R.drawable.ic_start)
             ) {
-                onConfirm()
+                onConfirm(difficulty, type)
             }
         }
     }
@@ -80,11 +111,7 @@ private fun DifficultyDialogPreview() {
             selectedDifficulty = GameDifficulty.EASY,
             selectedType = GameType.DEFAULT9X9,
             onDismiss = {},
-            onConfirm = {},
-            onSwipeDifficultyLeft = {},
-            onSwipeDifficultyRight = {},
-            onSwipeTypeLeft = {},
-            onSwipeTypeRight = {}
+            onConfirm = { _, _ -> }
         )
     }
 }

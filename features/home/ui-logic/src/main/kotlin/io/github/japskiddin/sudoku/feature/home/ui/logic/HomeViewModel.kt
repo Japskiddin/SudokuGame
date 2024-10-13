@@ -15,7 +15,6 @@ import io.github.japskiddin.sudoku.feature.home.domain.usecase.SudokuNotGenerate
 import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.toGameError
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,18 +37,6 @@ internal constructor(
     private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
     getLastGameUseCase: Provider<GetLastGameUseCase>
 ) : ViewModel() {
-    private val difficulties = persistentListOf(
-        GameDifficulty.EASY,
-        GameDifficulty.INTERMEDIATE,
-        GameDifficulty.HARD,
-        GameDifficulty.EXPERT
-    )
-    private val types = persistentListOf(
-        GameType.DEFAULT6X6,
-        GameType.DEFAULT9X9,
-        GameType.DEFAULT12X12
-    )
-
     private val lastGame = getLastGameUseCase.get().invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
     private val menuState = MutableStateFlow(MenuState())
@@ -80,6 +67,16 @@ internal constructor(
     public val currentYear: String
         get() = getCurrentYearUseCase.get().invoke()
 
+    init {
+        // TODO: Загружать из настроек
+        gameState.update {
+            it.copy(
+                selectedDifficulty = GameDifficulty.EASY,
+                selectedType = GameType.DEFAULT9X9
+            )
+        }
+    }
+
     public fun onAction(action: UiAction) {
         when (action) {
             is UiAction.PrepareNewGame -> prepareNewGame()
@@ -88,12 +85,8 @@ internal constructor(
             is UiAction.ShowRecords -> showRecords()
             is UiAction.ContinueDialogConfirm -> confirmContinueDialog()
             is UiAction.ContinueDialogDismiss -> dismissContinueDialog()
-            is UiAction.DifficultyDialogConfirm -> confirmDifficultyDialog()
+            is UiAction.DifficultyDialogConfirm -> confirmDifficultyDialog(action.difficulty, action.type)
             is UiAction.DifficultyDialogDismiss -> dismissDifficultyDialog()
-            is UiAction.SelectPreviousGameDifficulty -> selectPreviousGameDifficulty()
-            is UiAction.SelectNextGameDifficulty -> selectNextGameDifficulty()
-            is UiAction.SelectPreviousGameType -> selectPreviousGameType()
-            is UiAction.SelectNextGameType -> selectNextGameType()
             is UiAction.CloseError -> closeError()
         }
     }
@@ -115,7 +108,13 @@ internal constructor(
         }
     }
 
-    private fun confirmDifficultyDialog() {
+    private fun confirmDifficultyDialog(difficulty: GameDifficulty, type: GameType) {
+        gameState.update {
+            it.copy(
+                selectedDifficulty = difficulty,
+                selectedType = type
+            )
+        }
         menuState.update { it.copy(isShowDifficultyDialog = false) }
         startNewGame()
     }
@@ -130,58 +129,6 @@ internal constructor(
 
     private fun showRecords() {
         TODO("In Development")
-    }
-
-    private fun selectPreviousGameDifficulty() {
-        gameState.update { state ->
-            val index = difficulties.indexOf(state.selectedDifficulty)
-            state.copy(
-                selectedDifficulty = if (index <= 0) {
-                    difficulties.last()
-                } else {
-                    difficulties[index - 1]
-                }
-            )
-        }
-    }
-
-    private fun selectNextGameDifficulty() {
-        gameState.update { state ->
-            val index = difficulties.indexOf(state.selectedDifficulty)
-            state.copy(
-                selectedDifficulty = if (index >= difficulties.lastIndex) {
-                    difficulties.first()
-                } else {
-                    difficulties[index + 1]
-                }
-            )
-        }
-    }
-
-    private fun selectPreviousGameType() {
-        gameState.update { state ->
-            val index = types.indexOf(state.selectedType)
-            state.copy(
-                selectedType = if (index <= 0) {
-                    types.last()
-                } else {
-                    types[index - 1]
-                }
-            )
-        }
-    }
-
-    private fun selectNextGameType() {
-        gameState.update { state ->
-            val index = types.indexOf(state.selectedType)
-            state.copy(
-                selectedType = if (index >= types.lastIndex) {
-                    types.first()
-                } else {
-                    types[index + 1]
-                }
-            )
-        }
     }
 
     private fun closeError() {
