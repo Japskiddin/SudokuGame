@@ -103,7 +103,12 @@ private fun GameButtonContent(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(all = 12.dp),
+            .padding(
+                start = 12.dp,
+                end = 12.dp,
+                top = 6.dp,
+                bottom = 6.dp
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (icon != null) {
@@ -119,7 +124,7 @@ private fun GameButtonContent(
             fillColor = textColor,
             outlineColor = outlineColor,
             modifier = Modifier
-                .padding(start = 4.dp, end = 4.dp)
+                .padding(start = 12.dp, end = 12.dp)
                 .weight(1f)
         )
     }

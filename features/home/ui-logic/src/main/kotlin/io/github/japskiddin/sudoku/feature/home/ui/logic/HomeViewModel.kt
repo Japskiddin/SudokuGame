@@ -164,6 +164,10 @@ internal constructor(
         }
     }
 
+    public fun onCloseError() {
+        error.update { GameError.NONE }
+    }
+
     public fun onDismissContinueDialog(): Unit = menuState.update { it.copy(isShowContinueDialog = false) }
 
     public fun onDismissDifficultyDialog(): Unit = menuState.update { it.copy(isShowDifficultyDialog = false) }
