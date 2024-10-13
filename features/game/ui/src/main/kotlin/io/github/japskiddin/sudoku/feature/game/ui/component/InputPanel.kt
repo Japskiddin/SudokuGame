@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.japskiddin.sudoku.core.designsystem.theme.MerriweatherFamily
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
@@ -58,13 +60,13 @@ private fun TwoColumnInputPanel(
         InputPanelContent(
             modifier = modifier,
             onClick = { value -> onClick(value) },
-            values = IntRange(start = 1, endInclusive = 9),
+            values = IntRange(start = 1, endInclusive = 6),
             board = board
         )
         InputPanelContent(
             modifier = modifier,
             onClick = { value -> onClick(value) },
-            values = IntRange(start = 10, endInclusive = 12),
+            values = IntRange(start = 7, endInclusive = 12),
             board = board
         )
     }
@@ -122,11 +124,15 @@ private fun InputButton(
         }
         Text(
             text = value.toString(),
+            fontFamily = MerriweatherFamily,
+            fontWeight = FontWeight.Bold,
             fontSize = valueTextSize,
             color = color
         )
         Text(
             text = counter.toString(),
+            fontFamily = MerriweatherFamily,
+            fontWeight = FontWeight.Normal,
             fontSize = counterTextSize,
             color = color
         )

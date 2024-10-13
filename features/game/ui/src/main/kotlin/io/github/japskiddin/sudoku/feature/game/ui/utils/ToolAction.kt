@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.feature.game.ui.component
+package io.github.japskiddin.sudoku.feature.game.ui.utils
 
 internal enum class ToolAction {
     ERASER,

@@ -28,12 +28,12 @@ import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
-import io.github.japskiddin.sudoku.feature.game.ui.component.ToolAction
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
+import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
