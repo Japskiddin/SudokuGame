@@ -80,7 +80,25 @@ internal constructor(
     public val currentYear: String
         get() = getCurrentYearUseCase.get().invoke()
 
-    public fun onStartButtonClick() {
+    public fun onAction(action: UiAction) {
+        when (action) {
+            is UiAction.PrepareNewGame -> prepareNewGame()
+            is UiAction.ContinueGame -> continueCurrentGame()
+            is UiAction.ShowSettings -> showSettings()
+            is UiAction.ShowRecords -> showRecords()
+            is UiAction.ContinueDialogConfirm -> confirmContinueDialog()
+            is UiAction.ContinueDialogDismiss -> dismissContinueDialog()
+            is UiAction.DifficultyDialogConfirm -> confirmDifficultyDialog()
+            is UiAction.DifficultyDialogDismiss -> dismissDifficultyDialog()
+            is UiAction.SelectPreviousGameDifficulty -> selectPreviousGameDifficulty()
+            is UiAction.SelectNextGameDifficulty -> selectNextGameDifficulty()
+            is UiAction.SelectPreviousGameType -> selectPreviousGameType()
+            is UiAction.SelectNextGameType -> selectNextGameType()
+            is UiAction.CloseError -> closeError()
+        }
+    }
+
+    private fun prepareNewGame() {
         if (lastGame.value != null) {
             menuState.update { it.copy(isShowContinueDialog = true) }
         } else {
@@ -88,7 +106,7 @@ internal constructor(
         }
     }
 
-    public fun onContinueDialogConfirm() {
+    private fun confirmContinueDialog() {
         menuState.update {
             it.copy(
                 isShowContinueDialog = false,
@@ -97,22 +115,24 @@ internal constructor(
         }
     }
 
-    public fun onDifficultyDialogConfirm() {
+    private fun confirmDifficultyDialog() {
         menuState.update { it.copy(isShowDifficultyDialog = false) }
         startNewGame()
     }
 
-    public fun onContinueButtonClick(): Unit = tryNavigateToGame(boardUid = lastGame.value?.uid ?: -1L)
+    private fun continueCurrentGame() {
+        tryNavigateToGame(boardUid = lastGame.value?.uid ?: -1L)
+    }
 
-    public fun onSettingsButtonClick() {
+    private fun showSettings() {
         TODO("In Development")
     }
 
-    public fun onRecordsButtonClick() {
+    private fun showRecords() {
         TODO("In Development")
     }
 
-    public fun onSelectPreviousGameDifficulty() {
+    private fun selectPreviousGameDifficulty() {
         gameState.update { state ->
             val index = difficulties.indexOf(state.selectedDifficulty)
             state.copy(
@@ -125,7 +145,7 @@ internal constructor(
         }
     }
 
-    public fun onSelectNextGameDifficulty() {
+    private fun selectNextGameDifficulty() {
         gameState.update { state ->
             val index = difficulties.indexOf(state.selectedDifficulty)
             state.copy(
@@ -138,7 +158,7 @@ internal constructor(
         }
     }
 
-    public fun onSelectPreviousGameType() {
+    private fun selectPreviousGameType() {
         gameState.update { state ->
             val index = types.indexOf(state.selectedType)
             state.copy(
@@ -151,7 +171,7 @@ internal constructor(
         }
     }
 
-    public fun onSelectNextGameType() {
+    private fun selectNextGameType() {
         gameState.update { state ->
             val index = types.indexOf(state.selectedType)
             state.copy(
@@ -164,13 +184,17 @@ internal constructor(
         }
     }
 
-    public fun onCloseError() {
+    private fun closeError() {
         error.update { GameError.NONE }
     }
 
-    public fun onDismissContinueDialog(): Unit = menuState.update { it.copy(isShowContinueDialog = false) }
+    private fun dismissContinueDialog() {
+        menuState.update { it.copy(isShowContinueDialog = false) }
+    }
 
-    public fun onDismissDifficultyDialog(): Unit = menuState.update { it.copy(isShowDifficultyDialog = false) }
+    private fun dismissDifficultyDialog() {
+        menuState.update { it.copy(isShowDifficultyDialog = false) }
+    }
 
     private fun startNewGame() {
         viewModelScope.launch(appDispatchers.io) {

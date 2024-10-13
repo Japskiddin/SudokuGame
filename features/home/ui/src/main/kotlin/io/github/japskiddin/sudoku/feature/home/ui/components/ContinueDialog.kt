@@ -19,7 +19,7 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 @Composable
 internal fun ContinueDialog(
     onDismiss: () -> Unit,
-    onContinueClick: () -> Unit
+    onConfirm: () -> Unit
 ) {
     GameDialog(onDismiss = onDismiss) {
         Column(
@@ -41,7 +41,7 @@ internal fun ContinueDialog(
             GameButton(
                 icon = null,
                 text = stringResource(id = CoreUiR.string.continue_game),
-                onClick = onContinueClick,
+                onClick = onConfirm,
                 modifier = Modifier.padding(top = 16.dp)
             )
         }
@@ -56,7 +56,7 @@ private fun ContinueDialogPreview() {
     SudokuTheme {
         ContinueDialog(
             onDismiss = {},
-            onContinueClick = {}
+            onConfirm = {}
         )
     }
 }

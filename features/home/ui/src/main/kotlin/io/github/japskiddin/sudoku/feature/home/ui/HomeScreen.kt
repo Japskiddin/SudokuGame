@@ -41,6 +41,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
 import io.github.japskiddin.sudoku.feature.home.ui.components.GameButton
 import io.github.japskiddin.sudoku.feature.home.ui.components.OutlineText
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
+import io.github.japskiddin.sudoku.feature.home.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
@@ -62,19 +63,19 @@ private fun HomeScreen(
         modifier = modifier,
         state = state,
         currentYear = viewModel.currentYear,
-        onStartButtonClick = { viewModel.onStartButtonClick() },
-        onContinueButtonClick = { viewModel.onContinueButtonClick() },
-        onSettingsButtonClick = { viewModel.onSettingsButtonClick() },
-        onRecordsButtonClick = { viewModel.onRecordsButtonClick() },
-        onContinueDialogButtonClick = { viewModel.onContinueDialogConfirm() },
-        onStartGame = { viewModel.onDifficultyDialogConfirm() },
-        onDismissContinueDialog = { viewModel.onDismissContinueDialog() },
-        onDismissDifficultyDialog = { viewModel.onDismissDifficultyDialog() },
-        onSwipeDifficultyLeft = { viewModel.onSelectPreviousGameDifficulty() },
-        onSwipeDifficultyRight = { viewModel.onSelectNextGameDifficulty() },
-        onSwipeTypeLeft = { viewModel.onSelectPreviousGameType() },
-        onSwipeTypeRight = { viewModel.onSelectNextGameType() },
-        onErrorClose = { viewModel.onCloseError() }
+        onStartButtonClick = { viewModel.onAction(UiAction.PrepareNewGame) },
+        onContinueButtonClick = { viewModel.onAction(UiAction.ContinueGame) },
+        onSettingsButtonClick = { viewModel.onAction(UiAction.ShowSettings) },
+        onRecordsButtonClick = { viewModel.onAction(UiAction.ShowRecords) },
+        onContinueDialogConfirm = { viewModel.onAction(UiAction.ContinueDialogConfirm) },
+        onDifficultyDialogConfirm = { viewModel.onAction(UiAction.DifficultyDialogConfirm) },
+        onDismissContinueDialog = { viewModel.onAction(UiAction.ContinueDialogDismiss) },
+        onDismissDifficultyDialog = { viewModel.onAction(UiAction.DifficultyDialogDismiss) },
+        onSwipeDifficultyLeft = { viewModel.onAction(UiAction.SelectPreviousGameDifficulty) },
+        onSwipeDifficultyRight = { viewModel.onAction(UiAction.SelectNextGameDifficulty) },
+        onSwipeTypeLeft = { viewModel.onAction(UiAction.SelectPreviousGameType) },
+        onSwipeTypeRight = { viewModel.onAction(UiAction.SelectNextGameType) },
+        onErrorClose = { viewModel.onAction(UiAction.CloseError) }
     )
 }
 
@@ -88,8 +89,8 @@ private fun HomeScreenContent(
     onContinueButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onStartGame: () -> Unit,
-    onContinueDialogButtonClick: () -> Unit,
+    onDifficultyDialogConfirm: () -> Unit,
+    onContinueDialogConfirm: () -> Unit,
     onDismissContinueDialog: () -> Unit,
     onDismissDifficultyDialog: () -> Unit,
     onSwipeDifficultyLeft: () -> Unit,
@@ -115,8 +116,8 @@ private fun HomeScreenContent(
                 onContinueButtonClick = onContinueButtonClick,
                 onRecordsButtonClick = onRecordsButtonClick,
                 onSettingsButtonClick = onSettingsButtonClick,
-                onStartGame = onStartGame,
-                onContinueDialogButtonClick = onContinueDialogButtonClick,
+                onDifficultyDialogConfirm = onDifficultyDialogConfirm,
+                onContinueDialogConfirm = onContinueDialogConfirm,
                 onDismissContinueDialog = onDismissContinueDialog,
                 onDismissDifficultyDialog = onDismissDifficultyDialog,
                 onSwipeDifficultyLeft = onSwipeDifficultyLeft,
@@ -128,12 +129,7 @@ private fun HomeScreenContent(
         is UiState.Error ->
             Error(
                 modifier = screenModifier,
-                message = stringResource(
-                    id = when (state.code) {
-                        GameError.SUDOKU_NOT_GENERATED -> CoreUiR.string.err_generate_sudoku
-                        else -> CoreUiR.string.err_unknown
-                    }
-                ),
+                errorCode = state.code,
                 onClose = onErrorClose
             )
 
@@ -160,8 +156,8 @@ private fun Menu(
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
-    onContinueDialogButtonClick: () -> Unit,
-    onStartGame: () -> Unit,
+    onContinueDialogConfirm: () -> Unit,
+    onDifficultyDialogConfirm: () -> Unit,
     onDismissContinueDialog: () -> Unit,
     onDismissDifficultyDialog: () -> Unit,
     onSwipeDifficultyLeft: () -> Unit,
@@ -172,7 +168,7 @@ private fun Menu(
     if (isShowContinueDialog) {
         ContinueDialog(
             onDismiss = onDismissContinueDialog,
-            onContinueClick = onContinueDialogButtonClick
+            onConfirm = onContinueDialogConfirm
         )
     }
 
@@ -181,7 +177,7 @@ private fun Menu(
             selectedDifficulty = selectedDifficulty,
             selectedType = selectedType,
             onDismiss = onDismissDifficultyDialog,
-            onStartClick = onStartGame,
+            onConfirm = onDifficultyDialogConfirm,
             onSwipeDifficultyLeft = onSwipeDifficultyLeft,
             onSwipeDifficultyRight = onSwipeDifficultyRight,
             onSwipeTypeLeft = onSwipeTypeLeft,
@@ -252,9 +248,15 @@ private fun Menu(
 @Composable
 private fun Error(
     modifier: Modifier = Modifier,
-    message: String,
+    errorCode: GameError,
     onClose: () -> Unit
 ) {
+    val message = stringResource(
+        id = when (errorCode) {
+            GameError.SUDOKU_NOT_GENERATED -> CoreUiR.string.err_generate_sudoku
+            else -> CoreUiR.string.err_unknown
+        }
+    )
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -274,7 +276,7 @@ private fun Error(
                 color = Primary,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             GameButton(
                 icon = painterResource(id = R.drawable.ic_close),
                 text = stringResource(id = CoreUiR.string.close)
@@ -298,8 +300,8 @@ private fun HomeContentPreview(
             onContinueButtonClick = {},
             onRecordsButtonClick = {},
             onSettingsButtonClick = {},
-            onStartGame = {},
-            onContinueDialogButtonClick = {},
+            onDifficultyDialogConfirm = {},
+            onContinueDialogConfirm = {},
             onDismissContinueDialog = {},
             onDismissDifficultyDialog = {},
             onSwipeDifficultyLeft = {},

@@ -14,6 +14,7 @@ import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.model.Board
+import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
@@ -87,7 +88,7 @@ internal constructor(
     public fun onAction(action: UiAction) {
         when (action) {
             is UiAction.InputCell -> inputValueToCell(action.value)
-            is UiAction.SelectBoardCell -> gameState.update { it.copy(selectedCell = action.cell) }
+            is UiAction.SelectBoardCell -> selectBoardCell(action.cell)
             is UiAction.EraseBoardCell -> inputValueToCell(0)
             is UiAction.ResetBoard -> resetBoard()
             is UiAction.Undo -> undoBoard()
@@ -200,6 +201,10 @@ internal constructor(
 
     private fun notesBoard() {
         TODO("Not Implemented")
+    }
+
+    private fun selectBoardCell(cell: BoardCell) {
+        gameState.update { it.copy(selectedCell = cell) }
     }
 
     private fun redoBoard() {

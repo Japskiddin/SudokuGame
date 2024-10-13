@@ -22,7 +22,7 @@ internal fun DifficultyDialog(
     selectedDifficulty: GameDifficulty,
     selectedType: GameType,
     onDismiss: () -> Unit,
-    onStartClick: () -> Unit,
+    onConfirm: () -> Unit,
     onSwipeDifficultyLeft: () -> Unit,
     onSwipeDifficultyRight: () -> Unit,
     onSwipeTypeLeft: () -> Unit,
@@ -60,7 +60,7 @@ internal fun DifficultyDialog(
             Spacer(modifier = Modifier.height(16.dp))
             GameButton(
                 text = stringResource(id = CoreUiR.string.start),
-                onClick = onStartClick
+                onClick = onConfirm
             )
         }
     }
@@ -76,7 +76,7 @@ private fun DifficultyDialogPreview() {
             selectedDifficulty = GameDifficulty.EASY,
             selectedType = GameType.DEFAULT9X9,
             onDismiss = {},
-            onStartClick = {},
+            onConfirm = {},
             onSwipeDifficultyLeft = {},
             onSwipeDifficultyRight = {},
             onSwipeTypeLeft = {},
