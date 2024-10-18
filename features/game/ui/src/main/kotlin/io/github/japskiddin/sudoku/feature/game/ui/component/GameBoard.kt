@@ -680,15 +680,8 @@ private fun DrawScope.drawNumbers(
                 if (number.value != 0) {
                     val paint = when {
                         number.isError && isErrorsHighlight -> errorNumberPaint
+                        number.isSelected(selectedCell, isIdenticalNumberHighlight) -> selectedNumberPaint
                         number.isLocked -> lockedNumberPaint
-                        (
-                            (selectedCell.row >= 0 && selectedCell.col >= 0) &&
-                                (
-                                    (isIdenticalNumberHighlight && number.value == selectedCell.value) ||
-                                        (selectedCell.row == i && selectedCell.col == j)
-                                    )
-                            ) -> selectedNumberPaint
-
                         else -> numberPaint
                     }
 
@@ -751,6 +744,14 @@ private fun getNoteColumnNumber(
     }
 
     else -> 0
+}
+
+private fun BoardCell.isSelected(
+    selectedCell: BoardCell,
+    isIdenticalNumberHighlight: Boolean
+): Boolean {
+    return (isIdenticalNumberHighlight && value == selectedCell.value) ||
+        (selectedCell.row == row && selectedCell.col == col)
 }
 
 @Suppress("MagicNumber")
