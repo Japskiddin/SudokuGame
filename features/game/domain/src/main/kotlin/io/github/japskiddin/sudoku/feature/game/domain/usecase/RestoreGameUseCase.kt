@@ -1,10 +1,8 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
-import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
-import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
@@ -12,14 +10,12 @@ import javax.inject.Inject
 
 public class RestoreGameUseCase @Inject constructor() {
     public operator fun invoke(
-        savedBoard: String,
-        boardEntity: Board,
+        restoredBoard: BoardList,
+        type: GameType,
         initialBoard: BoardList,
         solvedBoard: BoardList,
         mistakesMethod: MistakesMethod = MistakesMethod.CLASSIC
     ): BoardList {
-        val type = boardEntity.type
-        val restoredBoard = savedBoard.convertToList(type)
         for (i in restoredBoard.indices) {
             for (j in restoredBoard.indices) {
                 restoreCell(

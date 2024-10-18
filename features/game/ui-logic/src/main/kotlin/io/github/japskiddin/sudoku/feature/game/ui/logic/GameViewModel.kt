@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.game.utils.initiate
@@ -68,9 +67,7 @@ internal constructor(
     private val isCompleted = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
-    private val timer = MutableStateFlow(0L)
 
-    private var savedGame: SavedGame? = null
     private var timerJob: Job? = null
 
     public val uiState: StateFlow<UiState> = combine(
@@ -136,19 +133,29 @@ internal constructor(
             }
             gameState.update { it.copy(solvedBoard = solvedBoard) }
 
-            savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
-            val board: BoardList = if (savedGame != null) {
-                val restoredBoard = savedGame?.board ?: ""
-                restoreGameUseCase.get().invoke(restoredBoard, boardEntity, initialBoard, solvedBoard)
+            val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+            if (savedGame != null) {
+                restoreGame(savedGame)
             } else {
-                initialBoard
+                saveGame()
+                gameState.update { it.copy(board = it.initialBoard) }
             }
-            gameState.update { it.copy(board = board) }
             isLoading.update { false }
-            gameHistoryManager = GameHistoryManager(GameHistory(board = board, notes = listOf()))
-            saveGame()
+            gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
 //            startTimer()
         }
+    }
+
+    private fun restoreGame(savedGame: SavedGame) {
+        val savedBoard = savedGame.board.convertToList(boardEntity.type)
+        val state = gameState.value
+        val restoredBoard = restoreGameUseCase.get().invoke(
+            savedBoard,
+            boardEntity.type,
+            state.initialBoard,
+            state.solvedBoard
+        )
+        gameState.update { it.copy(board = restoredBoard) }
     }
 
     private fun inputValueToCell(value: Int, mistakesMethod: MistakesMethod = MistakesMethod.CLASSIC) {
@@ -250,26 +257,28 @@ internal constructor(
     }
 
     private suspend fun saveGame() {
-        val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
         val currentTimeMillis = System.currentTimeMillis()
         val state = gameState.value
+        val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
         if (savedGame != null) {
             updateSavedGameUseCase.get().invoke(
-                savedGame = savedGame,
-                timer = 0L,
-                board = state.board.convertToString(),
-                notes = state.notes.convertToString(),
-                mistakes = 0,
-                lastPlayed = currentTimeMillis
+                savedGame.copy(
+                    timer = state.timer,
+                    board = state.board.convertToString(),
+                    notes = state.notes.convertToString(),
+                    actions = state.actions,
+                    mistakes = state.mistakes,
+                    lastPlayed = currentTimeMillis
+                )
             )
         } else {
             insertSavedGameUseCase.get().invoke(
                 uid = boardEntity.uid,
                 board = state.board.convertToString(),
                 notes = state.notes.convertToString(),
-                timer = 0L,
-                actions = 0,
-                mistakes = 0,
+                timer = state.timer,
+                actions = state.actions,
+                mistakes = state.mistakes,
                 lastPlayed = currentTimeMillis,
                 startedAt = currentTimeMillis,
                 finishedAt = 0L,

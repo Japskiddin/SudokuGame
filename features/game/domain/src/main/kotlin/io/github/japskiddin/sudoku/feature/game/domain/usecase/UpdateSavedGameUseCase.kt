@@ -9,22 +9,7 @@ public class UpdateSavedGameUseCase
 constructor(
     private val savedGameRepository: SavedGameRepository
 ) {
-    public suspend operator fun invoke(
-        savedGame: SavedGame,
-        timer: Long,
-        board: String,
-        notes: String,
-        mistakes: Int,
-        lastPlayed: Long
-    ) {
-        savedGameRepository.update(
-            savedGame.copy(
-                timer = timer,
-                board = board,
-                notes = notes,
-                mistakes = mistakes,
-                lastPlayed = lastPlayed
-            )
-        )
+    public suspend operator fun invoke(savedGame: SavedGame) {
+        savedGameRepository.update(savedGame)
     }
 }

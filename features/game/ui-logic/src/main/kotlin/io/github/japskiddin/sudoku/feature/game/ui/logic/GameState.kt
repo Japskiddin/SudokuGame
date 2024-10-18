@@ -10,7 +10,10 @@ internal data class GameState(
     val solvedBoard: BoardList,
     val board: BoardList,
     val notes: List<BoardNote>,
-    val selectedCell: BoardCell
+    val selectedCell: BoardCell,
+    val actions: Int,
+    val mistakes: Int,
+    val timer: Long
 ) {
     internal companion object {
         val Initial: GameState = GameState(
@@ -18,7 +21,10 @@ internal data class GameState(
             initialBoard = listOf(),
             solvedBoard = listOf(),
             notes = listOf(),
-            selectedCell = BoardCell.Empty
+            selectedCell = BoardCell.Empty,
+            actions = 0,
+            mistakes = 0,
+            timer = 0L
         )
     }
 }
