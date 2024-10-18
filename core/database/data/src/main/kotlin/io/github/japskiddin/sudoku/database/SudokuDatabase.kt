@@ -4,14 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.RecordDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import io.github.japskiddin.sudoku.database.entities.BoardDBO
 import io.github.japskiddin.sudoku.database.entities.RecordDBO
 import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
-import io.github.japskiddin.sudoku.database.utils.DateConverter
 
 @Database(
     entities = [
@@ -21,7 +19,6 @@ import io.github.japskiddin.sudoku.database.utils.DateConverter
     ],
     version = 1
 )
-@TypeConverters(DateConverter::class)
 internal abstract class SudokuRoomDatabase : RoomDatabase() {
     abstract fun recordDao(): RecordDao
 

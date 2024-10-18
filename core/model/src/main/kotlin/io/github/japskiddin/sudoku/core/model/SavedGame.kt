@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.core.model
 
 public data class SavedGame(
-    val uid: Long = ID_NONE,
+    val uid: Long,
     val board: String,
     val notes: String,
     val actions: Int,
@@ -11,8 +11,4 @@ public data class SavedGame(
     val startedTime: Long,
     val finishedTime: Long,
     val status: GameStatus
-) {
-    public companion object {
-        public const val ID_NONE: Long = 0L
-    }
-}
+)

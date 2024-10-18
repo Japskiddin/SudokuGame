@@ -11,18 +11,25 @@ import androidx.room.PrimaryKey
  */
 @Keep
 @Entity(
-    tableName = "record",
+    tableName = RecordDBO.TABLE,
     foreignKeys = [
         ForeignKey(
-            onDelete = ForeignKey.CASCADE,
             entity = BoardDBO::class,
-            parentColumns = arrayOf("uid"),
-            childColumns = arrayOf("board_uid")
+            parentColumns = arrayOf(BoardDBO.COLUMN_UID),
+            childColumns = arrayOf(RecordDBO.COLUMN_BOARD_UID),
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
 public data class RecordDBO(
     @PrimaryKey
-    @ColumnInfo(name = "board_uid") val boardUid: Long,
-    @ColumnInfo(name = "time") val time: Long
-)
+    @ColumnInfo(name = COLUMN_BOARD_UID) val uid: Long,
+    @ColumnInfo(name = COLUMN_TIME) val time: Long
+) {
+    public companion object {
+        public const val TABLE: String = "record"
+
+        public const val COLUMN_BOARD_UID: String = "board_uid"
+        public const val COLUMN_TIME: String = "time"
+    }
+}

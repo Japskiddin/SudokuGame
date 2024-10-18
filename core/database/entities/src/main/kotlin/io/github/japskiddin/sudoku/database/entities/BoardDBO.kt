@@ -10,13 +10,23 @@ import androidx.room.PrimaryKey
  */
 @Keep
 @Entity(
-    tableName = "board"
+    tableName = BoardDBO.TABLE
 )
 public data class BoardDBO(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "uid") val uid: Long,
-    @ColumnInfo(name = "board") val board: String,
-    @ColumnInfo(name = "solved_board") val solvedBoard: String,
-    @ColumnInfo(name = "difficulty") val difficulty: Int,
-    @ColumnInfo(name = "type") val type: Int
-)
+    @ColumnInfo(name = COLUMN_UID) val uid: Long,
+    @ColumnInfo(name = COLUMN_BOARD) val board: String,
+    @ColumnInfo(name = COLUMN_SOLVED_BOARD) val solvedBoard: String,
+    @ColumnInfo(name = COLUMN_DIFFICULTY) val difficulty: Int,
+    @ColumnInfo(name = COLUMN_TYPE) val type: Int
+) {
+    public companion object {
+        public const val TABLE: String = "board"
+
+        public const val COLUMN_UID: String = "uid"
+        public const val COLUMN_BOARD: String = "board"
+        public const val COLUMN_SOLVED_BOARD: String = "solved_board"
+        public const val COLUMN_DIFFICULTY: String = "difficulty"
+        public const val COLUMN_TYPE: String = "type"
+    }
+}

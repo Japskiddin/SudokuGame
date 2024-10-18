@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnDialogSurface
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.feature.home.ui.R
-import io.github.japskiddin.sudoku.feature.home.ui.utils.getName
 import kotlinx.collections.immutable.persistentListOf
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 

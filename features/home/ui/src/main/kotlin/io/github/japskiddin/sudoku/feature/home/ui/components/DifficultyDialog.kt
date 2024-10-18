@@ -15,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.feature.home.ui.R
-import io.github.japskiddin.sudoku.feature.home.ui.utils.getName
 import kotlinx.collections.immutable.persistentListOf
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 

@@ -12,5 +12,6 @@ internal fun Project.configureFeatureUi() {
         implementation(libs.androidx.lifecycle.runtime.compose)
         implementation(libs.dagger.hilt.navigation.compose)
         implementation(project(":core:ui"))
+        implementation(project(":core:feature"))
     }
 }

@@ -18,6 +18,7 @@ import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
+import io.github.japskiddin.sudoku.core.model.SavedGame
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
@@ -31,6 +32,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameError
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -66,6 +68,10 @@ internal constructor(
     private val isCompleted = MutableStateFlow(false)
     private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
+    private val timer = MutableStateFlow(0L)
+
+    private var savedGame: SavedGame? = null
+    private var timerJob: Job? = null
 
     public val uiState: StateFlow<UiState> = combine(
         isLoading,
@@ -130,10 +136,10 @@ internal constructor(
             }
             gameState.update { it.copy(solvedBoard = solvedBoard) }
 
-            val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+            savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
             val board: BoardList = if (savedGame != null) {
-                val restoredBoard = restoreGameUseCase.get().invoke(savedGame, boardEntity, initialBoard, solvedBoard)
-                restoredBoard
+                val restoredBoard = savedGame?.board ?: ""
+                restoreGameUseCase.get().invoke(restoredBoard, boardEntity, initialBoard, solvedBoard)
             } else {
                 initialBoard
             }
@@ -141,6 +147,7 @@ internal constructor(
             isLoading.update { false }
             gameHistoryManager = GameHistoryManager(GameHistory(board = board, notes = listOf()))
             saveGame()
+//            startTimer()
         }
     }
 
@@ -244,25 +251,27 @@ internal constructor(
 
     private suspend fun saveGame() {
         val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+        val currentTimeMillis = System.currentTimeMillis()
+        val state = gameState.value
         if (savedGame != null) {
             updateSavedGameUseCase.get().invoke(
                 savedGame = savedGame,
                 timer = 0L,
-                board = gameState.value.board.convertToString(),
-                notes = gameState.value.notes.convertToString(),
+                board = state.board.convertToString(),
+                notes = state.notes.convertToString(),
                 mistakes = 0,
-                lastPlayed = 0
+                lastPlayed = currentTimeMillis
             )
         } else {
             insertSavedGameUseCase.get().invoke(
                 uid = boardEntity.uid,
-                board = gameState.value.board.convertToString(),
-                notes = gameState.value.notes.convertToString(),
+                board = state.board.convertToString(),
+                notes = state.notes.convertToString(),
                 timer = 0L,
                 actions = 0,
                 mistakes = 0,
-                lastPlayed = 0L,
-                startedAt = 0L,
+                lastPlayed = currentTimeMillis,
+                startedAt = currentTimeMillis,
                 finishedAt = 0L,
                 status = GameStatus.IN_PROGRESS,
             )

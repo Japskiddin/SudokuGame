@@ -12,27 +12,27 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 public interface SavedGameDao {
-    @Query("SELECT * FROM saved_game")
+    @Query("SELECT * FROM ${SavedGameDBO.TABLE}")
     public fun getAll(): Flow<List<SavedGameDBO>>
 
-    @Query("SELECT * FROM saved_game WHERE board_uid == :uid")
-    public suspend fun get(uid: Long): SavedGameDBO?
+    @Query("SELECT * FROM ${SavedGameDBO.TABLE} WHERE ${SavedGameDBO.COLUMN_BOARD_UID} == :boardUid")
+    public suspend fun get(boardUid: Long): SavedGameDBO?
 
     @Query(
-        "SELECT * FROM saved_game" +
-            " JOIN board ON saved_game.board_uid == board.uid" +
-            " ORDER BY uid DESC"
+        "SELECT * FROM ${SavedGameDBO.TABLE}" +
+            " JOIN ${BoardDBO.TABLE} ON ${SavedGameDBO.COLUMN_BOARD_UID} == ${BoardDBO.COLUMN_UID}" +
+            " ORDER BY ${SavedGameDBO.COLUMN_BOARD_UID} DESC"
     )
     public fun getSavedWithBoards(): Flow<Map<SavedGameDBO, BoardDBO>>
 
-    @Query("SELECT * FROM saved_game ORDER BY board_uid DESC LIMIT 1")
+    @Query("SELECT * FROM ${SavedGameDBO.TABLE} ORDER BY ${SavedGameDBO.COLUMN_BOARD_UID} DESC LIMIT 1")
     public fun getLast(): Flow<SavedGameDBO?>
 
     @Query(
-        "SELECT * FROM saved_game" +
-            " JOIN board ON saved_game.board_uid == board.uid" +
-            " WHERE saved_game.status == 0" +
-            " ORDER BY last_played DESC" +
+        "SELECT * FROM ${SavedGameDBO.TABLE}" +
+            " JOIN ${BoardDBO.TABLE} ON ${SavedGameDBO.COLUMN_BOARD_UID} == ${BoardDBO.COLUMN_UID}" +
+            " WHERE ${SavedGameDBO.COLUMN_STATUS} == 0" +
+            " ORDER BY ${SavedGameDBO.COLUMN_LAST_PLAYED} DESC" +
             " LIMIT :limit"
     )
     public fun getLastPlayable(limit: Int): Flow<Map<SavedGameDBO, BoardDBO>>

@@ -42,6 +42,7 @@ include(
     ":core:game",
     ":core:designsystem",
     ":core:ui",
+    ":core:feature",
     ":core:data",
     ":features:home:ui",
     ":features:home:ui-logic",

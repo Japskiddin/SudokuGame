@@ -8,19 +8,18 @@ import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
-import io.github.japskiddin.sudoku.core.model.SavedGame
 import javax.inject.Inject
 
 public class RestoreGameUseCase @Inject constructor() {
     public operator fun invoke(
-        savedGame: SavedGame,
+        savedBoard: String,
         boardEntity: Board,
         initialBoard: BoardList,
         solvedBoard: BoardList,
         mistakesMethod: MistakesMethod = MistakesMethod.CLASSIC
     ): BoardList {
         val type = boardEntity.type
-        val restoredBoard = savedGame.board.convertToList(type)
+        val restoredBoard = savedBoard.convertToList(type)
         for (i in restoredBoard.indices) {
             for (j in restoredBoard.indices) {
                 restoreCell(
