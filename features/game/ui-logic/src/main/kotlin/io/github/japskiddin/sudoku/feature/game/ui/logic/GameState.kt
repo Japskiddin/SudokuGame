@@ -4,6 +4,8 @@ import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.game.utils.emptyBoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameType
 
 internal data class GameState(
     val initialBoard: BoardList,
@@ -11,9 +13,11 @@ internal data class GameState(
     val board: BoardList,
     val notes: List<BoardNote>,
     val selectedCell: BoardCell,
+    val type: GameType,
+    val difficulty: GameDifficulty,
     val actions: Int,
     val mistakes: Int,
-    val timer: Long
+    val time: Long
 ) {
     internal companion object {
         val Initial: GameState = GameState(
@@ -22,9 +26,11 @@ internal data class GameState(
             solvedBoard = listOf(),
             notes = listOf(),
             selectedCell = BoardCell.Empty,
+            type = GameType.DEFAULT9X9,
+            difficulty = GameDifficulty.INTERMEDIATE,
             actions = 0,
             mistakes = 0,
-            timer = 0L
+            time = 0L
         )
     }
 }

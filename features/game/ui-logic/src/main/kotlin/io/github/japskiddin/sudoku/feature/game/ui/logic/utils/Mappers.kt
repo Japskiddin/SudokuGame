@@ -8,7 +8,12 @@ import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 
 internal fun GameState.toUiState(): GameUiState = GameUiState(
     board = this.board.toImmutable(),
-    selectedCell = this.selectedCell
+    selectedCell = this.selectedCell,
+    type = this.type,
+    difficulty = this.difficulty,
+    actions = this.actions,
+    mistakes = this.mistakes,
+    time = this.time
 )
 
 internal fun Exception.toGameError(): GameError = when (this) {

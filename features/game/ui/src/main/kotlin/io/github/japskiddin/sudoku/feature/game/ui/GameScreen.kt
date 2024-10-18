@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,11 +29,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
+import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
+import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
@@ -56,6 +60,10 @@ private fun GameScreen(
     modifier: Modifier = Modifier,
     viewModel: GameViewModel
 ) {
+    BackHandler {
+        viewModel.onBackPressed()
+    }
+
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     GameScreenContent(
         modifier = modifier,
@@ -129,6 +137,12 @@ private fun Game(
             .then(modifier)
             .safeDrawingPadding()
     ) {
+        InfoPanel(
+            type = state.type,
+            difficulty = state.difficulty,
+            mistakes = state.mistakes,
+            time = state.time
+        )
         GameBoard(
             board = state.board,
             selectedCell = state.selectedCell,
@@ -243,7 +257,12 @@ private class UiStateProvider : PreviewParameterProvider<UiState> {
             row = 3,
             col = 2,
             value = 3
-        )
+        ),
+        type = GameType.DEFAULT9X9,
+        difficulty = GameDifficulty.INTERMEDIATE,
+        actions = 0,
+        mistakes = 0,
+        time = 0L
     )
 
     override val values: Sequence<UiState>

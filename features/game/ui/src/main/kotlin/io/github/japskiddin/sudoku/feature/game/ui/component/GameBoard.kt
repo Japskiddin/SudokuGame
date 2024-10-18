@@ -54,6 +54,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
+import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
@@ -789,7 +790,12 @@ private fun GameBoardPreview() {
             row = 3,
             col = 2,
             value = 3
-        )
+        ),
+        type = GameType.DEFAULT9X9,
+        difficulty = GameDifficulty.INTERMEDIATE,
+        actions = 0,
+        mistakes = 0,
+        time = 0L
     )
     SudokuTheme {
         GameBoard(

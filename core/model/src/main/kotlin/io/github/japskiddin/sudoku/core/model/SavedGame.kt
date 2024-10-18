@@ -6,7 +6,7 @@ public data class SavedGame(
     val notes: String,
     val actions: Int,
     val mistakes: Int,
-    val timer: Long,
+    val time: Long,
     val lastPlayed: Long,
     val startedTime: Long,
     val finishedTime: Long,

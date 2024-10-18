@@ -22,8 +22,8 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 @Composable
 internal fun InfoPanel(
     modifier: Modifier = Modifier,
-    gameType: GameType,
-    gameDifficulty: GameDifficulty,
+    type: GameType,
+    difficulty: GameDifficulty,
     time: Long,
     mistakes: Int
 ) {
@@ -36,17 +36,11 @@ internal fun InfoPanel(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = stringResource(
-                    CoreUiR.string.current_game_type,
-                    gameType.title
-                )
+                text = type.title
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = stringResource(
-                    CoreUiR.string.current_game_difficulty,
-                    stringResource(gameDifficulty.getName())
-                )
+                text = stringResource(difficulty.getName())
             )
         }
         Spacer(modifier = Modifier.width(12.dp))
@@ -76,8 +70,8 @@ internal fun InfoPanel(
 private fun InfoPanelPreview() {
     SudokuTheme {
         InfoPanel(
-            gameType = GameType.DEFAULT9X9,
-            gameDifficulty = GameDifficulty.INTERMEDIATE,
+            type = GameType.DEFAULT9X9,
+            difficulty = GameDifficulty.INTERMEDIATE,
             time = 0L,
             mistakes = 0
         )

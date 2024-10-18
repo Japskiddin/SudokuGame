@@ -12,7 +12,6 @@ import io.github.japskiddin.sudoku.core.game.utils.initiate
 import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
-import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
@@ -32,6 +31,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -59,8 +59,6 @@ internal constructor(
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
     private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>
 ) : ViewModel() {
-    private lateinit var boardEntity: Board
-
     private lateinit var gameHistoryManager: GameHistoryManager
 
     private val isLoading = MutableStateFlow(false)
@@ -69,6 +67,7 @@ internal constructor(
     private val gameState = MutableStateFlow(GameState.Initial)
 
     private var timerJob: Job? = null
+    private var boardUid: Long = -1L
 
     public val uiState: StateFlow<UiState> = combine(
         isLoading,
@@ -97,16 +96,21 @@ internal constructor(
             is UiAction.Undo -> undoBoard()
             is UiAction.Redo -> redoBoard()
             is UiAction.Note -> notesBoard()
-            is UiAction.CloseError -> onBackButtonClick()
+            is UiAction.CloseError -> appNavigator.tryNavigateBack()
         }
     }
 
-    public fun onBackButtonClick(): Unit = appNavigator.tryNavigateBack()
+    public fun onBackPressed() {
+        viewModelScope.launch(appDispatchers.io) {
+            saveGame()
+        }
+        appNavigator.tryNavigateBack()
+    }
 
     private fun generateGameLevel() {
         isLoading.update { true }
 
-        val boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
+        boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
         if (boardUid == -1L) {
             error.update { GameError.BOARD_NOT_FOUND }
             isLoading.update { false }
@@ -114,7 +118,7 @@ internal constructor(
         }
 
         viewModelScope.launch(appDispatchers.io) {
-            boardEntity = try {
+            val boardEntity = try {
                 getBoardUseCase.get().invoke(boardUid)
             } catch (ex: BoardNotFoundException) {
                 error.update { ex.toGameError() }
@@ -122,6 +126,9 @@ internal constructor(
                 return@launch
             }
 
+            gameState.update { it.copy(type = boardEntity.type, difficulty = boardEntity.difficulty) }
+
+            // TODO: перенести метод расширения в Board
             val initialBoard = boardEntity.board.convertToList(boardEntity.type)
             initialBoard.initiate()
             gameState.update { it.copy(initialBoard = initialBoard) }
@@ -142,20 +149,42 @@ internal constructor(
             }
             isLoading.update { false }
             gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
-//            startTimer()
+            startTimer()
         }
     }
 
     private fun restoreGame(savedGame: SavedGame) {
-        val savedBoard = savedGame.board.convertToList(boardEntity.type)
         val state = gameState.value
+        val savedBoard = savedGame.board.convertToList(state.type)
         val restoredBoard = restoreGameUseCase.get().invoke(
             savedBoard,
-            boardEntity.type,
+            state.type,
             state.initialBoard,
             state.solvedBoard
         )
-        gameState.update { it.copy(board = restoredBoard) }
+        gameState.update {
+            it.copy(
+                board = restoredBoard,
+                actions = savedGame.actions,
+                mistakes = savedGame.mistakes,
+                time = savedGame.time
+            )
+        }
+    }
+
+    private fun startTimer() {
+        stopTimer()
+        timerJob = viewModelScope.launch(appDispatchers.io) {
+            while (true) {
+                delay(TIMER_DELAY)
+                gameState.update { it.copy(time = it.time + 1) }
+            }
+        }
+    }
+
+    private fun stopTimer() {
+        timerJob?.cancel()
+        timerJob = null
     }
 
     private fun inputValueToCell(value: Int, mistakesMethod: MistakesMethod = MistakesMethod.CLASSIC) {
@@ -176,11 +205,11 @@ internal constructor(
                 when (mistakesMethod) {
                     MistakesMethod.MODERN -> {
                         newBoard[cell.row][cell.col].isError =
-                            !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], boardEntity.type)
+                            !isValidCellDynamic(newBoard, newBoard[cell.row][cell.col], state.type)
                         newBoard.forEach { cells ->
                             cells.forEach { cell ->
                                 if (cell.value != 0 && cell.isError) {
-                                    cell.isError = !isValidCellDynamic(newBoard, cell, boardEntity.type)
+                                    cell.isError = !isValidCellDynamic(newBoard, cell, state.type)
                                 }
                             }
                         }
@@ -243,13 +272,17 @@ internal constructor(
         checkBoardSolved()
         val gameState = gameState.value
         isCompleted.update { checkGameCompletedUseCase.get().invoke(gameState.board, gameState.solvedBoard) }
+        if (isCompleted.value) {
+            stopTimer()
+        }
     }
 
     private fun checkBoardSolved() {
+        val state = gameState.value
         if (gameState.value.solvedBoard.isEmpty()) {
             val solvedBoard = solveBoardUseCase.get().invoke(
-                boardEntity.board,
-                boardEntity.type,
+                state.board.convertToString(),
+                state.type,
                 gameState.value.initialBoard
             )
             gameState.update { it.copy(solvedBoard = solvedBoard) }
@@ -259,11 +292,11 @@ internal constructor(
     private suspend fun saveGame() {
         val currentTimeMillis = System.currentTimeMillis()
         val state = gameState.value
-        val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+        val savedGame = getSavedGameUseCase.get().invoke(boardUid)
         if (savedGame != null) {
             updateSavedGameUseCase.get().invoke(
                 savedGame.copy(
-                    timer = state.timer,
+                    time = state.time,
                     board = state.board.convertToString(),
                     notes = state.notes.convertToString(),
                     actions = state.actions,
@@ -273,10 +306,10 @@ internal constructor(
             )
         } else {
             insertSavedGameUseCase.get().invoke(
-                uid = boardEntity.uid,
+                uid = boardUid,
                 board = state.board.convertToString(),
                 notes = state.notes.convertToString(),
-                timer = state.timer,
+                time = state.time,
                 actions = state.actions,
                 mistakes = state.mistakes,
                 lastPlayed = currentTimeMillis,
@@ -285,5 +318,9 @@ internal constructor(
                 status = GameStatus.IN_PROGRESS,
             )
         }
+    }
+
+    private companion object {
+        private const val TIMER_DELAY = 1000L
     }
 }
