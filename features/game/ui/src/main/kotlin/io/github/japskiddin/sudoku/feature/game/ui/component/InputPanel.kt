@@ -4,8 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.designsystem.theme.MerriweatherFamily
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.game.utils.BoardList
@@ -94,8 +96,7 @@ private fun InputPanelContent(
                         .weight(1f)
                         .clickable { onClick(i) }
                 } else {
-                    Modifier
-                        .weight(1f)
+                    Modifier.weight(1f)
                 }
             )
         }
@@ -114,7 +115,7 @@ private fun InputButton(
     Column(
         modifier = Modifier
             .then(modifier)
-            .padding(8.dp),
+            .padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val color = if (counter > 0) {
@@ -124,16 +125,18 @@ private fun InputButton(
         }
         Text(
             text = value.toString(),
-            fontFamily = MerriweatherFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = valueTextSize,
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontSize = valueTextSize
+            ),
             color = color
         )
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = counter.toString(),
-            fontFamily = MerriweatherFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = counterTextSize,
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontSize = counterTextSize,
+                fontWeight = FontWeight.Normal
+            ),
             color = color
         )
     }

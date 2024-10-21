@@ -120,7 +120,7 @@ internal fun GameBoard(
                 color = OnPrimary,
                 shape = RoundedCornerShape(size = 16.dp)
             )
-            .padding(8.dp)
+            .padding(6.dp)
             .innerShadow(
                 shape = RoundedCornerShape(size = 12.dp),
                 color = Color.Black.copy(alpha = .8f),

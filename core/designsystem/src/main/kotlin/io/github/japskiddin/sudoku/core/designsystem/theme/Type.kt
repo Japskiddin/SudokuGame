@@ -6,18 +6,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /**
- * Body Medium - for dialogs
- * Body Large - for titles on info panels (Loading, Erros, etc)
- * Label Small - for tool buttons
- * Label Medium - for game buttons
- * Title Small - for year on title screen
  * Title Large - for Application's title
+ * Title Small - for year on title screen
+ * Body Large - for titles on info panels (Loading, Errors, etc)
+ * Body Medium - for dialogs
+ * Label Medium - for game buttons
+ * Label Small - for tool buttons
  */
 public val Typography: Typography = Typography(
-    bodyMedium = TextStyle(
+    titleLarge = TextStyle(
         fontFamily = MerriweatherFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontWeight = FontWeight.Black,
+        fontSize = 48.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = MerriweatherFamily,
+        fontWeight = FontWeight.Black,
+        fontSize = 14.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = MerriweatherFamily,
@@ -25,24 +30,19 @@ public val Typography: Typography = Typography(
         fontSize = 20.sp,
         lineHeight = 36.sp
     ),
-    labelSmall = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = MerriweatherFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
     ),
     labelMedium = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
-    titleSmall = TextStyle(
+    labelSmall = TextStyle(
         fontFamily = MerriweatherFamily,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp
-    ),
-    titleLarge = TextStyle(
-        fontFamily = MerriweatherFamily,
-        fontWeight = FontWeight.Black,
-        fontSize = 48.sp
     )
 )

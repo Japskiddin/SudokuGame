@@ -77,7 +77,7 @@ private fun ToolButton(
         modifier = Modifier
             .then(modifier)
             .clickable { onClick() }
-            .padding(8.dp),
+            .padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
@@ -86,7 +86,7 @@ private fun ToolButton(
             tint = textColor,
             modifier = Modifier.size(iconSize)
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
