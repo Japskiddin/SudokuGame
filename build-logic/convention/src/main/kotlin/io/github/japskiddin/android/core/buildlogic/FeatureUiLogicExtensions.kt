@@ -11,7 +11,7 @@ internal fun Project.configureFeatureUiLogic() {
         implementation(libs.androidx.lifecycle.viewmodel.ktx)
         implementation(libs.jetbrains.kotlinx.coroutines.core)
         implementation(libs.jetbrains.kotlinx.coroutines.android)
-        implementation(project(":core:common-android"))
+        api(project(":core:common-android"))
         implementation(project(":core:navigation"))
         api(project(":core:model"))
     }

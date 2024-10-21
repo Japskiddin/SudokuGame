@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
+import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.game.utils.convertToList
 import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.game.utils.initiate
@@ -16,7 +17,6 @@ import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
-import io.github.japskiddin.sudoku.core.model.SavedGame
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
@@ -25,9 +25,8 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUs
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.asUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
-import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameError
-import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.Job
@@ -35,7 +34,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -61,27 +59,14 @@ internal constructor(
 ) : ViewModel() {
     private lateinit var gameHistoryManager: GameHistoryManager
 
-    private val isLoading = MutableStateFlow(false)
-    private val isCompleted = MutableStateFlow(false)
-    private val error = MutableStateFlow(GameError.NONE)
     private val gameState = MutableStateFlow(GameState.Initial)
 
     private var timerJob: Job? = null
     private var boardUid: Long = -1L
 
-    public val uiState: StateFlow<UiState> = combine(
-        isLoading,
-        isCompleted,
-        error,
-        gameState
-    ) { isLoading, isCompleted, error, gameState ->
-        when {
-            isLoading -> UiState.Loading
-            isCompleted -> UiState.Complete
-            error != GameError.NONE -> UiState.Error(error)
-            else -> UiState.Game(gameState.toUiState())
-        }
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
+    public val uiState: StateFlow<UiState> = gameState
+        .asUiState()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
 
     init {
         generateGameLevel()
@@ -108,12 +93,11 @@ internal constructor(
     }
 
     private fun generateGameLevel() {
-        isLoading.update { true }
+        gameState.update { it.copy(status = GameState.Status.LOADING) }
 
         boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
         if (boardUid == -1L) {
-            error.update { GameError.BOARD_NOT_FOUND }
-            isLoading.update { false }
+            gameState.update { it.copy(error = GameError.BOARD_NOT_FOUND) }
             return
         }
 
@@ -121,54 +105,58 @@ internal constructor(
             val boardEntity = try {
                 getBoardUseCase.get().invoke(boardUid)
             } catch (ex: BoardNotFoundException) {
-                error.update { ex.toGameError() }
-                isLoading.update { false }
+                gameState.update { it.copy(error = ex.toGameError()) }
                 return@launch
             }
 
-            gameState.update { it.copy(type = boardEntity.type, difficulty = boardEntity.difficulty) }
+            val boardType = boardEntity.type
+            val boardDifficulty = boardEntity.difficulty
+            val board = boardEntity.board
 
             // TODO: перенести метод расширения в Board
-            val initialBoard = boardEntity.board.convertToList(boardEntity.type)
+            val initialBoard = board.convertToList(boardType)
             initialBoard.initiate()
-            gameState.update { it.copy(initialBoard = initialBoard) }
 
             val solvedBoard = if (boardEntity.solvedBoard.isSudokuFilled()) {
-                boardEntity.solvedBoard.convertToList(boardEntity.type)
+                boardEntity.solvedBoard.convertToList(boardType)
             } else {
-                solveBoardUseCase.get().invoke(boardEntity.board, boardEntity.type, initialBoard)
+                solveBoardUseCase.get().invoke(board, boardType, initialBoard)
             }
-            gameState.update { it.copy(solvedBoard = solvedBoard) }
 
-            val savedGame = getSavedGameUseCase.get().invoke(boardEntity.uid)
+            val savedGame = getSavedGameUseCase.get().invoke(boardUid)
             if (savedGame != null) {
-                restoreGame(savedGame)
+                val savedBoard = board.convertToList(boardType)
+                val restoredBoard = restoreGameUseCase.get().invoke(
+                    savedBoard,
+                    boardType,
+                    initialBoard,
+                    solvedBoard
+                )
+                gameState.update {
+                    it.copy(
+                        board = restoredBoard,
+                        actions = savedGame.actions,
+                        mistakes = savedGame.mistakes,
+                        time = savedGame.time
+                    )
+                }
             } else {
                 saveGame()
                 gameState.update { it.copy(board = it.initialBoard) }
             }
-            isLoading.update { false }
+
             gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
             startTimer()
-        }
-    }
 
-    private fun restoreGame(savedGame: SavedGame) {
-        val state = gameState.value
-        val savedBoard = savedGame.board.convertToList(state.type)
-        val restoredBoard = restoreGameUseCase.get().invoke(
-            savedBoard,
-            state.type,
-            state.initialBoard,
-            state.solvedBoard
-        )
-        gameState.update {
-            it.copy(
-                board = restoredBoard,
-                actions = savedGame.actions,
-                mistakes = savedGame.mistakes,
-                time = savedGame.time
-            )
+            gameState.update {
+                it.copy(
+                    status = GameState.Status.PLAYING,
+                    type = boardType,
+                    difficulty = boardDifficulty,
+                    initialBoard = initialBoard,
+                    solvedBoard = solvedBoard
+                )
+            }
         }
     }
 
@@ -270,9 +258,9 @@ internal constructor(
 
     private fun checkGameCompleted() {
         checkBoardSolved()
-        val gameState = gameState.value
-        isCompleted.update { checkGameCompletedUseCase.get().invoke(gameState.board, gameState.solvedBoard) }
-        if (isCompleted.value) {
+        val isCompleted = checkGameCompletedUseCase.get().invoke(gameState.value.board, gameState.value.solvedBoard)
+        if (isCompleted) {
+            gameState.update { it.copy(status = GameState.Status.COMPLETED) }
             stopTimer()
         }
     }

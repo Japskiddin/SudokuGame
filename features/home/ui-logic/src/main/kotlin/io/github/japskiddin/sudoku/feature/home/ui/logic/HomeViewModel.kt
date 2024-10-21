@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
+import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
+import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
@@ -11,8 +13,6 @@ import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCas
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
-import io.github.japskiddin.sudoku.feature.home.domain.usecase.SudokuNotGeneratedException
-import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.toGameError
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow

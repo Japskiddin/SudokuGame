@@ -5,6 +5,7 @@ import io.github.japskiddin.sudoku.core.game.utils.emptyBoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
 
 internal data class GameState(
@@ -17,8 +18,16 @@ internal data class GameState(
     val difficulty: GameDifficulty,
     val actions: Int,
     val mistakes: Int,
-    val time: Long
+    val time: Long,
+    val status: Status,
+    val error: GameError
 ) {
+    internal enum class Status {
+        LOADING,
+        PLAYING,
+        COMPLETED
+    }
+
     internal companion object {
         val Initial: GameState = GameState(
             board = emptyBoardList,
@@ -30,7 +39,9 @@ internal data class GameState(
             difficulty = GameDifficulty.INTERMEDIATE,
             actions = 0,
             mistakes = 0,
-            time = 0L
+            time = 0L,
+            status = Status.LOADING,
+            error = GameError.NONE
         )
     }
 }

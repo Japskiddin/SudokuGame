@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.home.domain.usecase
 
+import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.model.Board
@@ -47,5 +48,3 @@ public class GenerateSudokuUseCase @Inject constructor() {
         )
     }
 }
-
-public class SudokuNotGeneratedException(message: String = "Error with generating sudoku") : Exception(message)

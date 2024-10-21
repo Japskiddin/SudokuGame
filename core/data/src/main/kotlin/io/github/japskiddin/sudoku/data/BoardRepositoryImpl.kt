@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.data
 
-import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.data.utils.toBoard
@@ -19,8 +18,7 @@ constructor(
         list.map { boardDBO -> boardDBO.toBoard() }
     }
 
-    override suspend fun get(uid: Long): Board = boardDao.get(uid)?.toBoard()
-        ?: throw BoardNotFoundException("Board with $uid not found")
+    override suspend fun get(uid: Long): Board? = boardDao.get(uid)?.toBoard()
 
     override suspend fun insert(board: Board): Long = boardDao.insert(board.toBoardDBO())
 }
