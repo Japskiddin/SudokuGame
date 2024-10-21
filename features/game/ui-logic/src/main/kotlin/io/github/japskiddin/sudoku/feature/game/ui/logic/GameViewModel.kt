@@ -113,7 +113,6 @@ internal constructor(
             val boardDifficulty = boardEntity.difficulty
             val board = boardEntity.board
 
-            // TODO: перенести метод расширения в Board
             val initialBoard = board.convertToList(boardType)
             initialBoard.initiate()
 
@@ -157,6 +156,7 @@ internal constructor(
 
             gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
             startTimer()
+            saveGame()
         }
     }
 

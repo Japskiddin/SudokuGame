@@ -34,11 +34,7 @@ internal fun ToolPanel(
     modifier: Modifier = Modifier,
     onToolClick: (ToolAction) -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
+    Row(modifier = modifier.fillMaxWidth()) {
         ToolButton(
             modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_eraser),
