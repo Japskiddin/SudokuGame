@@ -142,11 +142,8 @@ internal constructor(
                 }
             } else {
                 saveGame()
-                gameState.update { it.copy(board = it.initialBoard) }
+                gameState.update { it.copy(board = initialBoard) }
             }
-
-            gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
-            startTimer()
 
             gameState.update {
                 it.copy(
@@ -157,6 +154,9 @@ internal constructor(
                     solvedBoard = solvedBoard
                 )
             }
+
+            gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
+            startTimer()
         }
     }
 
