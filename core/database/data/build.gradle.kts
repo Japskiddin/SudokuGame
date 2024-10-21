@@ -1,3 +1,4 @@
+import io.github.japskiddin.android.core.buildlogic.api
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
@@ -16,4 +17,5 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    api(projects.core.database.entities)
 }

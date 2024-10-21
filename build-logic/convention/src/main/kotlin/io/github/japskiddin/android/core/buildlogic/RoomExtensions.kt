@@ -14,6 +14,5 @@ internal fun Project.configureRoom() {
         implementation(libs.androidx.room.runtime)
         implementation(libs.androidx.room.ktx)
         ksp(libs.androidx.room.compiler)
-        api(project(":core:database:entities"))
     }
 }

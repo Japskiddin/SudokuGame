@@ -123,9 +123,11 @@ dependencies {
 
     implementation(projects.core.commonAndroid)
     implementation(projects.core.domain)
+    implementation(projects.core.feature)
     implementation(projects.core.game)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
+    implementation(projects.core.model)
     implementation(projects.core.datastore)
     implementation(projects.core.database.data)
     implementation(projects.core.data)
