@@ -15,5 +15,6 @@ internal fun Project.configureFeatureUi() {
         implementation(project(":core:common-android"))
         implementation(project(":core:ui"))
         implementation(project(":core:model"))
+        implementation(project(":core:feature"))
     }
 }

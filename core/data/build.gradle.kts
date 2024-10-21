@@ -15,10 +15,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.jetbrains.kotlinx.coroutines.android)
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
 
     implementation(projects.core.common)
     implementation(projects.core.domain)
+    implementation(projects.core.model)
     implementation(projects.core.database.data)
     implementation(projects.core.datastore)
 

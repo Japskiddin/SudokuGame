@@ -15,6 +15,6 @@ internal fun Project.configureFeatureUiLogic() {
         implementation(project(":core:common-android"))
         implementation(project(":core:navigation"))
         implementation(project(":core:model"))
-        api(project(":core:feature"))
+        implementation(project(":core:feature"))
     }
 }

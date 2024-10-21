@@ -10,7 +10,6 @@ kotlin {
 }
 
 dependencies {
-    api(libs.jetbrains.kotlinx.coroutines.core)
-    api(projects.core.model)
-    api(projects.core.common)
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(projects.core.model)
 }
