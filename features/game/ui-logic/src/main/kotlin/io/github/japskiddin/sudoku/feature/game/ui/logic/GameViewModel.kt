@@ -125,7 +125,7 @@ internal constructor(
 
             val savedGame = getSavedGameUseCase.get().invoke(boardUid)
             if (savedGame != null) {
-                val savedBoard = board.convertToList(boardType)
+                val savedBoard = savedGame.board.convertToList(boardType)
                 val restoredBoard = restoreGameUseCase.get().invoke(
                     savedBoard,
                     boardType,
