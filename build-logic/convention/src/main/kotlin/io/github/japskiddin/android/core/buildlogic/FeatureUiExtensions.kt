@@ -11,7 +11,9 @@ internal fun Project.configureFeatureUi() {
         implementation(libs.androidx.lifecycle.viewmodel.ktx)
         implementation(libs.androidx.lifecycle.runtime.compose)
         implementation(libs.dagger.hilt.navigation.compose)
+        implementation(libs.jetbrains.kotlinx.immutable)
+        implementation(project(":core:common-android"))
         implementation(project(":core:ui"))
-        implementation(project(":core:feature"))
+        implementation(project(":core:model"))
     }
 }
