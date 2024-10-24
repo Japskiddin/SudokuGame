@@ -191,11 +191,11 @@ private fun Menu(
         Column(
             modifier = Modifier.fillMaxWidth(screenWidthPercent)
         ) {
-            val configuration = LocalConfiguration.current
             val menuModifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
                 .wrapContentHeight()
+            val configuration = LocalConfiguration.current
 
             if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 MenuLandscape(
@@ -328,12 +328,6 @@ private fun Error(
     errorCode: GameError,
     onClose: () -> Unit
 ) {
-    val message = stringResource(
-        id = when (errorCode) {
-            GameError.SUDOKU_NOT_GENERATED -> CoreUiR.string.err_generate_sudoku
-            else -> CoreUiR.string.err_unknown
-        }
-    )
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -341,14 +335,27 @@ private fun Error(
             .background(Primary)
             .safeDrawingPadding()
     ) {
+        val configuration = LocalConfiguration.current
+        val widthPercent = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            .6f
+        } else {
+            1f
+        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(16.dp)
+                .fillMaxWidth(widthPercent)
                 .dialogBackground()
         ) {
             Text(
-                text = message,
+                text = stringResource(
+                    id = when (errorCode) {
+                        GameError.SUDOKU_NOT_GENERATED -> CoreUiR.string.err_generate_sudoku
+                        else -> CoreUiR.string.err_unknown
+                    }
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Primary,
                 textAlign = TextAlign.Center
