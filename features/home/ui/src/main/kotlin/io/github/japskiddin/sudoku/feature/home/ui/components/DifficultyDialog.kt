@@ -70,7 +70,7 @@ internal fun DifficultyDialog(
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             ItemSelector(
                 currentItem = type.title,
                 itemPos = types.indexOf(type),

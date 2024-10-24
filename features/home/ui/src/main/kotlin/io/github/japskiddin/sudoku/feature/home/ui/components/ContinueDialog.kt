@@ -35,7 +35,7 @@ internal fun ContinueDialog(
                 textAlign = TextAlign.Center,
                 color = OnDialogSurface
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(id = CoreUiR.string.do_you_want_to_continue),
                 style = MaterialTheme.typography.bodyMedium,
