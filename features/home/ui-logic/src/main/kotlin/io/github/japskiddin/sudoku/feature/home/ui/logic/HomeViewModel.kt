@@ -13,6 +13,7 @@ import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCas
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
+import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.mapToUiMenuState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,28 +40,15 @@ internal constructor(
 ) : ViewModel() {
     private val lastGame = getLastGameUseCase.get().invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
-    private val menuState = MutableStateFlow(MenuState())
-    private val gameState = MutableStateFlow(
-        GameState(
-            selectedDifficulty = GameDifficulty.EASY,
-            selectedType = GameType.DEFAULT9X9
-        )
-    )
-    private val isLoading = MutableStateFlow(false)
-    private val error = MutableStateFlow(GameError.NONE)
+    private val menuState = MutableStateFlow(MenuState.Initial)
+    private val gameState = MutableStateFlow(GameState.Initial)
 
     public val uiState: StateFlow<UiState> =
-        combine(isLoading, error, menuState, gameState, lastGame) { isLoading, error, menuState, gameState, lastGame ->
+        combine(menuState, gameState, lastGame) { menuState, gameState, lastGame ->
             when {
-                error != GameError.NONE -> UiState.Error(code = error)
-                isLoading -> UiState.Loading
-                else -> UiState.Menu(
-                    isShowContinueButton = lastGame != null,
-                    isShowContinueDialog = menuState.isShowContinueDialog,
-                    isShowDifficultyDialog = menuState.isShowDifficultyDialog,
-                    selectedDifficulty = gameState.selectedDifficulty,
-                    selectedType = gameState.selectedType
-                )
+                menuState.error != GameError.NONE -> UiState.Error(code = menuState.error)
+                menuState.isLoading -> UiState.Loading
+                else -> mapToUiMenuState(menuState, gameState, lastGame)
             }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
 
@@ -132,7 +120,7 @@ internal constructor(
     }
 
     private fun closeError() {
-        error.update { GameError.NONE }
+        menuState.update { it.copy(error = GameError.NONE) }
     }
 
     private fun dismissContinueDialog() {
@@ -144,19 +132,19 @@ internal constructor(
     }
 
     private fun startNewGame() {
-        viewModelScope.launch(appDispatchers.io) {
-            isLoading.update { true }
+        menuState.update { it.copy(isLoading = true) }
 
+        viewModelScope.launch(appDispatchers.io) {
             val board = try {
                 generateSudokuUseCase.get().invoke(
                     difficulty = gameState.value.selectedDifficulty,
                     type = gameState.value.selectedType
                 )
             } catch (ex: SudokuNotGeneratedException) {
-                error.update { ex.toGameError() }
+                menuState.update { it.copy(error = ex.toGameError()) }
                 return@launch
             } finally {
-                isLoading.update { false }
+                menuState.update { it.copy(isLoading = false) }
             }
 
             val insertedBoardUid = createBoardUseCase.get().invoke(board)
