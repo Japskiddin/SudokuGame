@@ -28,7 +28,9 @@ constructor(
 
     override fun getLastPlayable(limit: Int): Flow<Map<SavedGame, Board>> =
         savedGameDao.getLastPlayable(limit).map { lastPlayable ->
-            lastPlayable.mapKeys { it.key.toSavedGame() }.mapValues { it.value.toBoard() }
+            lastPlayable
+                .mapKeys { it.key.toSavedGame() }
+                .mapValues { it.value.toBoard() }
         }
 
     override suspend fun insert(savedGame: SavedGame): Long = savedGameDao.insert(savedGame.toSavedGameDBO())

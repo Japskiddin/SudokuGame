@@ -262,6 +262,10 @@ internal constructor(
         if (isCompleted) {
             gameState.update { it.copy(status = GameState.Status.COMPLETED) }
             stopTimer()
+            viewModelScope.launch(appDispatchers.io) {
+                saveGame()
+                addToRecords()
+            }
         }
     }
 
@@ -274,6 +278,13 @@ internal constructor(
                 gameState.value.initialBoard
             )
             gameState.update { it.copy(solvedBoard = solvedBoard) }
+        }
+    }
+
+    private suspend fun addToRecords() {
+        val savedGame = getSavedGameUseCase.get().invoke(boardUid)
+        if (savedGame != null) {
+            updateSavedGameUseCase.get().invoke(savedGame.copy(status = GameStatus.COMPLETED))
         }
     }
 
