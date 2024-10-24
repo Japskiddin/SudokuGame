@@ -37,16 +37,18 @@ public fun OutlineText(
         )
     )
 
-    Box {
+    Box(
+        modifier = modifier
+    ) {
         Text(
             text = text,
             style = LocalTextStyle.current.merge(outlineTextStyle),
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
         Text(
             text = text,
             style = LocalTextStyle.current.merge(fillTextStyle),
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

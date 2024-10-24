@@ -1,15 +1,18 @@
 package io.github.japskiddin.sudoku.feature.home.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,9 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -140,7 +145,7 @@ private fun HomeScreenContent(
 @Composable
 private fun Menu(
     modifier: Modifier = Modifier,
-    widthPercent: Float = .8f,
+    screenWidthPercent: Float = .8f,
     isShowContinueButton: Boolean,
     isShowContinueDialog: Boolean,
     isShowDifficultyDialog: Boolean,
@@ -180,48 +185,38 @@ private fun Menu(
                 contentScale = ContentScale.Crop
             )
             .safeDrawingPadding()
-            .padding(16.dp)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth(screenWidthPercent)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(widthPercent)
-                    .weight(1f)
-                    .wrapContentHeight(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                OutlineText(
-                    text = stringResource(id = CoreUiR.string.app_name),
-                    textStyle = MaterialTheme.typography.titleLarge,
-                    fillColor = Color.White,
-                    outlineColor = Color.Black,
-                    outlineWidth = 4.dp
+            val configuration = LocalConfiguration.current
+            val menuModifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .wrapContentHeight()
+
+            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                MenuLandscape(
+                    modifier = menuModifier,
+                    isShowContinueButton = isShowContinueButton,
+                    onStartButtonClick = onStartButtonClick,
+                    onContinueButtonClick = onContinueButtonClick,
+                    onSettingsButtonClick = onSettingsButtonClick,
+                    onRecordsButtonClick = onRecordsButtonClick
                 )
-                Spacer(modifier = Modifier.height(36.dp))
-                if (isShowContinueButton) {
-                    GameButton(
-                        icon = painterResource(id = R.drawable.ic_start),
-                        text = stringResource(id = CoreUiR.string.continue_game)
-                    ) { onContinueButtonClick() }
-                    Spacer(modifier = Modifier.height(36.dp))
-                }
-                GameButton(
-                    icon = painterResource(id = R.drawable.ic_start),
-                    text = stringResource(id = CoreUiR.string.start_game)
-                ) { onStartButtonClick() }
-                Spacer(modifier = Modifier.height(16.dp))
-                GameButton(
-                    icon = painterResource(id = R.drawable.ic_settings),
-                    text = stringResource(id = CoreUiR.string.settings)
-                ) { onSettingsButtonClick() }
-                Spacer(modifier = Modifier.height(16.dp))
-                GameButton(
-                    icon = painterResource(id = R.drawable.ic_records),
-                    text = stringResource(id = CoreUiR.string.records)
-                ) { onRecordsButtonClick() }
+            } else {
+                MenuPortrait(
+                    modifier = menuModifier,
+                    isShowContinueButton = isShowContinueButton,
+                    onStartButtonClick = onStartButtonClick,
+                    onContinueButtonClick = onContinueButtonClick,
+                    onSettingsButtonClick = onSettingsButtonClick,
+                    onRecordsButtonClick = onRecordsButtonClick
+                )
             }
+
             OutlineText(
                 text = currentYear,
                 textStyle = MaterialTheme.typography.titleSmall,
@@ -229,6 +224,101 @@ private fun Menu(
                 outlineColor = Color.Black
             )
         }
+    }
+}
+
+@Composable
+private fun MenuLandscape(
+    modifier: Modifier = Modifier,
+    isShowContinueButton: Boolean,
+    onStartButtonClick: () -> Unit,
+    onContinueButtonClick: () -> Unit,
+    onSettingsButtonClick: () -> Unit,
+    onRecordsButtonClick: () -> Unit
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlineText(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = CoreUiR.string.app_name),
+            textStyle = MaterialTheme.typography.titleLarge,
+            fillColor = Color.White,
+            outlineColor = Color.Black,
+            outlineWidth = 4.dp
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            if (isShowContinueButton) {
+                GameButton(
+                    icon = painterResource(id = R.drawable.ic_start),
+                    text = stringResource(id = CoreUiR.string.continue_game)
+                ) { onContinueButtonClick() }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            GameButton(
+                icon = painterResource(id = R.drawable.ic_start),
+                text = stringResource(id = CoreUiR.string.start_game)
+            ) { onStartButtonClick() }
+            Spacer(modifier = Modifier.height(12.dp))
+            GameButton(
+                icon = painterResource(id = R.drawable.ic_settings),
+                text = stringResource(id = CoreUiR.string.settings)
+            ) { onSettingsButtonClick() }
+            Spacer(modifier = Modifier.height(12.dp))
+            GameButton(
+                icon = painterResource(id = R.drawable.ic_records),
+                text = stringResource(id = CoreUiR.string.records)
+            ) { onRecordsButtonClick() }
+        }
+    }
+}
+
+@Composable
+private fun MenuPortrait(
+    modifier: Modifier = Modifier,
+    isShowContinueButton: Boolean,
+    onStartButtonClick: () -> Unit,
+    onContinueButtonClick: () -> Unit,
+    onSettingsButtonClick: () -> Unit,
+    onRecordsButtonClick: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
+        OutlineText(
+            text = stringResource(id = CoreUiR.string.app_name),
+            textStyle = MaterialTheme.typography.titleLarge,
+            fillColor = Color.White,
+            outlineColor = Color.Black,
+            outlineWidth = 4.dp
+        )
+        Spacer(modifier = Modifier.height(36.dp))
+        if (isShowContinueButton) {
+            GameButton(
+                icon = painterResource(id = R.drawable.ic_start),
+                text = stringResource(id = CoreUiR.string.continue_game)
+            ) { onContinueButtonClick() }
+            Spacer(modifier = Modifier.height(36.dp))
+        }
+        GameButton(
+            icon = painterResource(id = R.drawable.ic_start),
+            text = stringResource(id = CoreUiR.string.start_game)
+        ) { onStartButtonClick() }
+        Spacer(modifier = Modifier.height(12.dp))
+        GameButton(
+            icon = painterResource(id = R.drawable.ic_settings),
+            text = stringResource(id = CoreUiR.string.settings)
+        ) { onSettingsButtonClick() }
+        Spacer(modifier = Modifier.height(12.dp))
+        GameButton(
+            icon = painterResource(id = R.drawable.ic_records),
+            text = stringResource(id = CoreUiR.string.records)
+        ) { onRecordsButtonClick() }
     }
 }
 
@@ -273,7 +363,13 @@ private fun Error(
 }
 
 @Preview(
-    name = "Home Content"
+    name = "Home Content - Portrait mode",
+    device = Devices.PIXEL_2
+)
+@Preview(
+    name = "Home Content - Landscape mode",
+    widthDp = 732,
+    heightDp = 412
 )
 @Composable
 private fun HomeContentPreview(

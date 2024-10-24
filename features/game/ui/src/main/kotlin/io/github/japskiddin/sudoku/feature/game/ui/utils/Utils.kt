@@ -10,7 +10,7 @@ internal fun findGameTypeBySize(size: Int): GameType = when (size) {
     GameType.DEFAULT9X9.size -> GameType.DEFAULT9X9
     GameType.DEFAULT12X12.size -> GameType.DEFAULT12X12
     GameType.UNSPECIFIED.size -> GameType.UNSPECIFIED
-    else -> throw IllegalArgumentException("Incorrect game type size")
+    else -> throw IllegalArgumentException("Incorrect game type size: $size")
 }
 
 internal fun getSampleBoardForPreview(): BoardImmutableList {
