@@ -15,6 +15,8 @@ public sealed interface UiState {
 
     public data object Complete : UiState
 
+    public data object Fail : UiState
+
     public companion object {
         public val Initial: UiState = Loading
     }

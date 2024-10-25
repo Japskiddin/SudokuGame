@@ -25,7 +25,8 @@ internal data class GameState(
     internal enum class Status {
         LOADING,
         PLAYING,
-        COMPLETED
+        COMPLETED,
+        FAILED
     }
 
     internal companion object {

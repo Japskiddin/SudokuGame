@@ -57,7 +57,7 @@ internal fun InfoPanel(
             Text(
                 text = stringResource(
                     CoreUiR.string.current_actions,
-                    actions.toString()
+                    actions
                 ),
                 style = textStyle
             )
@@ -65,7 +65,8 @@ internal fun InfoPanel(
             Text(
                 text = stringResource(
                     CoreUiR.string.current_mistakes,
-                    mistakes.toString()
+                    mistakes,
+                    difficulty.mistakesLimit
                 ),
                 style = textStyle
             )

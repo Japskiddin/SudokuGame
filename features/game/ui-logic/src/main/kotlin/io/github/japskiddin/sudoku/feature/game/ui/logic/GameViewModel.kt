@@ -81,11 +81,14 @@ internal constructor(
             is UiAction.Undo -> undoBoard()
             is UiAction.Redo -> redoBoard()
             is UiAction.Note -> notesBoard()
-            is UiAction.CloseError -> appNavigator.tryNavigateBack()
+            is UiAction.ResumeGame -> startTimer()
+            is UiAction.PauseGame -> pauseGame()
+            is UiAction.Exit -> appNavigator.tryNavigateBack()
+            is UiAction.Back -> onBackPressed()
         }
     }
 
-    public fun onBackPressed() {
+    private fun onBackPressed() {
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
@@ -209,10 +212,20 @@ internal constructor(
                 selectedCell.isError = cell.isError
             }
 
-            state.copy(board = newBoard, selectedCell = selectedCell)
+            state.copy(
+                board = newBoard,
+                selectedCell = selectedCell,
+                actions = state.actions + 1,
+                mistakes = if (selectedCell.isError) {
+                    state.mistakes + 1
+                } else {
+                    state.mistakes
+                }
+            )
         }
         addToGameHistory()
         checkGameCompleted()
+        checkGameFailed()
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
@@ -256,6 +269,18 @@ internal constructor(
         gameHistoryManager.addState(gameHistory)
     }
 
+    private fun checkGameFailed() {
+        val state = gameState.value
+        if (state.mistakes >= state.difficulty.mistakesLimit) {
+            gameState.update { it.copy(status = GameState.Status.FAILED) }
+            stopTimer()
+            viewModelScope.launch(appDispatchers.io) {
+                saveGame()
+                addToRecords()
+            }
+        }
+    }
+
     private fun checkGameCompleted() {
         checkBoardSolved()
         val isCompleted = checkGameCompletedUseCase.get().invoke(gameState.value.board, gameState.value.solvedBoard)
@@ -278,6 +303,13 @@ internal constructor(
                 gameState.value.initialBoard
             )
             gameState.update { it.copy(solvedBoard = solvedBoard) }
+        }
+    }
+
+    private fun pauseGame() {
+        stopTimer()
+        viewModelScope.launch(appDispatchers.io) {
+            saveGame()
         }
     }
 

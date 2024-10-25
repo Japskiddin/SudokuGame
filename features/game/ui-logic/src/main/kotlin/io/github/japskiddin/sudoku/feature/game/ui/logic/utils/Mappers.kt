@@ -23,6 +23,7 @@ internal fun Flow<GameState>.asUiState(): Flow<UiState> = map { state ->
         state.error != GameError.NONE -> UiState.Error(state.error)
         state.status == GameState.Status.LOADING -> UiState.Loading
         state.status == GameState.Status.COMPLETED -> UiState.Complete
+        state.status == GameState.Status.FAILED -> UiState.Fail
         else -> UiState.Game(state.toGameUiState())
     }
 }

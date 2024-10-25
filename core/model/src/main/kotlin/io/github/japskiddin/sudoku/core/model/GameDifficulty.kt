@@ -20,10 +20,10 @@ package io.github.japskiddin.sudoku.core.model
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-public enum class GameDifficulty {
-    UNSPECIFIED,
-    EASY,
-    INTERMEDIATE,
-    HARD,
-    EXPERT
+public enum class GameDifficulty(public val mistakesLimit: Int) {
+    UNSPECIFIED(mistakesLimit = 0),
+    EASY(mistakesLimit = 12),
+    INTERMEDIATE(mistakesLimit = 9),
+    HARD(mistakesLimit = 6),
+    EXPERT(mistakesLimit = 3)
 }

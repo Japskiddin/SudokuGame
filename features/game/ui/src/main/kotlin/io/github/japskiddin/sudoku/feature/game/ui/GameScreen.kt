@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
@@ -33,6 +34,7 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
+import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
@@ -61,7 +63,7 @@ private fun GameScreen(
     viewModel: GameViewModel
 ) {
     BackHandler {
-        viewModel.onBackPressed()
+        viewModel.onAction(UiAction.Back)
     }
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -80,8 +82,26 @@ private fun GameScreen(
             }
             viewModel.onAction(uiAction)
         },
-        onErrorClose = { viewModel.onAction(UiAction.CloseError) }
+        onCloseGame = { viewModel.onAction(UiAction.Exit) }
     )
+
+    LifecycleEventListener {
+        when (it) {
+            Lifecycle.Event.ON_RESUME -> {
+                if (state is UiState.Game) {
+                    viewModel.onAction(UiAction.ResumeGame)
+                }
+            }
+
+            Lifecycle.Event.ON_PAUSE -> {
+                if (state is UiState.Game) {
+                    viewModel.onAction(UiAction.PauseGame)
+                }
+            }
+
+            else -> {}
+        }
+    }
 }
 
 @Composable
@@ -91,7 +111,7 @@ private fun GameScreenContent(
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
-    onErrorClose: () -> Unit
+    onCloseGame: () -> Unit
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -110,6 +130,11 @@ private fun GameScreenContent(
             modifier = screenModifier
         )
 
+        is UiState.Fail -> Fail(
+            modifier = screenModifier,
+            onClose = onCloseGame
+        )
+
         is UiState.Loading -> Loading(
             modifier = screenModifier,
             resId = CoreUiR.string.level_creation
@@ -118,7 +143,7 @@ private fun GameScreenContent(
         is UiState.Error -> Error(
             errorCode = state.code,
             modifier = screenModifier,
-            onClose = onErrorClose
+            onClose = onCloseGame
         )
     }
 }
@@ -206,6 +231,39 @@ private fun Error(
 }
 
 @Composable
+private fun Fail(
+    modifier: Modifier = Modifier,
+    onClose: () -> Unit
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .then(modifier)
+            .background(Primary)
+            .safeDrawingPadding()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(16.dp)
+                .dialogBackground()
+        ) {
+            Text(
+                text = "",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Primary,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            GameButton(
+                icon = painterResource(id = CoreUiR.drawable.ic_close),
+                text = stringResource(id = CoreUiR.string.close)
+            ) { onClose() }
+        }
+    }
+}
+
+@Composable
 private fun Complete(
     modifier: Modifier = Modifier
 ) {
@@ -246,7 +304,7 @@ private fun GameContentPreview(
             onSelectBoardCell = {},
             onInputCell = { _ -> },
             onToolClick = {},
-            onErrorClose = {}
+            onCloseGame = {}
         )
     }
 }
@@ -271,6 +329,7 @@ private class UiStateProvider : PreviewParameterProvider<UiState> {
             UiState.Game(gameState = gameState),
             UiState.Loading,
             UiState.Error(code = GameError.BOARD_NOT_FOUND),
-            UiState.Complete
+            UiState.Complete,
+            UiState.Fail
         )
 }
