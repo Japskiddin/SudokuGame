@@ -143,7 +143,6 @@ internal constructor(
                     )
                 }
             } else {
-                saveGame()
                 gameState.update { it.copy(board = initialBoard) }
             }
 
@@ -157,9 +156,9 @@ internal constructor(
                 )
             }
 
+            saveGame()
             gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
             startTimer()
-            saveGame()
         }
     }
 
@@ -226,13 +225,11 @@ internal constructor(
         addToGameHistory()
         checkGameCompleted()
         checkGameFailed()
-        viewModelScope.launch(appDispatchers.io) {
-            saveGame()
-        }
     }
 
     private fun resetBoard() {
         gameState.update { it.copy(board = it.initialBoard) }
+        // TODO: clear game history
         addToGameHistory()
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
@@ -258,9 +255,6 @@ internal constructor(
 
     private fun updateBoardFromHistory(gameHistory: GameHistory) {
         gameState.update { it.copy(board = gameHistory.board, notes = gameHistory.notes) }
-        viewModelScope.launch(appDispatchers.io) {
-            saveGame()
-        }
     }
 
     private fun addToGameHistory() {
