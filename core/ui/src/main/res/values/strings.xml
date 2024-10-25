@@ -29,4 +29,5 @@
     <string name="game_completed">Game completed!</string>
     <string name="close">Close</string>
     <string name="current_mistakes">Mistakes: %s</string>
+    <string name="current_actions">Actions: %s</string>
 </resources>

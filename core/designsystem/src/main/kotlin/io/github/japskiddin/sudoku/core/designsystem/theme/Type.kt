@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.sp
  * Title Small - for year on title screen
  * Body Large - for titles on info panels (Loading, Errors, etc)
  * Body Medium - for dialogs
+ * Body Small - for game info
  * Label Medium - for game buttons
  * Label Small - for tool buttons
  */
@@ -34,6 +35,11 @@ public val Typography: Typography = Typography(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = MerriweatherFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     ),
     labelMedium = TextStyle(
         fontFamily = MerriweatherFamily,

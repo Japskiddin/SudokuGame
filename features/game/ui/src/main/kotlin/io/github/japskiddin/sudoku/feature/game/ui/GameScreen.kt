@@ -138,24 +138,24 @@ private fun Game(
             .safeDrawingPadding()
             .padding(12.dp)
     ) {
-        val topMargin = 6.dp
         InfoPanel(
             type = state.type,
             difficulty = state.difficulty,
+            actions = state.actions,
             mistakes = state.mistakes,
             time = state.time
         )
-        Spacer(modifier = Modifier.height(topMargin))
+        Spacer(modifier = Modifier.height(12.dp))
         GameBoard(
             board = state.board,
             selectedCell = state.selectedCell,
             onSelectCell = { boardCell -> onSelectCell(boardCell) },
         )
-        Spacer(modifier = Modifier.height(topMargin))
+        Spacer(modifier = Modifier.height(6.dp))
         ToolPanel(
             onToolClick = onToolClick
         )
-        Spacer(modifier = Modifier.height(topMargin))
+        Spacer(modifier = Modifier.height(6.dp))
         InputPanel(
             board = state.board,
             onClick = onInputCell
