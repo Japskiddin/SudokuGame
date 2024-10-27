@@ -19,9 +19,12 @@ public sealed class Destination(protected val route: String, vararg params: Stri
         public operator fun invoke(boardUid: Long): String = route.appendParams(KEY_BOARD_UID to boardUid)
     }
 
+    public data object SettingsScreen : NoArgumentsDestination(SETTINGS_SCREEN)
+
     public companion object {
         private const val HOME_SCREEN = "home"
         private const val GAME_SCREEN = "game"
+        private const val SETTINGS_SCREEN = "settings"
 
         public const val KEY_BOARD_UID: String = "board_uid"
     }

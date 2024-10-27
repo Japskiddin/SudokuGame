@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
+// TODO: вынести флаги для показа диалогов из ViewModel
+
 @Suppress("TooManyFunctions")
 @HiltViewModel
 public class HomeViewModel
@@ -112,7 +114,7 @@ internal constructor(
     }
 
     private fun showSettings() {
-        TODO("In Development")
+        tryNavigateToSettings()
     }
 
     private fun showRecords() {
@@ -151,6 +153,8 @@ internal constructor(
             navigateToGame(insertedBoardUid)
         }
     }
+
+    private fun tryNavigateToSettings() = appNavigator.tryNavigateTo(Destination.SettingsScreen())
 
     private fun tryNavigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid))
 

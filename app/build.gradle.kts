@@ -140,4 +140,8 @@ dependencies {
     implementation(projects.features.game.ui)
     implementation(projects.features.game.uiLogic)
     implementation(projects.features.game.domain)
+
+    implementation(projects.features.settings.ui)
+    implementation(projects.features.settings.uiLogic)
+    implementation(projects.features.settings.domain)
 }

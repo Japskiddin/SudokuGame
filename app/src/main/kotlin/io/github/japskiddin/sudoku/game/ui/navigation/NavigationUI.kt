@@ -1,7 +1,10 @@
 package io.github.japskiddin.sudoku.game.ui.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
@@ -10,6 +13,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import io.github.japskiddin.sudoku.navigation.Destination
+import io.github.japskiddin.sudoku.navigation.NavigationIntent
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun NavHost(
@@ -40,4 +46,37 @@ fun NavGraphBuilder.composable(
         deepLinks = deepLinks,
         content = content
     )
+}
+
+@Composable
+fun NavigationEffect(
+    navigationChannel: Channel<NavigationIntent>,
+    navHostController: NavHostController
+) {
+    val activity = LocalContext.current as? Activity
+    LaunchedEffect(activity, navHostController, navigationChannel) {
+        navigationChannel.receiveAsFlow().collect { intent ->
+            if (activity?.isFinishing == true) {
+                return@collect
+            }
+            when (intent) {
+                is NavigationIntent.NavigateBack -> {
+                    if (intent.route != null) {
+                        navHostController.popBackStack(intent.route!!, intent.inclusive)
+                    } else {
+                        navHostController.popBackStack()
+                    }
+                }
+
+                is NavigationIntent.NavigateTo -> {
+                    navHostController.navigate(intent.route) {
+                        launchSingleTop = intent.isSingleTop
+                        intent.popUpToRoute?.let { popUpToRoute ->
+                            popUpTo(popUpToRoute) { inclusive = intent.inclusive }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
