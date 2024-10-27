@@ -36,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
@@ -350,12 +351,7 @@ private fun Error(
                 .dialogBackground()
         ) {
             Text(
-                text = stringResource(
-                    id = when (errorCode) {
-                        GameError.SUDOKU_NOT_GENERATED -> CoreUiR.string.err_generate_sudoku
-                        else -> CoreUiR.string.err_unknown
-                    }
-                ),
+                text = stringResource(id = errorCode.toStringRes()),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Primary,
                 textAlign = TextAlign.Center

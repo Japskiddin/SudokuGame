@@ -78,8 +78,8 @@ internal constructor(
             is UiAction.SelectBoardCell -> selectBoardCell(action.cell)
             is UiAction.EraseBoardCell -> inputValueToCell(0)
             is UiAction.ResetBoard -> resetBoard()
-            is UiAction.Undo -> undoBoard()
-            is UiAction.Redo -> redoBoard()
+            is UiAction.Undo -> undoBoardHistory()
+            is UiAction.Redo -> redoBoardHistory()
             is UiAction.Note -> notesBoard()
             is UiAction.ResumeGame -> startTimer()
             is UiAction.PauseGame -> pauseGame()
@@ -228,28 +228,26 @@ internal constructor(
     }
 
     private fun resetBoard() {
-        gameState.update { it.copy(board = it.initialBoard) }
-        // TODO: clear game history
-        addToGameHistory()
+        gameState.update {
+            it.copy(
+                board = it.initialBoard,
+                actions = 0,
+                time = 0L,
+                selectedCell = BoardCell.Empty
+            )
+        }
+        gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
         viewModelScope.launch(appDispatchers.io) {
             saveGame()
         }
     }
 
-    private fun undoBoard() {
+    private fun undoBoardHistory() {
         val gameHistory = gameHistoryManager.undo()
         updateBoardFromHistory(gameHistory)
     }
 
-    private fun notesBoard() {
-        TODO("Not Implemented")
-    }
-
-    private fun selectBoardCell(cell: BoardCell) {
-        gameState.update { it.copy(selectedCell = cell) }
-    }
-
-    private fun redoBoard() {
+    private fun redoBoardHistory() {
         gameHistoryManager.redo()?.let { gameHistory -> updateBoardFromHistory(gameHistory) }
     }
 
@@ -261,6 +259,14 @@ internal constructor(
         val gameState = gameState.value
         val gameHistory = GameHistory(board = gameState.board, notes = gameState.notes)
         gameHistoryManager.addState(gameHistory)
+    }
+
+    private fun notesBoard() {
+        TODO("Not Implemented")
+    }
+
+    private fun selectBoardCell(cell: BoardCell) {
+        gameState.update { it.copy(selectedCell = cell) }
     }
 
     private fun checkGameFailed() {

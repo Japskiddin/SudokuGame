@@ -30,4 +30,7 @@
     <string name="close">Close</string>
     <string name="current_mistakes">Mistakes: %d / %d</string>
     <string name="current_actions">Actions: %d</string>
+    <string name="ask_reset_current_game">Do you want to reset current game?</string>
+    <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -14,6 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,6 +32,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
@@ -40,6 +44,7 @@ import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
+import io.github.japskiddin.sudoku.feature.game.ui.component.ResetDialog
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
@@ -156,6 +161,18 @@ private fun Game(
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit
 ) {
+    var showResetDialog by remember { mutableStateOf(false) }
+
+    if (showResetDialog) {
+        ResetDialog(
+            onDismiss = { showResetDialog = false },
+            onConfirm = {
+                showResetDialog = false
+                onToolClick(ToolAction.RESET)
+            }
+        )
+    }
+
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -178,7 +195,13 @@ private fun Game(
         )
         Spacer(modifier = Modifier.height(6.dp))
         ToolPanel(
-            onToolClick = onToolClick
+            onToolClick = { action ->
+                if (action == ToolAction.RESET) {
+                    showResetDialog = true
+                } else {
+                    onToolClick(action)
+                }
+            }
         )
         Spacer(modifier = Modifier.height(6.dp))
         InputPanel(
@@ -194,13 +217,7 @@ private fun Error(
     errorCode: GameError,
     onClose: () -> Unit
 ) {
-    // TODO: Вынести в общий модуль
-    val message = stringResource(
-        id = when (errorCode) {
-            GameError.BOARD_NOT_FOUND -> CoreUiR.string.err_generate_level
-            else -> io.github.japskiddin.sudoku.core.ui.R.string.err_unknown
-        }
-    )
+    val message = stringResource(id = errorCode.toStringRes())
 
     Box(
         contentAlignment = Alignment.Center,
