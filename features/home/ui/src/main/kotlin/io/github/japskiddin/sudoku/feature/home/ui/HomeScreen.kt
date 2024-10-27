@@ -186,7 +186,7 @@ private fun Menu(
                 contentScale = ContentScale.Crop
             )
             .safeDrawingPadding()
-            .padding(16.dp),
+            .padding(12.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(

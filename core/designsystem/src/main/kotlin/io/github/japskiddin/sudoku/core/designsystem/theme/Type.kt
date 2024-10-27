@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Title Large - for Application's title
+ * Title Medium - for App bar's title
  * Title Small - for year on title screen
  * Body Large - for titles on info panels (Loading, Errors, etc)
  * Body Medium - for dialogs
@@ -19,6 +20,11 @@ public val Typography: Typography = Typography(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Black,
         fontSize = 48.sp
+    ),
+    titleMedium = TextStyle(
+        fontFamily = MerriweatherFamily,
+        fontWeight = FontWeight.Black,
+        fontSize = 24.sp
     ),
     titleSmall = TextStyle(
         fontFamily = MerriweatherFamily,
