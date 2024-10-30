@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +50,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
+import io.github.japskiddin.sudoku.feature.home.ui.utils.getPackageInfo
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
@@ -218,6 +220,13 @@ private fun Menu(
                 )
             }
 
+            val versionName: String = LocalContext.current.getPackageInfo().versionName.toString()
+            OutlineText(
+                text = versionName,
+                textStyle = MaterialTheme.typography.titleSmall,
+                fillColor = Color.White,
+                outlineColor = Color.Black
+            )
             OutlineText(
                 text = currentYear,
                 textStyle = MaterialTheme.typography.titleSmall,
@@ -247,7 +256,7 @@ private fun MenuLandscape(
             textStyle = MaterialTheme.typography.titleLarge,
             fillColor = Color.White,
             outlineColor = Color.Black,
-            outlineWidth = 4.dp
+            outlineWidth = 6.dp
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(
