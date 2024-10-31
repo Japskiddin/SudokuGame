@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -33,6 +32,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
 import io.github.japskiddin.sudoku.feature.settings.ui.components.SettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
+import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiState
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
@@ -52,17 +52,19 @@ private fun SettingsScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     SettingsContent(
         modifier = modifier,
-        state = state
+        state = state,
+        onUpdateMistakesLimit = { checked ->
+            viewModel.onAction(UiAction.UpdateMistakesLimit(checked))
+        }
     )
 }
 
 @Composable
 private fun SettingsContent(
     modifier: Modifier = Modifier,
-    state: UiState
+    state: UiState,
+    onUpdateMistakesLimit: (Boolean) -> Unit
 ) {
-    val configuration = LocalConfiguration.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -98,7 +100,9 @@ private fun SettingsContent(
         ) {
             SettingsItem(
                 title = stringResource(id = CoreUiR.string.mistakes_limit),
-                description = stringResource(id = CoreUiR.string.mistakes_limit_desc)
+                description = stringResource(id = CoreUiR.string.mistakes_limit_desc),
+                onCheckedChange = onUpdateMistakesLimit,
+                checked = state.isMistakesLimit
             )
         }
     }
@@ -119,7 +123,8 @@ private fun SettingsContentPreview(
 ) {
     SudokuTheme {
         SettingsContent(
-            state = state
+            state = state,
+            onUpdateMistakesLimit = {}
         )
     }
 }

@@ -13,23 +13,23 @@ public class SettingsDatastore(applicationContext: Context) {
     private val Context.createDataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
     private val dataStore = applicationContext.createDataStore
 
-    private val mistakesEnabledKey = booleanPreferencesKey(KEY_MISTAKES_ENABLED)
+    private val mistakesLimitKey = booleanPreferencesKey(KEY_MISTAKES_LIMIT)
 
-    public suspend fun setMistakesEnabled(enabled: Boolean) {
+    public suspend fun setMistakesLimit(enabled: Boolean) {
         dataStore.edit { settings ->
-            settings[mistakesEnabledKey] = enabled
+            settings[mistakesLimitKey] = enabled
         }
     }
 
-    public val isMistakesEnabled: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[mistakesEnabledKey] ?: DEFAULT_MISTAKES_ENABLED
+    public val isMistakesLimit: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT
     }
 
     private companion object {
         private const val PREFERENCES_NAME = "settings"
 
-        private const val KEY_MISTAKES_ENABLED = "mistakes_limit"
+        private const val KEY_MISTAKES_LIMIT = "mistakes_limit"
 
-        private const val DEFAULT_MISTAKES_ENABLED = false
+        private const val DEFAULT_MISTAKES_LIMIT = true
     }
 }
