@@ -24,3 +24,10 @@ public val BoardCellSelected: Color = Color(0xFF68BEFA)
 
 public val BoardNumberNormal: Color = Color(0xFF000000)
 public val BoardNumberSelected: Color = Color(0xFFFFFFFF)
+
+public val SettingsSwitchUncheckedThumb: Color = Color(0xFF68BEFA)
+public val SettingsSwitchUncheckedTrack: Color = Color(0xFFFFFFFF)
+public val SettingsSwitchUncheckedBorder: Color = Color(0xFF10354F)
+public val SettingsSwitchCheckedThumb: Color = Color(0xFFFFFFFF)
+public val SettingsSwitchCheckedTrack: Color = Color(0xFF68BEFA)
+public val SettingsSwitchCheckedBorder: Color = Color(0xFF10354F)

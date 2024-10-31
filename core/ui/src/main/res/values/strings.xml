@@ -33,4 +33,6 @@
     <string name="ask_reset_current_game">Do you want to reset current game?</string>
     <string name="reset">Reset</string>
     <string name="cancel">Cancel</string>
+    <string name="mistakes_limit">Mistakes limit</string>
+    <string name="mistakes_limit_desc">End game when error limit is reached</string>
 </resources>

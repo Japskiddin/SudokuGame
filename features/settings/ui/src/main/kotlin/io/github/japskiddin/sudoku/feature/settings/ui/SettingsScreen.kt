@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -29,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
+import io.github.japskiddin.sudoku.feature.settings.ui.components.SettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiState
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
@@ -65,12 +68,11 @@ private fun SettingsContent(
             .fillMaxSize()
             .then(modifier)
             .background(Primary)
+            .safeDrawingPadding()
+            .padding(12.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .safeDrawingPadding()
-                .padding(12.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlineText(
@@ -87,14 +89,18 @@ private fun SettingsContent(
             )
         }
 
+        Spacer(modifier = Modifier.height(12.dp))
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
-                .safeDrawingPadding()
-                .padding(12.dp)
-        ) { }
+        ) {
+            SettingsItem(
+                title = stringResource(id = CoreUiR.string.mistakes_limit),
+                description = stringResource(id = CoreUiR.string.mistakes_limit_desc)
+            )
+        }
     }
 }
 
