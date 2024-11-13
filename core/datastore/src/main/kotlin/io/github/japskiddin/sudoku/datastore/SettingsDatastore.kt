@@ -14,10 +14,11 @@ public class SettingsDatastore(applicationContext: Context) {
     private val dataStore = applicationContext.createDataStore
 
     private val mistakesLimitKey = booleanPreferencesKey(KEY_MISTAKES_LIMIT)
+    private val timerKey = booleanPreferencesKey(KEY_TIMER)
 
     public suspend fun setMistakesLimit(enabled: Boolean) {
-        dataStore.edit { settings ->
-            settings[mistakesLimitKey] = enabled
+        dataStore.edit { preferences ->
+            preferences[mistakesLimitKey] = enabled
         }
     }
 
@@ -25,11 +26,23 @@ public class SettingsDatastore(applicationContext: Context) {
         preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT
     }
 
+    public suspend fun setTimer(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[timerKey] = enabled
+        }
+    }
+
+    public val isTimer: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[timerKey] ?: DEFAULT_TIMER
+    }
+
     private companion object {
         private const val PREFERENCES_NAME = "settings"
 
         private const val KEY_MISTAKES_LIMIT = "mistakes_limit"
+        private const val KEY_TIMER = "timer"
 
         private const val DEFAULT_MISTAKES_LIMIT = true
+        private const val DEFAULT_TIMER = true
     }
 }

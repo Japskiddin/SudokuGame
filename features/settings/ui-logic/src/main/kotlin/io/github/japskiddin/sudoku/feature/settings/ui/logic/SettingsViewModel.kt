@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
-import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetMistakesLimitUseCase
-import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveMistakesLimitUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetMistakesLimitPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetTimerPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveMistakesLimitPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +24,10 @@ public class SettingsViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val appDispatchers: AppDispatchers,
-    private val getMistakesLimitUseCase: Provider<GetMistakesLimitUseCase>,
-    private val saveMistakesLimitUseCase: Provider<SaveMistakesLimitUseCase>
+    private val getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
+    private val saveMistakesLimitPreferenceUseCase: Provider<SaveMistakesLimitPreferenceUseCase>,
+    private val getTimerPreferenceUseCase: Provider<GetTimerPreferenceUseCase>,
+    private val saveTimerPreferenceUseCase: Provider<SaveTimerPreferenceUseCase>
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState.Initial)
 
@@ -31,8 +35,11 @@ internal constructor(
 
     init {
         viewModelScope.launch(appDispatchers.io) {
-            getMistakesLimitUseCase.get().invoke().collect { isMistakesLimit ->
+            getMistakesLimitPreferenceUseCase.get().invoke().collect { isMistakesLimit ->
                 _uiState.update { it.copy(isMistakesLimit = isMistakesLimit) }
+            }
+            getTimerPreferenceUseCase.get().invoke().collect { isTimer ->
+                _uiState.update { it.copy(isTimer = isTimer) }
             }
         }
     }
@@ -40,12 +47,19 @@ internal constructor(
     public fun onAction(action: UiAction) {
         when (action) {
             is UiAction.UpdateMistakesLimit -> updateMistakesLimit(action.checked)
+            is UiAction.UpdateTimer -> updateTimer(action.checked)
+        }
+    }
+
+    private fun updateTimer(enabled: Boolean) {
+        viewModelScope.launch(appDispatchers.io) {
+            saveTimerPreferenceUseCase.get().invoke(enabled)
         }
     }
 
     private fun updateMistakesLimit(enabled: Boolean) {
         viewModelScope.launch(appDispatchers.io) {
-            saveMistakesLimitUseCase.get().invoke(enabled)
+            saveMistakesLimitPreferenceUseCase.get().invoke(enabled)
         }
     }
 

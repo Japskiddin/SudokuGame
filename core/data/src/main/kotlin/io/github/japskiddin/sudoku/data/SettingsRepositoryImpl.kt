@@ -14,5 +14,11 @@ constructor(
         dataStore.setMistakesLimit(enabled)
     }
 
-    override fun isMistakesLimit(): Flow<Boolean> = dataStore.isMistakesLimit
+    override fun isMistakesLimitEnabled(): Flow<Boolean> = dataStore.isMistakesLimit
+
+    override suspend fun setTimer(enabled: Boolean) {
+        dataStore.setTimer(enabled)
+    }
+
+    override fun isTimerEnabled(): Flow<Boolean> = dataStore.isTimer
 }
