@@ -4,16 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
-import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetMistakesLimitPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetTimerPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetAppPreferencesUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveMistakesLimitPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveTimerPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -24,36 +23,31 @@ public class SettingsViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val appDispatchers: AppDispatchers,
-    private val getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
+    getAppPreferencesUseCase: Provider<GetAppPreferencesUseCase>,
     private val saveMistakesLimitPreferenceUseCase: Provider<SaveMistakesLimitPreferenceUseCase>,
-    private val getTimerPreferenceUseCase: Provider<GetTimerPreferenceUseCase>,
-    private val saveTimerPreferenceUseCase: Provider<SaveTimerPreferenceUseCase>
+    private val saveShowTimerPreferenceUseCase: Provider<SaveShowTimerPreferenceUseCase>
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(UiState.Initial)
-
-    public val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-    init {
-        viewModelScope.launch(appDispatchers.io) {
-            getMistakesLimitPreferenceUseCase.get().invoke().collect { isMistakesLimit ->
-                _uiState.update { it.copy(isMistakesLimit = isMistakesLimit) }
-            }
-            getTimerPreferenceUseCase.get().invoke().collect { isTimer ->
-                _uiState.update { it.copy(isTimer = isTimer) }
-            }
-        }
-    }
+    public val uiState: StateFlow<UiState> = getAppPreferencesUseCase.get().invoke().map { preferences ->
+        UiState(
+            isMistakesLimit = preferences.isMistakesLimit,
+            isShowTimer = preferences.isShowTimer
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = UiState.Initial
+    )
 
     public fun onAction(action: UiAction) {
         when (action) {
             is UiAction.UpdateMistakesLimit -> updateMistakesLimit(action.checked)
-            is UiAction.UpdateTimer -> updateTimer(action.checked)
+            is UiAction.UpdateShowTimer -> updateShowTimer(action.checked)
         }
     }
 
-    private fun updateTimer(enabled: Boolean) {
+    private fun updateShowTimer(enabled: Boolean) {
         viewModelScope.launch(appDispatchers.io) {
-            saveTimerPreferenceUseCase.get().invoke(enabled)
+            saveShowTimerPreferenceUseCase.get().invoke(enabled)
         }
     }
 

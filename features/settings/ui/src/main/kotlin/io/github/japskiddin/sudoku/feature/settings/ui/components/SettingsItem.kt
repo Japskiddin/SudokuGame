@@ -33,10 +33,13 @@ internal fun SettingsItem(
     title: String,
     description: String? = null,
     checked: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit)? = null
+    onCheckedChange: ((Boolean) -> Unit)? = null,
+    onClick: (() -> Unit)? = null
 ) {
+    val baseModifier = modifier.padding(6.dp)
+
     Row(
-        modifier = Modifier.padding(6.dp),
+        modifier = Modifier.then(baseModifier),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

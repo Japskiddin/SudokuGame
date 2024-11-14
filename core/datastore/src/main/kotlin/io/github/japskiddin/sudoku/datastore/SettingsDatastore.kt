@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import io.github.japskiddin.sudoku.core.model.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -14,7 +15,7 @@ public class SettingsDatastore(applicationContext: Context) {
     private val dataStore = applicationContext.createDataStore
 
     private val mistakesLimitKey = booleanPreferencesKey(KEY_MISTAKES_LIMIT)
-    private val timerKey = booleanPreferencesKey(KEY_TIMER)
+    private val timerKey = booleanPreferencesKey(KEY_SHOW_TIMER)
 
     public suspend fun setMistakesLimit(enabled: Boolean) {
         dataStore.edit { preferences ->
@@ -26,23 +27,30 @@ public class SettingsDatastore(applicationContext: Context) {
         preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT
     }
 
-    public suspend fun setTimer(enabled: Boolean) {
+    public suspend fun setShowTimer(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[timerKey] = enabled
         }
     }
 
-    public val isTimer: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[timerKey] ?: DEFAULT_TIMER
+    public val isShowTimer: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[timerKey] ?: DEFAULT_SHOW_TIMER
+    }
+
+    public val appPreferences: Flow<AppPreferences> = dataStore.data.map { preferences ->
+        AppPreferences(
+            isMistakesLimit = preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT,
+            isShowTimer = preferences[timerKey] ?: DEFAULT_SHOW_TIMER
+        )
     }
 
     private companion object {
         private const val PREFERENCES_NAME = "settings"
 
         private const val KEY_MISTAKES_LIMIT = "mistakes_limit"
-        private const val KEY_TIMER = "timer"
+        private const val KEY_SHOW_TIMER = "show_timer"
 
         private const val DEFAULT_MISTAKES_LIMIT = true
-        private const val DEFAULT_TIMER = true
+        private const val DEFAULT_SHOW_TIMER = true
     }
 }

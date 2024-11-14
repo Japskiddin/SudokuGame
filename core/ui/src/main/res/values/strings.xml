@@ -35,4 +35,5 @@
     <string name="cancel">Cancel</string>
     <string name="mistakes_limit">Mistakes limit</string>
     <string name="mistakes_limit_desc">End game when error limit is reached</string>
+    <string name="show_timer">Show timer</string>
 </resources>

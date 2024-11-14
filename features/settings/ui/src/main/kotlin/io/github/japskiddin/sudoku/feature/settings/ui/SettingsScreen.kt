@@ -55,6 +55,9 @@ private fun SettingsScreen(
         state = state,
         onUpdateMistakesLimit = { checked ->
             viewModel.onAction(UiAction.UpdateMistakesLimit(checked))
+        },
+        onUpdateShowTimer = { checked ->
+            viewModel.onAction(UiAction.UpdateShowTimer(checked))
         }
     )
 }
@@ -63,7 +66,8 @@ private fun SettingsScreen(
 private fun SettingsContent(
     modifier: Modifier = Modifier,
     state: UiState,
-    onUpdateMistakesLimit: (Boolean) -> Unit
+    onUpdateMistakesLimit: (Boolean) -> Unit,
+    onUpdateShowTimer: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -104,6 +108,11 @@ private fun SettingsContent(
                 onCheckedChange = onUpdateMistakesLimit,
                 checked = state.isMistakesLimit
             )
+            SettingsItem(
+                title = stringResource(id = CoreUiR.string.show_timer),
+                onCheckedChange = onUpdateShowTimer,
+                checked = state.isShowTimer
+            )
         }
     }
 }
@@ -124,7 +133,8 @@ private fun SettingsContentPreview(
     SudokuTheme {
         SettingsContent(
             state = state,
-            onUpdateMistakesLimit = {}
+            onUpdateMistakesLimit = {},
+            onUpdateShowTimer = {}
         )
     }
 }

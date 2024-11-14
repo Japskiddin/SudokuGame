@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.data
 
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
+import io.github.japskiddin.sudoku.core.model.AppPreferences
 import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -14,11 +15,13 @@ constructor(
         dataStore.setMistakesLimit(enabled)
     }
 
-    override fun isMistakesLimitEnabled(): Flow<Boolean> = dataStore.isMistakesLimit
+    override fun isMistakesLimit(): Flow<Boolean> = dataStore.isMistakesLimit
 
-    override suspend fun setTimer(enabled: Boolean) {
-        dataStore.setTimer(enabled)
+    override suspend fun setShowTimer(enabled: Boolean) {
+        dataStore.setShowTimer(enabled)
     }
 
-    override fun isTimerEnabled(): Flow<Boolean> = dataStore.isTimer
+    override fun isShowTimer(): Flow<Boolean> = dataStore.isShowTimer
+
+    override fun getAppPreferences(): Flow<AppPreferences> = dataStore.appPreferences
 }
