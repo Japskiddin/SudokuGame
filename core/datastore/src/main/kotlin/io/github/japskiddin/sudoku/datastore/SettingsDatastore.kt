@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import io.github.japskiddin.sudoku.core.model.AppPreferences
+import io.github.japskiddin.sudoku.datastore.model.AppPreferencesDSO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -37,8 +37,8 @@ public class SettingsDatastore(applicationContext: Context) {
         preferences[timerKey] ?: DEFAULT_SHOW_TIMER
     }
 
-    public val appPreferences: Flow<AppPreferences> = dataStore.data.map { preferences ->
-        AppPreferences(
+    public val appPreferences: Flow<AppPreferencesDSO> = dataStore.data.map { preferences ->
+        AppPreferencesDSO(
             isMistakesLimit = preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT,
             isShowTimer = preferences[timerKey] ?: DEFAULT_SHOW_TIMER
         )
