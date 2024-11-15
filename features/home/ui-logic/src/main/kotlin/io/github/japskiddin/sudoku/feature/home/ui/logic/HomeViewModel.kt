@@ -41,7 +41,11 @@ internal constructor(
     getLastGameUseCase: Provider<GetLastGameUseCase>
 ) : ViewModel() {
     private val lastGame = getLastGameUseCase.get().invoke()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = null
+        )
     private val menuState = MutableStateFlow(MenuState.Initial)
     private val gameState = MutableStateFlow(GameState.Initial)
 
@@ -52,7 +56,11 @@ internal constructor(
                 menuState.isLoading -> UiState.Loading
                 else -> mapToUiMenuState(menuState, gameState, lastGame)
             }
-        }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = UiState.Initial
+        )
 
     public val currentYear: String
         get() = getCurrentYearUseCase.get().invoke()
