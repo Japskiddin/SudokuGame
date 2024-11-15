@@ -20,13 +20,15 @@ import io.github.japskiddin.sudoku.core.model.MistakesMethod
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetMistakesLimitPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
-import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.asUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
+import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.Job
@@ -34,6 +36,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -55,18 +58,52 @@ internal constructor(
     private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
-    private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>
+    private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>,
+    getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
+    getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>
 ) : ViewModel() {
     private lateinit var gameHistoryManager: GameHistoryManager
 
+    private val getMistakesLimitPreferenceFlow = getMistakesLimitPreferenceUseCase.get().invoke()
+    private val getShowTimerPreferenceFlow = getShowTimerPreferenceUseCase.get().invoke()
+
+    private val preferencesUiState: StateFlow<PreferencesUiState> = combine(
+        getMistakesLimitPreferenceFlow,
+        getShowTimerPreferenceFlow
+    ) { isMistakesLimit, isShowTimer ->
+        PreferencesUiState(
+            isMistakesLimit = isMistakesLimit,
+            isShowTimer = isShowTimer
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = PreferencesUiState.Initial
+    )
     private val gameState = MutableStateFlow(GameState.Initial)
 
     private var timerJob: Job? = null
     private var boardUid: Long = -1L
 
-    public val uiState: StateFlow<UiState> = gameState
-        .asUiState()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Initial)
+    public val uiState: StateFlow<UiState> = combine(
+        gameState,
+        preferencesUiState
+    ) { gameState, preferencesUiState ->
+        when {
+            gameState.error != GameError.NONE -> UiState.Error(gameState.error)
+            gameState.status == GameState.Status.LOADING -> UiState.Loading
+            gameState.status == GameState.Status.COMPLETED -> UiState.Complete
+            gameState.status == GameState.Status.FAILED -> UiState.Fail
+            else -> UiState.Game(
+                gameState = gameState.toGameUiState(),
+                preferencesState = preferencesUiState
+            )
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = UiState.Initial
+    )
 
     init {
         generateGameLevel()
@@ -81,7 +118,7 @@ internal constructor(
             is UiAction.Undo -> undoBoardHistory()
             is UiAction.Redo -> redoBoardHistory()
             is UiAction.Note -> notesBoard()
-            is UiAction.ResumeGame -> startTimer()
+            is UiAction.ResumeGame -> resumeGame()
             is UiAction.PauseGame -> pauseGame()
             is UiAction.Exit -> appNavigator.tryNavigateBack()
             is UiAction.Back -> onBackPressed()
@@ -211,15 +248,21 @@ internal constructor(
                 selectedCell.isError = cell.isError
             }
 
-            state.copy(
-                board = newBoard,
-                selectedCell = selectedCell,
-                actions = state.actions + 1,
-                mistakes = if (selectedCell.isError) {
+            val mistakes = if (preferencesUiState.value.isMistakesLimit) {
+                if (selectedCell.isError) {
                     state.mistakes + 1
                 } else {
                     state.mistakes
                 }
+            } else {
+                0
+            }
+
+            state.copy(
+                board = newBoard,
+                selectedCell = selectedCell,
+                actions = state.actions + 1,
+                mistakes = mistakes
             )
         }
         addToGameHistory()
@@ -304,6 +347,10 @@ internal constructor(
             )
             gameState.update { it.copy(solvedBoard = solvedBoard) }
         }
+    }
+
+    private fun resumeGame() {
+        startTimer()
     }
 
     private fun pauseGame() {

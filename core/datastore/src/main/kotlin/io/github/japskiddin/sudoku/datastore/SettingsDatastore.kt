@@ -2,12 +2,15 @@ package io.github.japskiddin.sudoku.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import io.github.japskiddin.sudoku.datastore.model.AppPreferencesDSO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 public class SettingsDatastore(applicationContext: Context) {
@@ -37,12 +40,20 @@ public class SettingsDatastore(applicationContext: Context) {
         preferences[timerKey] ?: DEFAULT_SHOW_TIMER
     }
 
-    public val appPreferences: Flow<AppPreferencesDSO> = dataStore.data.map { preferences ->
-        AppPreferencesDSO(
-            isMistakesLimit = preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT,
-            isShowTimer = preferences[timerKey] ?: DEFAULT_SHOW_TIMER
-        )
-    }
+    public val appPreferences: Flow<AppPreferencesDSO> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            AppPreferencesDSO(
+                isMistakesLimit = preferences[mistakesLimitKey] ?: DEFAULT_MISTAKES_LIMIT,
+                isShowTimer = preferences[timerKey] ?: DEFAULT_SHOW_TIMER
+            )
+        }
 
     private companion object {
         private const val PREFERENCES_NAME = "settings"

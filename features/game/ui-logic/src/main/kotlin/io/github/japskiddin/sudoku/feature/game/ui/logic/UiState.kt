@@ -10,7 +10,8 @@ public sealed interface UiState {
     ) : UiState
 
     public data class Game(
-        public val gameState: GameUiState = GameUiState.Initial
+        public val gameState: GameUiState = GameUiState.Initial,
+        public val preferencesState: PreferencesUiState = PreferencesUiState.Initial
     ) : UiState
 
     public data object Complete : UiState

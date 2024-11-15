@@ -31,7 +31,9 @@ internal fun InfoPanel(
     difficulty: GameDifficulty,
     time: Long,
     actions: Int,
-    mistakes: Int
+    mistakes: Int,
+    isShowTimer: Boolean,
+    isMistakesLimit: Boolean
 ) {
     val textStyle = MaterialTheme.typography.bodySmall.copy(color = OnPrimary)
 
@@ -46,11 +48,13 @@ internal fun InfoPanel(
                 text = stringResource(difficulty.getName()),
                 style = textStyle
             )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = time.formatToTime(),
-                style = textStyle
-            )
+            if (isShowTimer) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = time.formatToTime(),
+                    style = textStyle
+                )
+            }
         }
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
@@ -61,15 +65,17 @@ internal fun InfoPanel(
                 ),
                 style = textStyle
             )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = stringResource(
-                    CoreUiR.string.current_mistakes,
-                    mistakes,
-                    difficulty.mistakesLimit
-                ),
-                style = textStyle
-            )
+            if (isMistakesLimit) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = stringResource(
+                        CoreUiR.string.current_mistakes,
+                        mistakes,
+                        difficulty.mistakesLimit
+                    ),
+                    style = textStyle
+                )
+            }
         }
     }
 }
@@ -99,7 +105,9 @@ private fun InfoPanelPreview() {
             difficulty = GameDifficulty.INTERMEDIATE,
             time = 101L,
             actions = 0,
-            mistakes = 0
+            mistakes = 0,
+            isShowTimer = true,
+            isMistakesLimit = true
         )
     }
 }

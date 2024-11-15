@@ -124,7 +124,7 @@ private fun GameScreenContent(
         .background(Primary)
     when (state) {
         is UiState.Game -> Game(
-            state = state.gameState,
+            state = state,
             onSelectCell = onSelectBoardCell,
             onInputCell = onInputCell,
             onToolClick = onToolClick,
@@ -156,7 +156,7 @@ private fun GameScreenContent(
 @Composable
 private fun Game(
     modifier: Modifier = Modifier,
-    state: GameUiState,
+    state: UiState.Game,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit
@@ -173,6 +173,9 @@ private fun Game(
         )
     }
 
+    val gameState = state.gameState
+    val preferencesState = state.preferencesState
+
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -181,16 +184,18 @@ private fun Game(
             .padding(12.dp)
     ) {
         InfoPanel(
-            type = state.type,
-            difficulty = state.difficulty,
-            actions = state.actions,
-            mistakes = state.mistakes,
-            time = state.time
+            type = gameState.type,
+            difficulty = gameState.difficulty,
+            actions = gameState.actions,
+            mistakes = gameState.mistakes,
+            time = gameState.time,
+            isShowTimer = preferencesState.isShowTimer,
+            isMistakesLimit = preferencesState.isMistakesLimit
         )
         Spacer(modifier = Modifier.height(12.dp))
         GameBoard(
-            board = state.board,
-            selectedCell = state.selectedCell,
+            board = gameState.board,
+            selectedCell = gameState.selectedCell,
             onSelectCell = { boardCell -> onSelectCell(boardCell) },
         )
         Spacer(modifier = Modifier.height(6.dp))
@@ -205,7 +210,7 @@ private fun Game(
         )
         Spacer(modifier = Modifier.height(6.dp))
         InputPanel(
-            board = state.board,
+            board = gameState.board,
             onClick = onInputCell
         )
     }
