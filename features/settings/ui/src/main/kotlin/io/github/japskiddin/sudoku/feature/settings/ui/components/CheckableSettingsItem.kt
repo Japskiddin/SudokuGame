@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.settings.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,18 +29,17 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchUncheck
 private const val SwitchScale = 0.8f
 
 @Composable
-internal fun SettingsItem(
+internal fun CheckableSettingsItem(
     modifier: Modifier = Modifier,
     title: String,
     description: String? = null,
     checked: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit)? = null,
-    onClick: (() -> Unit)? = null
+    onCheckedChange: (Boolean) -> Unit
 ) {
-    val baseModifier = modifier.padding(6.dp)
-
     Row(
-        modifier = Modifier.then(baseModifier),
+        modifier = modifier
+            .clickable { onCheckedChange(!checked) }
+            .padding(6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
@@ -59,34 +59,32 @@ internal fun SettingsItem(
                 )
             }
         }
-        if (onCheckedChange != null) {
-            Spacer(modifier.width(6.dp))
-            Switch(
-                modifier = Modifier.scale(SwitchScale),
-                checked = checked,
-                onCheckedChange = onCheckedChange,
-                colors = SwitchDefaults.colors(
-                    uncheckedThumbColor = SettingsSwitchUncheckedThumb,
-                    uncheckedTrackColor = SettingsSwitchUncheckedTrack,
-                    uncheckedBorderColor = SettingsSwitchUncheckedBorder,
-                    checkedThumbColor = SettingsSwitchCheckedThumb,
-                    checkedTrackColor = SettingsSwitchCheckedTrack,
-                    checkedBorderColor = SettingsSwitchCheckedBorder
-                )
+        Spacer(modifier.width(6.dp))
+        Switch(
+            modifier = Modifier.scale(SwitchScale),
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                uncheckedThumbColor = SettingsSwitchUncheckedThumb,
+                uncheckedTrackColor = SettingsSwitchUncheckedTrack,
+                uncheckedBorderColor = SettingsSwitchUncheckedBorder,
+                checkedThumbColor = SettingsSwitchCheckedThumb,
+                checkedTrackColor = SettingsSwitchCheckedTrack,
+                checkedBorderColor = SettingsSwitchCheckedBorder
             )
-        }
+        )
     }
 }
 
 @Preview(
-    name = "Settings item",
+    name = "Checkable Settings item",
     showBackground = true,
     backgroundColor = 0xFFFAA468
 )
 @Composable
-private fun SettingsItemPreview() {
+private fun CheckableSettingsItemPreview() {
     MaterialTheme {
-        SettingsItem(
+        CheckableSettingsItem(
             title = "Title",
             description = "Description",
             onCheckedChange = {},

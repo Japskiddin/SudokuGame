@@ -30,7 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
-import io.github.japskiddin.sudoku.feature.settings.ui.components.SettingsItem
+import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiState
@@ -102,13 +102,13 @@ private fun SettingsContent(
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
-            SettingsItem(
+            CheckableSettingsItem(
                 title = stringResource(id = CoreUiR.string.mistakes_limit),
                 description = stringResource(id = CoreUiR.string.mistakes_limit_desc),
                 onCheckedChange = onUpdateMistakesLimit,
                 checked = state.isMistakesLimit
             )
-            SettingsItem(
+            CheckableSettingsItem(
                 title = stringResource(id = CoreUiR.string.show_timer),
                 onCheckedChange = onUpdateShowTimer,
                 checked = state.isShowTimer
