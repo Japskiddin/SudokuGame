@@ -37,21 +37,14 @@ import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiState
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
-public fun SettingsScreen(modifier: Modifier = Modifier) {
-    SettingsScreen(
-        modifier = modifier,
-        viewModel = hiltViewModel()
-    )
+public fun SettingsScreen() {
+    SettingsScreen(viewModel = hiltViewModel())
 }
 
 @Composable
-private fun SettingsScreen(
-    modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel
-) {
+private fun SettingsScreen(viewModel: SettingsViewModel) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     SettingsContent(
-        modifier = modifier,
         state = state,
         onUpdateMistakesLimit = { checked ->
             viewModel.onAction(UiAction.UpdateMistakesLimit(checked))
@@ -64,7 +57,6 @@ private fun SettingsScreen(
 
 @Composable
 private fun SettingsContent(
-    modifier: Modifier = Modifier,
     state: UiState,
     onUpdateMistakesLimit: (Boolean) -> Unit,
     onUpdateShowTimer: (Boolean) -> Unit
@@ -72,7 +64,6 @@ private fun SettingsContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .then(modifier)
             .background(Primary)
             .safeDrawingPadding()
             .padding(12.dp)

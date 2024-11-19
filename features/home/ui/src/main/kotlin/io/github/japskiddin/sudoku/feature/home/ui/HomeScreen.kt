@@ -54,21 +54,14 @@ import io.github.japskiddin.sudoku.feature.home.ui.utils.getPackageInfo
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
-public fun HomeScreen(modifier: Modifier = Modifier) {
-    HomeScreen(
-        modifier = modifier,
-        viewModel = hiltViewModel()
-    )
+public fun HomeScreen() {
+    HomeScreen(viewModel = hiltViewModel())
 }
 
 @Composable
-private fun HomeScreen(
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
-) {
+private fun HomeScreen(viewModel: HomeViewModel) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreenContent(
-        modifier = modifier,
         state = state,
         currentYear = viewModel.currentYear,
         onStartButtonClick = { viewModel.onAction(UiAction.PrepareNewGame) },
@@ -93,7 +86,6 @@ private fun HomeScreen(
 @Suppress("LongParameterList")
 @Composable
 private fun HomeScreenContent(
-    modifier: Modifier = Modifier,
     state: UiState,
     currentYear: String,
     onStartButtonClick: () -> Unit,
@@ -106,41 +98,37 @@ private fun HomeScreenContent(
     onDismissDifficultyDialog: () -> Unit,
     onErrorClose: () -> Unit
 ) {
-    val screenModifier = Modifier
-        .fillMaxSize()
-        .then(modifier)
+    val screenModifier = Modifier.fillMaxSize()
+
     when (state) {
-        is UiState.Menu ->
-            Menu(
-                modifier = screenModifier,
-                currentYear = currentYear,
-                isShowContinueButton = state.isShowContinueButton,
-                isShowContinueDialog = state.isShowContinueDialog,
-                isShowDifficultyDialog = state.isShowDifficultyDialog,
-                selectedDifficulty = state.selectedDifficulty,
-                selectedType = state.selectedType,
-                onStartButtonClick = onStartButtonClick,
-                onContinueButtonClick = onContinueButtonClick,
-                onRecordsButtonClick = onRecordsButtonClick,
-                onSettingsButtonClick = onSettingsButtonClick,
-                onDifficultyDialogConfirm = onDifficultyDialogConfirm,
-                onContinueDialogConfirm = onContinueDialogConfirm,
-                onDismissContinueDialog = onDismissContinueDialog,
-                onDismissDifficultyDialog = onDismissDifficultyDialog
-            )
+        is UiState.Menu -> Menu(
+            modifier = screenModifier,
+            currentYear = currentYear,
+            isShowContinueButton = state.isShowContinueButton,
+            isShowContinueDialog = state.isShowContinueDialog,
+            isShowDifficultyDialog = state.isShowDifficultyDialog,
+            selectedDifficulty = state.selectedDifficulty,
+            selectedType = state.selectedType,
+            onStartButtonClick = onStartButtonClick,
+            onContinueButtonClick = onContinueButtonClick,
+            onRecordsButtonClick = onRecordsButtonClick,
+            onSettingsButtonClick = onSettingsButtonClick,
+            onDifficultyDialogConfirm = onDifficultyDialogConfirm,
+            onContinueDialogConfirm = onContinueDialogConfirm,
+            onDismissContinueDialog = onDismissContinueDialog,
+            onDismissDifficultyDialog = onDismissDifficultyDialog
+        )
 
-        is UiState.Error ->
-            Error(
-                modifier = screenModifier,
-                errorCode = state.code,
-                onClose = onErrorClose
-            )
+        is UiState.Error -> Error(
+            modifier = screenModifier,
+            errorCode = state.code,
+            onClose = onErrorClose
+        )
 
-        is UiState.Loading ->
-            Loading(
-                modifier = screenModifier,
-                resId = CoreUiR.string.preparing_game_please_wait
-            )
+        is UiState.Loading -> Loading(
+            modifier = screenModifier,
+            resId = CoreUiR.string.preparing_game_please_wait
+        )
     }
 }
 

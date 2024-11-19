@@ -55,25 +55,18 @@ import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPrevie
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
-public fun GameScreen(modifier: Modifier = Modifier) {
-    GameScreen(
-        modifier = modifier,
-        viewModel = hiltViewModel()
-    )
+public fun GameScreen() {
+    GameScreen(viewModel = hiltViewModel())
 }
 
 @Composable
-private fun GameScreen(
-    modifier: Modifier = Modifier,
-    viewModel: GameViewModel
-) {
+private fun GameScreen(viewModel: GameViewModel) {
     BackHandler {
         viewModel.onAction(UiAction.Back)
     }
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     GameScreenContent(
-        modifier = modifier,
         state = state,
         onSelectBoardCell = { cell -> viewModel.onAction(UiAction.SelectBoardCell(cell)) },
         onInputCell = { value -> viewModel.onAction(UiAction.InputCell(value)) },
@@ -111,7 +104,6 @@ private fun GameScreen(
 
 @Composable
 private fun GameScreenContent(
-    modifier: Modifier = Modifier,
     state: UiState,
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
@@ -120,7 +112,6 @@ private fun GameScreenContent(
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
-        .then(modifier)
         .background(Primary)
     when (state) {
         is UiState.Game -> Game(

@@ -1,7 +1,6 @@
 package io.github.japskiddin.sudoku.game.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,45 +14,23 @@ import io.github.japskiddin.sudoku.game.ui.navigation.NavHost
 import io.github.japskiddin.sudoku.game.ui.navigation.NavigationEffect
 import io.github.japskiddin.sudoku.game.ui.navigation.composable
 import io.github.japskiddin.sudoku.navigation.Destination
-import io.github.japskiddin.sudoku.navigation.NavigationIntent
-import kotlinx.coroutines.channels.Channel
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    MainScreen(
-        modifier = modifier,
-        viewModel = hiltViewModel()
-    )
+fun MainScreen() {
+    MainScreen(viewModel = hiltViewModel())
 }
 
 @Composable
-private fun MainScreen(
-    modifier: Modifier = Modifier,
-    viewModel: MainViewModel
-) {
-    MainContent(
-        modifier = modifier,
-        navigationChannel = viewModel.navigationChannel
-    )
-}
-
-@Composable
-private fun MainContent(
-    modifier: Modifier = Modifier,
-    navigationChannel: Channel<NavigationIntent>
-) {
+private fun MainScreen(viewModel: MainViewModel) {
     val navController = rememberNavController()
 
     NavigationEffect(
-        navigationChannel = navigationChannel,
+        navigationChannel = viewModel.navigationChannel,
         navHostController = navController
     )
 
     SudokuTheme {
-        Surface(
-            modifier = modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+        Surface(modifier = Modifier.fillMaxSize()) {
             NavHost(
                 navController = navController,
                 startDestination = Destination.HomeScreen
