@@ -18,6 +18,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -64,21 +67,17 @@ private fun HomeScreen(viewModel: HomeViewModel) {
     HomeScreenContent(
         state = state,
         currentYear = viewModel.currentYear,
-        onStartButtonClick = { viewModel.onAction(UiAction.PrepareNewGame) },
         onContinueButtonClick = { viewModel.onAction(UiAction.ContinueGame) },
         onSettingsButtonClick = { viewModel.onAction(UiAction.ShowSettings) },
         onRecordsButtonClick = { viewModel.onAction(UiAction.ShowRecords) },
-        onContinueDialogConfirm = { viewModel.onAction(UiAction.ContinueDialogConfirm) },
-        onDifficultyDialogConfirm = { difficulty, type ->
+        onPrepareGame = { difficulty, type ->
             viewModel.onAction(
-                UiAction.DifficultyDialogConfirm(
+                UiAction.PrepareNewGame(
                     difficulty,
                     type
                 )
             )
         },
-        onDismissContinueDialog = { viewModel.onAction(UiAction.ContinueDialogDismiss) },
-        onDismissDifficultyDialog = { viewModel.onAction(UiAction.DifficultyDialogDismiss) },
         onErrorClose = { viewModel.onAction(UiAction.CloseError) }
     )
 }
@@ -88,14 +87,10 @@ private fun HomeScreen(viewModel: HomeViewModel) {
 private fun HomeScreenContent(
     state: UiState,
     currentYear: String,
-    onStartButtonClick: () -> Unit,
     onContinueButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onDifficultyDialogConfirm: (GameDifficulty, GameType) -> Unit,
-    onContinueDialogConfirm: () -> Unit,
-    onDismissContinueDialog: () -> Unit,
-    onDismissDifficultyDialog: () -> Unit,
+    onPrepareGame: (GameDifficulty, GameType) -> Unit,
     onErrorClose: () -> Unit
 ) {
     val screenModifier = Modifier.fillMaxSize()
@@ -105,18 +100,12 @@ private fun HomeScreenContent(
             modifier = screenModifier,
             currentYear = currentYear,
             isShowContinueButton = state.isShowContinueButton,
-            isShowContinueDialog = state.isShowContinueDialog,
-            isShowDifficultyDialog = state.isShowDifficultyDialog,
             selectedDifficulty = state.selectedDifficulty,
             selectedType = state.selectedType,
-            onStartButtonClick = onStartButtonClick,
+            onPrepareGame = onPrepareGame,
             onContinueButtonClick = onContinueButtonClick,
             onRecordsButtonClick = onRecordsButtonClick,
-            onSettingsButtonClick = onSettingsButtonClick,
-            onDifficultyDialogConfirm = onDifficultyDialogConfirm,
-            onContinueDialogConfirm = onContinueDialogConfirm,
-            onDismissContinueDialog = onDismissContinueDialog,
-            onDismissDifficultyDialog = onDismissDifficultyDialog
+            onSettingsButtonClick = onSettingsButtonClick
         )
 
         is UiState.Error -> Error(
@@ -138,33 +127,36 @@ private fun Menu(
     modifier: Modifier = Modifier,
     screenWidthPercent: Float = .8f,
     isShowContinueButton: Boolean,
-    isShowContinueDialog: Boolean,
-    isShowDifficultyDialog: Boolean,
     selectedDifficulty: GameDifficulty,
     selectedType: GameType,
     currentYear: String,
-    onStartButtonClick: () -> Unit,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
-    onContinueDialogConfirm: () -> Unit,
-    onDifficultyDialogConfirm: (GameDifficulty, GameType) -> Unit,
-    onDismissContinueDialog: () -> Unit,
-    onDismissDifficultyDialog: () -> Unit
+    onPrepareGame: (GameDifficulty, GameType) -> Unit
 ) {
-    if (isShowContinueDialog) {
+    var showContinueDialog by rememberSaveable { mutableStateOf(false) }
+    var showDifficultyDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showContinueDialog) {
         ContinueDialog(
-            onDismiss = onDismissContinueDialog,
-            onConfirm = onContinueDialogConfirm
+            onDismiss = { showContinueDialog = false },
+            onConfirm = {
+                showContinueDialog = false
+                showDifficultyDialog = true
+            }
         )
     }
 
-    if (isShowDifficultyDialog) {
+    if (showDifficultyDialog) {
         DifficultyDialog(
             selectedDifficulty = selectedDifficulty,
             selectedType = selectedType,
-            onDismiss = onDismissDifficultyDialog,
-            onConfirm = onDifficultyDialogConfirm
+            onDismiss = { showDifficultyDialog = false },
+            onConfirm = { difficulty, type ->
+                showDifficultyDialog = false
+                onPrepareGame(difficulty, type)
+            }
         )
     }
 
@@ -186,9 +178,16 @@ private fun Menu(
                 .fillMaxWidth()
                 .weight(1f)
                 .wrapContentHeight()
-            val configuration = LocalConfiguration.current
+            val orientation = LocalConfiguration.current.orientation
+            val onStartButtonClick: () -> Unit = {
+                if (isShowContinueButton) {
+                    showContinueDialog = true
+                } else {
+                    showDifficultyDialog = true
+                }
+            }
 
-            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 MenuLandscape(
                     modifier = menuModifier,
                     isShowContinueButton = isShowContinueButton,
@@ -379,14 +378,10 @@ private fun HomeContentPreview(
         HomeScreenContent(
             state = state,
             currentYear = "2024",
-            onStartButtonClick = {},
             onContinueButtonClick = {},
             onRecordsButtonClick = {},
             onSettingsButtonClick = {},
-            onDifficultyDialogConfirm = { _, _ -> },
-            onContinueDialogConfirm = {},
-            onDismissContinueDialog = {},
-            onDismissDifficultyDialog = {},
+            onPrepareGame = { _, _ -> },
             onErrorClose = {}
         )
     }

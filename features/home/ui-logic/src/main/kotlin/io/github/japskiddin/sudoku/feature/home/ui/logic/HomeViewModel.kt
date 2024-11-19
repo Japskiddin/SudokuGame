@@ -26,8 +26,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
-// TODO: вынести флаги для показа диалогов из ViewModel
-
 @Suppress("TooManyFunctions")
 @HiltViewModel
 public class HomeViewModel
@@ -54,7 +52,7 @@ internal constructor(
             when {
                 menuState.error != GameError.NONE -> UiState.Error(code = menuState.error)
                 menuState.isLoading -> UiState.Loading
-                else -> mapToUiMenuState(menuState, gameState, lastGame)
+                else -> mapToUiMenuState(gameState, lastGame)
             }
         }.stateIn(
             scope = viewModelScope,
@@ -77,32 +75,11 @@ internal constructor(
 
     public fun onAction(action: UiAction) {
         when (action) {
-            is UiAction.PrepareNewGame -> prepareNewGame()
             is UiAction.ContinueGame -> continueCurrentGame()
             is UiAction.ShowSettings -> showSettings()
             is UiAction.ShowRecords -> showRecords()
-            is UiAction.ContinueDialogConfirm -> confirmContinueDialog()
-            is UiAction.ContinueDialogDismiss -> dismissContinueDialog()
-            is UiAction.DifficultyDialogConfirm -> confirmDifficultyDialog(action.difficulty, action.type)
-            is UiAction.DifficultyDialogDismiss -> dismissDifficultyDialog()
+            is UiAction.PrepareNewGame -> confirmDifficultyDialog(action.difficulty, action.type)
             is UiAction.CloseError -> closeError()
-        }
-    }
-
-    private fun prepareNewGame() {
-        if (lastGame.value != null) {
-            menuState.update { it.copy(isShowContinueDialog = true) }
-        } else {
-            menuState.update { it.copy(isShowDifficultyDialog = true) }
-        }
-    }
-
-    private fun confirmContinueDialog() {
-        menuState.update {
-            it.copy(
-                isShowContinueDialog = false,
-                isShowDifficultyDialog = true
-            )
         }
     }
 
@@ -113,7 +90,6 @@ internal constructor(
                 selectedType = type
             )
         }
-        menuState.update { it.copy(isShowDifficultyDialog = false) }
         startNewGame()
     }
 
@@ -131,14 +107,6 @@ internal constructor(
 
     private fun closeError() {
         menuState.update { it.copy(error = GameError.NONE) }
-    }
-
-    private fun dismissContinueDialog() {
-        menuState.update { it.copy(isShowContinueDialog = false) }
-    }
-
-    private fun dismissDifficultyDialog() {
-        menuState.update { it.copy(isShowDifficultyDialog = false) }
     }
 
     private fun startNewGame() {
