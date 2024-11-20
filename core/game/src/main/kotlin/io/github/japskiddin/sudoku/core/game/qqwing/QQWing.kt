@@ -168,9 +168,9 @@ public class QQWing(
      * clears any solution, resets statistics, and clears any history messages.
      */
     private fun reset(): Boolean {
-        Arrays.fill(solution, 0)
-        Arrays.fill(solutionRound, 0)
-        Arrays.fill(possibilities, 0)
+        solution.fill(0)
+        solutionRound.fill(0)
+        possibilities.fill(0)
         solveHistory.clear()
         solveInstructions.clear()
         val round = 1
