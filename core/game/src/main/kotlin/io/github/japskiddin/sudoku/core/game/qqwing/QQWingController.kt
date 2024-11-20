@@ -258,9 +258,9 @@ public class QQWingController {
         public var threads: Int = Runtime.getRuntime().availableProcessors()
     }
 
-    private fun getPuzzleToSolve(puzzle: IntArray?): Boolean {
+    private fun getPuzzleToSolve(puzzle: IntArray): Boolean {
         if (level != null) {
-            if (puzzle!!.size == level!!.size) {
+            if (puzzle.size == level!!.size) {
                 for (i in level!!.indices) {
                     puzzle[i] = level!![i]
                 }
