@@ -18,13 +18,17 @@ import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
     @Provides
-    fun provideBoardRepository(boardDao: BoardDao): BoardRepository = BoardRepositoryImpl(boardDao)
+    fun provideBoardRepository(
+        boardDao: BoardDao
+    ): BoardRepository = BoardRepositoryImpl(boardDao)
 
     @Provides
-    fun provideSavedGameRepository(savedGameDao: SavedGameDao): SavedGameRepository =
-        SavedGameRepositoryImpl(savedGameDao)
+    fun provideSavedGameRepository(
+        savedGameDao: SavedGameDao
+    ): SavedGameRepository = SavedGameRepositoryImpl(savedGameDao)
 
     @Provides
-    fun provideSettingsRepository(datastore: SettingsDatastore): SettingsRepository =
-        SettingsRepositoryImpl(datastore)
+    fun provideSettingsRepository(
+        datastore: SettingsDatastore
+    ): SettingsRepository = SettingsRepositoryImpl(datastore)
 }

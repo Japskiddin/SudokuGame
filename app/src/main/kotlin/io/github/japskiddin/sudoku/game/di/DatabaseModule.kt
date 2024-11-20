@@ -21,8 +21,12 @@ object DatabaseModule {
     ): SudokuDatabase = SudokuDatabase(context)
 
     @Provides
-    fun provideBoardDao(sudokuDatabase: SudokuDatabase): BoardDao = sudokuDatabase.boardDao
+    fun provideBoardDao(
+        sudokuDatabase: SudokuDatabase
+    ): BoardDao = sudokuDatabase.boardDao
 
     @Provides
-    fun provideSavedGameDao(sudokuDatabase: SudokuDatabase): SavedGameDao = sudokuDatabase.savedGameDao
+    fun provideSavedGameDao(
+        sudokuDatabase: SudokuDatabase
+    ): SavedGameDao = sudokuDatabase.savedGameDao
 }
