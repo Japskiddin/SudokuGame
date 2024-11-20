@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.data.utils
 
+import io.github.japskiddin.sudoku.core.common.IncorrectGameDifficultyException
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
@@ -72,7 +73,3 @@ internal fun Int.toGameType() =
             "Incorrect game difficulty value. Value must be between 0-3, found $this"
         )
     }
-
-public class IncorrectGameDifficultyException(message: String) : Exception(message)
-
-public class IncorrectGameTypeException(message: String) : Exception(message)

@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.data.utils
 
+import io.github.japskiddin.sudoku.core.common.IncorrectGameStatusException
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.SavedGame
 import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
@@ -51,5 +52,3 @@ internal fun GameStatus.toInt() =
             "Incorrect game status value. Value must be ${GameStatus.entries}, found $this"
         )
     }
-
-public class IncorrectGameStatusException(message: String) : Exception(message)
