@@ -37,12 +37,14 @@ public class QQWingController {
 
     public fun generate(type: GameType, difficulty: GameDifficulty): IntArray? {
         generated.clear()
-        options.gameDifficulty = difficulty
-        options.action = Action.GENERATE
-        options.needNow = true
-        options.printSolution = false
-        options.threads = Runtime.getRuntime().availableProcessors()
-        options.gameType = type
+        with(options) {
+            gameDifficulty = difficulty
+            action = Action.GENERATE
+            needNow = true
+            printSolution = false
+            threads = Runtime.getRuntime().availableProcessors()
+            gameType = type
+        }
         doAction()
         return generated.poll()
     }
@@ -53,13 +55,15 @@ public class QQWingController {
         amount: Int
     ): LinkedList<IntArray> {
         generated.clear()
-        options.numberToGenerate = amount
-        options.gameDifficulty = difficulty
-        options.needNow = true
-        options.action = Action.GENERATE
-        options.printSolution = false
-        options.threads = Runtime.getRuntime().availableProcessors()
-        options.gameType = type
+        with(options) {
+            numberToGenerate = amount
+            gameDifficulty = difficulty
+            needNow = true
+            action = Action.GENERATE
+            printSolution = false
+            threads = Runtime.getRuntime().availableProcessors()
+            gameType = type
+        }
         doAction()
         return generated
     }
@@ -104,14 +108,16 @@ public class QQWingController {
         return generated.poll()
     }
 
-    public fun solve(gameBoard: IntArray?, gameType: GameType): IntArray {
+    public fun solve(gameBoard: IntArray?, type: GameType): IntArray {
         isImpossible = false
         level = gameBoard
-        options.needNow = true
-        options.action = Action.SOLVE
-        options.printSolution = true
-        options.threads = 1
-        options.gameType = gameType
+        with(options) {
+            needNow = true
+            action = Action.SOLVE
+            printSolution = true
+            threads = 1
+            gameType = type
+        }
         doAction()
         return solution
     }
@@ -225,6 +231,7 @@ public class QQWingController {
         }
     }
 
+    // TODO: заменить на data class
     public class QQWingOptions {
         // defaults for options
         public var needNow: Boolean = false
