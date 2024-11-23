@@ -14,9 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -44,7 +41,6 @@ import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
-import io.github.japskiddin.sudoku.feature.game.ui.component.ResetDialog
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
@@ -152,18 +148,6 @@ private fun Game(
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit
 ) {
-    var showResetDialog by remember { mutableStateOf(false) }
-
-    if (showResetDialog) {
-        ResetDialog(
-            onDismiss = { showResetDialog = false },
-            onConfirm = {
-                showResetDialog = false
-                onToolClick(ToolAction.RESET)
-            }
-        )
-    }
-
     val gameState = state.gameState
     val preferencesState = state.preferencesState
 
@@ -190,15 +174,7 @@ private fun Game(
             onSelectCell = { boardCell -> onSelectCell(boardCell) },
         )
         Spacer(modifier = Modifier.height(6.dp))
-        ToolPanel(
-            onToolClick = { action ->
-                if (action == ToolAction.RESET) {
-                    showResetDialog = true
-                } else {
-                    onToolClick(action)
-                }
-            }
-        )
+        ToolPanel(onToolClick = onToolClick)
         Spacer(modifier = Modifier.height(6.dp))
         InputPanel(
             board = gameState.board,

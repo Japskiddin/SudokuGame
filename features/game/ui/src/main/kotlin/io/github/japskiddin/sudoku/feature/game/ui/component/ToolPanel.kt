@@ -12,6 +12,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +38,18 @@ internal fun ToolPanel(
     modifier: Modifier = Modifier,
     onToolClick: (ToolAction) -> Unit
 ) {
+    var showResetDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showResetDialog) {
+        ResetDialog(
+            onDismiss = { showResetDialog = false },
+            onConfirm = {
+                showResetDialog = false
+                onToolClick(ToolAction.RESET)
+            }
+        )
+    }
+
     Row(modifier = modifier.fillMaxWidth()) {
         ToolButton(
             modifier = Modifier.weight(1f),
@@ -59,7 +75,7 @@ internal fun ToolPanel(
             modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset)
-        ) { onToolClick(ToolAction.RESET) }
+        ) { showResetDialog = true }
     }
 }
 
