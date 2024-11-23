@@ -13,7 +13,7 @@ import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 @Composable
 public fun GameDialog(
     onDismiss: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Box(
@@ -27,7 +27,7 @@ public fun GameDialog(
 
 @Preview(
     name = "Game Dialog",
-    showBackground = true
+    showBackground = true,
 )
 @Composable
 private fun GameDialogPreview() {

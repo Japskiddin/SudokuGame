@@ -36,15 +36,15 @@ import io.github.japskiddin.sudoku.core.ui.R
 
 @Composable
 public fun GameButton(
+    text: String,
     modifier: Modifier = Modifier,
+    icon: Painter? = null,
+    iconSize: Dp = 24.dp,
     foregroundNormalColor: Color = MenuButtonForegroundNormal,
     foregroundPressedColor: Color = MenuButtonForegroundPressed,
     backgroundNormalColor: Color = MenuButtonBackgroundNormal,
     backgroundPressedColor: Color = MenuButtonBackgroundPressed,
-    icon: Painter? = null,
-    text: String,
-    iconSize: Dp = 24.dp,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -92,12 +92,12 @@ public fun GameButton(
 
 @Composable
 private fun GameButtonContent(
-    modifier: Modifier = Modifier,
-    icon: Painter?,
     text: String,
+    icon: Painter?,
     iconSize: Dp,
     textColor: Color,
-    outlineColor: Color
+    outlineColor: Color,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -135,7 +135,7 @@ private fun Modifier.drawBorder(
     strokeWidth: Dp = 1.dp,
     cornerRadius: Dp = 8.dp,
     bottomStroke: Dp = 4.dp,
-    cornerRadiusMultiplier: Float = 1.2f
+    cornerRadiusMultiplier: Float = 1.2f,
 ) = this.then(
     Modifier.drawBehind {
         val strokeWidthPx = strokeWidth.toPx()
@@ -158,7 +158,7 @@ private fun Modifier.drawBorder(
 )
 
 @Preview(
-    name = "Game Button"
+    name = "Game Button",
 )
 @Composable
 private fun GameButtonPreview() {

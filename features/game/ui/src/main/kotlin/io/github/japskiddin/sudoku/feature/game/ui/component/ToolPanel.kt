@@ -81,13 +81,13 @@ internal fun ToolPanel(
 
 @Composable
 private fun ToolButton(
-    modifier: Modifier = Modifier,
     text: String,
     icon: Painter,
+    modifier: Modifier = Modifier,
     iconSize: Dp = 36.dp,
     textSize: TextUnit = 16.sp,
     textColor: Color = OnPrimary,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -115,7 +115,7 @@ private fun ToolButton(
 @Preview(
     name = "Tool Panel",
     showBackground = true,
-    backgroundColor = 0xFFFAA468
+    backgroundColor = 0xFFFAA468,
 )
 @Composable
 private fun ToolPanelPreview() {

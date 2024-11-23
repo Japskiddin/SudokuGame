@@ -29,7 +29,7 @@ internal fun DifficultyDialog(
     selectedDifficulty: GameDifficulty,
     selectedType: GameType,
     onDismiss: () -> Unit,
-    onConfirm: (GameDifficulty, GameType) -> Unit
+    onConfirm: (GameDifficulty, GameType) -> Unit,
 ) {
     val difficulties = persistentListOf(
         GameDifficulty.EASY,
@@ -103,7 +103,7 @@ internal fun DifficultyDialog(
 }
 
 @Preview(
-    name = "Difficulty Dialog"
+    name = "Difficulty Dialog",
 )
 @Composable
 private fun DifficultyDialogPreview() {

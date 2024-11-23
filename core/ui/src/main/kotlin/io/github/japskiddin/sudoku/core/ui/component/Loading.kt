@@ -28,8 +28,8 @@ import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 
 @Composable
 public fun Loading(
+    text: String,
     modifier: Modifier = Modifier,
-    text: String
 ) {
     LoadingContent(
         text = text,
@@ -39,8 +39,8 @@ public fun Loading(
 
 @Composable
 public fun Loading(
+    @StringRes resId: Int,
     modifier: Modifier = Modifier,
-    @StringRes resId: Int
 ) {
     LoadingContent(
         text = stringResource(id = resId),
@@ -50,8 +50,8 @@ public fun Loading(
 
 @Composable
 private fun LoadingContent(
+    text: String,
     modifier: Modifier = Modifier,
-    text: String
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -95,12 +95,12 @@ private fun LoadingContent(
 
 @Preview(
     name = "Loading - Portrait mode",
-    device = Devices.PIXEL_2
+    device = Devices.PIXEL_2,
 )
 @Preview(
     name = "Loading - Landscape mode",
     widthDp = 732,
-    heightDp = 412
+    heightDp = 412,
 )
 @Composable
 private fun LoadingPreview() {

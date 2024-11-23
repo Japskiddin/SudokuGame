@@ -30,11 +30,11 @@ private const val SwitchScale = 0.8f
 
 @Composable
 internal fun CheckableSettingsItem(
-    modifier: Modifier = Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     checked: Boolean = false,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -79,7 +79,7 @@ internal fun CheckableSettingsItem(
 @Preview(
     name = "Checkable Settings item",
     showBackground = true,
-    backgroundColor = 0xFFFAA468
+    backgroundColor = 0xFFFAA468,
 )
 @Composable
 private fun CheckableSettingsItemPreview() {

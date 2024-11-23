@@ -28,10 +28,10 @@ import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPrevie
 
 @Composable
 internal fun InputPanel(
-    modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit,
     board: BoardList,
-    gameType: GameType = findGameTypeBySize(board.size)
+    modifier: Modifier = Modifier,
+    gameType: GameType = findGameTypeBySize(board.size),
+    onClick: (Int) -> Unit,
 ) {
     if (gameType == GameType.DEFAULT12X12) {
         TwoColumnInputPanel(
@@ -51,9 +51,9 @@ internal fun InputPanel(
 
 @Composable
 private fun TwoColumnInputPanel(
+    board: BoardList,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
-    board: BoardList,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -76,10 +76,10 @@ private fun TwoColumnInputPanel(
 
 @Composable
 private fun InputPanelContent(
+    board: BoardList,
+    values: IntRange,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
-    values: IntRange,
-    board: BoardList
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -105,9 +105,9 @@ private fun InputPanelContent(
 
 @Composable
 private fun InputButton(
-    modifier: Modifier = Modifier,
     value: Int,
     counter: Int,
+    modifier: Modifier = Modifier,
     valueTextSize: TextUnit = 16.sp,
     counterTextSize: TextUnit = 10.sp,
     textColor: Color = OnPrimary,
@@ -143,7 +143,7 @@ private fun InputButton(
 }
 
 private fun BoardList.countByValue(
-    value: Int
+    value: Int,
 ): Int {
     var foundValues = 0
     forEach { cells ->
@@ -155,7 +155,7 @@ private fun BoardList.countByValue(
 @Preview(
     name = "Input Panel",
     showBackground = true,
-    backgroundColor = 0xFFFAA468
+    backgroundColor = 0xFFFAA468,
 )
 @Composable
 private fun InputPanelPreview() {
@@ -170,7 +170,7 @@ private fun InputPanelPreview() {
 @Preview(
     name = "Input Button",
     showBackground = true,
-    backgroundColor = 0xFFFAA468
+    backgroundColor = 0xFFFAA468,
 )
 @Composable
 private fun InputButtonPreview() {

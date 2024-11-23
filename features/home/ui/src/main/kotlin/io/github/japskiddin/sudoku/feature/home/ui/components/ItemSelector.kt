@@ -38,16 +38,16 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun ItemSelector(
-    modifier: Modifier = Modifier,
     currentItem: String,
     itemPos: Int,
+    onSwipeLeft: () -> Unit,
+    onSwipeRight: () -> Unit,
+    modifier: Modifier = Modifier,
     textSize: TextUnit = 16.sp,
     buttonSize: Dp = 36.dp,
     swipeDuration: Int = 220,
     textColor: Color = OnDialogSurface,
     iconTint: Color = OnDialogSurface,
-    onSwipeLeft: () -> Unit,
-    onSwipeRight: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -100,7 +100,7 @@ internal fun ItemSelector(
 
 @Preview(
     name = "Item Selector",
-    showBackground = true
+    showBackground = true,
 )
 @Composable
 private fun ItemSelectorPreview() {

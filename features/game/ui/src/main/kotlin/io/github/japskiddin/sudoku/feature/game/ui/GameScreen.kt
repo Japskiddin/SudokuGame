@@ -104,7 +104,7 @@ private fun GameScreenContent(
     onSelectBoardCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
-    onCloseGame: () -> Unit
+    onCloseGame: () -> Unit,
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -142,11 +142,11 @@ private fun GameScreenContent(
 
 @Composable
 private fun Game(
-    modifier: Modifier = Modifier,
     state: UiState.Game,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
-    onToolClick: (ToolAction) -> Unit
+    onToolClick: (ToolAction) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val gameState = state.gameState
     val preferencesState = state.preferencesState
@@ -185,9 +185,9 @@ private fun Game(
 
 @Composable
 private fun Error(
-    modifier: Modifier = Modifier,
     errorCode: GameError,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val message = stringResource(id = errorCode.toStringRes())
 
@@ -221,8 +221,8 @@ private fun Error(
 
 @Composable
 private fun Fail(
+    onClose: () -> Unit,
     modifier: Modifier = Modifier,
-    onClose: () -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -254,7 +254,7 @@ private fun Fail(
 
 @Composable
 private fun Complete(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -281,7 +281,7 @@ private fun Complete(
 
 @Preview(
     name = "Game Content",
-    device = Devices.PIXEL_2
+    device = Devices.PIXEL_2,
 )
 @Composable
 private fun GameContentPreview(

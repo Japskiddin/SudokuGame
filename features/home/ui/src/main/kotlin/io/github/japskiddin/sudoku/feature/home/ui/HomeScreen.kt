@@ -91,7 +91,7 @@ private fun HomeScreenContent(
     onRecordsButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onPrepareGame: (GameDifficulty, GameType) -> Unit,
-    onErrorClose: () -> Unit
+    onErrorClose: () -> Unit,
 ) {
     val screenModifier = Modifier.fillMaxSize()
 
@@ -124,16 +124,16 @@ private fun HomeScreenContent(
 @Suppress("LongParameterList")
 @Composable
 private fun Menu(
-    modifier: Modifier = Modifier,
-    screenWidthPercent: Float = .8f,
-    isShowContinueButton: Boolean,
     selectedDifficulty: GameDifficulty,
     selectedType: GameType,
     currentYear: String,
+    isShowContinueButton: Boolean,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
-    onPrepareGame: (GameDifficulty, GameType) -> Unit
+    onPrepareGame: (GameDifficulty, GameType) -> Unit,
+    modifier: Modifier = Modifier,
+    screenWidthPercent: Float = .8f,
 ) {
     var showContinueDialog by rememberSaveable { mutableStateOf(false) }
     var showDifficultyDialog by rememberSaveable { mutableStateOf(false) }
@@ -226,12 +226,12 @@ private fun Menu(
 
 @Composable
 private fun MenuLandscape(
-    modifier: Modifier = Modifier,
     isShowContinueButton: Boolean,
     onStartButtonClick: () -> Unit,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onRecordsButtonClick: () -> Unit
+    onRecordsButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
@@ -276,12 +276,12 @@ private fun MenuLandscape(
 
 @Composable
 private fun MenuPortrait(
-    modifier: Modifier = Modifier,
     isShowContinueButton: Boolean,
     onStartButtonClick: () -> Unit,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onRecordsButtonClick: () -> Unit
+    onRecordsButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
@@ -321,9 +321,9 @@ private fun MenuPortrait(
 
 @Composable
 private fun Error(
-    modifier: Modifier = Modifier,
     errorCode: GameError,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -363,12 +363,12 @@ private fun Error(
 
 @Preview(
     name = "Home Content - Portrait mode",
-    device = Devices.PIXEL_2
+    device = Devices.PIXEL_2,
 )
 @Preview(
     name = "Home Content - Landscape mode",
     widthDp = 732,
-    heightDp = 412
+    heightDp = 412,
 )
 @Composable
 private fun HomeContentPreview(

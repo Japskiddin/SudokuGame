@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 public fun OutlineText(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
     fillColor: Color = Color.White,
     outlineColor: Color = Color.Black,
-    outlineWidth: Dp = 2.dp
+    outlineWidth: Dp = 2.dp,
 ) {
     val fillTextStyle = textStyle.copy(
         color = fillColor,

@@ -71,10 +71,11 @@ private const val Radix = 16
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun GameBoard(
-    modifier: Modifier = Modifier,
     board: BoardList,
-    gameType: GameType = findGameTypeBySize(board.size),
     selectedCell: BoardCell,
+    onSelectCell: (BoardCell) -> Unit,
+    modifier: Modifier = Modifier,
+    gameType: GameType = findGameTypeBySize(board.size),
     outerCornerRadius: Dp = 12.dp,
     outerStrokeWidth: Dp = 1.5.dp,
     innerStrokeWidth: Dp = 1.dp,
@@ -110,7 +111,6 @@ internal fun GameBoard(
     noteColor: Color = numberColor.copy(alpha = 0.8f),
     outerStrokeColor: Color = Color.Black,
     innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
-    onSelectCell: (BoardCell) -> Unit
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -480,7 +480,7 @@ private fun DrawScope.drawBoardFrame(
     outerStrokeColor: Color,
     outerStrokeWidth: Float,
     maxWidth: Float,
-    cornerRadius: CornerRadius
+    cornerRadius: CornerRadius,
 ) {
     drawRoundRect(
         color = outerStrokeColor,
@@ -498,7 +498,7 @@ private fun DrawScope.drawHorizontalLines(
     outerStrokeWidth: Float,
     maxWidth: Float,
     innerStrokeWidth: Float,
-    innerStrokeColor: Color
+    innerStrokeColor: Color,
 ) {
     for (i in 1 until boardSize) {
         val isOuterStroke = i % innerStrokeThickness == 0
@@ -519,7 +519,7 @@ private fun DrawScope.drawVerticalLines(
     outerStrokeWidth: Float,
     maxWidth: Float,
     innerStrokeWidth: Float,
-    innerStrokeColor: Color
+    innerStrokeColor: Color,
 ) {
     for (i in 1 until boardSize) {
         val isOuterStroke = i % innerStrokeThickness == 0
@@ -539,7 +539,7 @@ private fun DrawScope.drawVerticalPositionCells(
     color: Color,
     boardSize: Int,
     cellSize: Size,
-    cellOffset: Offset
+    cellOffset: Offset,
 ) {
     for (j in 0 until boardSize) {
         drawCell(
@@ -560,7 +560,7 @@ private fun DrawScope.drawHorizontalPositionCells(
     color: Color,
     boardSize: Int,
     cellSize: Size,
-    cellOffset: Offset
+    cellOffset: Offset,
 ) {
     for (i in 0 until boardSize) {
         drawCell(
@@ -581,7 +581,7 @@ private fun DrawScope.drawCell(
     color: Color,
     boardSize: Int,
     cellSize: Size,
-    cellOffset: Offset
+    cellOffset: Offset,
 ) {
     val row = (cellOffset.x / cellSize.width).toInt()
     val col = (cellOffset.y / cellSize.height).toInt()
@@ -625,7 +625,7 @@ private fun DrawScope.drawCell(
 private fun DrawScope.drawCellBackground(
     offset: Offset,
     size: Size,
-    color: Color
+    color: Color,
 ) {
     drawRect(
         color = color,
@@ -641,7 +641,7 @@ private fun DrawScope.drawRoundCellBackground(
     topLeftCorner: CornerRadius = CornerRadius.Zero,
     topRightCorner: CornerRadius = CornerRadius.Zero,
     bottomLeftCorner: CornerRadius = CornerRadius.Zero,
-    bottomRightCorner: CornerRadius = CornerRadius.Zero
+    bottomRightCorner: CornerRadius = CornerRadius.Zero,
 ) {
     val path = Path().apply {
         addRoundRect(
@@ -672,7 +672,7 @@ private fun DrawScope.drawNumbers(
     selectedCell: BoardCell,
     isQuestions: Boolean,
     isIdenticalNumberHighlight: Boolean,
-    cellSize: Float
+    cellSize: Float,
 ) {
     drawIntoCanvas { canvas ->
         for (i in 0 until boardSize) {
@@ -705,7 +705,7 @@ private fun DrawScope.drawNotes(
     notes: List<BoardNote>,
     cellSize: Float,
     cellSizeDividerWidth: Float,
-    cellSizeDividerHeight: Float
+    cellSizeDividerHeight: Float,
 ) {
     val noteBounds = android.graphics.Rect()
     paint.getTextBounds("1", 0, 1, noteBounds)
@@ -728,7 +728,7 @@ private fun DrawScope.drawNotes(
 @Suppress("MagicNumber")
 private fun getNoteColumnNumber(
     number: Int,
-    gameType: GameType
+    gameType: GameType,
 ): Int = when (gameType) {
     GameType.DEFAULT9X9, GameType.DEFAULT6X6 -> when (number) {
         1, 2, 3 -> 0
@@ -749,7 +749,7 @@ private fun getNoteColumnNumber(
 
 private fun BoardCell.isSelected(
     selectedCell: BoardCell,
-    isIdenticalNumberHighlight: Boolean
+    isIdenticalNumberHighlight: Boolean,
 ): Boolean {
     return (isIdenticalNumberHighlight && value == selectedCell.value) ||
         (selectedCell.row == row && selectedCell.col == col)
@@ -758,7 +758,7 @@ private fun BoardCell.isSelected(
 @Suppress("MagicNumber")
 private fun getNoteRowNumber(
     number: Int,
-    gameType: GameType
+    gameType: GameType,
 ): Int = when (gameType) {
     GameType.DEFAULT9X9, GameType.DEFAULT6X6 -> when (number) {
         1, 4, 7 -> 0
@@ -779,7 +779,7 @@ private fun getNoteRowNumber(
 }
 
 @Preview(
-    name = "Game Board Preview"
+    name = "Game Board Preview",
 )
 @Composable
 private fun GameBoardPreview() {

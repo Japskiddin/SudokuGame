@@ -59,7 +59,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel) {
 private fun SettingsContent(
     state: UiState,
     onUpdateMistakesLimit: (Boolean) -> Unit,
-    onUpdateShowTimer: (Boolean) -> Unit
+    onUpdateShowTimer: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -110,12 +110,12 @@ private fun SettingsContent(
 
 @Preview(
     name = "Settings Content - Portrait mode",
-    device = Devices.PIXEL_2
+    device = Devices.PIXEL_2,
 )
 @Preview(
     name = "Settings Content - Landscape mode",
     widthDp = 732,
-    heightDp = 412
+    heightDp = 412,
 )
 @Composable
 private fun SettingsContentPreview(

@@ -23,7 +23,7 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 @Composable
 internal fun ContinueDialog(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
 ) {
     GameDialog(onDismiss = onDismiss) {
         Column(
@@ -54,7 +54,7 @@ internal fun ContinueDialog(
 }
 
 @Preview(
-    name = "Continue Dialog"
+    name = "Continue Dialog",
 )
 @Composable
 private fun ContinueDialogPreview() {

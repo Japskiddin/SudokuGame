@@ -26,14 +26,14 @@ private const val SecondsInMinute = 60
 
 @Composable
 internal fun InfoPanel(
-    modifier: Modifier = Modifier,
     type: GameType,
     difficulty: GameDifficulty,
     time: Long,
     actions: Int,
     mistakes: Int,
     isShowTimer: Boolean,
-    isMistakesLimit: Boolean
+    isMistakesLimit: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val textStyle = MaterialTheme.typography.bodySmall.copy(color = OnPrimary)
 
@@ -95,7 +95,7 @@ private fun Long.formatToTime(): String {
 @Preview(
     name = "Info Panel",
     showBackground = true,
-    backgroundColor = 0xFFFAA468
+    backgroundColor = 0xFFFAA468,
 )
 @Composable
 private fun InfoPanelPreview() {

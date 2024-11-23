@@ -23,7 +23,7 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 @Composable
 internal fun ResetDialog(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
 ) {
     GameDialog(onDismiss = onDismiss) {
         Column(
@@ -54,7 +54,7 @@ internal fun ResetDialog(
 }
 
 @Preview(
-    name = "Reset Dialog"
+    name = "Reset Dialog",
 )
 @Composable
 private fun ResetDialogPreview() {

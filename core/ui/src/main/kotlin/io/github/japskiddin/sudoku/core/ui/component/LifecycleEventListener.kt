@@ -8,7 +8,9 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 @Composable
-public fun LifecycleEventListener(onEvent: (event: Lifecycle.Event) -> Unit) {
+public fun LifecycleEventListener(
+    onEvent: (event: Lifecycle.Event) -> Unit,
+) {
     val eventHandler = rememberUpdatedState(newValue = onEvent)
     val lifecycleOwner = rememberUpdatedState(newValue = LocalLifecycleOwner.current)
 
