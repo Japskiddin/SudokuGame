@@ -8,3 +8,7 @@ plugins {
 kotlin {
     explicitApi = ExplicitApiMode.Strict
 }
+
+dependencies {
+    implementation(libs.jetbrains.kotlinx.immutable)
+}

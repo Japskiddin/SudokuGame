@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
+import io.github.japskiddin.sudoku.core.model.BoardList
 import javax.inject.Inject
 
 public class CheckGameCompletedUseCase @Inject constructor() {

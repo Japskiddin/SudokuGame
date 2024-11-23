@@ -11,3 +11,5 @@ public class IncorrectGameStatusException(message: String) : Exception(message)
 public class IncorrectGameDifficultyException(message: String) : Exception(message)
 
 public class IncorrectGameTypeException(message: String) : Exception(message)
+
+public class BoardParseException(message: String) : Exception(message)

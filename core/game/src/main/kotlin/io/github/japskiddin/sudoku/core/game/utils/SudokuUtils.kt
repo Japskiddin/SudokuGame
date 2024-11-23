@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.core.game.utils
 
 import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameType
 
 public fun String.isSudokuFilled(): Boolean = isNotBlank() && !contains("0")

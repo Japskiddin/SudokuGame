@@ -51,8 +51,8 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberSelected
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType

@@ -1,12 +1,12 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
-import io.github.japskiddin.sudoku.core.game.utils.emptyBoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.emptyBoardList
 
 internal data class GameState(
     val initialBoard: BoardList,

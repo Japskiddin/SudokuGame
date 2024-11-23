@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.ui.logic
 
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardNote
 
 internal class GameHistoryManager(

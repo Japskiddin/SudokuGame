@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameType
 import javax.inject.Inject
 

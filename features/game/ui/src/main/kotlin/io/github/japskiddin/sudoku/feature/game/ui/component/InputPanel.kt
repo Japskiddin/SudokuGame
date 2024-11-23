@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.game.utils.BoardList
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
