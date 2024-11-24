@@ -1,11 +1,13 @@
 package io.github.japskiddin.sudoku.core.designsystem.theme
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import io.github.japskiddin.sudoku.core.designsystem.R
 
+@Stable
 public val MerriweatherFamily: FontFamily = FontFamily(
     Font(R.font.merriweather_light, FontWeight.Light),
     Font(R.font.merriweather_light_italic, FontWeight.Light, FontStyle.Italic),

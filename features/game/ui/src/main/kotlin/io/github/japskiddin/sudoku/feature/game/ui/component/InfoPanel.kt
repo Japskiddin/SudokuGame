@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
@@ -35,22 +33,24 @@ internal fun InfoPanel(
     isMistakesLimit: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val textStyle = MaterialTheme.typography.bodySmall.copy(color = OnPrimary)
+    val textStyle = SudokuTheme.typography.bodySmall.copy(
+        color = SudokuTheme.colors.onPrimary
+    )
 
     Row(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            BasicText(
                 text = type.title,
                 style = textStyle
             )
             Spacer(modifier = Modifier.height(6.dp))
-            Text(
+            BasicText(
                 text = stringResource(difficulty.getName()),
                 style = textStyle
             )
             if (isShowTimer) {
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(
+                BasicText(
                     text = time.formatToTime(),
                     style = textStyle
                 )
@@ -58,7 +58,7 @@ internal fun InfoPanel(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            BasicText(
                 text = stringResource(
                     CoreUiR.string.current_actions,
                     actions
@@ -67,7 +67,7 @@ internal fun InfoPanel(
             )
             if (isMistakesLimit) {
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(
+                BasicText(
                     text = stringResource(
                         CoreUiR.string.current_mistakes,
                         mistakes,

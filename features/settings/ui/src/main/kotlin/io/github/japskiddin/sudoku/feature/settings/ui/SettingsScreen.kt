@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -77,7 +76,7 @@ private fun SettingsContent(
                     .weight(1f)
                     .padding(start = 40.dp, end = 4.dp),
                 text = stringResource(id = CoreUiR.string.settings),
-                textStyle = MaterialTheme.typography.titleMedium
+                textStyle = SudokuTheme.typography.titleMedium
             )
             Image(
                 modifier = Modifier.size(36.dp),

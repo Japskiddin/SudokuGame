@@ -7,24 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
-import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchCheckedBorder
-import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchCheckedThumb
-import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchCheckedTrack
-import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchUncheckedBorder
-import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchUncheckedThumb
-import io.github.japskiddin.sudoku.core.designsystem.theme.SettingsSwitchUncheckedTrack
+import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 
 private const val SwitchScale = 0.8f
 
@@ -45,34 +35,37 @@ internal fun CheckableSettingsItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(
+            BasicText(
                 text = title,
-                color = OnPrimary,
-                style = MaterialTheme.typography.labelMedium
+                style = SudokuTheme.typography.labelMedium.copy(
+                    color = SudokuTheme.colors.onPrimary
+                )
             )
             if (description != null) {
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(
+                BasicText(
                     text = description,
-                    color = OnPrimary.copy(alpha = 0.8f),
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Normal)
+                    style = SudokuTheme.typography.labelSmall.copy(
+                        fontWeight = FontWeight.Normal,
+                        color = SudokuTheme.colors.onPrimary.copy(alpha = 0.8f)
+                    )
                 )
             }
         }
         Spacer(modifier.width(6.dp))
-        Switch(
-            modifier = Modifier.scale(SwitchScale),
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors(
-                uncheckedThumbColor = SettingsSwitchUncheckedThumb,
-                uncheckedTrackColor = SettingsSwitchUncheckedTrack,
-                uncheckedBorderColor = SettingsSwitchUncheckedBorder,
-                checkedThumbColor = SettingsSwitchCheckedThumb,
-                checkedTrackColor = SettingsSwitchCheckedTrack,
-                checkedBorderColor = SettingsSwitchCheckedBorder
-            )
-        )
+//        Switch(
+//            modifier = Modifier.scale(SwitchScale),
+//            checked = checked,
+//            onCheckedChange = onCheckedChange,
+//            colors = SwitchDefaults.colors(
+//                uncheckedThumbColor = SettingsSwitchUncheckedThumb,
+//                uncheckedTrackColor = SettingsSwitchUncheckedTrack,
+//                uncheckedBorderColor = SettingsSwitchUncheckedBorder,
+//                checkedThumbColor = SettingsSwitchCheckedThumb,
+//                checkedTrackColor = SettingsSwitchCheckedTrack,
+//                checkedBorderColor = SettingsSwitchCheckedBorder
+//            )
+//        )
     }
 }
 
@@ -83,7 +76,7 @@ internal fun CheckableSettingsItem(
 )
 @Composable
 private fun CheckableSettingsItemPreview() {
-    MaterialTheme {
+    SudokuTheme {
         CheckableSettingsItem(
             title = "Title",
             description = "Description",

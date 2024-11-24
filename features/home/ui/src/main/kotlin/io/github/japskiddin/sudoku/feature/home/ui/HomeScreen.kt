@@ -14,8 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -210,13 +209,13 @@ private fun Menu(
             val versionName: String = LocalContext.current.getPackageInfo().versionName.toString()
             OutlineText(
                 text = versionName,
-                textStyle = MaterialTheme.typography.titleSmall,
+                textStyle = SudokuTheme.typography.titleSmall,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
             OutlineText(
                 text = currentYear,
-                textStyle = MaterialTheme.typography.titleSmall,
+                textStyle = SudokuTheme.typography.titleSmall,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
@@ -240,7 +239,7 @@ private fun MenuLandscape(
         OutlineText(
             modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.app_name),
-            textStyle = MaterialTheme.typography.titleLarge,
+            textStyle = SudokuTheme.typography.titleLarge,
             fillColor = Color.White,
             outlineColor = Color.Black,
             outlineWidth = 6.dp
@@ -289,7 +288,7 @@ private fun MenuPortrait(
     ) {
         OutlineText(
             text = stringResource(id = CoreUiR.string.app_name),
-            textStyle = MaterialTheme.typography.titleLarge,
+            textStyle = SudokuTheme.typography.titleLarge,
             fillColor = Color.White,
             outlineColor = Color.Black,
             outlineWidth = 4.dp
@@ -346,11 +345,12 @@ private fun Error(
                 .fillMaxWidth(widthPercent)
                 .dialogBackground()
         ) {
-            Text(
+            BasicText(
                 text = stringResource(id = errorCode.toStringRes()),
-                style = MaterialTheme.typography.bodyLarge,
-                color = Primary,
-                textAlign = TextAlign.Center
+                style = SudokuTheme.typography.bodyLarge.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(

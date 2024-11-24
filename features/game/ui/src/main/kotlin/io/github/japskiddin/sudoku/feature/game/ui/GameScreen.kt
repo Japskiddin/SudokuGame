@@ -10,8 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -204,11 +203,12 @@ private fun Error(
                 .padding(16.dp)
                 .dialogBackground()
         ) {
-            Text(
+            BasicText(
                 text = message,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Primary,
-                textAlign = TextAlign.Center
+                style = SudokuTheme.typography.bodyLarge.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
@@ -237,11 +237,12 @@ private fun Fail(
                 .padding(16.dp)
                 .dialogBackground()
         ) {
-            Text(
+            BasicText(
                 text = "",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Primary,
-                textAlign = TextAlign.Center
+                style = SudokuTheme.typography.bodyLarge.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
@@ -269,11 +270,12 @@ private fun Complete(
                 .padding(16.dp)
                 .dialogBackground()
         ) {
-            Text(
+            BasicText(
                 text = stringResource(id = CoreUiR.string.game_completed),
-                style = MaterialTheme.typography.bodyLarge,
-                color = Primary,
-                textAlign = TextAlign.Center
+                style = SudokuTheme.typography.bodyLarge.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
             )
         }
     }

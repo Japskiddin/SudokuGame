@@ -5,12 +5,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -19,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnDialogSurface
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
@@ -46,23 +45,21 @@ internal fun ItemSelector(
     textSize: TextUnit = 16.sp,
     buttonSize: Dp = 36.dp,
     swipeDuration: Int = 220,
-    textColor: Color = OnDialogSurface,
-    iconTint: Color = OnDialogSurface,
+    textColor: Color = SudokuTheme.colors.onDialog,
+    iconTint: Color = SudokuTheme.colors.onDialog,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
-            onClick = { onSwipeLeft() },
-            modifier = Modifier.size(buttonSize)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_left),
-                tint = iconTint,
-                contentDescription = stringResource(id = CoreUiR.string.swipe_left)
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_arrow_left),
+            contentDescription = stringResource(id = CoreUiR.string.swipe_left),
+            modifier = Modifier
+                .size(buttonSize)
+                .clickable { onSwipeLeft() },
+            colorFilter = ColorFilter.tint(color = iconTint)
+        )
         AnimatedContent(
             targetState = itemPos,
             transitionSpec = {
@@ -77,24 +74,24 @@ internal fun ItemSelector(
             label = "Animated Text",
             modifier = Modifier.weight(1f)
         ) { value: Int ->
-            Text(
+            BasicText(
                 text = currentItem,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                textAlign = TextAlign.Center,
-                color = textColor,
-                fontSize = textSize
+                style = SudokuTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = textSize,
+                    textAlign = TextAlign.Center,
+                    color = textColor
+                ),
             )
         }
-        IconButton(
-            onClick = { onSwipeRight() },
-            modifier = Modifier.size(buttonSize)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_right),
-                tint = iconTint,
-                contentDescription = stringResource(id = CoreUiR.string.swipe_right)
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_arrow_right),
+            contentDescription = stringResource(id = CoreUiR.string.swipe_right),
+            modifier = Modifier
+                .size(buttonSize)
+                .clickable { onSwipeRight() },
+            colorFilter = ColorFilter.tint(color = iconTint)
+        )
     }
 }
 

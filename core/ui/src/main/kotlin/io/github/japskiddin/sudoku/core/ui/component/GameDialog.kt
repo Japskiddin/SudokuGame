@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.core.ui.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +35,7 @@ private fun GameDialogPreview() {
         GameDialog(
             onDismiss = {}
         ) {
-            Text(text = "This is dialog")
+            BasicText(text = "This is dialog")
         }
     }
 }

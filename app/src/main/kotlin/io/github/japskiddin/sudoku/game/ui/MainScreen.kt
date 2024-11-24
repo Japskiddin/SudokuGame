@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.game.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,7 +30,7 @@ private fun MainScreen(viewModel: MainViewModel) {
     )
 
     SudokuTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             NavHost(
                 navController = navController,
                 startDestination = Destination.HomeScreen

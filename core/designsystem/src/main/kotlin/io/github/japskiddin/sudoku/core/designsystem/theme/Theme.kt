@@ -1,16 +1,33 @@
 package io.github.japskiddin.sudoku.core.designsystem.theme
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 
 @Composable
 public fun SudokuTheme(
+    typography: Typography = SudokuTheme.typography,
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = lightColorScheme(),
-        typography = Typography,
-        content = content
-    )
+    val rememberedColors = remember { ThemeColors.copy() }.apply { updateColorsFrom(ThemeColors) }
+
+    CompositionLocalProvider(
+        LocalColors provides rememberedColors,
+        LocalTypography provides typography
+    ) {
+        content()
+    }
+}
+
+public object SudokuTheme {
+    public val colors: Colors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalColors.current
+
+    public val typography: Typography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
 }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,6 +31,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundP
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundNormal
 import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundPressed
 import io.github.japskiddin.sudoku.core.designsystem.theme.OnMenuButton
+import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.R
 
 @Composable
@@ -102,12 +102,7 @@ private fun GameButtonContent(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(
-                start = 12.dp,
-                end = 12.dp,
-                top = 6.dp,
-                bottom = 6.dp
-            ),
+            .padding(all = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (icon != null) {
@@ -119,7 +114,7 @@ private fun GameButtonContent(
         }
         OutlineText(
             text = text,
-            textStyle = MaterialTheme.typography.labelMedium,
+            textStyle = SudokuTheme.typography.labelMedium,
             fillColor = textColor,
             outlineColor = outlineColor,
             modifier = Modifier
@@ -162,9 +157,11 @@ private fun Modifier.drawBorder(
 )
 @Composable
 private fun GameButtonPreview() {
-    GameButton(
-        text = stringResource(id = R.string.start_game),
-        icon = painterResource(id = R.drawable.ic_close),
-        onClick = {}
-    )
+    SudokuTheme {
+        GameButton(
+            text = stringResource(id = R.string.start_game),
+            icon = painterResource(id = R.drawable.ic_close),
+            onClick = {}
+        )
+    }
 }

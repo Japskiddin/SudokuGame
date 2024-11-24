@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.core.designsystem.theme
 
-import androidx.compose.material3.Typography
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -15,46 +16,49 @@ import androidx.compose.ui.unit.sp
  * Label Medium - for game buttons
  * Label Small - for tool buttons
  */
-public val Typography: Typography = Typography(
-    titleLarge = TextStyle(
+@Immutable
+public data class Typography(
+    val titleLarge: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Black,
         fontSize = 48.sp
     ),
-    titleMedium = TextStyle(
+    val titleMedium: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Black,
         fontSize = 24.sp
     ),
-    titleSmall = TextStyle(
+    val titleSmall: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Black,
         fontSize = 14.sp
     ),
-    bodyLarge = TextStyle(
+    val bodyLarge: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 36.sp
     ),
-    bodyMedium = TextStyle(
+    val bodyMedium: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
-    bodySmall = TextStyle(
+    val bodySmall: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
-    labelMedium = TextStyle(
+    val labelMedium: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
-    labelSmall = TextStyle(
+    val labelSmall: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp
     )
 )
+
+internal val LocalTypography = staticCompositionLocalOf { Typography() }
