@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -80,14 +81,14 @@ private fun LoadingContent(
                 ),
             )
             Spacer(modifier = Modifier.height(12.dp))
-//            LinearProgressIndicator(
-//                trackColor = Primary.copy(alpha = .2f),
-//                color = Primary,
-//                strokeCap = StrokeCap.Round,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(8.dp)
-//            )
+            LinearProgressIndicator(
+                trackColor = SudokuTheme.colors.primary.copy(alpha = .2f),
+                indicatorColor = SudokuTheme.colors.primary,
+                strokeCap = StrokeCap.Round,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
         }
     }
 }
