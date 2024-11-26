@@ -10,6 +10,15 @@ import androidx.compose.ui.graphics.Color
 @Stable
 private val AtomicTangerine: Color = Color(0xFFFAA468)
 
+@Stable
+private val Rope: Color = Color(0xFF8A4E24)
+
+@Stable
+private val DenimBlue: Color = Color(0xFF68BEFA)
+
+@Stable
+private val Elephant: Color = Color(0xFF10354F)
+
 public val Primary: Color = Color(0xFFFAA468)
 public val OnPrimary: Color = Color(0xFFFFFFFF)
 
@@ -47,6 +56,10 @@ public class Colors(
     onBackground: Color,
     dialog: Color,
     onDialog: Color,
+    switchUncheckedThumb: Color,
+    switchUncheckedTrack: Color,
+    switchCheckedThumb: Color,
+    switchCheckedTrack: Color,
 ) {
     public var primary: Color by mutableStateOf(primary)
         private set
@@ -60,6 +73,14 @@ public class Colors(
         private set
     public var onDialog: Color by mutableStateOf(onDialog)
         private set
+    public var switchUncheckedThumb: Color by mutableStateOf(switchUncheckedThumb)
+        private set
+    public var switchUncheckedTrack: Color by mutableStateOf(switchUncheckedTrack)
+        private set
+    public var switchCheckedThumb: Color by mutableStateOf(switchCheckedThumb)
+        private set
+    public var switchCheckedTrack: Color by mutableStateOf(switchCheckedTrack)
+        private set
 
     public fun copy(
         primary: Color = this.primary,
@@ -68,6 +89,10 @@ public class Colors(
         onBackground: Color = this.onBackground,
         dialog: Color = this.dialog,
         onDialog: Color = this.onDialog,
+        switchUncheckedThumb: Color = this.switchUncheckedThumb,
+        switchUncheckedTrack: Color = this.switchUncheckedTrack,
+        switchCheckedThumb: Color = this.switchCheckedThumb,
+        switchCheckedTrack: Color = this.switchCheckedTrack,
     ): Colors = Colors(
         primary = primary,
         onPrimary = onPrimary,
@@ -75,6 +100,10 @@ public class Colors(
         onBackground = onBackground,
         dialog = dialog,
         onDialog = onDialog,
+        switchUncheckedThumb = switchUncheckedThumb,
+        switchUncheckedTrack = switchUncheckedTrack,
+        switchCheckedThumb = switchCheckedThumb,
+        switchCheckedTrack = switchCheckedTrack,
     )
 
     public fun updateColorsFrom(other: Colors) {
@@ -84,6 +113,10 @@ public class Colors(
         onBackground = other.onBackground
         dialog = other.dialog
         onDialog = other.onDialog
+        switchUncheckedThumb = other.switchUncheckedThumb
+        switchUncheckedTrack = other.switchUncheckedTrack
+        switchCheckedThumb = other.switchCheckedThumb
+        switchCheckedTrack = other.switchCheckedTrack
     }
 }
 
@@ -94,6 +127,10 @@ public val ThemeColors: Colors = Colors(
     onBackground = Color.White,
     dialog = Color.White,
     onDialog = Color.Black,
+    switchUncheckedThumb = DenimBlue,
+    switchUncheckedTrack = Color.White,
+    switchCheckedThumb = Color.White,
+    switchCheckedTrack = DenimBlue,
 )
 
 internal val LocalColors = staticCompositionLocalOf { ThemeColors }

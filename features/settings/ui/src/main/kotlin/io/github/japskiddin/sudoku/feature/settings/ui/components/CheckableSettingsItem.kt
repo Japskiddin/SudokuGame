@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.ui.component.Switch
 
 private const val SwitchScale = 0.8f
 
@@ -53,19 +54,11 @@ internal fun CheckableSettingsItem(
             }
         }
         Spacer(modifier.width(6.dp))
-//        Switch(
+        Switch(
 //            modifier = Modifier.scale(SwitchScale),
-//            checked = checked,
-//            onCheckedChange = onCheckedChange,
-//            colors = SwitchDefaults.colors(
-//                uncheckedThumbColor = SettingsSwitchUncheckedThumb,
-//                uncheckedTrackColor = SettingsSwitchUncheckedTrack,
-//                uncheckedBorderColor = SettingsSwitchUncheckedBorder,
-//                checkedThumbColor = SettingsSwitchCheckedThumb,
-//                checkedTrackColor = SettingsSwitchCheckedTrack,
-//                checkedBorderColor = SettingsSwitchCheckedBorder
-//            )
-//        )
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+        )
     }
 }
 
