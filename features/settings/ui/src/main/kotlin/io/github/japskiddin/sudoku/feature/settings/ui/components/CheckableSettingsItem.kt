@@ -28,7 +28,7 @@ internal fun CheckableSettingsItem(
     Row(
         modifier = modifier
             .clickable { onCheckedChange(!checked) }
-            .padding(6.dp),
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

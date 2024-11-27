@@ -36,4 +36,7 @@
     <string name="mistakes_limit">Mistakes limit</string>
     <string name="mistakes_limit_desc">End game when error limit is reached</string>
     <string name="show_timer">Show timer</string>
+    <string name="reset_timer">Reset timer</string>
+    <string name="reset_timer_desc">Reset timer when game is reset</string>
+    <string name="settings_section_game">Game</string>
 </resources>

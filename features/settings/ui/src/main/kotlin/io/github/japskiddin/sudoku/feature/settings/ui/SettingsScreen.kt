@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +50,9 @@ private fun SettingsScreen(viewModel: SettingsViewModel) {
         },
         onUpdateShowTimer = { checked ->
             viewModel.onAction(UiAction.UpdateShowTimer(checked))
+        },
+        onUpdateResetTimer = { checked ->
+            viewModel.onAction(UiAction.UpdateResetTimer(checked))
         }
     )
 }
@@ -58,6 +62,7 @@ private fun SettingsContent(
     state: UiState,
     onUpdateMistakesLimit: (Boolean) -> Unit,
     onUpdateShowTimer: (Boolean) -> Unit,
+    onUpdateResetTimer: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -84,13 +89,24 @@ private fun SettingsContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
+            BasicText(
+                modifier = Modifier.padding(
+                    start = 12.dp,
+                    end = 12.dp
+                ),
+                text = stringResource(id = CoreUiR.string.settings_section_game),
+                style = SudokuTheme.typography.bodyMedium.copy(
+                    color = SudokuTheme.colors.onPrimary
+                ),
+            )
+            Spacer(modifier = Modifier.height(12.dp))
             CheckableSettingsItem(
                 title = stringResource(id = CoreUiR.string.mistakes_limit),
                 description = stringResource(id = CoreUiR.string.mistakes_limit_desc),
@@ -101,6 +117,12 @@ private fun SettingsContent(
                 title = stringResource(id = CoreUiR.string.show_timer),
                 onCheckedChange = onUpdateShowTimer,
                 checked = state.isShowTimer
+            )
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.reset_timer),
+                description = stringResource(id = CoreUiR.string.reset_timer_desc),
+                onCheckedChange = onUpdateResetTimer,
+                checked = state.isResetTimer
             )
         }
     }
@@ -123,7 +145,8 @@ private fun SettingsContentPreview(
         SettingsContent(
             state = state,
             onUpdateMistakesLimit = {},
-            onUpdateShowTimer = {}
+            onUpdateShowTimer = {},
+            onUpdateResetTimer = {},
         )
     }
 }

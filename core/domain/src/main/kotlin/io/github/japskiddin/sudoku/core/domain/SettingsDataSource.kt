@@ -12,5 +12,9 @@ public interface SettingsDataSource {
 
     public fun isShowTimer(): Flow<Boolean>
 
+    public suspend fun setResetTimer(enabled: Boolean)
+
+    public fun isResetTimer(): Flow<Boolean>
+
     public fun getAppPreferences(): Flow<AppPreferences>
 }

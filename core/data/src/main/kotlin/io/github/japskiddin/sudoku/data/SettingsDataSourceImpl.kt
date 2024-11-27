@@ -25,5 +25,11 @@ constructor(
 
     override fun isShowTimer(): Flow<Boolean> = dataStore.isShowTimer
 
+    override suspend fun setResetTimer(enabled: Boolean) {
+        dataStore.setResetTimer(enabled)
+    }
+
+    override fun isResetTimer(): Flow<Boolean> = dataStore.isResetTimer
+
     override fun getAppPreferences(): Flow<AppPreferences> = dataStore.appPreferences.map { it.toAppPreferences() }
 }

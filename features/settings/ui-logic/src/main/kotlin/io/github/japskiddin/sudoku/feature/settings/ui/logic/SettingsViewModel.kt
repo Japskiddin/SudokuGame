@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetAppPreferencesUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveMistakesLimitPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveResetTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
@@ -25,12 +26,14 @@ internal constructor(
     private val appDispatchers: AppDispatchers,
     getAppPreferencesUseCase: Provider<GetAppPreferencesUseCase>,
     private val saveMistakesLimitPreferenceUseCase: Provider<SaveMistakesLimitPreferenceUseCase>,
-    private val saveShowTimerPreferenceUseCase: Provider<SaveShowTimerPreferenceUseCase>
+    private val saveShowTimerPreferenceUseCase: Provider<SaveShowTimerPreferenceUseCase>,
+    private val saveResetTimerPreferenceUseCase: Provider<SaveResetTimerPreferenceUseCase>,
 ) : ViewModel() {
     public val uiState: StateFlow<UiState> = getAppPreferencesUseCase.get().invoke().map { preferences ->
         UiState(
             isMistakesLimit = preferences.isMistakesLimit,
-            isShowTimer = preferences.isShowTimer
+            isShowTimer = preferences.isShowTimer,
+            isResetTimer = preferences.isResetTimer,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -42,18 +45,25 @@ internal constructor(
         when (action) {
             is UiAction.UpdateMistakesLimit -> updateMistakesLimit(action.checked)
             is UiAction.UpdateShowTimer -> updateShowTimer(action.checked)
+            is UiAction.UpdateResetTimer -> updateResetTimer(action.checked)
         }
     }
 
     private fun updateShowTimer(enabled: Boolean) {
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             saveShowTimerPreferenceUseCase.get().invoke(enabled)
         }
     }
 
     private fun updateMistakesLimit(enabled: Boolean) {
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             saveMistakesLimitPreferenceUseCase.get().invoke(enabled)
+        }
+    }
+
+    private fun updateResetTimer(enabled: Boolean) {
+        viewModelScope.launch {
+            saveResetTimerPreferenceUseCase.get().invoke(enabled)
         }
     }
 

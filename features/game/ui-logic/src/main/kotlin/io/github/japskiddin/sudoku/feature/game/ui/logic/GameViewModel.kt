@@ -21,6 +21,7 @@ import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetMistakesLimitPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetResetTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
@@ -60,20 +61,20 @@ internal constructor(
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
     private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>,
     getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
-    getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>
+    getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>,
+    getResetTimerPreferenceUseCase: Provider<GetResetTimerPreferenceUseCase>,
 ) : ViewModel() {
     private lateinit var gameHistoryManager: GameHistoryManager
 
-    private val getMistakesLimitPreferenceFlow = getMistakesLimitPreferenceUseCase.get().invoke()
-    private val getShowTimerPreferenceFlow = getShowTimerPreferenceUseCase.get().invoke()
-
     private val preferencesUiState: StateFlow<PreferencesUiState> = combine(
-        getMistakesLimitPreferenceFlow,
-        getShowTimerPreferenceFlow
-    ) { isMistakesLimit, isShowTimer ->
+        getMistakesLimitPreferenceUseCase.get().invoke(),
+        getShowTimerPreferenceUseCase.get().invoke(),
+        getResetTimerPreferenceUseCase.get().invoke()
+    ) { isMistakesLimit, isShowTimer, isResetTimer ->
         PreferencesUiState(
             isMistakesLimit = isMistakesLimit,
-            isShowTimer = isShowTimer
+            isShowTimer = isShowTimer,
+            isResetTimer = isResetTimer,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -275,7 +276,11 @@ internal constructor(
             it.copy(
                 board = it.initialBoard,
                 actions = 0,
-                time = 0L,
+                time = if (preferencesUiState.value.isResetTimer) {
+                    0L
+                } else {
+                    it.time
+                },
                 selectedCell = BoardCell.Empty
             )
         }

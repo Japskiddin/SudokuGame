@@ -20,6 +20,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 public fun OutlineText(
     text: String,
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Center,
     textStyle: TextStyle = SudokuTheme.typography.labelMedium,
     fillColor: Color = Color.White,
     outlineColor: Color = Color.Black,
@@ -27,7 +28,7 @@ public fun OutlineText(
 ) {
     val fillTextStyle = textStyle.copy(
         color = fillColor,
-        textAlign = TextAlign.Center
+        textAlign = textAlign
     )
     val outlineTextStyle = fillTextStyle.copy(
         color = outlineColor,

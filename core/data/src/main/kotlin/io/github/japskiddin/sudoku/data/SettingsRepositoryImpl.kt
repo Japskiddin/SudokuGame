@@ -19,5 +19,9 @@ constructor(
 
     override fun isShowTimer(): Flow<Boolean> = settingsDataSource.isShowTimer()
 
+    override suspend fun setResetTimer(enabled: Boolean): Unit = settingsDataSource.setResetTimer(enabled)
+
+    override fun isResetTimer(): Flow<Boolean> = settingsDataSource.isResetTimer()
+
     override fun getAppPreferences(): Flow<AppPreferences> = settingsDataSource.getAppPreferences()
 }
