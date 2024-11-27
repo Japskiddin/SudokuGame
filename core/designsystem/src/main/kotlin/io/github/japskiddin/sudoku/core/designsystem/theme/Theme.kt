@@ -1,9 +1,11 @@
 package io.github.japskiddin.sudoku.core.designsystem.theme
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
+import io.github.japskiddin.sudoku.core.designsystem.theme.ripple.ripple
 
 @Composable
 public fun SudokuTheme(
@@ -16,9 +18,12 @@ public fun SudokuTheme(
         updateColorsFrom(ThemeColors)
     }
 
+    val rippleIndication = ripple()
+
     CompositionLocalProvider(
         LocalColors provides colors,
-        LocalTypography provides typography
+        LocalTypography provides typography,
+        LocalIndication provides rippleIndication,
     ) {
         content()
     }
