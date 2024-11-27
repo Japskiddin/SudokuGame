@@ -1,5 +1,7 @@
 package io.github.japskiddin.sudoku.core.ui.component
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.LocalIndication
@@ -49,22 +51,31 @@ public fun Switch(
         },
         label = "thumb position"
     )
-    val thumbRadius = if (checked) {
-        10.dp
-    } else {
-        8.dp
-    }
+    val thumbRadius by animateDpAsState(
+        targetValue = if (checked) {
+            10.dp
+        } else {
+            8.dp
+        },
+        label = "thumb radius"
+    )
+    val trackColor by animateColorAsState(
+        targetValue = if (checked) {
+            checkedTrackColor
+        } else {
+            uncheckedTrackColor
+        },
+        label = "track color"
+    )
+    val thumbColor by animateColorAsState(
+        targetValue = if (checked) {
+            checkThumbColor
+        } else {
+            uncheckThumbColor
+        },
+        label = "thumb color"
+    )
     val interactionSource = remember { MutableInteractionSource() }
-    val trackColor = if (checked) {
-        checkedTrackColor
-    } else {
-        uncheckedTrackColor
-    }
-    val thumbColor = if (checked) {
-        checkThumbColor
-    } else {
-        uncheckThumbColor
-    }
 
     Canvas(
         modifier = modifier
