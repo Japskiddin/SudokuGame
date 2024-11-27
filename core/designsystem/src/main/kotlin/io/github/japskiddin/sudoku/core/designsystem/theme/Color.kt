@@ -60,6 +60,7 @@ public class Colors(
     switchUncheckedTrack: Color,
     switchCheckedThumb: Color,
     switchCheckedTrack: Color,
+    switchBorder: Color,
 ) {
     public var primary: Color by mutableStateOf(primary)
         private set
@@ -81,6 +82,8 @@ public class Colors(
         private set
     public var switchCheckedTrack: Color by mutableStateOf(switchCheckedTrack)
         private set
+    public var switchBorder: Color by mutableStateOf(switchBorder)
+        private set
 
     public fun copy(
         primary: Color = this.primary,
@@ -93,6 +96,7 @@ public class Colors(
         switchUncheckedTrack: Color = this.switchUncheckedTrack,
         switchCheckedThumb: Color = this.switchCheckedThumb,
         switchCheckedTrack: Color = this.switchCheckedTrack,
+        switchBorder: Color = this.switchBorder,
     ): Colors = Colors(
         primary = primary,
         onPrimary = onPrimary,
@@ -104,6 +108,7 @@ public class Colors(
         switchUncheckedTrack = switchUncheckedTrack,
         switchCheckedThumb = switchCheckedThumb,
         switchCheckedTrack = switchCheckedTrack,
+        switchBorder = switchBorder,
     )
 
     public fun updateColorsFrom(other: Colors) {
@@ -117,6 +122,7 @@ public class Colors(
         switchUncheckedTrack = other.switchUncheckedTrack
         switchCheckedThumb = other.switchCheckedThumb
         switchCheckedTrack = other.switchCheckedTrack
+        switchBorder = other.switchBorder
     }
 }
 
@@ -131,6 +137,7 @@ public val ThemeColors: Colors = Colors(
     switchUncheckedTrack = Color.White,
     switchCheckedThumb = Color.White,
     switchCheckedTrack = DenimBlue,
+    switchBorder = Elephant,
 )
 
 internal val LocalColors = staticCompositionLocalOf { ThemeColors }
