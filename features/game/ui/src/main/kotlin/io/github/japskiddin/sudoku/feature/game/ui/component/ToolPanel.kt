@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.game.ui.R
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
@@ -86,7 +85,7 @@ private fun ToolButton(
     modifier: Modifier = Modifier,
     iconSize: Dp = 36.dp,
     textSize: TextUnit = 16.sp,
-    textColor: Color = OnPrimary,
+    textColor: Color = SudokuTheme.colors.onPrimary,
     onClick: () -> Unit,
 ) {
     Column(

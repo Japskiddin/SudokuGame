@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
 import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
@@ -63,7 +62,7 @@ private fun SettingsContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Primary)
+            .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
             .padding(12.dp)
     ) {

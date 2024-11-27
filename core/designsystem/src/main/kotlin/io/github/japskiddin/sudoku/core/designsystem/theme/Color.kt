@@ -17,30 +17,13 @@ private val Rope: Color = Color(0xFF8A4E24)
 private val DenimBlue: Color = Color(0xFF68BEFA)
 
 @Stable
+private val SilkBlue: Color = Color(0xFF428EC2)
+
+@Stable
+private val LightNavyBlue: Color = Color(0xFF235F89)
+
+@Stable
 private val Elephant: Color = Color(0xFF10354F)
-
-public val Primary: Color = Color(0xFFFAA468)
-public val OnPrimary: Color = Color(0xFFFFFFFF)
-
-public val PrimaryDark: Color = Color(0xFF8A4E24)
-public val OnPrimaryDark: Color = Color(0xFFFFFFFF)
-
-public val MenuButtonForegroundNormal: Color = Color(0xFF68BEFA)
-public val MenuButtonForegroundPressed: Color = Color(0xFF428EC2)
-
-public val MenuButtonBackgroundNormal: Color = Color(0xFF235F89)
-public val MenuButtonBackgroundPressed: Color = Color(0xFF10354F)
-
-public val OnMenuButton: Color = Color(0xFFFFFFFF)
-
-public val DialogSurface: Color = Color(0xFFFFFFFF)
-public val OnDialogSurface: Color = Color(0xFF000000)
-
-public val BoardCellNormal: Color = Color(0xFFFFFFFF)
-public val BoardCellSelected: Color = Color(0xFF68BEFA)
-
-public val BoardNumberNormal: Color = Color(0xFF000000)
-public val BoardNumberSelected: Color = Color(0xFFFFFFFF)
 
 @Suppress("LongParameterList")
 public class Colors(
@@ -50,6 +33,15 @@ public class Colors(
     onBackground: Color,
     dialog: Color,
     onDialog: Color,
+    menuButtonForegroundNormal: Color,
+    menuButtonForegroundPressed: Color,
+    menuButtonBackgroundNormal: Color,
+    menuButtonBackgroundPressed: Color,
+    onMenuButton: Color,
+    boardCellNormal: Color,
+    boardCellSelected: Color,
+    boardNumberNormal: Color,
+    boardNumberSelected: Color,
     switchUncheckedThumb: Color,
     switchUncheckedTrack: Color,
     switchCheckedThumb: Color,
@@ -67,6 +59,24 @@ public class Colors(
     public var dialog: Color by mutableStateOf(dialog)
         private set
     public var onDialog: Color by mutableStateOf(onDialog)
+        private set
+    public var menuButtonForegroundNormal: Color by mutableStateOf(menuButtonForegroundNormal)
+        private set
+    public var menuButtonForegroundPressed: Color by mutableStateOf(menuButtonForegroundPressed)
+        private set
+    public var menuButtonBackgroundNormal: Color by mutableStateOf(menuButtonBackgroundNormal)
+        private set
+    public var menuButtonBackgroundPressed: Color by mutableStateOf(menuButtonBackgroundPressed)
+        private set
+    public var onMenuButton: Color by mutableStateOf(onMenuButton)
+        private set
+    public var boardCellNormal: Color by mutableStateOf(boardCellNormal)
+        private set
+    public var boardCellSelected: Color by mutableStateOf(boardCellSelected)
+        private set
+    public var boardNumberNormal: Color by mutableStateOf(boardNumberNormal)
+        private set
+    public var boardNumberSelected: Color by mutableStateOf(boardNumberSelected)
         private set
     public var switchUncheckedThumb: Color by mutableStateOf(switchUncheckedThumb)
         private set
@@ -86,6 +96,15 @@ public class Colors(
         onBackground: Color = this.onBackground,
         dialog: Color = this.dialog,
         onDialog: Color = this.onDialog,
+        menuButtonForegroundNormal: Color = this.menuButtonForegroundNormal,
+        menuButtonForegroundPressed: Color = this.menuButtonForegroundPressed,
+        menuButtonBackgroundNormal: Color = this.menuButtonBackgroundNormal,
+        menuButtonBackgroundPressed: Color = this.menuButtonBackgroundPressed,
+        onMenuButton: Color = this.onMenuButton,
+        boardCellNormal: Color = this.boardCellNormal,
+        boardCellSelected: Color = this.boardCellSelected,
+        boardNumberNormal: Color = this.boardNumberNormal,
+        boardNumberSelected: Color = this.boardNumberSelected,
         switchUncheckedThumb: Color = this.switchUncheckedThumb,
         switchUncheckedTrack: Color = this.switchUncheckedTrack,
         switchCheckedThumb: Color = this.switchCheckedThumb,
@@ -98,6 +117,15 @@ public class Colors(
         onBackground = onBackground,
         dialog = dialog,
         onDialog = onDialog,
+        menuButtonForegroundNormal = menuButtonForegroundNormal,
+        menuButtonForegroundPressed = menuButtonForegroundPressed,
+        menuButtonBackgroundNormal = menuButtonBackgroundNormal,
+        menuButtonBackgroundPressed = menuButtonBackgroundPressed,
+        onMenuButton = onMenuButton,
+        boardCellNormal = boardCellNormal,
+        boardCellSelected = boardCellSelected,
+        boardNumberNormal = boardNumberNormal,
+        boardNumberSelected = boardNumberSelected,
         switchUncheckedThumb = switchUncheckedThumb,
         switchUncheckedTrack = switchUncheckedTrack,
         switchCheckedThumb = switchCheckedThumb,
@@ -112,6 +140,15 @@ public class Colors(
         onBackground = other.onBackground
         dialog = other.dialog
         onDialog = other.onDialog
+        menuButtonForegroundNormal = other.menuButtonForegroundNormal
+        menuButtonForegroundPressed = other.menuButtonForegroundPressed
+        menuButtonBackgroundNormal = other.menuButtonBackgroundNormal
+        menuButtonBackgroundPressed = other.menuButtonBackgroundPressed
+        onMenuButton = other.onMenuButton
+        boardCellNormal = other.boardCellNormal
+        boardCellSelected = other.boardCellSelected
+        boardNumberNormal = other.boardNumberNormal
+        boardNumberSelected = other.boardNumberSelected
         switchUncheckedThumb = other.switchUncheckedThumb
         switchUncheckedTrack = other.switchUncheckedTrack
         switchCheckedThumb = other.switchCheckedThumb
@@ -127,6 +164,15 @@ internal val ThemeColors: Colors = Colors(
     onBackground = Color.White,
     dialog = Color.White,
     onDialog = Color.Black,
+    menuButtonForegroundNormal = DenimBlue,
+    menuButtonForegroundPressed = SilkBlue,
+    menuButtonBackgroundNormal = LightNavyBlue,
+    menuButtonBackgroundPressed = Elephant,
+    onMenuButton = Color.White,
+    boardCellNormal = Color.White,
+    boardCellSelected = DenimBlue,
+    boardNumberNormal = Color.Black,
+    boardNumberSelected = Color.White,
     switchUncheckedThumb = DenimBlue,
     switchUncheckedTrack = Color.White,
     switchCheckedThumb = Color.White,

@@ -37,7 +37,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
@@ -328,7 +327,7 @@ private fun Error(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .background(Primary)
+            .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
         val configuration = LocalConfiguration.current

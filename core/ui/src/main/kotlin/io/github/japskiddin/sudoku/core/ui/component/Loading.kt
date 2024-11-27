@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 
@@ -56,7 +55,7 @@ private fun LoadingContent(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .background(Primary)
+            .background(SudokuTheme.colors.primary)
             .safeContentPadding()
     ) {
         val configuration = LocalConfiguration.current

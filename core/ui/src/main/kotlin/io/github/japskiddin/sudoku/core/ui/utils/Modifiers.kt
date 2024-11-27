@@ -19,14 +19,14 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.japskiddin.sudoku.core.designsystem.theme.DialogSurface
+import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 
 @Composable
 public fun Modifier.dialogBackground(): Modifier = this.then(
     Modifier
         .shadow(8.dp, shape = RoundedCornerShape(16.dp))
         .background(
-            color = DialogSurface,
+            color = SudokuTheme.colors.dialog,
             shape = RoundedCornerShape(size = 16.dp)
         )
         .padding(4.dp)

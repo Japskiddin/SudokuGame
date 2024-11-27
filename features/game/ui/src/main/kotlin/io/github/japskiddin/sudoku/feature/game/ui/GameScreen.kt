@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.japskiddin.sudoku.core.designsystem.theme.Primary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
 import io.github.japskiddin.sudoku.core.model.BoardCell
@@ -107,7 +106,7 @@ private fun GameScreenContent(
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
-        .background(Primary)
+        .background(SudokuTheme.colors.primary)
     when (state) {
         is UiState.Game -> Game(
             state = state,
@@ -194,7 +193,7 @@ private fun Error(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .background(Primary)
+            .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
         Column(
@@ -228,7 +227,7 @@ private fun Fail(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .background(Primary)
+            .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
         Column(
@@ -261,7 +260,7 @@ private fun Complete(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .then(modifier)
-            .background(Primary)
+            .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
         Column(

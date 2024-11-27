@@ -26,11 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundNormal
-import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonBackgroundPressed
-import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundNormal
-import io.github.japskiddin.sudoku.core.designsystem.theme.MenuButtonForegroundPressed
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnMenuButton
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.R
 
@@ -40,10 +35,10 @@ public fun GameButton(
     modifier: Modifier = Modifier,
     icon: Painter? = null,
     iconSize: Dp = 24.dp,
-    foregroundNormalColor: Color = MenuButtonForegroundNormal,
-    foregroundPressedColor: Color = MenuButtonForegroundPressed,
-    backgroundNormalColor: Color = MenuButtonBackgroundNormal,
-    backgroundPressedColor: Color = MenuButtonBackgroundPressed,
+    foregroundNormalColor: Color = SudokuTheme.colors.menuButtonForegroundNormal,
+    foregroundPressedColor: Color = SudokuTheme.colors.menuButtonForegroundPressed,
+    backgroundNormalColor: Color = SudokuTheme.colors.menuButtonBackgroundNormal,
+    backgroundPressedColor: Color = SudokuTheme.colors.menuButtonBackgroundPressed,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -83,7 +78,7 @@ public fun GameButton(
         GameButtonContent(
             icon = icon,
             text = text,
-            textColor = OnMenuButton,
+            textColor = SudokuTheme.colors.onMenuButton,
             iconSize = iconSize,
             outlineColor = buttonBackgroundColor
         )

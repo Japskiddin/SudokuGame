@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameType
@@ -109,7 +108,7 @@ private fun InputButton(
     modifier: Modifier = Modifier,
     valueTextSize: TextUnit = 16.sp,
     counterTextSize: TextUnit = 10.sp,
-    textColor: Color = OnPrimary,
+    textColor: Color = SudokuTheme.colors.onPrimary,
 ) {
     Column(
         modifier = Modifier

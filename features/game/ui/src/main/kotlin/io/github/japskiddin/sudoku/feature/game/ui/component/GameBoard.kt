@@ -45,11 +45,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.japskiddin.sudoku.core.designsystem.theme.BoardCellNormal
-import io.github.japskiddin.sudoku.core.designsystem.theme.BoardCellSelected
-import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberNormal
-import io.github.japskiddin.sudoku.core.designsystem.theme.BoardNumberSelected
-import io.github.japskiddin.sudoku.core.designsystem.theme.OnPrimary
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardList
@@ -102,12 +97,12 @@ internal fun GameBoard(
     isCrossHighlight: Boolean = false,
     cellsToHighlight: List<BoardCell> = emptyList(),
     notes: List<BoardNote> = emptyList(),
-    numberColor: Color = BoardNumberNormal,
-    selectedNumberColor: Color = BoardNumberSelected,
+    numberColor: Color = SudokuTheme.colors.boardNumberNormal,
+    selectedNumberColor: Color = SudokuTheme.colors.boardNumberSelected,
     lockedNumberColor: Color = Color.Black,
     errorNumberColor: Color = Color.Red,
-    cellColor: Color = BoardCellNormal,
-    selectedCellColor: Color = BoardCellSelected,
+    cellColor: Color = SudokuTheme.colors.boardCellNormal,
+    selectedCellColor: Color = SudokuTheme.colors.boardCellSelected,
     noteColor: Color = numberColor.copy(alpha = 0.8f),
     outerStrokeColor: Color = Color.Black,
     innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
@@ -117,7 +112,7 @@ internal fun GameBoard(
             .fillMaxWidth()
             .aspectRatio(1f)
             .background(
-                color = OnPrimary,
+                color = SudokuTheme.colors.onPrimary,
                 shape = RoundedCornerShape(size = 16.dp)
             )
             .padding(6.dp)
