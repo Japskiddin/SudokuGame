@@ -17,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.Switch
 
-private const val SwitchScale = 0.8f
-
 @Composable
 internal fun CheckableSettingsItem(
     title: String,
@@ -54,11 +52,9 @@ internal fun CheckableSettingsItem(
             }
         }
         Spacer(modifier.width(6.dp))
-        Switch(
-//            modifier = Modifier.scale(SwitchScale),
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-        )
+        Switch(checked = checked) { checked ->
+            onCheckedChange(checked)
+        }
     }
 }
 

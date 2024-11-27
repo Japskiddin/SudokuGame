@@ -3,19 +3,19 @@ package io.github.japskiddin.sudoku.core.ui.component
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -38,7 +38,7 @@ public fun Switch(
     checkThumbColor: Color = SudokuTheme.colors.switchCheckedThumb,
     uncheckThumbColor: Color = SudokuTheme.colors.switchUncheckedThumb,
     borderColor: Color = SudokuTheme.colors.switchBorder,
-    borderWidth: Dp = 3.dp,
+    borderWidth: Dp = 4.dp,
     onCheckedChange: (Boolean) -> Unit,
 ) {
     val thumbPosition by animateFloatAsState(
@@ -50,7 +50,7 @@ public fun Switch(
         label = "thumb position"
     )
     val thumbRadius = if (checked) {
-        12.dp
+        10.dp
     } else {
         8.dp
     }
@@ -66,33 +66,29 @@ public fun Switch(
         uncheckThumbColor
     }
 
-    Box(
+    Canvas(
         modifier = modifier
+            .clip(shape = RoundedCornerShape(size = 16.dp))
             .size(width = 56.dp, height = 32.dp)
-            .background(color = Color.Transparent)
             .clickable(
                 onClick = { onCheckedChange(!checked) },
                 interactionSource = interactionSource,
                 indication = LocalIndication.current
             )
     ) {
-        Canvas(
-            modifier = Modifier.matchParentSize()
-        ) {
-            drawTrack(
-                fillColor = trackColor,
-                borderColor = borderColor,
-                borderWidth = borderWidth
-            )
-            drawThumb(
-                fillColor = thumbColor,
-                borderColor = borderColor,
-                borderWidth = borderWidth,
-                radius = thumbRadius,
-                position = thumbPosition,
-                checked = checked
-            )
-        }
+        drawTrack(
+            fillColor = trackColor,
+            borderColor = borderColor,
+            borderWidth = borderWidth
+        )
+        drawThumb(
+            fillColor = thumbColor,
+            borderColor = borderColor,
+            borderWidth = borderWidth,
+            radius = thumbRadius,
+            position = thumbPosition,
+            checked = checked
+        )
     }
 }
 
@@ -121,7 +117,7 @@ private fun DrawScope.drawThumb(
         drawCircleWithStyle(
             color = borderColor,
             style = Stroke(
-                width = borderWidth.toPx()
+                width = borderWidth.toPx() - 2.dp.toPx()
             ),
             radius = radius,
             offset = offset
@@ -199,16 +195,13 @@ private fun calculateThumbOffset(
 )
 @Composable
 private fun SwitchPreview() {
+    var checked by remember { mutableStateOf(true) }
+
     SudokuTheme {
         Row(modifier = Modifier.padding(12.dp)) {
             Switch(
-                checked = false,
-                onCheckedChange = {}
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Switch(
-                checked = true,
-                onCheckedChange = {}
+                checked = checked,
+                onCheckedChange = { checked = it }
             )
         }
     }
