@@ -2,6 +2,7 @@ package io.github.japskiddin.sudoku.core.ui.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -72,7 +73,7 @@ public fun Switch(
             .clickable(
                 onClick = { onCheckedChange(!checked) },
                 interactionSource = interactionSource,
-                indication = null
+                indication = LocalIndication.current
             )
     ) {
         Canvas(

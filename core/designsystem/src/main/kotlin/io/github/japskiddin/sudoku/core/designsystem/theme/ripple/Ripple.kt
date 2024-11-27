@@ -90,9 +90,7 @@ private object RippleDefaults {
 }
 
 public val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfiguration?> =
-    compositionLocalOf {
-        RippleConfiguration()
-    }
+    compositionLocalOf { RippleConfiguration() }
 
 @Immutable
 public class RippleConfiguration(

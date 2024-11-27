@@ -6,15 +6,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -35,6 +38,9 @@ public fun GameButton(
     modifier: Modifier = Modifier,
     icon: Painter? = null,
     iconSize: Dp = 24.dp,
+    cornerRadius: Dp = 8.dp,
+    strokeWidth: Dp = 2.dp,
+    bottomStroke: Dp = 6.dp,
     foregroundNormalColor: Color = SudokuTheme.colors.menuButtonForegroundNormal,
     foregroundPressedColor: Color = SudokuTheme.colors.menuButtonForegroundPressed,
     backgroundNormalColor: Color = SudokuTheme.colors.menuButtonBackgroundNormal,
@@ -60,6 +66,7 @@ public fun GameButton(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(shape = RoundedCornerShape(size = cornerRadius))
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
@@ -68,9 +75,9 @@ public fun GameButton(
             .drawBorder(
                 backgroundColor = buttonBackgroundColor,
                 foregroundColor = buttonForegroundColor,
-                strokeWidth = 2.dp,
-                cornerRadius = 8.dp,
-                bottomStroke = 6.dp
+                strokeWidth = strokeWidth,
+                cornerRadius = cornerRadius,
+                bottomStroke = bottomStroke
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -93,11 +100,12 @@ private fun GameButtonContent(
     textColor: Color,
     outlineColor: Color,
     modifier: Modifier = Modifier,
+    contentPadding: Dp = 12.dp
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(all = 12.dp),
+            .padding(all = contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (icon != null) {
@@ -113,7 +121,10 @@ private fun GameButtonContent(
             fillColor = textColor,
             outlineColor = outlineColor,
             modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp)
+                .padding(
+                    start = contentPadding,
+                    end = contentPadding
+                )
                 .weight(1f)
         )
     }
@@ -149,14 +160,18 @@ private fun Modifier.drawBorder(
 
 @Preview(
     name = "Game Button",
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF
 )
 @Composable
 private fun GameButtonPreview() {
     SudokuTheme {
-        GameButton(
-            text = stringResource(id = R.string.start_game),
-            icon = painterResource(id = R.drawable.ic_close),
-            onClick = {}
-        )
+        Column(modifier = Modifier.padding(12.dp)) {
+            GameButton(
+                text = stringResource(id = R.string.start_game),
+                icon = painterResource(id = R.drawable.ic_close),
+                onClick = {}
+            )
+        }
     }
 }
