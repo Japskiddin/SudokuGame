@@ -10,10 +10,14 @@ public fun SudokuTheme(
     typography: Typography = SudokuTheme.typography,
     content: @Composable () -> Unit
 ) {
-    val rememberedColors = remember { ThemeColors.copy() }.apply { updateColorsFrom(ThemeColors) }
+    val colors = remember {
+        ThemeColors.copy()
+    }.apply {
+        updateColorsFrom(ThemeColors)
+    }
 
     CompositionLocalProvider(
-        LocalColors provides rememberedColors,
+        LocalColors provides colors,
         LocalTypography provides typography
     ) {
         content()

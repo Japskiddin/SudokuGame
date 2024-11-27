@@ -42,13 +42,7 @@ public val BoardCellSelected: Color = Color(0xFF68BEFA)
 public val BoardNumberNormal: Color = Color(0xFF000000)
 public val BoardNumberSelected: Color = Color(0xFFFFFFFF)
 
-public val SettingsSwitchUncheckedThumb: Color = Color(0xFF68BEFA)
-public val SettingsSwitchUncheckedTrack: Color = Color(0xFFFFFFFF)
-public val SettingsSwitchUncheckedBorder: Color = Color(0xFF10354F)
-public val SettingsSwitchCheckedThumb: Color = Color(0xFFFFFFFF)
-public val SettingsSwitchCheckedTrack: Color = Color(0xFF68BEFA)
-public val SettingsSwitchCheckedBorder: Color = Color(0xFF10354F)
-
+@Suppress("LongParameterList")
 public class Colors(
     primary: Color,
     onPrimary: Color,
@@ -126,7 +120,7 @@ public class Colors(
     }
 }
 
-public val ThemeColors: Colors = Colors(
+internal val ThemeColors: Colors = Colors(
     primary = AtomicTangerine,
     onPrimary = Color.White,
     background = AtomicTangerine,
