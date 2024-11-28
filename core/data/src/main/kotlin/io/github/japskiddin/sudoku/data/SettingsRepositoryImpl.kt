@@ -6,6 +6,7 @@ import io.github.japskiddin.sudoku.core.model.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 public class SettingsRepositoryImpl
 @Inject
 constructor(
@@ -22,6 +23,35 @@ constructor(
     override suspend fun setResetTimer(enabled: Boolean): Unit = settingsDataSource.setResetTimer(enabled)
 
     override fun isResetTimer(): Flow<Boolean> = settingsDataSource.isResetTimer()
+
+    override suspend fun setHighlightErrorCells(enabled: Boolean): Unit =
+        settingsDataSource.setHighlightErrorCells(enabled)
+
+    override fun isHighlightErrorCells(): Flow<Boolean> = settingsDataSource.isHighlightErrorCells()
+
+    override suspend fun setHighlightSimilarCells(enabled: Boolean): Unit =
+        settingsDataSource.setHighlightSimilarCells(enabled)
+
+    override fun isHighlightSimilarCells(): Flow<Boolean> = settingsDataSource.isHighlightSimilarCells()
+
+    override suspend fun setShowRemainingNumbers(enabled: Boolean): Unit =
+        settingsDataSource.setShowRemainingNumbers(enabled)
+
+    override fun isShowRemainingNumbers(): Flow<Boolean> = settingsDataSource.isShowRemainingNumbers()
+
+    override suspend fun setHighlightSelectedCell(enabled: Boolean): Unit =
+        settingsDataSource.setHighlightSelectedCell(enabled)
+
+    override fun isHighlightSelectedCell(): Flow<Boolean> = settingsDataSource.isHighlightSelectedCell()
+
+    override suspend fun setKeepScreenOn(enabled: Boolean): Unit = settingsDataSource.setKeepScreenOn(enabled)
+
+    override fun isKeepScreenOn(): Flow<Boolean> = settingsDataSource.isKeepScreenOn()
+
+    override suspend fun setSaveLastDifficulty(enabled: Boolean): Unit =
+        settingsDataSource.setSaveLastDifficulty(enabled)
+
+    override fun isSaveLastDifficulty(): Flow<Boolean> = settingsDataSource.isSaveLastDifficulty()
 
     override fun getAppPreferences(): Flow<AppPreferences> = settingsDataSource.getAppPreferences()
 }

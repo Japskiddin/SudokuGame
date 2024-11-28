@@ -7,4 +7,10 @@ internal fun AppPreferencesDSO.toAppPreferences(): AppPreferences = AppPreferenc
     isMistakesLimit = this.isMistakesLimit,
     isShowTimer = this.isShowTimer,
     isResetTimer = this.isResetTimer,
+    isHighlightErrorCells = this.isHighlightErrorCells,
+    isHighlightSimilarCells = this.isHighlightSimilarCells,
+    isShowRemainingNumbers = this.isShowRemainingNumbers,
+    isHighlightSelectedCell = this.isHighlightSelectedCell,
+    isKeepScreenOn = this.isKeepScreenOn,
+    isSaveLastDifficulty = this.isSaveLastDifficulty
 )
