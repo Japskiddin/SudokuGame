@@ -6,4 +6,16 @@ public sealed interface UiAction {
     public data class UpdateShowTimer(val checked: Boolean) : UiAction
 
     public data class UpdateResetTimer(val checked: Boolean) : UiAction
+
+    public data class UpdateHighlightErrorCells(val checked: Boolean) : UiAction
+
+    public data class UpdateHighlightSimilarCells(val checked: Boolean) : UiAction
+
+    public data class UpdateKeepScreenOn(val checked: Boolean) : UiAction
+
+    public data class UpdateHighlightSelectedCell(val checked: Boolean) : UiAction
+
+    public data class UpdateSaveLastDifficulty(val checked: Boolean) : UiAction
+
+    public data class UpdateShowRemainingNumbers(val checked: Boolean) : UiAction
 }

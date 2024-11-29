@@ -53,6 +53,24 @@ private fun SettingsScreen(viewModel: SettingsViewModel) {
         },
         onUpdateResetTimer = { checked ->
             viewModel.onAction(UiAction.UpdateResetTimer(checked))
+        },
+        onUpdateHighlightErrorCells = { checked ->
+            viewModel.onAction(UiAction.UpdateHighlightErrorCells(checked))
+        },
+        onUpdateHighlightSimilarCells = { checked ->
+            viewModel.onAction(UiAction.UpdateHighlightSimilarCells(checked))
+        },
+        onUpdateShowRemainingNumbers = { checked ->
+            viewModel.onAction(UiAction.UpdateShowRemainingNumbers(checked))
+        },
+        onUpdateHighlightSelectedCell = { checked ->
+            viewModel.onAction(UiAction.UpdateHighlightSelectedCell(checked))
+        },
+        onUpdateKeepScreenOn = { checked ->
+            viewModel.onAction(UiAction.UpdateKeepScreenOn(checked))
+        },
+        onUpdateSaveLastDifficulty = { checked ->
+            viewModel.onAction(UiAction.UpdateSaveLastDifficulty(checked))
         }
     )
 }
@@ -63,6 +81,12 @@ private fun SettingsContent(
     onUpdateMistakesLimit: (Boolean) -> Unit,
     onUpdateShowTimer: (Boolean) -> Unit,
     onUpdateResetTimer: (Boolean) -> Unit,
+    onUpdateHighlightErrorCells: (Boolean) -> Unit,
+    onUpdateHighlightSimilarCells: (Boolean) -> Unit,
+    onUpdateShowRemainingNumbers: (Boolean) -> Unit,
+    onUpdateHighlightSelectedCell: (Boolean) -> Unit,
+    onUpdateKeepScreenOn: (Boolean) -> Unit,
+    onUpdateSaveLastDifficulty: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -101,6 +125,30 @@ private fun SettingsContent(
                     start = 12.dp,
                     end = 12.dp
                 ),
+                text = stringResource(id = CoreUiR.string.settings_section_general),
+                style = SudokuTheme.typography.bodyMedium.copy(
+                    color = SudokuTheme.colors.onPrimary,
+                ),
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            // TODO добавить описание в строках
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.keep_screen_on),
+                onCheckedChange = onUpdateKeepScreenOn,
+                checked = state.isKeepScreenOn
+            )
+            // TODO добавить описание в строках
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.save_last_game_difficulty_type),
+                onCheckedChange = onUpdateSaveLastDifficulty,
+                checked = state.isSaveLastDifficulty
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            BasicText(
+                modifier = Modifier.padding(
+                    start = 12.dp,
+                    end = 12.dp
+                ),
                 text = stringResource(id = CoreUiR.string.settings_section_game),
                 style = SudokuTheme.typography.bodyMedium.copy(
                     color = SudokuTheme.colors.onPrimary
@@ -123,6 +171,28 @@ private fun SettingsContent(
                 description = stringResource(id = CoreUiR.string.reset_timer_desc),
                 onCheckedChange = onUpdateResetTimer,
                 checked = state.isResetTimer
+            )
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.highlight_cells_with_errors),
+                onCheckedChange = onUpdateHighlightErrorCells,
+                checked = state.isHighlightErrorCells
+            )
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.highlight_similar_cells),
+                onCheckedChange = onUpdateHighlightSimilarCells,
+                checked = state.isHighlightSimilarCells
+            )
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.show_remaining_numbers),
+                description = stringResource(id = CoreUiR.string.show_remaining_numbers_desc),
+                onCheckedChange = onUpdateShowRemainingNumbers,
+                checked = state.isShowRemainingNumbers
+            )
+            // TODO добавить описание в строках
+            CheckableSettingsItem(
+                title = stringResource(id = CoreUiR.string.highlight_selected_cell),
+                onCheckedChange = onUpdateHighlightSelectedCell,
+                checked = state.isHighlightSelectedCell
             )
         }
     }
@@ -147,6 +217,12 @@ private fun SettingsContentPreview(
             onUpdateMistakesLimit = {},
             onUpdateShowTimer = {},
             onUpdateResetTimer = {},
+            onUpdateHighlightErrorCells = {},
+            onUpdateHighlightSimilarCells = {},
+            onUpdateKeepScreenOn = {},
+            onUpdateShowRemainingNumbers = {},
+            onUpdateHighlightSelectedCell = {},
+            onUpdateSaveLastDifficulty = {},
         )
     }
 }

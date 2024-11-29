@@ -53,9 +53,9 @@ public fun Switch(
     )
     val thumbRadius by animateDpAsState(
         targetValue = if (checked) {
-            10.dp
-        } else {
             8.dp
+        } else {
+            6.dp
         },
         label = "thumb radius"
     )
@@ -80,7 +80,7 @@ public fun Switch(
     Canvas(
         modifier = modifier
             .clip(shape = RoundedCornerShape(size = 16.dp))
-            .size(width = 56.dp, height = 32.dp)
+            .size(width = 48.dp, height = 28.dp)
             .clickable(
                 onClick = { onCheckedChange(!checked) },
                 interactionSource = interactionSource,
