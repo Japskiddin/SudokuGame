@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.ui.component.HorizontalDivider
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
 import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
@@ -95,23 +96,9 @@ private fun SettingsContent(
             .safeDrawingPadding()
             .padding(12.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlineText(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 40.dp, end = 4.dp),
-                text = stringResource(id = CoreUiR.string.settings),
-                textStyle = SudokuTheme.typography.titleMedium
-            )
-            Image(
-                modifier = Modifier.size(36.dp),
-                painter = painterResource(id = CoreUiR.drawable.ic_close),
-                contentDescription = stringResource(id = CoreUiR.string.close)
-            )
-        }
+        Title(
+            modifier = Modifier.fillMaxWidth()
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
         val scrollState = rememberScrollState()
@@ -120,82 +107,170 @@ private fun SettingsContent(
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
-            BasicText(
-                modifier = Modifier.padding(
-                    start = 12.dp,
-                    end = 12.dp
-                ),
-                text = stringResource(id = CoreUiR.string.settings_section_general),
-                style = SudokuTheme.typography.bodyMedium.copy(
-                    color = SudokuTheme.colors.onPrimary,
-                ),
+            SectionGeneral(
+                isKeepScreenOn = state.isKeepScreenOn,
+                isSaveLastDifficulty = state.isSaveLastDifficulty,
+                onUpdateKeepScreenOn = onUpdateKeepScreenOn,
+                onUpdateSaveLastDifficulty = onUpdateSaveLastDifficulty
             )
             Spacer(modifier = Modifier.height(12.dp))
-            // TODO добавить описание в строках
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.keep_screen_on),
-                onCheckedChange = onUpdateKeepScreenOn,
-                checked = state.isKeepScreenOn
-            )
-            // TODO добавить описание в строках
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.save_last_game_difficulty_type),
-                onCheckedChange = onUpdateSaveLastDifficulty,
-                checked = state.isSaveLastDifficulty
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            BasicText(
-                modifier = Modifier.padding(
-                    start = 12.dp,
-                    end = 12.dp
-                ),
-                text = stringResource(id = CoreUiR.string.settings_section_game),
-                style = SudokuTheme.typography.bodyMedium.copy(
-                    color = SudokuTheme.colors.onPrimary
-                ),
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.mistakes_limit),
-                description = stringResource(id = CoreUiR.string.mistakes_limit_desc),
-                onCheckedChange = onUpdateMistakesLimit,
-                checked = state.isMistakesLimit
-            )
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.show_timer),
-                onCheckedChange = onUpdateShowTimer,
-                checked = state.isShowTimer
-            )
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.reset_timer),
-                description = stringResource(id = CoreUiR.string.reset_timer_desc),
-                onCheckedChange = onUpdateResetTimer,
-                checked = state.isResetTimer
-            )
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.highlight_cells_with_errors),
-                onCheckedChange = onUpdateHighlightErrorCells,
-                checked = state.isHighlightErrorCells
-            )
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.highlight_similar_cells),
-                onCheckedChange = onUpdateHighlightSimilarCells,
-                checked = state.isHighlightSimilarCells
-            )
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.show_remaining_numbers),
-                description = stringResource(id = CoreUiR.string.show_remaining_numbers_desc),
-                onCheckedChange = onUpdateShowRemainingNumbers,
-                checked = state.isShowRemainingNumbers
-            )
-            // TODO добавить описание в строках
-            CheckableSettingsItem(
-                title = stringResource(id = CoreUiR.string.highlight_selected_cell),
-                onCheckedChange = onUpdateHighlightSelectedCell,
-                checked = state.isHighlightSelectedCell
+            SectionGame(
+                isMistakesLimit = state.isMistakesLimit,
+                isShowTimer = state.isShowTimer,
+                isResetTimer = state.isResetTimer,
+                isHighlightErrorCells = state.isHighlightErrorCells,
+                isHighlightSimilarCells = state.isHighlightSimilarCells,
+                isShowRemainingNumbers = state.isShowRemainingNumbers,
+                isHighlightSelectedCell = state.isHighlightSelectedCell,
+                onUpdateMistakesLimit = onUpdateMistakesLimit,
+                onUpdateShowTimer = onUpdateShowTimer,
+                onUpdateResetTimer = onUpdateResetTimer,
+                onUpdateHighlightErrorCells = onUpdateHighlightErrorCells,
+                onUpdateHighlightSimilarCells = onUpdateHighlightSimilarCells,
+                onUpdateShowRemainingNumbers = onUpdateShowRemainingNumbers,
+                onUpdateHighlightSelectedCell = onUpdateHighlightSelectedCell,
             )
         }
     }
+}
+
+@Composable
+private fun SectionGeneral(
+    isKeepScreenOn: Boolean,
+    isSaveLastDifficulty: Boolean,
+    onUpdateKeepScreenOn: (Boolean) -> Unit,
+    onUpdateSaveLastDifficulty: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TitleSection(
+        title = stringResource(id = CoreUiR.string.settings_section_general),
+        modifier = modifier,
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.keep_screen_on),
+        description = stringResource(id = CoreUiR.string.keep_screen_on_desc),
+        onCheckedChange = onUpdateKeepScreenOn,
+        checked = isKeepScreenOn
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.save_last_game_difficulty_type),
+        description = stringResource(id = CoreUiR.string.save_last_game_difficulty_type_desc),
+        onCheckedChange = onUpdateSaveLastDifficulty,
+        checked = isSaveLastDifficulty
+    )
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun SectionGame(
+    isMistakesLimit: Boolean,
+    isShowTimer: Boolean,
+    isResetTimer: Boolean,
+    isHighlightErrorCells: Boolean,
+    isHighlightSimilarCells: Boolean,
+    isShowRemainingNumbers: Boolean,
+    isHighlightSelectedCell: Boolean,
+    onUpdateMistakesLimit: (Boolean) -> Unit,
+    onUpdateShowTimer: (Boolean) -> Unit,
+    onUpdateResetTimer: (Boolean) -> Unit,
+    onUpdateHighlightErrorCells: (Boolean) -> Unit,
+    onUpdateHighlightSimilarCells: (Boolean) -> Unit,
+    onUpdateShowRemainingNumbers: (Boolean) -> Unit,
+    onUpdateHighlightSelectedCell: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    TitleSection(
+        title = stringResource(id = CoreUiR.string.settings_section_game),
+        modifier = modifier,
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.mistakes_limit),
+        description = stringResource(id = CoreUiR.string.mistakes_limit_desc),
+        onCheckedChange = onUpdateMistakesLimit,
+        checked = isMistakesLimit
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.show_timer),
+        onCheckedChange = onUpdateShowTimer,
+        checked = isShowTimer
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.reset_timer),
+        description = stringResource(id = CoreUiR.string.reset_timer_desc),
+        onCheckedChange = onUpdateResetTimer,
+        checked = isResetTimer
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.highlight_cells_with_errors),
+        onCheckedChange = onUpdateHighlightErrorCells,
+        checked = isHighlightErrorCells
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.highlight_similar_cells),
+        onCheckedChange = onUpdateHighlightSimilarCells,
+        checked = isHighlightSimilarCells
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.show_remaining_numbers),
+        description = stringResource(id = CoreUiR.string.show_remaining_numbers_desc),
+        onCheckedChange = onUpdateShowRemainingNumbers,
+        checked = isShowRemainingNumbers
+    )
+    CheckableSettingsItem(
+        title = stringResource(id = CoreUiR.string.highlight_selected_cell),
+        description = stringResource(id = CoreUiR.string.highlight_selected_cell_desc),
+        onCheckedChange = onUpdateHighlightSelectedCell,
+        checked = isHighlightSelectedCell
+    )
+}
+
+@Composable
+private fun Title(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlineText(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 40.dp, end = 4.dp),
+            text = stringResource(id = CoreUiR.string.settings),
+            textStyle = SudokuTheme.typography.titleMedium
+        )
+        Image(
+            modifier = Modifier.size(36.dp),
+            painter = painterResource(id = CoreUiR.drawable.ic_close),
+            contentDescription = stringResource(id = CoreUiR.string.close)
+        )
+    }
+}
+
+@Composable
+private fun TitleSection(
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    BasicText(
+        modifier = modifier.padding(
+            start = 12.dp,
+            end = 12.dp
+        ),
+        text = title,
+        style = SudokuTheme.typography.bodyMedium.copy(
+            color = SudokuTheme.colors.onPrimary,
+        ),
+    )
+    Spacer(modifier = modifier.height(6.dp))
+    HorizontalDivider(
+        modifier = modifier.padding(
+            start = 12.dp,
+            end = 12.dp
+        ),
+        color = SudokuTheme.colors.onPrimary.copy(alpha = 0.6f)
+    )
+    Spacer(modifier = modifier.height(6.dp))
 }
 
 @Preview(
