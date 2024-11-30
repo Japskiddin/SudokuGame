@@ -13,9 +13,12 @@
     <string name="highlight_similar_cells">Выделять похожие клетки</string>
     <string name="show_remaining_numbers">Показывать оставшиеся числа</string>
     <string name="show_remaining_numbers_desc">Отображает под панелью ввода количество оставшихся чисел</string>
-    <string name="highlight_selected_cell">Выделять выбранную клетку горизонтальными и вертикальными линиями</string>
+    <string name="highlight_selected_cell">Выделять выбранную клетку</string>
+    <string name="highlight_selected_cell_desc">Выделять выбранную клетку горизонтальными и вертикальными линиями</string>
     <string name="keep_screen_on">Оставлять экран включённым</string>
-    <string name="save_last_game_difficulty_type">Сохранять последнюю выбранную сложность игры и тип</string>
+    <string name="keep_screen_on_desc">Экран во время игры не будет выключаться</string>
+    <string name="save_last_game_difficulty_type">Сохранять сложность игры и тип</string>
+    <string name="save_last_game_difficulty_type_desc">Сохранять последнюю выбранную сложность игры и тип</string>
     <string name="do_you_want_to_continue">Хотите продолжить?</string>
     <string name="start">Старт</string>
     <string name="swipe_left">Смахнуть влево</string>

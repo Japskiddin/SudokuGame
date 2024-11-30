@@ -44,7 +44,10 @@
     <string name="highlight_similar_cells">Highlight similar cells</string>
     <string name="show_remaining_numbers">Show remaining numbers</string>
     <string name="show_remaining_numbers_desc">Displays the number of remaining numbers below the input panel</string>
-    <string name="highlight_selected_cell">Highlight the selected cell with horizontal and vertical lines</string>
+    <string name="highlight_selected_cell">Highlight the selected cell</string>
+    <string name="highlight_selected_cell_desc">Highlight the selected cell with horizontal and vertical lines</string>
     <string name="keep_screen_on">Keep the screen on</string>
-    <string name="save_last_game_difficulty_type">Save the last selected game difficulty and type</string>
+    <string name="keep_screen_on_desc">The screen will not turn off during the game</string>
+    <string name="save_last_game_difficulty_type">Save game difficulty and type</string>
+    <string name="save_last_game_difficulty_type_desc">Save the last selected game difficulty and type</string>
 </resources>
