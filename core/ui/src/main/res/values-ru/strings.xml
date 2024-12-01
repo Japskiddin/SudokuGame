@@ -17,8 +17,8 @@
     <string name="highlight_selected_cell_desc">Выделять выбранную клетку горизонтальными и вертикальными линиями</string>
     <string name="keep_screen_on">Оставлять экран включённым</string>
     <string name="keep_screen_on_desc">Экран во время игры не будет выключаться</string>
-    <string name="save_last_game_difficulty_type">Сохранять сложность игры и тип</string>
-    <string name="save_last_game_difficulty_type_desc">Сохранять последнюю выбранную сложность игры и тип</string>
+    <string name="save_last_game_mode">Сохранять режим игры</string>
+    <string name="save_last_game_mode_desc">Сохранять последнюю выбранную сложность игры и тип</string>
     <string name="do_you_want_to_continue">Хотите продолжить?</string>
     <string name="start">Старт</string>
     <string name="swipe_left">Смахнуть влево</string>

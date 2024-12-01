@@ -8,10 +8,12 @@ import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
+import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
+import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
 import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.mapToUiMenuState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
@@ -26,7 +28,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @HiltViewModel
 public class HomeViewModel
 @Inject
@@ -36,7 +38,8 @@ internal constructor(
     private val createBoardUseCase: Provider<CreateBoardUseCase>,
     private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
     private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
-    getLastGameUseCase: Provider<GetLastGameUseCase>
+    getLastGameUseCase: Provider<GetLastGameUseCase>,
+    getLastGameModeUseCase: Provider<GetLastGameModePreferenceUseCase>,
 ) : ViewModel() {
     private val lastGame = getLastGameUseCase.get().invoke()
         .stateIn(
@@ -78,16 +81,16 @@ internal constructor(
             is UiAction.ContinueGame -> continueCurrentGame()
             is UiAction.ShowSettings -> showSettings()
             is UiAction.ShowRecords -> showRecords()
-            is UiAction.PrepareNewGame -> confirmDifficultyDialog(action.difficulty, action.type)
+            is UiAction.PrepareNewGame -> confirmDifficultyDialog(action.mode)
             is UiAction.CloseError -> closeError()
         }
     }
 
-    private fun confirmDifficultyDialog(difficulty: GameDifficulty, type: GameType) {
+    private fun confirmDifficultyDialog(mode: GameMode) {
         gameState.update {
             it.copy(
-                selectedDifficulty = difficulty,
-                selectedType = type
+                selectedDifficulty = mode.difficulty,
+                selectedType = mode.type
             )
         }
         startNewGame()

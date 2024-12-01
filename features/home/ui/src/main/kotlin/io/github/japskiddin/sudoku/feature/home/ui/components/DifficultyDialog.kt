@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
+import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
@@ -26,10 +27,9 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun DifficultyDialog(
-    selectedDifficulty: GameDifficulty,
-    selectedType: GameType,
+    gameMode: GameMode,
     onDismiss: () -> Unit,
-    onConfirm: (GameDifficulty, GameType) -> Unit,
+    onConfirm: (GameMode) -> Unit,
 ) {
     val difficulties = persistentListOf(
         GameDifficulty.EASY,
@@ -43,8 +43,8 @@ internal fun DifficultyDialog(
         GameType.DEFAULT12X12
     )
 
-    var difficulty by remember { mutableStateOf(selectedDifficulty) }
-    var type by remember { mutableStateOf(selectedType) }
+    var difficulty by remember { mutableStateOf(gameMode.difficulty) }
+    var type by remember { mutableStateOf(gameMode.type) }
 
     GameDialog(onDismiss = onDismiss) {
         Column(
@@ -96,7 +96,12 @@ internal fun DifficultyDialog(
                 text = stringResource(id = CoreUiR.string.start),
                 icon = painterResource(id = R.drawable.ic_start)
             ) {
-                onConfirm(difficulty, type)
+                onConfirm(
+                    GameMode(
+                        difficulty = difficulty,
+                        type = type
+                    )
+                )
             }
         }
     }
@@ -109,10 +114,9 @@ internal fun DifficultyDialog(
 private fun DifficultyDialogPreview() {
     SudokuTheme {
         DifficultyDialog(
-            selectedDifficulty = GameDifficulty.EASY,
-            selectedType = GameType.DEFAULT9X9,
+            gameMode = GameMode.Initial,
             onDismiss = {},
-            onConfirm = { _, _ -> }
+            onConfirm = { _ -> }
         )
     }
 }

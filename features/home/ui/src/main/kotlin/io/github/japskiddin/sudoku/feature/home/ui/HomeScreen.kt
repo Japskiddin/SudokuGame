@@ -39,9 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
-import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
-import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
@@ -68,12 +67,9 @@ private fun HomeScreen(viewModel: HomeViewModel) {
         onContinueButtonClick = { viewModel.onAction(UiAction.ContinueGame) },
         onSettingsButtonClick = { viewModel.onAction(UiAction.ShowSettings) },
         onRecordsButtonClick = { viewModel.onAction(UiAction.ShowRecords) },
-        onPrepareGame = { difficulty, type ->
+        onPrepareGame = { mode ->
             viewModel.onAction(
-                UiAction.PrepareNewGame(
-                    difficulty,
-                    type
-                )
+                UiAction.PrepareNewGame(mode)
             )
         },
         onErrorClose = { viewModel.onAction(UiAction.CloseError) }
@@ -88,7 +84,7 @@ private fun HomeScreenContent(
     onContinueButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onPrepareGame: (GameDifficulty, GameType) -> Unit,
+    onPrepareGame: (GameMode) -> Unit,
     onErrorClose: () -> Unit,
 ) {
     val screenModifier = Modifier.fillMaxSize()
@@ -98,8 +94,7 @@ private fun HomeScreenContent(
             modifier = screenModifier,
             currentYear = currentYear,
             isShowContinueButton = state.isShowContinueButton,
-            selectedDifficulty = state.selectedDifficulty,
-            selectedType = state.selectedType,
+            gameMode = state.selectedGameMode,
             onPrepareGame = onPrepareGame,
             onContinueButtonClick = onContinueButtonClick,
             onRecordsButtonClick = onRecordsButtonClick,
@@ -122,14 +117,13 @@ private fun HomeScreenContent(
 @Suppress("LongParameterList")
 @Composable
 private fun Menu(
-    selectedDifficulty: GameDifficulty,
-    selectedType: GameType,
+    gameMode: GameMode,
     currentYear: String,
     isShowContinueButton: Boolean,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onRecordsButtonClick: () -> Unit,
-    onPrepareGame: (GameDifficulty, GameType) -> Unit,
+    onPrepareGame: (GameMode) -> Unit,
     modifier: Modifier = Modifier,
     screenWidthPercent: Float = .8f,
 ) {
@@ -148,12 +142,11 @@ private fun Menu(
 
     if (showDifficultyDialog) {
         DifficultyDialog(
-            selectedDifficulty = selectedDifficulty,
-            selectedType = selectedType,
+            gameMode = gameMode,
             onDismiss = { showDifficultyDialog = false },
-            onConfirm = { difficulty, type ->
+            onConfirm = { mode ->
                 showDifficultyDialog = false
-                onPrepareGame(difficulty, type)
+                onPrepareGame(mode)
             }
         )
     }
@@ -380,7 +373,7 @@ private fun HomeContentPreview(
             onContinueButtonClick = {},
             onRecordsButtonClick = {},
             onSettingsButtonClick = {},
-            onPrepareGame = { _, _ -> },
+            onPrepareGame = { _ -> },
             onErrorClose = {}
         )
     }

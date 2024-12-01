@@ -70,8 +70,8 @@ private fun SettingsScreen(viewModel: SettingsViewModel) {
         onUpdateKeepScreenOn = { checked ->
             viewModel.onAction(UiAction.UpdateKeepScreenOn(checked))
         },
-        onUpdateSaveLastDifficulty = { checked ->
-            viewModel.onAction(UiAction.UpdateSaveLastDifficulty(checked))
+        onUpdateSaveLastGameMode = { checked ->
+            viewModel.onAction(UiAction.UpdateSaveLastGameMode(checked))
         }
     )
 }
@@ -87,7 +87,7 @@ private fun SettingsContent(
     onUpdateShowRemainingNumbers: (Boolean) -> Unit,
     onUpdateHighlightSelectedCell: (Boolean) -> Unit,
     onUpdateKeepScreenOn: (Boolean) -> Unit,
-    onUpdateSaveLastDifficulty: (Boolean) -> Unit,
+    onUpdateSaveLastGameMode: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -109,9 +109,9 @@ private fun SettingsContent(
         ) {
             SectionGeneral(
                 isKeepScreenOn = state.isKeepScreenOn,
-                isSaveLastDifficulty = state.isSaveLastDifficulty,
+                isSaveLastGameMode = state.isSaveLastGameMode,
                 onUpdateKeepScreenOn = onUpdateKeepScreenOn,
-                onUpdateSaveLastDifficulty = onUpdateSaveLastDifficulty
+                onUpdateSaveLastGameMode = onUpdateSaveLastGameMode
             )
             Spacer(modifier = Modifier.height(12.dp))
             SectionGame(
@@ -137,9 +137,9 @@ private fun SettingsContent(
 @Composable
 private fun SectionGeneral(
     isKeepScreenOn: Boolean,
-    isSaveLastDifficulty: Boolean,
+    isSaveLastGameMode: Boolean,
     onUpdateKeepScreenOn: (Boolean) -> Unit,
-    onUpdateSaveLastDifficulty: (Boolean) -> Unit,
+    onUpdateSaveLastGameMode: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     TitleSection(
@@ -153,10 +153,10 @@ private fun SectionGeneral(
         checked = isKeepScreenOn
     )
     CheckableSettingsItem(
-        title = stringResource(id = CoreUiR.string.save_last_game_difficulty_type),
-        description = stringResource(id = CoreUiR.string.save_last_game_difficulty_type_desc),
-        onCheckedChange = onUpdateSaveLastDifficulty,
-        checked = isSaveLastDifficulty
+        title = stringResource(id = CoreUiR.string.save_last_game_mode),
+        description = stringResource(id = CoreUiR.string.save_last_game_mode_desc),
+        onCheckedChange = onUpdateSaveLastGameMode,
+        checked = isSaveLastGameMode
     )
 }
 
@@ -300,7 +300,7 @@ private fun SettingsContentPreview(
             onUpdateKeepScreenOn = {},
             onUpdateShowRemainingNumbers = {},
             onUpdateHighlightSelectedCell = {},
-            onUpdateSaveLastDifficulty = {},
+            onUpdateSaveLastGameMode = {},
         )
     }
 }

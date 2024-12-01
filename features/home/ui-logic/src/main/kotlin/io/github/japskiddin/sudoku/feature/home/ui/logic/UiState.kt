@@ -1,8 +1,7 @@
 package io.github.japskiddin.sudoku.feature.home.ui.logic
 
-import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
-import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.GameMode
 
 public sealed interface UiState {
     public data object Loading : UiState
@@ -13,8 +12,7 @@ public sealed interface UiState {
 
     public data class Menu(
         public val isShowContinueButton: Boolean = false,
-        public val selectedDifficulty: GameDifficulty = GameDifficulty.EASY,
-        public val selectedType: GameType = GameType.DEFAULT9X9
+        public val selectedGameMode: GameMode = GameMode.Initial,
     ) : UiState
 
     public companion object {

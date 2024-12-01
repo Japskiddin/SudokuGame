@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.data
 import io.github.japskiddin.sudoku.core.domain.SettingsDataSource
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.core.model.AppPreferences
+import io.github.japskiddin.sudoku.core.model.GameMode
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -48,10 +49,15 @@ constructor(
 
     override fun isKeepScreenOn(): Flow<Boolean> = settingsDataSource.isKeepScreenOn()
 
-    override suspend fun setSaveLastDifficulty(enabled: Boolean): Unit =
-        settingsDataSource.setSaveLastDifficulty(enabled)
+    override suspend fun setSaveLastGameMode(enabled: Boolean): Unit =
+        settingsDataSource.setSaveLastGameMode(enabled)
 
-    override fun isSaveLastDifficulty(): Flow<Boolean> = settingsDataSource.isSaveLastDifficulty()
+    override fun isSaveLastGameMode(): Flow<Boolean> = settingsDataSource.isSaveLastGameMode()
+
+    override fun getLastGameMode(): Flow<GameMode> = settingsDataSource.getLastGameMode()
+
+    override suspend fun setLastGameMode(mode: GameMode): Unit =
+        settingsDataSource.setLastGameMode(mode)
 
     override fun getAppPreferences(): Flow<AppPreferences> = settingsDataSource.getAppPreferences()
 }

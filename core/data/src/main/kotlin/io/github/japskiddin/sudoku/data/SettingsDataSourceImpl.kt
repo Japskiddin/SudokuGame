@@ -2,7 +2,10 @@ package io.github.japskiddin.sudoku.data
 
 import io.github.japskiddin.sudoku.core.domain.SettingsDataSource
 import io.github.japskiddin.sudoku.core.model.AppPreferences
+import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.data.utils.toAppPreferences
+import io.github.japskiddin.sudoku.data.utils.toGameMode
+import io.github.japskiddin.sudoku.data.utils.toGameModeDSO
 import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -62,11 +65,19 @@ constructor(
 
     override fun isKeepScreenOn(): Flow<Boolean> = dataStore.isKeepScreenOn
 
-    override suspend fun setSaveLastDifficulty(enabled: Boolean) {
-        dataStore.setSaveLastDifficulty(enabled)
+    override suspend fun setSaveLastGameMode(enabled: Boolean) {
+        dataStore.setSaveLastGameMode(enabled)
     }
 
-    override fun isSaveLastDifficulty(): Flow<Boolean> = dataStore.isSaveLastDifficulty
+    override fun isSaveLastGameMode(): Flow<Boolean> = dataStore.isSaveLastGameMode
+
+    override fun getLastGameMode(): Flow<GameMode> = dataStore.lastGameMode.map { mode ->
+        mode?.toGameMode() ?: GameMode.Initial
+    }
+
+    override suspend fun setLastGameMode(mode: GameMode) {
+        dataStore.setLastGameMode(mode.toGameModeDSO())
+    }
 
     override fun getAppPreferences(): Flow<AppPreferences> = dataStore.appPreferences.map { it.toAppPreferences() }
 }

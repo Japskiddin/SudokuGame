@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.core.domain
 
 import io.github.japskiddin.sudoku.core.model.AppPreferences
+import io.github.japskiddin.sudoku.core.model.GameMode
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("TooManyFunctions")
@@ -37,9 +38,13 @@ public interface SettingsDataSource {
 
     public fun isKeepScreenOn(): Flow<Boolean>
 
-    public suspend fun setSaveLastDifficulty(enabled: Boolean)
+    public suspend fun setSaveLastGameMode(enabled: Boolean)
 
-    public fun isSaveLastDifficulty(): Flow<Boolean>
+    public fun isSaveLastGameMode(): Flow<Boolean>
+
+    public fun getLastGameMode(): Flow<GameMode>
+
+    public suspend fun setLastGameMode(mode: GameMode)
 
     public fun getAppPreferences(): Flow<AppPreferences>
 }

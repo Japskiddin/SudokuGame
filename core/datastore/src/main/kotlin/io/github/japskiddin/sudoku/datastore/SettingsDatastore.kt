@@ -7,8 +7,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import io.github.japskiddin.sudoku.datastore.model.AppPreferencesDSO
+import io.github.japskiddin.sudoku.datastore.model.GameModeDSO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -25,7 +27,9 @@ public class SettingsDatastore(applicationContext: Context) {
     private val showRemainingNumbersKey = booleanPreferencesKey(KEY_SHOW_REMAINING_NUMBERS)
     private val highlightSelectedCellKey = booleanPreferencesKey(KEY_HIGHLIGHT_SELECTED_CELL)
     private val keepScreenOnKey = booleanPreferencesKey(KEY_KEEP_SCREEN_ON)
-    private val saveLastDifficultyKey = booleanPreferencesKey(KEY_SAVE_LAST_DIFFICULTY)
+    private val saveLastGameModeKey = booleanPreferencesKey(KEY_SAVE_LAST_GAME_MODE)
+    private val lastGameDifficultyKey = intPreferencesKey(KEY_LAST_GAME_DIFFICULTY)
+    private val lastGameTypeKey = intPreferencesKey(KEY_LAST_GAME_TYPE)
 
     public suspend fun setMistakesLimit(enabled: Boolean) {
         dataStore.edit { preferences ->
@@ -107,14 +111,34 @@ public class SettingsDatastore(applicationContext: Context) {
         preferences[keepScreenOnKey] ?: DEFAULT_KEEP_SCREEN_ON
     }
 
-    public suspend fun setSaveLastDifficulty(enabled: Boolean) {
+    public suspend fun setSaveLastGameMode(enabled: Boolean) {
         dataStore.edit { preferences ->
-            preferences[saveLastDifficultyKey] = enabled
+            preferences[saveLastGameModeKey] = enabled
         }
     }
 
-    public val isSaveLastDifficulty: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[saveLastDifficultyKey] ?: DEFAULT_SAVE_LAST_DIFFICULTY
+    public val isSaveLastGameMode: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[saveLastGameModeKey] ?: DEFAULT_SAVE_LAST_GAME_MODE
+    }
+
+    public suspend fun setLastGameMode(mode: GameModeDSO) {
+        dataStore.edit { preferences ->
+            preferences[lastGameDifficultyKey] = mode.difficulty
+            preferences[lastGameTypeKey] = mode.type
+        }
+    }
+
+    public val lastGameMode: Flow<GameModeDSO?> = dataStore.data.map { preferences ->
+        val isSaveLastGameMode = preferences[saveLastGameModeKey] ?: DEFAULT_SAVE_LAST_GAME_MODE
+
+        if (isSaveLastGameMode) {
+            GameModeDSO(
+                difficulty = preferences[lastGameDifficultyKey] ?: DEFAULT_LAST_GAME_DIFFICULTY,
+                type = preferences[lastGameTypeKey] ?: DEFAULT_LAST_GAME_TYPE,
+            )
+        } else {
+            null
+        }
     }
 
     public val appPreferences: Flow<AppPreferencesDSO> = dataStore.data
@@ -135,7 +159,7 @@ public class SettingsDatastore(applicationContext: Context) {
                 isShowRemainingNumbers = preferences[showRemainingNumbersKey] ?: DEFAULT_SHOW_REMAINING_NUMBERS,
                 isHighlightSelectedCell = preferences[highlightSelectedCellKey] ?: DEFAULT_HIGHLIGHT_SELECTED_CELL,
                 isKeepScreenOn = preferences[keepScreenOnKey] ?: DEFAULT_KEEP_SCREEN_ON,
-                isSaveLastDifficulty = preferences[saveLastDifficultyKey] ?: DEFAULT_SAVE_LAST_DIFFICULTY
+                isSaveLastGameMode = preferences[saveLastGameModeKey] ?: DEFAULT_SAVE_LAST_GAME_MODE
             )
         }
 
@@ -150,7 +174,9 @@ public class SettingsDatastore(applicationContext: Context) {
         private const val KEY_SHOW_REMAINING_NUMBERS = "show_remaining_numbers"
         private const val KEY_HIGHLIGHT_SELECTED_CELL = "highlight_selected_cell"
         private const val KEY_KEEP_SCREEN_ON = "keep_screen_on"
-        private const val KEY_SAVE_LAST_DIFFICULTY = "save_last_difficulty"
+        private const val KEY_SAVE_LAST_GAME_MODE = "save_last_game_mode"
+        private const val KEY_LAST_GAME_DIFFICULTY = "last_game_difficulty"
+        private const val KEY_LAST_GAME_TYPE = "last_game_type"
 
         private const val DEFAULT_MISTAKES_LIMIT = true
         private const val DEFAULT_SHOW_TIMER = true
@@ -160,6 +186,8 @@ public class SettingsDatastore(applicationContext: Context) {
         private const val DEFAULT_SHOW_REMAINING_NUMBERS = true
         private const val DEFAULT_HIGHLIGHT_SELECTED_CELL = true
         private const val DEFAULT_KEEP_SCREEN_ON = false
-        private const val DEFAULT_SAVE_LAST_DIFFICULTY = true
+        private const val DEFAULT_SAVE_LAST_GAME_MODE = true
+        private const val DEFAULT_LAST_GAME_DIFFICULTY = 1
+        private const val DEFAULT_LAST_GAME_TYPE = 2
     }
 }

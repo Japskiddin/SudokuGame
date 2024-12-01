@@ -9,7 +9,7 @@ import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveHighlight
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveHighlightSelectedCellPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveHighlightSimilarCellsPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveKeepScreenOnPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveLastDifficultyPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveLastGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveMistakesLimitPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveResetTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveShowRemainingNumbersPreferenceUseCase
@@ -39,7 +39,7 @@ internal constructor(
     private val saveHighlightSimilarCellsPreferenceUseCase: Provider<SaveHighlightSimilarCellsPreferenceUseCase>,
     private val saveHighlightSelectedCellPreferenceUseCase: Provider<SaveHighlightSelectedCellPreferenceUseCase>,
     private val saveKeepScreenOnPreferenceUseCase: Provider<SaveKeepScreenOnPreferenceUseCase>,
-    private val saveLastDifficultyPreferenceUseCase: Provider<SaveLastDifficultyPreferenceUseCase>,
+    private val saveLastGameModePreferenceUseCase: Provider<SaveLastGameModePreferenceUseCase>,
     private val saveShowRemainingNumbersPreferenceUseCase: Provider<SaveShowRemainingNumbersPreferenceUseCase>,
 ) : ViewModel() {
     public val uiState: StateFlow<UiState> = getAppPreferencesUseCase.get().invoke().map { preferences ->
@@ -51,7 +51,7 @@ internal constructor(
             isHighlightSimilarCells = preferences.isHighlightSimilarCells,
             isHighlightSelectedCell = preferences.isHighlightSelectedCell,
             isKeepScreenOn = preferences.isKeepScreenOn,
-            isSaveLastDifficulty = preferences.isSaveLastDifficulty,
+            isSaveLastGameMode = preferences.isSaveLastGameMode,
             isShowRemainingNumbers = preferences.isShowRemainingNumbers,
         )
     }.stateIn(
@@ -69,7 +69,7 @@ internal constructor(
             is UiAction.UpdateHighlightSimilarCells -> updateHighlightSimilarCells(action.checked)
             is UiAction.UpdateHighlightSelectedCell -> updateHighlightSelectedCell(action.checked)
             is UiAction.UpdateKeepScreenOn -> updateKeepScreenOn(action.checked)
-            is UiAction.UpdateSaveLastDifficulty -> updateSaveLastDifficulty(action.checked)
+            is UiAction.UpdateSaveLastGameMode -> updateSaveLastGameMode(action.checked)
             is UiAction.UpdateShowRemainingNumbers -> updateShowRemainingNumbers(action.checked)
         }
     }
@@ -80,9 +80,9 @@ internal constructor(
         }
     }
 
-    private fun updateSaveLastDifficulty(enabled: Boolean) {
+    private fun updateSaveLastGameMode(enabled: Boolean) {
         viewModelScope.launch {
-            saveLastDifficultyPreferenceUseCase.get().invoke(enabled)
+            saveLastGameModePreferenceUseCase.get().invoke(enabled)
         }
     }
 
