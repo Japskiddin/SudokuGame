@@ -185,8 +185,12 @@ private fun Game(
         GameBoard(
             board = gameState.board,
             selectedCell = gameState.selectedCell,
-            onSelectCell = { boardCell -> onSelectCell(boardCell) },
-        )
+            isErrorsHighlight = preferencesState.isHighlightErrorCells,
+            isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
+            isPositionCells = preferencesState.isHighlightSelectedCell,
+        ) { boardCell ->
+            onSelectCell(boardCell)
+        }
         Spacer(modifier = Modifier.height(6.dp))
         ToolPanel(onToolClick = onToolClick)
         Spacer(modifier = Modifier.height(6.dp))

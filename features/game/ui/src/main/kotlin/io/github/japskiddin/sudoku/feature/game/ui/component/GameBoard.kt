@@ -68,7 +68,6 @@ private const val Radix = 16
 internal fun GameBoard(
     board: BoardList,
     selectedCell: BoardCell,
-    onSelectCell: (BoardCell) -> Unit,
     modifier: Modifier = Modifier,
     gameType: GameType = findGameTypeBySize(board.size),
     outerCornerRadius: Dp = 12.dp,
@@ -106,6 +105,7 @@ internal fun GameBoard(
     noteColor: Color = numberColor.copy(alpha = 0.8f),
     outerStrokeColor: Color = Color.Black,
     innerStrokeColor: Color = outerStrokeColor.copy(alpha = 0.2f),
+    onSelectCell: (BoardCell) -> Unit,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -778,7 +778,9 @@ private fun getNoteRowNumber(
 )
 @Composable
 private fun GameBoardPreview() {
-    val notes: List<BoardNote> = listOf(BoardNote(row = 2, col = 2, value = 5))
+    val notes: List<BoardNote> = listOf(
+        BoardNote(row = 2, col = 2, value = 5),
+    )
     val state = GameUiState(
         board = getSampleBoardForPreview(),
         selectedCell = BoardCell(
@@ -792,6 +794,7 @@ private fun GameBoardPreview() {
         mistakes = 0,
         time = 0L
     )
+
     SudokuTheme {
         GameBoard(
             board = state.board,
