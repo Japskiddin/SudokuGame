@@ -1,5 +1,7 @@
 package io.github.japskiddin.sudoku.feature.game.ui
 
+import android.app.Activity
+import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -60,6 +64,7 @@ private fun GameScreen(viewModel: GameViewModel) {
     }
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     GameScreenContent(
         state = state,
         onSelectBoardCell = { cell -> viewModel.onAction(UiAction.SelectBoardCell(cell)) },
@@ -148,6 +153,17 @@ private fun Game(
 ) {
     val gameState = state.gameState
     val preferencesState = state.preferencesState
+    val activity = LocalContext.current as Activity
+
+    DisposableEffect(Unit) {
+        if (preferencesState.isKeepScreenOn) {
+            activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+
+        onDispose {
+            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.Center,
