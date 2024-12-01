@@ -20,14 +20,20 @@ import io.github.japskiddin.sudoku.core.model.MistakesMethod
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightErrorCellsPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightSelectedCellPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightSimilarCellsPreferenceUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetKeepScreenOnPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetMistakesLimitPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetResetTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowRemainingNumbersPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
+import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.combine
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
@@ -63,18 +69,42 @@ internal constructor(
     getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
     getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>,
     getResetTimerPreferenceUseCase: Provider<GetResetTimerPreferenceUseCase>,
+    getHighlightErrorCellsPreferenceUseCase: Provider<GetHighlightErrorCellsPreferenceUseCase>,
+    getHighlightSimilarCellsPreferenceUseCase: Provider<GetHighlightSimilarCellsPreferenceUseCase>,
+    getHighlightSelectedCellPreferenceUseCase: Provider<GetHighlightSelectedCellPreferenceUseCase>,
+    getKeepScreenOnPreferenceUseCase: Provider<GetKeepScreenOnPreferenceUseCase>,
+    getShowRemainingNumbersPreferenceUseCase: Provider<GetShowRemainingNumbersPreferenceUseCase>,
 ) : ViewModel() {
     private lateinit var gameHistoryManager: GameHistoryManager
 
     private val preferencesUiState: StateFlow<PreferencesUiState> = combine(
         getMistakesLimitPreferenceUseCase.get().invoke(),
         getShowTimerPreferenceUseCase.get().invoke(),
-        getResetTimerPreferenceUseCase.get().invoke()
-    ) { isMistakesLimit, isShowTimer, isResetTimer ->
+        getResetTimerPreferenceUseCase.get().invoke(),
+        getHighlightErrorCellsPreferenceUseCase.get().invoke(),
+        getHighlightSimilarCellsPreferenceUseCase.get().invoke(),
+        getHighlightSelectedCellPreferenceUseCase.get().invoke(),
+        getKeepScreenOnPreferenceUseCase.get().invoke(),
+        getShowRemainingNumbersPreferenceUseCase.get().invoke(),
+    ) {
+            isMistakesLimit,
+            isShowTimer,
+            isResetTimer,
+            isHighlightErrorCells,
+            isHighlightSimilarCells,
+            isHighlightSelectedCell,
+            isKeepScreenOn,
+            isShowRemainingNumbers,
+        ->
         PreferencesUiState(
             isMistakesLimit = isMistakesLimit,
             isShowTimer = isShowTimer,
             isResetTimer = isResetTimer,
+            isHighlightErrorCells = isHighlightErrorCells,
+            isHighlightSimilarCells = isHighlightSimilarCells,
+            isHighlightSelectedCell = isHighlightSelectedCell,
+            isKeepScreenOn = isKeepScreenOn,
+            isShowRemainingNumbers = isShowRemainingNumbers,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -176,6 +176,7 @@ private fun Game(
         Spacer(modifier = Modifier.height(6.dp))
         InputPanel(
             board = gameState.board,
+            showRemainingNumbers = preferencesState.isShowRemainingNumbers,
             onClick = onInputCell
         )
     }

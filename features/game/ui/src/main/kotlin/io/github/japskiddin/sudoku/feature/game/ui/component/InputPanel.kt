@@ -27,6 +27,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPrevie
 @Composable
 internal fun InputPanel(
     board: BoardList,
+    showRemainingNumbers: Boolean,
     modifier: Modifier = Modifier,
     gameType: GameType = findGameTypeBySize(board.size),
     onClick: (Int) -> Unit,
@@ -35,14 +36,16 @@ internal fun InputPanel(
         TwoColumnInputPanel(
             modifier = modifier,
             onClick = { value -> onClick(value) },
-            board = board
+            board = board,
+            showRemainingNumbers = showRemainingNumbers,
         )
     } else {
         InputPanelContent(
             modifier = modifier,
             onClick = { value -> onClick(value) },
             values = IntRange(start = 1, endInclusive = gameType.size),
-            board = board
+            board = board,
+            showRemainingNumbers = showRemainingNumbers,
         )
     }
 }
@@ -50,6 +53,7 @@ internal fun InputPanel(
 @Composable
 private fun TwoColumnInputPanel(
     board: BoardList,
+    showRemainingNumbers: Boolean,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
 ) {
@@ -61,13 +65,15 @@ private fun TwoColumnInputPanel(
             modifier = modifier,
             onClick = { value -> onClick(value) },
             values = IntRange(start = 1, endInclusive = 6),
-            board = board
+            board = board,
+            showRemainingNumbers = showRemainingNumbers,
         )
         InputPanelContent(
             modifier = modifier,
             onClick = { value -> onClick(value) },
             values = IntRange(start = 7, endInclusive = 12),
-            board = board
+            board = board,
+            showRemainingNumbers = showRemainingNumbers,
         )
     }
 }
@@ -75,6 +81,7 @@ private fun TwoColumnInputPanel(
 @Composable
 private fun InputPanelContent(
     board: BoardList,
+    showRemainingNumbers: Boolean,
     values: IntRange,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
@@ -89,6 +96,7 @@ private fun InputPanelContent(
             InputButton(
                 value = i,
                 counter = counter,
+                showRemainingNumbers = showRemainingNumbers,
                 modifier = if (counter > 0) {
                     Modifier
                         .weight(1f)
@@ -105,6 +113,7 @@ private fun InputPanelContent(
 private fun InputButton(
     value: Int,
     counter: Int,
+    showRemainingNumbers: Boolean,
     modifier: Modifier = Modifier,
     valueTextSize: TextUnit = 16.sp,
     counterTextSize: TextUnit = 10.sp,
@@ -121,22 +130,36 @@ private fun InputButton(
         } else {
             textColor.copy(alpha = 0.4f)
         }
+
+        val textModifier = if (showRemainingNumbers) {
+            Modifier
+        } else {
+            Modifier.padding(
+                top = 6.dp,
+                bottom = 6.dp
+            )
+        }
+
         BasicText(
             text = value.toString(),
             style = SudokuTheme.typography.labelMedium.copy(
                 fontSize = valueTextSize,
                 color = color
             ),
+            modifier = textModifier,
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        BasicText(
-            text = counter.toString(),
-            style = SudokuTheme.typography.labelMedium.copy(
-                fontSize = counterTextSize,
-                fontWeight = FontWeight.Normal,
-                color = color
-            ),
-        )
+
+        if (showRemainingNumbers) {
+            Spacer(modifier = Modifier.height(6.dp))
+            BasicText(
+                text = counter.toString(),
+                style = SudokuTheme.typography.labelMedium.copy(
+                    fontSize = counterTextSize,
+                    fontWeight = FontWeight.Normal,
+                    color = color
+                ),
+            )
+        }
     }
 }
 
@@ -160,6 +183,7 @@ private fun InputPanelPreview() {
     SudokuTheme {
         InputPanel(
             board = getSampleBoardForPreview(),
+            showRemainingNumbers = true,
             onClick = {}
         )
     }
@@ -175,7 +199,8 @@ private fun InputButtonPreview() {
     SudokuTheme {
         InputButton(
             value = 2,
-            counter = 3
+            counter = 3,
+            showRemainingNumbers = true,
         )
     }
 }
