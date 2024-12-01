@@ -229,7 +229,10 @@ private fun Title(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.padding(
+            start = 12.dp,
+            end = 12.dp
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlineText(
