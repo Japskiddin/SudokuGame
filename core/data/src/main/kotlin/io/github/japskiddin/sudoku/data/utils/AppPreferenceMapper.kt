@@ -12,5 +12,5 @@ internal fun AppPreferencesDSO.toAppPreferences(): AppPreferences = AppPreferenc
     isShowRemainingNumbers = this.isShowRemainingNumbers,
     isHighlightSelectedCell = this.isHighlightSelectedCell,
     isKeepScreenOn = this.isKeepScreenOn,
-    isSaveLastGameMode = this.isSaveLastGameMode
+    isSaveGameMode = this.isSaveGameMode
 )

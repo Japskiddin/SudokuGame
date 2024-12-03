@@ -9,7 +9,7 @@ public data class UiState(
     val isShowRemainingNumbers: Boolean,
     val isHighlightSelectedCell: Boolean,
     val isKeepScreenOn: Boolean,
-    val isSaveLastGameMode: Boolean,
+    val isSaveGameMode: Boolean,
 ) {
     public companion object {
         public val Initial: UiState = UiState(
@@ -21,7 +21,7 @@ public data class UiState(
             isHighlightSelectedCell = true,
             isShowRemainingNumbers = true,
             isKeepScreenOn = false,
-            isSaveLastGameMode = true,
+            isSaveGameMode = true,
         )
     }
 }

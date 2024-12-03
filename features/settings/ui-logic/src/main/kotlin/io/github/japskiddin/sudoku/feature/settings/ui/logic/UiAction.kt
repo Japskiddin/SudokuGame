@@ -15,7 +15,7 @@ public sealed interface UiAction {
 
     public data class UpdateHighlightSelectedCell(val checked: Boolean) : UiAction
 
-    public data class UpdateSaveLastGameMode(val checked: Boolean) : UiAction
+    public data class UpdateSaveGameMode(val checked: Boolean) : UiAction
 
     public data class UpdateShowRemainingNumbers(val checked: Boolean) : UiAction
 }

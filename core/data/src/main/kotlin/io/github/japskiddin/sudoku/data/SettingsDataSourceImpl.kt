@@ -65,18 +65,18 @@ constructor(
 
     override fun isKeepScreenOn(): Flow<Boolean> = dataStore.isKeepScreenOn
 
-    override suspend fun setSaveLastGameMode(enabled: Boolean) {
-        dataStore.setSaveLastGameMode(enabled)
+    override suspend fun setSaveGameMode(enabled: Boolean) {
+        dataStore.setSaveGameMode(enabled)
     }
 
-    override fun isSaveLastGameMode(): Flow<Boolean> = dataStore.isSaveLastGameMode
+    override fun isSaveGameMode(): Flow<Boolean> = dataStore.isSaveGameMode
 
-    override fun getLastGameMode(): Flow<GameMode> = dataStore.lastGameMode.map { mode ->
+    override fun getGameMode(): Flow<GameMode> = dataStore.gameMode.map { mode ->
         mode?.toGameMode() ?: GameMode.Initial
     }
 
-    override suspend fun setLastGameMode(mode: GameMode) {
-        dataStore.setLastGameMode(mode.toGameModeDSO())
+    override suspend fun setGameMode(mode: GameMode) {
+        dataStore.setGameMode(mode.toGameModeDSO())
     }
 
     override fun getAppPreferences(): Flow<AppPreferences> = dataStore.appPreferences.map { it.toAppPreferences() }

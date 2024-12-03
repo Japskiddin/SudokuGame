@@ -70,8 +70,8 @@ private fun SettingsScreen(viewModel: SettingsViewModel) {
         onUpdateKeepScreenOn = { checked ->
             viewModel.onAction(UiAction.UpdateKeepScreenOn(checked))
         },
-        onUpdateSaveLastGameMode = { checked ->
-            viewModel.onAction(UiAction.UpdateSaveLastGameMode(checked))
+        onUpdateSaveGameMode = { checked ->
+            viewModel.onAction(UiAction.UpdateSaveGameMode(checked))
         }
     )
 }
@@ -87,7 +87,7 @@ private fun SettingsContent(
     onUpdateShowRemainingNumbers: (Boolean) -> Unit,
     onUpdateHighlightSelectedCell: (Boolean) -> Unit,
     onUpdateKeepScreenOn: (Boolean) -> Unit,
-    onUpdateSaveLastGameMode: (Boolean) -> Unit,
+    onUpdateSaveGameMode: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -109,9 +109,9 @@ private fun SettingsContent(
         ) {
             SectionGeneral(
                 isKeepScreenOn = state.isKeepScreenOn,
-                isSaveLastGameMode = state.isSaveLastGameMode,
+                isSaveGameMode = state.isSaveGameMode,
                 onUpdateKeepScreenOn = onUpdateKeepScreenOn,
-                onUpdateSaveLastGameMode = onUpdateSaveLastGameMode
+                onUpdateSaveGameMode = onUpdateSaveGameMode
             )
             Spacer(modifier = Modifier.height(12.dp))
             SectionGame(
@@ -137,9 +137,9 @@ private fun SettingsContent(
 @Composable
 private fun SectionGeneral(
     isKeepScreenOn: Boolean,
-    isSaveLastGameMode: Boolean,
+    isSaveGameMode: Boolean,
     onUpdateKeepScreenOn: (Boolean) -> Unit,
-    onUpdateSaveLastGameMode: (Boolean) -> Unit,
+    onUpdateSaveGameMode: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     TitleSection(
@@ -155,8 +155,8 @@ private fun SectionGeneral(
     CheckableSettingsItem(
         title = stringResource(id = CoreUiR.string.save_last_game_mode),
         description = stringResource(id = CoreUiR.string.save_last_game_mode_desc),
-        onCheckedChange = onUpdateSaveLastGameMode,
-        checked = isSaveLastGameMode
+        onCheckedChange = onUpdateSaveGameMode,
+        checked = isSaveGameMode
     )
 }
 
@@ -300,7 +300,7 @@ private fun SettingsContentPreview(
             onUpdateKeepScreenOn = {},
             onUpdateShowRemainingNumbers = {},
             onUpdateHighlightSelectedCell = {},
-            onUpdateSaveLastGameMode = {},
+            onUpdateSaveGameMode = {},
         )
     }
 }

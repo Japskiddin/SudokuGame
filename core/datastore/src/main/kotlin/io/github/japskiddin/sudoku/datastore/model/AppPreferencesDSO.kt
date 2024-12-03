@@ -9,5 +9,5 @@ public data class AppPreferencesDSO(
     val isShowRemainingNumbers: Boolean,
     val isHighlightSelectedCell: Boolean,
     val isKeepScreenOn: Boolean,
-    val isSaveLastGameMode: Boolean,
+    val isSaveGameMode: Boolean,
 )

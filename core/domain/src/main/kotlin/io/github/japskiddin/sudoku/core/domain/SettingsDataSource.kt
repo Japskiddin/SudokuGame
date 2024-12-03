@@ -38,13 +38,13 @@ public interface SettingsDataSource {
 
     public fun isKeepScreenOn(): Flow<Boolean>
 
-    public suspend fun setSaveLastGameMode(enabled: Boolean)
+    public suspend fun setSaveGameMode(enabled: Boolean)
 
-    public fun isSaveLastGameMode(): Flow<Boolean>
+    public fun isSaveGameMode(): Flow<Boolean>
 
-    public fun getLastGameMode(): Flow<GameMode>
+    public fun getGameMode(): Flow<GameMode>
 
-    public suspend fun setLastGameMode(mode: GameMode)
+    public suspend fun setGameMode(mode: GameMode)
 
     public fun getAppPreferences(): Flow<AppPreferences>
 }

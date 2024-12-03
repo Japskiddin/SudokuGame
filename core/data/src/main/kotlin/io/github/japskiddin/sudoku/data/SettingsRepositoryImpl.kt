@@ -49,15 +49,15 @@ constructor(
 
     override fun isKeepScreenOn(): Flow<Boolean> = settingsDataSource.isKeepScreenOn()
 
-    override suspend fun setSaveLastGameMode(enabled: Boolean): Unit =
-        settingsDataSource.setSaveLastGameMode(enabled)
+    override suspend fun setSaveGameMode(enabled: Boolean): Unit =
+        settingsDataSource.setSaveGameMode(enabled)
 
-    override fun isSaveLastGameMode(): Flow<Boolean> = settingsDataSource.isSaveLastGameMode()
+    override fun isSaveGameMode(): Flow<Boolean> = settingsDataSource.isSaveGameMode()
 
-    override fun getLastGameMode(): Flow<GameMode> = settingsDataSource.getLastGameMode()
+    override fun getGameMode(): Flow<GameMode> = settingsDataSource.getGameMode()
 
-    override suspend fun setLastGameMode(mode: GameMode): Unit =
-        settingsDataSource.setLastGameMode(mode)
+    override suspend fun setGameMode(mode: GameMode): Unit =
+        settingsDataSource.setGameMode(mode)
 
     override fun getAppPreferences(): Flow<AppPreferences> = settingsDataSource.getAppPreferences()
 }

@@ -9,5 +9,5 @@ public class GetLastGameModePreferenceUseCase
 @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) {
-    public operator fun invoke(): Flow<GameMode> = settingsRepository.getLastGameMode()
+    public operator fun invoke(): Flow<GameMode> = settingsRepository.getGameMode()
 }
