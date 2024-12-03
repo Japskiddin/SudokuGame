@@ -12,7 +12,7 @@ public sealed interface UiState {
 
     public data class Menu(
         public val isShowContinueButton: Boolean = false,
-        public val selectedGameMode: GameMode = GameMode.Initial,
+        public val gameMode: GameMode = GameMode.Initial,
     ) : UiState
 
     public companion object {

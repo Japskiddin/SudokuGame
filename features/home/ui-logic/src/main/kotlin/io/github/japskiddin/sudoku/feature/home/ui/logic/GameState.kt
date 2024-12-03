@@ -1,16 +1,13 @@
 package io.github.japskiddin.sudoku.feature.home.ui.logic
 
-import io.github.japskiddin.sudoku.core.model.GameDifficulty
-import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.GameMode
 
 internal data class GameState(
-    val selectedDifficulty: GameDifficulty,
-    val selectedType: GameType
+    val mode: GameMode,
 ) {
     internal companion object {
         var Initial = GameState(
-            selectedDifficulty = GameDifficulty.EASY,
-            selectedType = GameType.DEFAULT9X9
+            mode = GameMode.Initial,
         )
     }
 }

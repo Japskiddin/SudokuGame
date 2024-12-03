@@ -94,7 +94,7 @@ private fun HomeScreenContent(
             modifier = screenModifier,
             currentYear = currentYear,
             isShowContinueButton = state.isShowContinueButton,
-            gameMode = state.selectedGameMode,
+            gameMode = state.gameMode,
             onPrepareGame = onPrepareGame,
             onContinueButtonClick = onContinueButtonClick,
             onRecordsButtonClick = onRecordsButtonClick,

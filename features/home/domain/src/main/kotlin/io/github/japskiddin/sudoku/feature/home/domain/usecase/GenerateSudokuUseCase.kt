@@ -5,15 +5,15 @@ import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
-import io.github.japskiddin.sudoku.core.model.GameDifficulty
-import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.GameMode
 import javax.inject.Inject
 
 public class GenerateSudokuUseCase @Inject constructor() {
     public operator fun invoke(
-        type: GameType,
-        difficulty: GameDifficulty
+        mode: GameMode
     ): Board {
+        val type = mode.type
+        val difficulty = mode.difficulty
         val boardSize = type.size
         val puzzle = List(boardSize) { row ->
             List(boardSize) { col ->
