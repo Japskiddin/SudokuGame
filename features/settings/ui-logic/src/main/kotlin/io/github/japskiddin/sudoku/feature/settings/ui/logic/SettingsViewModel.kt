@@ -3,7 +3,6 @@ package io.github.japskiddin.sudoku.feature.settings.ui.logic
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.GetAppPreferencesUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveHighlightErrorCellsPreferenceUseCase
@@ -15,7 +14,6 @@ import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveResetTime
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveShowRemainingNumbersPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.settings.domain.usecase.SaveShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.navigation.AppNavigator
-import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -30,7 +28,6 @@ public class SettingsViewModel
 @Inject
 internal constructor(
     private val appNavigator: AppNavigator,
-    private val appDispatchers: AppDispatchers,
     getAppPreferencesUseCase: Provider<GetAppPreferencesUseCase>,
     private val saveMistakesLimitPreferenceUseCase: Provider<SaveMistakesLimitPreferenceUseCase>,
     private val saveShowTimerPreferenceUseCase: Provider<SaveShowTimerPreferenceUseCase>,
@@ -71,6 +68,7 @@ internal constructor(
             is UiAction.UpdateKeepScreenOn -> updateKeepScreenOn(action.checked)
             is UiAction.UpdateSaveGameMode -> updateSaveGameMode(action.checked)
             is UiAction.UpdateShowRemainingNumbers -> updateShowRemainingNumbers(action.checked)
+            is UiAction.Back -> appNavigator.tryNavigateBack()
         }
     }
 
@@ -127,8 +125,4 @@ internal constructor(
             saveResetTimerPreferenceUseCase.get().invoke(enabled)
         }
     }
-
-    private fun tryNavigateToHome() = appNavigator.tryNavigateTo(Destination.HomeScreen())
-
-    private suspend fun navigateToHome() = appNavigator.navigateTo(Destination.HomeScreen())
 }
