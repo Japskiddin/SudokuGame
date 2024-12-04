@@ -123,8 +123,11 @@ public class SettingsDatastore(applicationContext: Context) {
 
     public suspend fun setGameMode(mode: GameModeDSO) {
         dataStore.edit { preferences ->
-            preferences[gameModeDifficultyKey] = mode.difficulty
-            preferences[gameModeTypeKey] = mode.type
+            val isSaveGameMode = preferences[saveGameModeKey] ?: DEFAULT_SAVE_GAME_MODE
+            if (isSaveGameMode) {
+                preferences[gameModeDifficultyKey] = mode.difficulty
+                preferences[gameModeTypeKey] = mode.type
+            }
         }
     }
 

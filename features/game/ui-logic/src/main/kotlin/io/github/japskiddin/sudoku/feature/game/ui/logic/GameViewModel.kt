@@ -157,7 +157,7 @@ internal constructor(
     }
 
     private fun onBackPressed() {
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             saveGame()
         }
         appNavigator.tryNavigateBack()
@@ -315,7 +315,7 @@ internal constructor(
             )
         }
         gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             saveGame()
         }
     }
@@ -352,7 +352,7 @@ internal constructor(
         if (state.mistakes >= state.difficulty.mistakesLimit) {
             gameState.update { it.copy(status = GameState.Status.FAILED) }
             stopTimer()
-            viewModelScope.launch(appDispatchers.io) {
+            viewModelScope.launch {
                 saveGame()
                 addToRecords()
             }
@@ -365,7 +365,7 @@ internal constructor(
         if (isCompleted) {
             gameState.update { it.copy(status = GameState.Status.COMPLETED) }
             stopTimer()
-            viewModelScope.launch(appDispatchers.io) {
+            viewModelScope.launch {
                 saveGame()
                 addToRecords()
             }
@@ -390,7 +390,7 @@ internal constructor(
 
     private fun pauseGame() {
         stopTimer()
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             saveGame()
         }
     }

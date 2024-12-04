@@ -13,7 +13,6 @@ import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUse
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
-import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetSaveGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.SetGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.mapToUiMenuState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
@@ -39,7 +38,6 @@ internal constructor(
     private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
     private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
     private val setGameModeUseCase: Provider<SetGameModePreferenceUseCase>,
-    getSaveGameModeUseCase: Provider<GetSaveGameModePreferenceUseCase>,
     getLastGameUseCase: Provider<GetLastGameUseCase>,
     getGameModeUseCase: Provider<GetGameModePreferenceUseCase>,
 ) : ViewModel() {
@@ -49,40 +47,23 @@ internal constructor(
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = null
         )
-    private val isSaveGameMode = getSaveGameModeUseCase.get().invoke()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
-            initialValue = false
-        )
     private val menuState = MutableStateFlow(MenuState.Initial)
-    private val gameState: StateFlow<GameState> = combine(
+
+    public val uiState: StateFlow<UiState> = combine(
+        menuState,
         getGameModeUseCase.get().invoke(),
-        isSaveGameMode
-    ) { gameMode, isSaveGameMode ->
-        if (isSaveGameMode) {
-            GameState(mode = gameMode)
-        } else {
-            GameState.Initial
+        lastGame
+    ) { menuState, gameState, lastGame ->
+        when {
+            menuState.error != GameError.NONE -> UiState.Error(code = menuState.error)
+            menuState.isLoading -> UiState.Loading
+            else -> mapToUiMenuState(gameState, lastGame)
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),
-        initialValue = GameState.Initial
+        initialValue = UiState.Initial
     )
-
-    public val uiState: StateFlow<UiState> =
-        combine(menuState, gameState, lastGame) { menuState, gameState, lastGame ->
-            when {
-                menuState.error != GameError.NONE -> UiState.Error(code = menuState.error)
-                menuState.isLoading -> UiState.Loading
-                else -> mapToUiMenuState(gameState, lastGame)
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
-            initialValue = UiState.Initial
-        )
 
     public val currentYear: String
         get() = getCurrentYearUseCase.get().invoke()
@@ -118,11 +99,8 @@ internal constructor(
     }
 
     private fun saveCurrentGameMode(mode: GameMode) {
-        val shouldSaveMode = isSaveGameMode.value
-        if (shouldSaveMode) {
-            viewModelScope.launch {
-                setGameModeUseCase.get().invoke(mode)
-            }
+        viewModelScope.launch {
+            setGameModeUseCase.get().invoke(mode)
         }
     }
 
