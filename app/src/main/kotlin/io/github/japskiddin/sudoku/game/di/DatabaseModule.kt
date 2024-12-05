@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.japskiddin.sudoku.database.SudokuDatabase
 import io.github.japskiddin.sudoku.database.dao.BoardDao
+import io.github.japskiddin.sudoku.database.dao.RecordDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import javax.inject.Singleton
 
@@ -19,6 +20,11 @@ object DatabaseModule {
     fun provideSudokuDatabase(
         @ApplicationContext context: Context
     ): SudokuDatabase = SudokuDatabase(context)
+
+    @Provides
+    fun provideRecordDao(
+        sudokuDatabase: SudokuDatabase
+    ): RecordDao = sudokuDatabase.recordDao
 
     @Provides
     fun provideBoardDao(

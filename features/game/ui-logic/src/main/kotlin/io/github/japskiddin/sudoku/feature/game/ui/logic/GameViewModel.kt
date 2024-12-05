@@ -18,6 +18,7 @@ import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
 import io.github.japskiddin.sudoku.core.model.isEmpty
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToRecordsUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightErrorCellsPreferenceUseCase
@@ -66,6 +67,7 @@ internal constructor(
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
     private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>,
+    private val addToRecordsUseCase: Provider<AddToRecordsUseCase>,
     getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
     getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>,
     getResetTimerPreferenceUseCase: Provider<GetResetTimerPreferenceUseCase>,
@@ -355,7 +357,7 @@ internal constructor(
             stopTimer()
             viewModelScope.launch {
                 saveGame()
-                addToRecords()
+                addToRecords(GameStatus.FAILED)
             }
         }
     }
@@ -368,7 +370,7 @@ internal constructor(
             stopTimer()
             viewModelScope.launch {
                 saveGame()
-                addToRecords()
+                addToRecords(GameStatus.COMPLETED)
             }
         }
     }
@@ -396,10 +398,11 @@ internal constructor(
         }
     }
 
-    private suspend fun addToRecords() {
+    private suspend fun addToRecords(status: GameStatus) {
         val savedGame = getSavedGameUseCase.get().invoke(boardUid)
         if (savedGame != null) {
-            updateSavedGameUseCase.get().invoke(savedGame.copy(status = GameStatus.COMPLETED))
+            updateSavedGameUseCase.get().invoke(savedGame.copy(status = status))
+            addToRecordsUseCase.get().invoke(boardUid)
         }
     }
 
