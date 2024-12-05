@@ -12,6 +12,7 @@ public sealed interface UiAction {
     public data object Note : UiAction
     public data object ResumeGame : UiAction
     public data object PauseGame : UiAction
+    public data object ShowSettings : UiAction
     public data object Exit : UiAction
     public data object Back : UiAction
 }

@@ -3,21 +3,29 @@ package io.github.japskiddin.sudoku.feature.game.ui
 import android.app.Activity
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -79,7 +87,8 @@ private fun GameScreen(viewModel: GameViewModel) {
             }
             viewModel.onAction(uiAction)
         },
-        onCloseGame = { viewModel.onAction(UiAction.Exit) }
+        onCloseGame = { viewModel.onAction(UiAction.Exit) },
+        onSettingsClick = { viewModel.onAction(UiAction.ShowSettings) },
     )
 
     LifecycleEventListener {
@@ -108,6 +117,7 @@ private fun GameScreenContent(
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
     onCloseGame: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -118,6 +128,7 @@ private fun GameScreenContent(
             onSelectCell = onSelectBoardCell,
             onInputCell = onInputCell,
             onToolClick = onToolClick,
+            onSettingsClick = onSettingsClick,
             modifier = screenModifier
         )
 
@@ -149,6 +160,7 @@ private fun Game(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val gameState = state.gameState
@@ -166,38 +178,73 @@ private fun Game(
     }
 
     Column(
-        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .then(modifier)
             .safeDrawingPadding()
             .padding(12.dp)
     ) {
-        InfoPanel(
-            type = gameState.type,
-            difficulty = gameState.difficulty,
-            actions = gameState.actions,
-            mistakes = gameState.mistakes,
-            time = gameState.time,
-            isShowTimer = preferencesState.isShowTimer,
-            isMistakesLimit = preferencesState.isMistakesLimit
+        Menu(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 12.dp,
+                    end = 12.dp
+                ),
+            onSettingsClick = onSettingsClick,
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        GameBoard(
-            board = gameState.board,
-            selectedCell = gameState.selectedCell,
-            isErrorsHighlight = preferencesState.isHighlightErrorCells,
-            isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
-            isPositionCells = preferencesState.isHighlightSelectedCell,
-        ) { boardCell ->
-            onSelectCell(boardCell)
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(1f)
+        ) {
+            InfoPanel(
+                type = gameState.type,
+                difficulty = gameState.difficulty,
+                actions = gameState.actions,
+                mistakes = gameState.mistakes,
+                time = gameState.time,
+                isShowTimer = preferencesState.isShowTimer,
+                isMistakesLimit = preferencesState.isMistakesLimit
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            GameBoard(
+                board = gameState.board,
+                selectedCell = gameState.selectedCell,
+                isErrorsHighlight = preferencesState.isHighlightErrorCells,
+                isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
+                isPositionCells = preferencesState.isHighlightSelectedCell,
+            ) { boardCell ->
+                onSelectCell(boardCell)
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            ToolPanel(onToolClick = onToolClick)
+            Spacer(modifier = Modifier.height(6.dp))
+            InputPanel(
+                board = gameState.board,
+                showRemainingNumbers = preferencesState.isShowRemainingNumbers,
+                onClick = onInputCell
+            )
         }
-        Spacer(modifier = Modifier.height(6.dp))
-        ToolPanel(onToolClick = onToolClick)
-        Spacer(modifier = Modifier.height(6.dp))
-        InputPanel(
-            board = gameState.board,
-            showRemainingNumbers = preferencesState.isShowRemainingNumbers,
-            onClick = onInputCell
+    }
+}
+
+@Composable
+private fun Menu(
+    modifier: Modifier = Modifier,
+    onSettingsClick: () -> Unit,
+) {
+    Row(
+        horizontalArrangement = Arrangement.End,
+        modifier = modifier
+    ) {
+        Image(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(36.dp)
+                .clickable { onSettingsClick() },
+            painter = painterResource(id = R.drawable.ic_menu_settings),
+            contentDescription = stringResource(id = CoreUiR.string.settings)
         )
     }
 }
@@ -315,7 +362,8 @@ private fun GameContentPreview(
             onSelectBoardCell = {},
             onInputCell = { _ -> },
             onToolClick = {},
-            onCloseGame = {}
+            onCloseGame = {},
+            onSettingsClick = {},
         )
     }
 }

@@ -151,6 +151,7 @@ internal constructor(
             is UiAction.Note -> notesBoard()
             is UiAction.ResumeGame -> resumeGame()
             is UiAction.PauseGame -> pauseGame()
+            is UiAction.ShowSettings -> appNavigator.tryNavigateTo(Destination.SettingsScreen())
             is UiAction.Exit -> appNavigator.tryNavigateBack()
             is UiAction.Back -> onBackPressed()
         }
