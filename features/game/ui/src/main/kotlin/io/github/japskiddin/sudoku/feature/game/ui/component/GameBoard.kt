@@ -94,7 +94,6 @@ internal fun GameBoard(
     isZoomable: Boolean = false,
     isDrawBoardFrame: Boolean = false,
     isCrossHighlight: Boolean = false,
-    cellsToHighlight: List<BoardCell> = emptyList(),
     notes: List<BoardNote> = emptyList(),
     numberColor: Color = SudokuTheme.colors.boardNumberNormal,
     selectedNumberColor: Color = SudokuTheme.colors.boardNumberSelected,
@@ -364,7 +363,7 @@ internal fun GameBoard(
                         if (cell.value == selectedCell.value && cell.value != 0) {
                             drawCell(
                                 cornerRadius = cornerRadius,
-                                color = selectedCellColor,
+                                color = selectedCellColor.copy(alpha = 0.6f),
                                 boardSize = boardSize,
                                 cellSize = cellSize,
                                 cellOffset = Offset(
@@ -375,19 +374,6 @@ internal fun GameBoard(
                         }
                     }
                 }
-            }
-
-            cellsToHighlight.forEach {
-                drawCell(
-                    cornerRadius = cornerRadius,
-                    color = selectedCellColor.copy(alpha = 0.5f),
-                    boardSize = boardSize,
-                    cellSize = cellSize,
-                    cellOffset = Offset(
-                        x = it.col * cellSizePx,
-                        y = it.row * cellSizePx
-                    )
-                )
             }
 
             if (isDrawBoardFrame) {
