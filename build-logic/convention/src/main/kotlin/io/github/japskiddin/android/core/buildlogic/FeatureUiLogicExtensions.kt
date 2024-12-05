@@ -6,10 +6,9 @@ import org.gradle.kotlin.dsl.dependencies
 internal fun Project.configureFeatureUiLogic() {
     dependencies {
         implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        implementation(libs.androidx.lifecycle.viewmodel.compose)
-        implementation(libs.androidx.lifecycle.viewmodel.ktx)
-        implementation(libs.jetbrains.kotlinx.coroutines.core)
+        implementation(libs.androidx.lifecycle.runtime)
+        implementation(libs.androidx.lifecycle.viewmodel)
+        implementation(libs.androidx.lifecycle.viewmodel.savedstate)
         implementation(libs.jetbrains.kotlinx.coroutines.android)
         implementation(libs.jetbrains.kotlinx.immutable)
         implementation(project(":core:common-android"))

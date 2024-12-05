@@ -6,11 +6,13 @@ import org.gradle.kotlin.dsl.dependencies
 internal fun Project.configureFeatureUi() {
     dependencies {
         implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        implementation(libs.androidx.lifecycle.viewmodel.compose)
-        implementation(libs.androidx.lifecycle.viewmodel.ktx)
+        implementation(libs.androidx.lifecycle.runtime)
         implementation(libs.androidx.lifecycle.runtime.compose)
+        implementation(libs.androidx.lifecycle.viewmodel)
+        implementation(libs.androidx.lifecycle.viewmodel.compose)
+        implementation(libs.androidx.lifecycle.viewmodel.savedstate)
         implementation(libs.dagger.hilt.navigation.compose)
+        implementation(libs.jetbrains.kotlinx.coroutines.android)
         implementation(libs.jetbrains.kotlinx.immutable)
         implementation(project(":core:common-android"))
         implementation(project(":core:ui"))
