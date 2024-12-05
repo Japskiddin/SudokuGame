@@ -9,6 +9,7 @@ import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
+import io.github.japskiddin.sudoku.feature.home.domain.usecase.DeleteSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetGameModePreferenceUseCase
@@ -38,6 +39,7 @@ internal constructor(
     private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
     private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
     private val setGameModeUseCase: Provider<SetGameModePreferenceUseCase>,
+    private val deleteSavedGameUseCase: Provider<DeleteSavedGameUseCase>,
     getLastGameUseCase: Provider<GetLastGameUseCase>,
     getGameModeUseCase: Provider<GetGameModePreferenceUseCase>,
 ) : ViewModel() {
@@ -79,7 +81,7 @@ internal constructor(
     }
 
     private fun prepareNewGame(mode: GameMode) {
-        saveCurrentGameMode(mode)
+        saveGameMode(mode)
         startNewGame(mode)
     }
 
@@ -98,7 +100,7 @@ internal constructor(
         menuState.update { it.copy(error = GameError.NONE) }
     }
 
-    private fun saveCurrentGameMode(mode: GameMode) {
+    private fun saveGameMode(mode: GameMode) {
         viewModelScope.launch {
             setGameModeUseCase.get().invoke(mode)
         }
@@ -108,6 +110,11 @@ internal constructor(
         menuState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch(appDispatchers.io) {
+            val savedGame = lastGame.value
+            if (savedGame != null) {
+                deleteSavedGameUseCase.get().invoke(savedGame)
+            }
+
             val board = try {
                 generateSudokuUseCase.get().invoke(mode)
             } catch (ex: SudokuNotGeneratedException) {
