@@ -29,3 +29,5 @@ public data class SavedGame(
 }
 
 public fun SavedGame.isCurrent(): Boolean = uid != Board.ID_EMPTY && status == GameStatus.IN_PROGRESS
+
+public fun SavedGame.isNotCurrent(): Boolean = uid == Board.ID_EMPTY || status != GameStatus.IN_PROGRESS

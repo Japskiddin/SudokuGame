@@ -31,10 +31,9 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetResetTimerPref
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowRemainingNumbersPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowTimerPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.InsertSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.SaveGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.UpdateSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.combine
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameUiState
@@ -63,8 +62,7 @@ internal constructor(
     private val savedState: SavedStateHandle,
     private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
-    private val insertSavedGameUseCase: Provider<InsertSavedGameUseCase>,
-    private val updateSavedGameUseCase: Provider<UpdateSavedGameUseCase>,
+    private val saveGameUseCase: Provider<SaveGameUseCase>,
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
     private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>,
@@ -161,9 +159,7 @@ internal constructor(
     }
 
     private fun onBackPressed() {
-        viewModelScope.launch {
-            saveGame()
-        }
+        saveGame()
         appNavigator.tryNavigateBack()
     }
 
@@ -319,9 +315,7 @@ internal constructor(
             )
         }
         gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
-        viewModelScope.launch {
-            saveGame()
-        }
+        saveGame()
     }
 
     private fun undoBoardHistory() {
@@ -356,9 +350,7 @@ internal constructor(
         if (state.mistakes >= state.difficulty.mistakesLimit) {
             gameState.update { it.copy(status = GameState.Status.FAILED) }
             stopTimer()
-            viewModelScope.launch {
-                addToRecords(GameStatus.FAILED)
-            }
+            addToRecords(GameStatus.FAILED)
         }
     }
 
@@ -368,9 +360,7 @@ internal constructor(
         if (isCompleted) {
             gameState.update { it.copy(status = GameState.Status.COMPLETED) }
             stopTimer()
-            viewModelScope.launch {
-                addToRecords(GameStatus.COMPLETED)
-            }
+            addToRecords(GameStatus.COMPLETED)
         }
     }
 
@@ -392,59 +382,34 @@ internal constructor(
 
     private fun pauseGame() {
         stopTimer()
+        saveGame()
+    }
+
+    private fun addToRecords(status: GameStatus) {
+        val state = gameState.value
         viewModelScope.launch {
-            saveGame()
-        }
-    }
-
-    private suspend fun addToRecords(status: GameStatus) {
-        val currentTimeMillis = System.currentTimeMillis()
-        val state = gameState.value
-        val savedGame = getSavedGameUseCase.get().invoke(boardUid)
-        if (savedGame != null) {
-            updateSavedGameUseCase.get().invoke(
-                savedGame.copy(
-                    time = state.time,
-                    board = state.board.convertToString(),
-                    notes = state.notes.convertToString(),
-                    actions = state.actions,
-                    mistakes = state.mistakes,
-                    lastPlayed = currentTimeMillis,
-                    finishedTime = currentTimeMillis,
-                    status = status
-                )
-            )
-            addToRecordsUseCase.get().invoke(boardUid)
-        }
-    }
-
-    private suspend fun saveGame() {
-        val currentTimeMillis = System.currentTimeMillis()
-        val state = gameState.value
-        val savedGame = getSavedGameUseCase.get().invoke(boardUid)
-        if (savedGame != null) {
-            updateSavedGameUseCase.get().invoke(
-                savedGame.copy(
-                    time = state.time,
-                    board = state.board.convertToString(),
-                    notes = state.notes.convertToString(),
-                    actions = state.actions,
-                    mistakes = state.mistakes,
-                    lastPlayed = currentTimeMillis
-                )
-            )
-        } else {
-            insertSavedGameUseCase.get().invoke(
+            addToRecordsUseCase.get().invoke(
                 uid = boardUid,
                 board = state.board.convertToString(),
                 notes = state.notes.convertToString(),
                 time = state.time,
                 actions = state.actions,
                 mistakes = state.mistakes,
-                lastPlayed = currentTimeMillis,
-                startedAt = currentTimeMillis,
-                finishedAt = 0L,
-                status = GameStatus.IN_PROGRESS,
+                status = status,
+            )
+        }
+    }
+
+    private fun saveGame() {
+        val state = gameState.value
+        viewModelScope.launch {
+            saveGameUseCase.get().invoke(
+                uid = boardUid,
+                board = state.board.convertToString(),
+                notes = state.notes.convertToString(),
+                time = state.time,
+                actions = state.actions,
+                mistakes = state.mistakes,
             )
         }
     }
