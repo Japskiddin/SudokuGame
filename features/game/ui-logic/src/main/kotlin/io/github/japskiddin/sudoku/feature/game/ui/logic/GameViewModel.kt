@@ -13,6 +13,7 @@ import io.github.japskiddin.sudoku.core.game.utils.initiate
 import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
+import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
@@ -169,8 +170,8 @@ internal constructor(
     private fun generateGameLevel() {
         gameState.update { it.copy(status = GameState.Status.LOADING) }
 
-        boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: "-1").toLong()
-        if (boardUid == -1L) {
+        boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: Board.ID_EMPTY.toString()).toLong()
+        if (boardUid == Board.ID_EMPTY) {
             gameState.update { it.copy(error = GameError.BOARD_NOT_FOUND) }
             return
         }
@@ -356,7 +357,6 @@ internal constructor(
             gameState.update { it.copy(status = GameState.Status.FAILED) }
             stopTimer()
             viewModelScope.launch {
-                saveGame()
                 addToRecords(GameStatus.FAILED)
             }
         }
@@ -369,7 +369,6 @@ internal constructor(
             gameState.update { it.copy(status = GameState.Status.COMPLETED) }
             stopTimer()
             viewModelScope.launch {
-                saveGame()
                 addToRecords(GameStatus.COMPLETED)
             }
         }
@@ -399,9 +398,22 @@ internal constructor(
     }
 
     private suspend fun addToRecords(status: GameStatus) {
+        val currentTimeMillis = System.currentTimeMillis()
+        val state = gameState.value
         val savedGame = getSavedGameUseCase.get().invoke(boardUid)
         if (savedGame != null) {
-            updateSavedGameUseCase.get().invoke(savedGame.copy(status = status))
+            updateSavedGameUseCase.get().invoke(
+                savedGame.copy(
+                    time = state.time,
+                    board = state.board.convertToString(),
+                    notes = state.notes.convertToString(),
+                    actions = state.actions,
+                    mistakes = state.mistakes,
+                    lastPlayed = currentTimeMillis,
+                    finishedTime = currentTimeMillis,
+                    status = status
+                )
+            )
             addToRecordsUseCase.get().invoke(boardUid)
         }
     }

@@ -24,7 +24,9 @@ constructor(
 
 //    public fun getWithBoards(): Flow<Map<SavedGame, BoardDBO>> = savedGameDao.getSavedWithBoards()
 
-    override fun getLast(): Flow<SavedGame?> = savedGameDao.getLast().map { it?.toSavedGame() }
+    override fun getLast(): Flow<SavedGame> = savedGameDao.getLast().map {
+        it?.toSavedGame() ?: SavedGame.EMPTY
+    }
 
     override fun getLastPlayable(limit: Int): Flow<Map<SavedGame, Board>> =
         savedGameDao.getLastPlayable(limit).map { lastPlayable ->

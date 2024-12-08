@@ -9,7 +9,7 @@ public interface SavedGameDataSource {
 
     public suspend fun get(uid: Long): SavedGame?
 
-    public fun getLast(): Flow<SavedGame?>
+    public fun getLast(): Flow<SavedGame>
 
     public fun getLastPlayable(limit: Int): Flow<Map<SavedGame, Board>>
 

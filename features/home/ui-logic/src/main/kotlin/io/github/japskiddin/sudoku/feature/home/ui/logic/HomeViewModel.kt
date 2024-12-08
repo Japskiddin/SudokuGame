@@ -15,7 +15,7 @@ import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUse
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.SetGameModePreferenceUseCase
-import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.mapToUiMenuState
+import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.toMenuUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,23 +43,29 @@ internal constructor(
     getLastGameUseCase: Provider<GetLastGameUseCase>,
     getGameModeUseCase: Provider<GetGameModePreferenceUseCase>,
 ) : ViewModel() {
-    private val lastGame = getLastGameUseCase.get().invoke()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
-            initialValue = null
+    private val gameState: StateFlow<GameState> = combine(
+        getGameModeUseCase.get().invoke(),
+        getLastGameUseCase.get().invoke(),
+    ) { gameMode, lastGame ->
+        GameState(
+            mode = gameMode,
+            lastGame = lastGame
         )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = GameState.Initial
+    )
     private val menuState = MutableStateFlow(MenuState.Initial)
 
     public val uiState: StateFlow<UiState> = combine(
         menuState,
-        getGameModeUseCase.get().invoke(),
-        lastGame
-    ) { menuState, gameState, lastGame ->
+        gameState,
+    ) { menuState, gameState ->
         when {
             menuState.error != GameError.NONE -> UiState.Error(code = menuState.error)
             menuState.isLoading -> UiState.Loading
-            else -> mapToUiMenuState(gameState, lastGame)
+            else -> gameState.toMenuUiState()
         }
     }.stateIn(
         scope = viewModelScope,
@@ -86,7 +92,7 @@ internal constructor(
     }
 
     private fun continueCurrentGame() {
-        tryNavigateToGame(boardUid = lastGame.value?.uid ?: -1L)
+        tryNavigateToGame(boardUid = gameState.value.lastGame.uid)
     }
 
     private fun showSettings() {
@@ -110,10 +116,8 @@ internal constructor(
         menuState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch(appDispatchers.io) {
-            val savedGame = lastGame.value
-            if (savedGame != null) {
-                deleteSavedGameUseCase.get().invoke(savedGame)
-            }
+            val savedGame = gameState.value.lastGame
+            deleteSavedGameUseCase.get().invoke(savedGame)
 
             val board = try {
                 generateSudokuUseCase.get().invoke(mode)
