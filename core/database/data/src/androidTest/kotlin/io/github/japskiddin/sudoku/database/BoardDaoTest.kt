@@ -146,7 +146,6 @@ class BoardDaoTest {
         boardDao.insert(board)
 
         val updatedBoard = board.copy(difficulty = 3)
-
         boardDao.update(updatedBoard)
 
         val result = boardDao.get(updatedBoard.uid)
