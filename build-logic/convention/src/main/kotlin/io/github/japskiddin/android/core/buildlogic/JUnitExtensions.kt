@@ -20,5 +20,6 @@ fun Project.configureJUnitAndroid() {
 fun Project.configureJUnit() {
     dependencies {
         testImplementation(libs.junit)
+        testImplementation(libs.jetbrains.kotlinx.coroutines.test)
     }
 }

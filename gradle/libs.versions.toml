@@ -105,6 +105,7 @@ javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inje
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso-core" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
+jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 junit = { module = "junit:junit", version.ref = "junit" }
 google-truth = { module = "com.google.truth:truth", version.ref = "google-truth" }
 # endregion
@@ -123,6 +124,17 @@ ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.
 room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "androidx-room" }
 detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 # endretion
+
+[bundles]
+compose = [
+    "androidx-compose-foundation",
+    "androidx-compose-animation",
+    "androidx-compose-ui",
+    "androidx-compose-ui-unit",
+    "androidx-compose-ui-graphics",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-runtime",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

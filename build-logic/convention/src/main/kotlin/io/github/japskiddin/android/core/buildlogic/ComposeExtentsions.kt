@@ -16,10 +16,17 @@ internal fun Project.configureAndroidCompose(
         }
 
         extensions.configure<ComposeCompilerGradlePluginExtension> {
-            fun Provider<String>.onlyIfTrue() = flatMap { provider { it.takeIf(String::toBoolean) } }
+            fun Provider<String>.onlyIfTrue() = flatMap {
+                provider {
+                    it.takeIf(String::toBoolean)
+                }
+            }
+
             fun Provider<*>.relativeToRootProject(dir: String) = flatMap {
                 rootProject.layout.buildDirectory.dir(projectDir.toRelativeString(rootDir))
-            }.map { it.dir(dir) }
+            }.map {
+                it.dir(dir)
+            }
 
             project.providers.gradleProperty("enableComposeCompilerMetrics").onlyIfTrue()
                 .relativeToRootProject("compose-metrics")
@@ -37,13 +44,7 @@ internal fun Project.configureAndroidCompose(
             implementation(bom)
             androidTestImplementation(bom)
 
-            implementation(libs.androidx.compose.animation)
-            implementation(libs.androidx.compose.foundation)
-            implementation(libs.androidx.compose.ui)
-            implementation(libs.androidx.compose.ui.unit)
-            implementation(libs.androidx.compose.ui.graphics)
-            implementation(libs.androidx.compose.ui.tooling.preview)
-            implementation(libs.androidx.compose.runtime)
+            implementation(libs.bundles.compose)
 
             debugImplementation(libs.androidx.compose.ui.tooling)
             debugImplementation(libs.androidx.compose.ui.test.manifest)
