@@ -8,6 +8,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.utils.createDummyBoard
+import io.github.japskiddin.sudoku.database.utils.createDummySavedGame
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
@@ -184,7 +185,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun getBoardsWithCurrentDifficulty() = runTest {
+    fun getBoardsWithCurrentDifficulty_returnsTrue() = runTest {
         val currentDifficulty = 2
 
         val boards = listOf(
@@ -201,6 +202,31 @@ class BoardDaoTest {
         val job = async(Dispatchers.IO) {
             boardDao.getAll(difficulty = currentDifficulty).collect {
                 assertThat(it).isEqualTo(filteredBoards)
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    @Test
+    fun getBoardWithSavedGame_returnsTrue() = runTest {
+        val currentDifficulty = 2
+
+        val board = createDummyBoard(uid = 1, difficulty = currentDifficulty)
+        val savedGame = createDummySavedGame(uid = board.uid)
+
+        boardDao.insert(board)
+        database.savedGameDao().insert(savedGame)
+
+        val boardWithSavedGame = mapOf(
+            board to savedGame
+        )
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            boardDao.getBoardsWithSavedGames(difficulty = currentDifficulty).collect {
+                assertThat(it).isEqualTo(boardWithSavedGame)
                 latch.countDown()
             }
         }
