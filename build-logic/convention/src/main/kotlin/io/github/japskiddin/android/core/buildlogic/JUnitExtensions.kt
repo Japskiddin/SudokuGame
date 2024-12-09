@@ -9,6 +9,7 @@ fun Project.configureJUnitAndroid() {
         androidTestImplementation(libs.androidx.test.ext.junit)
         androidTestImplementation(libs.androidx.arch.core.testing)
         androidTestImplementation(libs.google.truth)
+        androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
         if (pluginManager.hasPlugin(libs.plugins.jetbrains.compose.compiler.get().pluginId)) {
             androidTestImplementation(platform(libs.androidx.compose.bom))
