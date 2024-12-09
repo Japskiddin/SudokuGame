@@ -1,6 +1,7 @@
 package io.github.japskiddin.sudoku.database.utils
 
 import io.github.japskiddin.sudoku.database.entities.BoardDBO
+import io.github.japskiddin.sudoku.database.entities.RecordDBO
 import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
 
 internal fun createDummyBoard(
@@ -25,6 +26,14 @@ internal fun createDummySavedGame(
     uid = uid,
     board = board,
     notes = notes,
+)
+
+internal fun createDummyRecord(
+    uid: Long,
+    time: Long = System.currentTimeMillis(),
+): RecordDBO = RecordDBO(
+    uid = uid,
+    time = time,
 )
 
 internal fun createBoards(vararg uids: Long): List<BoardDBO> = uids.map { createDummyBoard(it) }.toList()
