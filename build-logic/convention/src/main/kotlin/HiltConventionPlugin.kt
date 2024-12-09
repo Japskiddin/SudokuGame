@@ -14,6 +14,7 @@ class HiltConventionPlugin : Plugin<Project> {
             plugins {
                 apply(libs.plugins.google.devtools.ksp.get().pluginId)
             }
+
             if (androidExtension is ApplicationExtension) {
                 pluginManager.apply(libs.plugins.dagger.hilt.android.get().pluginId)
             }

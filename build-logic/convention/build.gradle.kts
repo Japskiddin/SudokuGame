@@ -69,6 +69,10 @@ gradlePlugin {
             id = "app.room"
             implementationClass = "RoomConventionPlugin"
         }
+        register("test") {
+            id = "app.test"
+            implementationClass = "TestConventionPlugin"
+        }
         register("featureUi") {
             id = "app.feature.ui"
             implementationClass = "FeatureUiConventionPlugin"

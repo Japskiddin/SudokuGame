@@ -156,6 +156,7 @@ app-detekt = { id = "app.detekt", version = "unspecified" }
 app-jvm = { id = "app.jvm", version = "unspecified" }
 app-hilt = { id = "app.hilt", version = "unspecified" }
 app-room = { id = "app.room", version = "unspecified" }
+app-test = { id = "app.test", version = "unspecified" }
 app-feature-ui = { id = "app.feature.ui", version = "unspecified" }
 app-feature-ui-logic = { id = "app.feature.ui.logic", version = "unspecified" }
 app-feature-domain = { id = "app.feature.domain", version = "unspecified" }

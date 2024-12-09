@@ -1,4 +1,3 @@
-import io.github.japskiddin.android.core.buildlogic.configureJUnit
 import io.github.japskiddin.android.core.buildlogic.configureJvm
 import io.github.japskiddin.android.core.buildlogic.libs
 import io.github.japskiddin.android.core.buildlogic.plugins
@@ -13,7 +12,6 @@ class JvmConventionPlugin : Plugin<Project> {
             }
 
             configureJvm()
-            configureJUnit()
         }
     }
 }
