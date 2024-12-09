@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.RecordDao
-import io.github.japskiddin.sudoku.database.utils.createDummyBoard
+import io.github.japskiddin.sudoku.database.utils.createBoards
 import io.github.japskiddin.sudoku.database.utils.createDummyRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -36,6 +36,14 @@ class RecordDaoTest {
             .build()
         recordDao = database.recordDao()
         boardDao = database.boardDao()
+        createTestBoards()
+    }
+
+    private fun createTestBoards() {
+        val boards = createBoards(1, 2, 3)
+        runTest {
+            boardDao.insert(boards)
+        }
     }
 
     @After
@@ -45,10 +53,8 @@ class RecordDaoTest {
 
     @Test
     fun insertRecord_returnsTrue() = runTest {
-        val board = createDummyBoard(1)
         val record = createDummyRecord(1)
 
-        boardDao.insert(board)
         recordDao.insert(record)
 
         val latch = CountDownLatch(1)

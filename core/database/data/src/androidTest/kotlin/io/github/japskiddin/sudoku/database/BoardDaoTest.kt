@@ -216,7 +216,8 @@ class BoardDaoTest {
         val savedGame = createDummySavedGame(uid = board.uid)
 
         boardDao.insert(board)
-        database.savedGameDao().insert(savedGame)
+        val savedDao = database.savedGameDao()
+        savedDao.insert(savedGame)
 
         val boardWithSavedGame = mapOf(
             board to savedGame
