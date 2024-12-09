@@ -26,3 +26,5 @@ internal fun createDummySavedGame(
     board = board,
     notes = notes,
 )
+
+internal fun createBoards(vararg uids: Long): List<BoardDBO> = uids.map { createDummyBoard(it) }.toList()

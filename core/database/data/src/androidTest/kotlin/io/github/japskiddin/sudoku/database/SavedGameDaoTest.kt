@@ -8,6 +8,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
+import io.github.japskiddin.sudoku.database.utils.createBoards
 import io.github.japskiddin.sudoku.database.utils.createDummyBoard
 import io.github.japskiddin.sudoku.database.utils.createDummySavedGame
 import kotlinx.coroutines.Dispatchers
@@ -45,9 +46,10 @@ class SavedGameDaoTest {
 
     @Test
     fun insertSavedGame_returnsTrue() = runTest {
-        createAndInsertBoard(1)
+        val board = createDummyBoard(1)
         val savedGame = createDummySavedGame(1)
 
+        boardDao.insert(board)
         savedGameDao.insert(savedGame)
 
         val latch = CountDownLatch(1)
@@ -63,13 +65,14 @@ class SavedGameDaoTest {
 
     @Test
     fun insertSavedGamesList_returnsTrue() = runTest {
-        createAndInsertBoard(1, 2, 3)
+        val boards = createBoards(1, 2, 3)
         val savedGames = listOf(
             createDummySavedGame(1),
             createDummySavedGame(2),
             createDummySavedGame(3),
         )
 
+        boardDao.insert(boards)
         savedGameDao.insert(savedGames)
 
         val latch = CountDownLatch(1)
@@ -85,9 +88,10 @@ class SavedGameDaoTest {
 
     @Test
     fun deleteSavedGame_returnsTrue() = runTest {
-        createAndInsertBoard(1)
+        val board = createDummyBoard(1)
         val savedGame = createDummySavedGame(1)
 
+        boardDao.insert(board)
         savedGameDao.insert(savedGame)
         savedGameDao.delete(savedGame)
 
@@ -104,9 +108,10 @@ class SavedGameDaoTest {
 
     @Test
     fun updateSavedGame_returnsTrue() = runTest {
-        createAndInsertBoard(1)
+        val board = createDummyBoard(1)
         val savedGame = createDummySavedGame(1)
 
+        boardDao.insert(board)
         savedGameDao.insert(savedGame)
 
         val updatedSavedGame = savedGame.copy(
@@ -121,13 +126,14 @@ class SavedGameDaoTest {
 
     @Test
     fun getLastSavedGame_returnsTrue() = runTest {
-        createAndInsertBoard(1, 2, 3)
+        val boards = createBoards(1, 2, 3)
         val savedGames = listOf(
             createDummySavedGame(1),
             createDummySavedGame(2),
             createDummySavedGame(3),
         )
 
+        boardDao.insert(boards)
         savedGameDao.insert(savedGames)
 
         val latch = CountDownLatch(1)
@@ -139,10 +145,5 @@ class SavedGameDaoTest {
         }
         latch.await()
         job.cancelAndJoin()
-    }
-
-    private suspend fun createAndInsertBoard(vararg uids: Long) {
-        val boards = uids.map { createDummyBoard(it) }.toList()
-        boardDao.insert(boards)
     }
 }
