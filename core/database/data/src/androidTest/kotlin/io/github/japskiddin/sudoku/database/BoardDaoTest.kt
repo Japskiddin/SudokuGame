@@ -1,16 +1,17 @@
 package io.github.japskiddin.sudoku.database
 
+import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
-import io.github.japskiddin.sudoku.database.entities.BoardDBO
+import io.github.japskiddin.sudoku.database.utils.createDummyBoard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -24,11 +25,12 @@ class BoardDaoTest {
     private lateinit var boardDao: BoardDao
 
     @Before
-    fun setupDatabase() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            SudokuRoomDatabase::class.java
-        ).allowMainThreadQueries().build()
+    fun createDatabase() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        database = Room
+            .inMemoryDatabaseBuilder(context, SudokuRoomDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
         boardDao = database.boardDao()
     }
 
@@ -38,7 +40,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun insertBoard_returnsTrue() = runBlocking {
+    fun insertBoard_returnsTrue() = runTest {
         val board = createDummyBoard(1)
 
         boardDao.insert(board)
@@ -55,7 +57,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun insertBoardsList_returnsTrue() = runBlocking {
+    fun insertBoardsList_returnsTrue() = runTest {
         val boards = listOf(
             createDummyBoard(1),
             createDummyBoard(2),
@@ -76,7 +78,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun deleteBoard_returnsTrue() = runBlocking {
+    fun deleteBoard_returnsTrue() = runTest {
         val board = createDummyBoard(1)
 
         boardDao.insert(board)
@@ -94,7 +96,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun deleteBoardsList_returnsTrue() = runBlocking {
+    fun deleteBoardsList_returnsTrue() = runTest {
         val boards = listOf(
             createDummyBoard(1),
             createDummyBoard(2),
@@ -116,7 +118,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun deleteAllBoards_returnsTrue() = runBlocking {
+    fun deleteAllBoards_returnsTrue() = runTest {
         val firstBoard = createDummyBoard(1)
         val secondBoard = createDummyBoard(2)
 
@@ -137,7 +139,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun updateBoard_returnsTrue() = runBlocking {
+    fun updateBoard_returnsTrue() = runTest {
         val board = createDummyBoard(1)
 
         boardDao.insert(board)
@@ -151,7 +153,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun updateBoardsList_returnsTrue() = runBlocking {
+    fun updateBoardsList_returnsTrue() = runTest {
         val boards = listOf(
             createDummyBoard(1),
             createDummyBoard(2),
@@ -182,7 +184,7 @@ class BoardDaoTest {
     }
 
     @Test
-    fun getBoardsWithCurrentDifficulty() = runBlocking {
+    fun getBoardsWithCurrentDifficulty() = runTest {
         val currentDifficulty = 2
 
         val boards = listOf(
@@ -205,18 +207,4 @@ class BoardDaoTest {
         latch.await()
         job.cancelAndJoin()
     }
-
-    private fun createDummyBoard(
-        uid: Long,
-        board: String = "760000009040500800090006364500040041904070000836900000000080900000006007407000580",
-        solvedBoard: String = "768432159143569872295817364572348691914675238836921745651784923389256417427193586",
-        difficulty: Int = 2,
-        type: Int = 2
-    ): BoardDBO = BoardDBO(
-        uid = uid,
-        board = board,
-        solvedBoard = solvedBoard,
-        difficulty = difficulty,
-        type = type
-    )
 }
