@@ -33,6 +33,9 @@ public interface RecordDao {
     @Insert
     public suspend fun insert(record: RecordDBO): Long
 
+    @Insert
+    public suspend fun insert(records: List<RecordDBO>): List<Long>
+
     @Delete
     public suspend fun delete(record: RecordDBO)
 }
