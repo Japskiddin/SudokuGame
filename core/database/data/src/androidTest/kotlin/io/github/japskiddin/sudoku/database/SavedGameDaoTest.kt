@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
-import io.github.japskiddin.sudoku.database.utils.createBoards
+import io.github.japskiddin.sudoku.database.utils.createDummyBoards
 import io.github.japskiddin.sudoku.database.utils.createDummySavedGame
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -40,7 +40,7 @@ class SavedGameDaoTest {
     }
 
     private fun createTestBoards() {
-        val boards = createBoards(1, 2, 3)
+        val boards = createDummyBoards()
         runTest {
             boardDao.insert(boards)
         }

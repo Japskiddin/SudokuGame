@@ -36,4 +36,8 @@ internal fun createDummyRecord(
     time = time,
 )
 
-internal fun createBoards(vararg uids: Long): List<BoardDBO> = uids.map { createDummyBoard(it) }.toList()
+internal fun createDummyBoards(): List<BoardDBO> = listOf(
+    createDummyBoard(uid = 1, difficulty = 2, type = 1),
+    createDummyBoard(uid = 2, difficulty = 1, type = 2),
+    createDummyBoard(uid = 3, difficulty = 2, type = 1),
+)
