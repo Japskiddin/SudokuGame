@@ -50,18 +50,16 @@ public fun GameButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val buttonForegroundColor =
-        if (isPressed) {
-            foregroundPressedColor
-        } else {
-            foregroundNormalColor
-        }
-    val buttonBackgroundColor =
-        if (isPressed) {
-            backgroundPressedColor
-        } else {
-            backgroundNormalColor
-        }
+    val buttonForegroundColor = if (isPressed) {
+        foregroundPressedColor
+    } else {
+        foregroundNormalColor
+    }
+    val buttonBackgroundColor = if (isPressed) {
+        backgroundPressedColor
+    } else {
+        backgroundNormalColor
+    }
 
     Row(
         modifier = modifier

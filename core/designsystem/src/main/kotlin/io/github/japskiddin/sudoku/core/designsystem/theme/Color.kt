@@ -53,6 +53,8 @@ public class Colors(
     switchCheckedThumb: Color,
     switchCheckedTrack: Color,
     switchBorder: Color,
+    gamePanelNormal: Color,
+    gamePanelPressed: Color,
 ) {
     public var primary: Color by mutableStateOf(primary)
         private set
@@ -94,6 +96,10 @@ public class Colors(
         private set
     public var switchBorder: Color by mutableStateOf(switchBorder)
         private set
+    public var gamePanelNormal: Color by mutableStateOf(gamePanelNormal)
+        private set
+    public var gamePanelPressed: Color by mutableStateOf(gamePanelPressed)
+        private set
 
     public fun copy(
         primary: Color = this.primary,
@@ -116,6 +122,8 @@ public class Colors(
         switchCheckedThumb: Color = this.switchCheckedThumb,
         switchCheckedTrack: Color = this.switchCheckedTrack,
         switchBorder: Color = this.switchBorder,
+        gamePanelNormal: Color = this.gamePanelNormal,
+        gamePanelPressed: Color = this.gamePanelPressed,
     ): Colors = Colors(
         primary = primary,
         onPrimary = onPrimary,
@@ -137,6 +145,8 @@ public class Colors(
         switchCheckedThumb = switchCheckedThumb,
         switchCheckedTrack = switchCheckedTrack,
         switchBorder = switchBorder,
+        gamePanelNormal = gamePanelNormal,
+        gamePanelPressed = gamePanelPressed,
     )
 
     public fun updateColorsFrom(other: Colors) {
@@ -160,6 +170,8 @@ public class Colors(
         switchCheckedThumb = other.switchCheckedThumb
         switchCheckedTrack = other.switchCheckedTrack
         switchBorder = other.switchBorder
+        gamePanelNormal = other.gamePanelNormal
+        gamePanelPressed = other.gamePanelPressed
     }
 }
 
@@ -184,6 +196,8 @@ internal val ThemeColors: Colors = Colors(
     switchCheckedThumb = Color.White,
     switchCheckedTrack = Rope,
     switchBorder = Color.Black,
+    gamePanelNormal = Color.White,
+    gamePanelPressed = Rope,
 )
 
 internal val LocalColors = staticCompositionLocalOf { ThemeColors }

@@ -1,7 +1,10 @@
 package io.github.japskiddin.sudoku.feature.game.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +16,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -85,27 +89,41 @@ private fun ToolButton(
     modifier: Modifier = Modifier,
     iconSize: Dp = 36.dp,
     textSize: TextUnit = 16.sp,
-    textColor: Color = SudokuTheme.colors.onPrimary,
+    textColor: Color = SudokuTheme.colors.gamePanelNormal,
+    pressedTextColor: Color = SudokuTheme.colors.gamePanelPressed,
     onClick: () -> Unit,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val buttonColor = if (isPressed) {
+        pressedTextColor
+    } else {
+        textColor
+    }
+
     Column(
         modifier = Modifier
             .then(modifier)
-            .clickable { onClick() }
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                onClick = onClick,
+            )
             .padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = icon,
             contentDescription = text,
-            colorFilter = ColorFilter.tint(color = textColor),
+            colorFilter = ColorFilter.tint(color = buttonColor),
             modifier = Modifier.size(iconSize)
         )
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = text,
             style = SudokuTheme.typography.toolButton.copy(
-                color = textColor,
+                color = buttonColor,
                 fontSize = textSize
             ),
         )
