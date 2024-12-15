@@ -25,6 +25,12 @@ private val LightNavyBlue: Color = Color(0xFF235F89)
 @Stable
 private val Elephant: Color = Color(0xFF10354F)
 
+@Stable
+private val HippieBlue: Color = Color(0xFF3E9CB1)
+
+@Stable
+private val GreenishBlue: Color = Color(0xFF277E91)
+
 @Suppress("LongParameterList")
 public class Colors(
     primary: Color,
@@ -164,8 +170,8 @@ internal val ThemeColors: Colors = Colors(
     onBackground = Color.White,
     dialog = Color.White,
     onDialog = Color.Black,
-    menuButtonForegroundNormal = DenimBlue,
-    menuButtonForegroundPressed = SilkBlue,
+    menuButtonForegroundNormal = HippieBlue,
+    menuButtonForegroundPressed = GreenishBlue,
     menuButtonBackgroundNormal = LightNavyBlue,
     menuButtonBackgroundPressed = Elephant,
     onMenuButton = Color.White,
