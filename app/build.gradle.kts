@@ -144,4 +144,8 @@ dependencies {
     implementation(projects.features.settings.ui)
     implementation(projects.features.settings.uiLogic)
     implementation(projects.features.settings.domain)
+
+    implementation(projects.features.records.ui)
+    implementation(projects.features.records.uiLogic)
+    implementation(projects.features.records.domain)
 }

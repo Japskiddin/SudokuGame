@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.game.ui.GameScreen
 import io.github.japskiddin.sudoku.feature.home.ui.HomeScreen
+import io.github.japskiddin.sudoku.feature.records.ui.RecordsScreen
 import io.github.japskiddin.sudoku.feature.settings.ui.SettingsScreen
 import io.github.japskiddin.sudoku.game.ui.navigation.NavHost
 import io.github.japskiddin.sudoku.game.ui.navigation.NavigationEffect
@@ -33,16 +34,19 @@ private fun MainScreen(viewModel: MainViewModel) {
         Box(modifier = Modifier.fillMaxSize()) {
             NavHost(
                 navController = navController,
-                startDestination = Destination.HomeScreen
+                startDestination = Destination.Home
             ) {
-                composable(destination = Destination.HomeScreen) {
+                composable(destination = Destination.Home) {
                     HomeScreen()
                 }
-                composable(destination = Destination.GameScreen) {
+                composable(destination = Destination.Game) {
                     GameScreen()
                 }
-                composable(destination = Destination.SettingsScreen) {
+                composable(destination = Destination.Settings) {
                     SettingsScreen()
+                }
+                composable(destination = Destination.Records) {
+                    RecordsScreen()
                 }
             }
         }

@@ -92,14 +92,16 @@ internal constructor(
     }
 
     private fun continueCurrentGame() {
-        tryNavigateToGame(boardUid = gameState.value.lastGame.uid)
+        val boardUid = gameState.value.lastGame.uid
+        appNavigator.tryNavigateTo(Destination.Game(boardUid))
     }
 
     private fun showSettings() {
-        tryNavigateToSettings()
+        appNavigator.tryNavigateTo(Destination.Settings())
     }
 
     private fun showRecords() {
+        appNavigator.tryNavigateTo(Destination.Records())
     }
 
     private fun closeError() {
@@ -129,13 +131,7 @@ internal constructor(
             }
 
             val insertedBoardUid = createBoardUseCase.get().invoke(board)
-            navigateToGame(insertedBoardUid)
+            appNavigator.navigateTo(Destination.Game(insertedBoardUid))
         }
     }
-
-    private fun tryNavigateToSettings() = appNavigator.tryNavigateTo(Destination.SettingsScreen())
-
-    private fun tryNavigateToGame(boardUid: Long) = appNavigator.tryNavigateTo(Destination.GameScreen(boardUid))
-
-    private suspend fun navigateToGame(boardUid: Long) = appNavigator.navigateTo(Destination.GameScreen(boardUid))
 }

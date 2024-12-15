@@ -152,7 +152,7 @@ internal constructor(
             is UiAction.Note -> notesBoard()
             is UiAction.ResumeGame -> resumeGame()
             is UiAction.PauseGame -> pauseGame()
-            is UiAction.ShowSettings -> appNavigator.tryNavigateTo(Destination.SettingsScreen())
+            is UiAction.ShowSettings -> appNavigator.tryNavigateTo(Destination.Settings())
             is UiAction.Exit -> appNavigator.tryNavigateBack()
             is UiAction.Back -> onBackPressed()
         }
@@ -338,7 +338,6 @@ internal constructor(
     }
 
     private fun notesBoard() {
-        TODO("Not Implemented")
     }
 
     private fun selectBoardCell(cell: BoardCell) {

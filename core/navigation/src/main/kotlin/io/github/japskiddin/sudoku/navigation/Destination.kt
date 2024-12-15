@@ -1,6 +1,9 @@
 package io.github.japskiddin.sudoku.navigation
 
-public sealed class Destination(protected val route: String, vararg params: String) {
+public sealed class Destination(
+    protected val route: String,
+    vararg params: String,
+) {
     public val fullRoute: String = if (params.isEmpty()) {
         route
     } else {
@@ -13,18 +16,21 @@ public sealed class Destination(protected val route: String, vararg params: Stri
         public operator fun invoke(): String = route
     }
 
-    public data object HomeScreen : NoArgumentsDestination(HOME_SCREEN)
+    public data object Home : NoArgumentsDestination(DESTINATION_HOME)
 
-    public data object GameScreen : Destination(GAME_SCREEN, KEY_BOARD_UID) {
+    public data object Game : Destination(DESTINATION_GAME, KEY_BOARD_UID) {
         public operator fun invoke(boardUid: Long): String = route.appendParams(KEY_BOARD_UID to boardUid)
     }
 
-    public data object SettingsScreen : NoArgumentsDestination(SETTINGS_SCREEN)
+    public data object Settings : NoArgumentsDestination(DESTINATION_SETTINGS)
+
+    public data object Records : NoArgumentsDestination(DESTINATION_RECORDS)
 
     public companion object {
-        private const val HOME_SCREEN = "home"
-        private const val GAME_SCREEN = "game"
-        private const val SETTINGS_SCREEN = "settings"
+        private const val DESTINATION_HOME = "home"
+        private const val DESTINATION_GAME = "game"
+        private const val DESTINATION_SETTINGS = "settings"
+        private const val DESTINATION_RECORDS = "records"
 
         public const val KEY_BOARD_UID: String = "board_uid"
     }
