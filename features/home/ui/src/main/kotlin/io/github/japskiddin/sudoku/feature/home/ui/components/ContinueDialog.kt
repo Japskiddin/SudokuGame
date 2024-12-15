@@ -29,7 +29,7 @@ internal fun ContinueDialog(
         ) {
             BasicText(
                 text = stringResource(id = CoreUiR.string.you_already_started_game),
-                style = SudokuTheme.typography.bodyMedium.copy(
+                style = SudokuTheme.typography.dialog.copy(
                     color = SudokuTheme.colors.onDialog,
                     textAlign = TextAlign.Center
                 ),
@@ -37,7 +37,7 @@ internal fun ContinueDialog(
             Spacer(modifier = Modifier.height(12.dp))
             BasicText(
                 text = stringResource(id = CoreUiR.string.do_you_want_to_continue),
-                style = SudokuTheme.typography.bodyMedium.copy(
+                style = SudokuTheme.typography.dialog.copy(
                     color = SudokuTheme.colors.onDialog,
                     textAlign = TextAlign.Center
                 ),

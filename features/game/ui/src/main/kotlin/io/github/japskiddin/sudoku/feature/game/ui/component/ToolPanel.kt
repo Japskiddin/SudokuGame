@@ -104,7 +104,7 @@ private fun ToolButton(
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = text,
-            style = SudokuTheme.typography.labelSmall.copy(
+            style = SudokuTheme.typography.toolButton.copy(
                 color = textColor,
                 fontSize = textSize
             ),

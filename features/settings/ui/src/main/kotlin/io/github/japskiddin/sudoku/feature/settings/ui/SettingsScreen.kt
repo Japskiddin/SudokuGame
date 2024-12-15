@@ -253,7 +253,7 @@ private fun Title(
                 .weight(1f)
                 .padding(start = 40.dp, end = 4.dp),
             text = stringResource(id = CoreUiR.string.settings),
-            textStyle = SudokuTheme.typography.titleMedium
+            textStyle = SudokuTheme.typography.appBar
         )
         Image(
             modifier = Modifier
@@ -277,7 +277,7 @@ private fun TitleSection(
             end = 12.dp
         ),
         text = title,
-        style = SudokuTheme.typography.bodyMedium.copy(
+        style = SudokuTheme.typography.dialog.copy(
             color = SudokuTheme.colors.onPrimary,
         ),
     )

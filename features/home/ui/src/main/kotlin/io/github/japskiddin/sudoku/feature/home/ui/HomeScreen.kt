@@ -201,13 +201,13 @@ private fun Menu(
             val versionName: String = LocalContext.current.getPackageInfo().versionName.toString()
             OutlineText(
                 text = versionName,
-                textStyle = SudokuTheme.typography.titleSmall,
+                textStyle = SudokuTheme.typography.infoPanel,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
             OutlineText(
                 text = currentYear,
-                textStyle = SudokuTheme.typography.titleSmall,
+                textStyle = SudokuTheme.typography.infoPanel,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
@@ -231,7 +231,7 @@ private fun MenuLandscape(
         OutlineText(
             modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.app_name),
-            textStyle = SudokuTheme.typography.titleLarge,
+            textStyle = SudokuTheme.typography.appTitle,
             fillColor = Color.White,
             outlineColor = Color.Black,
             outlineWidth = 6.dp
@@ -280,7 +280,7 @@ private fun MenuPortrait(
     ) {
         OutlineText(
             text = stringResource(id = CoreUiR.string.app_name),
-            textStyle = SudokuTheme.typography.titleLarge,
+            textStyle = SudokuTheme.typography.appTitle,
             fillColor = Color.White,
             outlineColor = Color.Black,
             outlineWidth = 4.dp
@@ -339,7 +339,7 @@ private fun Error(
         ) {
             BasicText(
                 text = stringResource(id = errorCode.toStringRes()),
-                style = SudokuTheme.typography.bodyLarge.copy(
+                style = SudokuTheme.typography.bodyPanel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
                 ),

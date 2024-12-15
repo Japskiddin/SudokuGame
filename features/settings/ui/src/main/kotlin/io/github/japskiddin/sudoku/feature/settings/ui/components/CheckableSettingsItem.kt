@@ -36,7 +36,7 @@ internal fun CheckableSettingsItem(
         ) {
             BasicText(
                 text = title,
-                style = SudokuTheme.typography.labelMedium.copy(
+                style = SudokuTheme.typography.gameButton.copy(
                     color = SudokuTheme.colors.onPrimary
                 )
             )
@@ -44,7 +44,7 @@ internal fun CheckableSettingsItem(
                 Spacer(modifier = Modifier.height(6.dp))
                 BasicText(
                     text = description,
-                    style = SudokuTheme.typography.labelSmall.copy(
+                    style = SudokuTheme.typography.toolButton.copy(
                         fontWeight = FontWeight.Normal,
                         color = SudokuTheme.colors.onPrimary.copy(alpha = 0.8f)
                     )

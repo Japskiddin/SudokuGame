@@ -33,7 +33,7 @@ internal fun InfoPanel(
     isMistakesLimit: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val textStyle = SudokuTheme.typography.bodySmall.copy(
+    val textStyle = SudokuTheme.typography.gameInfo.copy(
         color = SudokuTheme.colors.onPrimary
     )
 

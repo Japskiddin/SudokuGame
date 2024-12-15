@@ -29,7 +29,7 @@ internal fun ResetDialog(
         ) {
             BasicText(
                 text = stringResource(id = CoreUiR.string.ask_reset_current_game),
-                style = SudokuTheme.typography.bodyMedium.copy(
+                style = SudokuTheme.typography.dialog.copy(
                     color = SudokuTheme.colors.onDialog,
                     textAlign = TextAlign.Center
                 ),

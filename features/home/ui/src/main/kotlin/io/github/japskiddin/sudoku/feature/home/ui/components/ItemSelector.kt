@@ -76,7 +76,7 @@ internal fun ItemSelector(
         ) { value: Int ->
             BasicText(
                 text = currentItem,
-                style = SudokuTheme.typography.bodyMedium.copy(
+                style = SudokuTheme.typography.dialog.copy(
                     fontWeight = FontWeight.Medium,
                     fontSize = textSize,
                     textAlign = TextAlign.Center,

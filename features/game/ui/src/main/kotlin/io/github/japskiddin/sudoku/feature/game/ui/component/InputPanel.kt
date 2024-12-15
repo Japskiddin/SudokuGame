@@ -142,7 +142,7 @@ private fun InputButton(
 
         BasicText(
             text = value.toString(),
-            style = SudokuTheme.typography.labelMedium.copy(
+            style = SudokuTheme.typography.gameButton.copy(
                 fontSize = valueTextSize,
                 color = color
             ),
@@ -153,7 +153,7 @@ private fun InputButton(
             Spacer(modifier = Modifier.height(6.dp))
             BasicText(
                 text = counter.toString(),
-                style = SudokuTheme.typography.labelMedium.copy(
+                style = SudokuTheme.typography.gameButton.copy(
                     fontSize = counterTextSize,
                     fontWeight = FontWeight.Normal,
                     color = color
