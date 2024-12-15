@@ -272,7 +272,7 @@ private fun Error(
         ) {
             BasicText(
                 text = message,
-                style = SudokuTheme.typography.bodyPanel.copy(
+                style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
                 ),
@@ -306,7 +306,7 @@ private fun Fail(
         ) {
             BasicText(
                 text = "",
-                style = SudokuTheme.typography.bodyPanel.copy(
+                style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
                 ),
@@ -339,7 +339,7 @@ private fun Complete(
         ) {
             BasicText(
                 text = stringResource(id = CoreUiR.string.game_completed),
-                style = SudokuTheme.typography.bodyPanel.copy(
+                style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
                 ),

@@ -339,7 +339,7 @@ private fun Error(
         ) {
             BasicText(
                 text = stringResource(id = errorCode.toStringRes()),
-                style = SudokuTheme.typography.bodyPanel.copy(
+                style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
                 ),

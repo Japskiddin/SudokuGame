@@ -74,7 +74,7 @@ private fun LoadingContent(
         ) {
             BasicText(
                 text = text,
-                style = SudokuTheme.typography.bodyPanel.copy(
+                style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
                 ),
