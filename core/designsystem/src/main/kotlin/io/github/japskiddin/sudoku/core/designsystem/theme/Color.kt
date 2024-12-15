@@ -173,11 +173,11 @@ internal val ThemeColors: Colors = Colors(
     boardCellSelected = DenimBlue,
     boardNumberNormal = Color.Black,
     boardNumberSelected = Color.White,
-    switchUncheckedThumb = DenimBlue,
+    switchUncheckedThumb = Rope,
     switchUncheckedTrack = Color.White,
     switchCheckedThumb = Color.White,
-    switchCheckedTrack = DenimBlue,
-    switchBorder = Elephant,
+    switchCheckedTrack = Rope,
+    switchBorder = Color.Black,
 )
 
 internal val LocalColors = staticCompositionLocalOf { ThemeColors }
