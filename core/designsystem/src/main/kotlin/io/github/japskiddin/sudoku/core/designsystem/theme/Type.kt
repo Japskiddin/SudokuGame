@@ -20,7 +20,7 @@ public data class Typography(
         fontWeight = FontWeight.Black,
         fontSize = 24.sp
     ),
-    val infoPanel: TextStyle = TextStyle(
+    val info: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Black,
         fontSize = 14.sp

@@ -201,13 +201,13 @@ private fun Menu(
             val versionName: String = LocalContext.current.getPackageInfo().versionName.toString()
             OutlineText(
                 text = versionName,
-                textStyle = SudokuTheme.typography.infoPanel,
+                textStyle = SudokuTheme.typography.info,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
             OutlineText(
                 text = currentYear,
-                textStyle = SudokuTheme.typography.infoPanel,
+                textStyle = SudokuTheme.typography.info,
                 fillColor = Color.White,
                 outlineColor = Color.Black
             )
