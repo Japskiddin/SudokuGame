@@ -669,7 +669,7 @@ private fun DrawScope.drawNumbers(
 
                     val textToDraw = if (isQuestions) "?" else number.value.toString(Radix).uppercase()
                     val textBounds = android.graphics.Rect()
-                    numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
+                    paint.getTextBounds(textToDraw, 0, 1, textBounds)
                     val textWidth = paint.measureText(textToDraw)
                     val textPosX = number.col * cellSize + (cellSize - textWidth) / 2f
                     val textPosY = number.row * cellSize + (cellSize + textBounds.height()) / 2f
