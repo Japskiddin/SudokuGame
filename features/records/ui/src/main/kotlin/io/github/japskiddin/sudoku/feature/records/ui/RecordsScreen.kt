@@ -1,23 +1,27 @@
 package io.github.japskiddin.sudoku.feature.records.ui
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -26,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameStatus
@@ -34,6 +39,7 @@ import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.records.ui.logic.RecordUI
 import io.github.japskiddin.sudoku.feature.records.ui.logic.RecordsViewModel
+import io.github.japskiddin.sudoku.feature.records.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.records.ui.utils.toFormattedDate
 import io.github.japskiddin.sudoku.feature.records.ui.utils.toFormattedString
 import kotlinx.collections.immutable.ImmutableList
@@ -47,11 +53,22 @@ public fun RecordsScreen() {
 
 @Composable
 private fun RecordsScreen(viewModel: RecordsViewModel) {
+    BackHandler {
+        viewModel.onAction(UiAction.Back)
+    }
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    RecordsContent(
+        records = uiState.records,
+        onBack = { viewModel.onAction(UiAction.Back) }
+    )
 }
 
 @Composable
 private fun RecordsContent(
     records: ImmutableList<RecordUI>,
+    onBack: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -65,9 +82,9 @@ private fun RecordsContent(
                 .statusBarsPadding()
                 .displayCutoutPadding()
                 .padding(12.dp),
-            onBack = { },
+            onBack = onBack,
         )
-
+        Spacer(modifier = Modifier.height(6.dp))
         RecordList(
             records = records,
             modifier = Modifier.fillMaxWidth(),
@@ -81,24 +98,32 @@ private fun RecordList(
     modifier: Modifier = Modifier,
 ) {
     val orientation = LocalConfiguration.current.orientation
-    val insetsModifier = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        Modifier
-            .navigationBarsPadding()
-            .displayCutoutPadding()
-    } else {
-        Modifier.navigationBarsPadding()
-    }
     LazyColumn(
-        modifier = modifier
-            .then(insetsModifier)
-            .padding(12.dp),
+        modifier = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            modifier.displayCutoutPadding()
+        } else {
+            modifier
+        },
     ) {
         items(
             items = records,
             key = { it.uid },
         ) { record ->
             RecordItem(
-                item = record
+                item = record,
+                modifier = Modifier.padding(
+                    start = 24.dp,
+                    end = 24.dp,
+                    top = 6.dp,
+                    bottom = 6.dp
+                ),
+            )
+        }
+        item {
+            Spacer(
+                Modifier.windowInsetsBottomHeight(
+                    WindowInsets.systemBars
+                )
             )
         }
     }
