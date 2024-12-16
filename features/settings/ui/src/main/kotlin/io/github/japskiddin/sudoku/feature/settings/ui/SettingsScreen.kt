@@ -1,28 +1,24 @@
 package io.github.japskiddin.sudoku.feature.settings.ui
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.component.HorizontalDivider
-import io.github.japskiddin.sudoku.core.ui.component.OutlineText
 import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiAction
@@ -104,20 +100,32 @@ private fun SettingsContent(
         modifier = Modifier
             .fillMaxSize()
             .background(SudokuTheme.colors.primary)
-            .safeDrawingPadding()
-            .padding(12.dp)
     ) {
-        Title(
-            modifier = Modifier.fillMaxWidth(),
+        AppBar(
+            title = stringResource(id = CoreUiR.string.settings),
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .displayCutoutPadding()
+                .padding(12.dp),
             onBack = onBack,
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
         val scrollState = rememberScrollState()
+        val orientation = LocalConfiguration.current.orientation
+        val insetsModifier = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Modifier
+                .navigationBarsPadding()
+                .displayCutoutPadding()
+        } else {
+            Modifier.navigationBarsPadding()
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
+                .then(insetsModifier)
+                .padding(12.dp)
         ) {
             SectionGeneral(
                 isKeepScreenOn = state.isKeepScreenOn,
@@ -234,36 +242,6 @@ private fun SectionGame(
         onCheckedChange = onUpdateHighlightSelectedCell,
         checked = isHighlightSelectedCell
     )
-}
-
-@Composable
-private fun Title(
-    modifier: Modifier = Modifier,
-    onBack: () -> Unit,
-) {
-    Row(
-        modifier = modifier.padding(
-            start = 12.dp,
-            end = 12.dp
-        ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        OutlineText(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 40.dp, end = 4.dp),
-            text = stringResource(id = CoreUiR.string.settings),
-            textStyle = SudokuTheme.typography.appBar
-        )
-        Image(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(36.dp)
-                .clickable { onBack() },
-            painter = painterResource(id = CoreUiR.drawable.ic_close),
-            contentDescription = stringResource(id = CoreUiR.string.close)
-        )
-    }
 }
 
 @Composable
