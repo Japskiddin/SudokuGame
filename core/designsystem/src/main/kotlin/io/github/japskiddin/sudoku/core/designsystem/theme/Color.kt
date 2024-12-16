@@ -55,6 +55,8 @@ public class Colors(
     switchBorder: Color,
     gamePanelNormal: Color,
     gamePanelPressed: Color,
+    card: Color,
+    onCard: Color,
 ) {
     public var primary: Color by mutableStateOf(primary)
         private set
@@ -100,6 +102,10 @@ public class Colors(
         private set
     public var gamePanelPressed: Color by mutableStateOf(gamePanelPressed)
         private set
+    public var card: Color by mutableStateOf(card)
+        private set
+    public var onCard: Color by mutableStateOf(onCard)
+        private set
 
     public fun copy(
         primary: Color = this.primary,
@@ -124,6 +130,8 @@ public class Colors(
         switchBorder: Color = this.switchBorder,
         gamePanelNormal: Color = this.gamePanelNormal,
         gamePanelPressed: Color = this.gamePanelPressed,
+        card: Color = this.card,
+        onCard: Color = this.onCard,
     ): Colors = Colors(
         primary = primary,
         onPrimary = onPrimary,
@@ -147,6 +155,8 @@ public class Colors(
         switchBorder = switchBorder,
         gamePanelNormal = gamePanelNormal,
         gamePanelPressed = gamePanelPressed,
+        card = card,
+        onCard = onCard,
     )
 
     public fun updateColorsFrom(other: Colors) {
@@ -172,6 +182,8 @@ public class Colors(
         switchBorder = other.switchBorder
         gamePanelNormal = other.gamePanelNormal
         gamePanelPressed = other.gamePanelPressed
+        card = other.card
+        onCard = other.onCard
     }
 }
 
@@ -198,6 +210,8 @@ internal val ThemeColors: Colors = Colors(
     switchBorder = Color.Black,
     gamePanelNormal = Color.White,
     gamePanelPressed = Rope,
+    card = Color.White,
+    onCard = Color.Black,
 )
 
 internal val LocalColors = staticCompositionLocalOf { ThemeColors }

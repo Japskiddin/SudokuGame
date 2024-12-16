@@ -50,4 +50,12 @@
     <string name="keep_screen_on_desc">The screen will not turn off during the game</string>
     <string name="save_last_game_mode">Save game mode</string>
     <string name="save_last_game_mode_desc">Save the last selected game difficulty and type</string>
+    <string name="status">Status: %s</string>
+    <string name="completed">Completed</string>
+    <string name="failed">Failed</string>
+    <string name="in_progress">In progress</string>
+    <string name="started_at">Started at: %s</string>
+    <string name="finished_at">Finished at: %s</string>
+    <string name="last_played">Last played: %s</string>
+    <string name="play_time">Play time: %s</string>
 </resources>

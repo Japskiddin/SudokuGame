@@ -16,11 +16,8 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
-import java.util.*
+import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
-
-private const val SecondsInHour = 3600
-private const val SecondsInMinute = 60
 
 @Composable
 internal fun InfoPanel(
@@ -51,7 +48,7 @@ internal fun InfoPanel(
             if (isShowTimer) {
                 Spacer(modifier = Modifier.height(6.dp))
                 BasicText(
-                    text = time.formatToTime(),
+                    text = time.toFormattedTime(),
                     style = textStyle
                 )
             }
@@ -77,18 +74,6 @@ internal fun InfoPanel(
                 )
             }
         }
-    }
-}
-
-private fun Long.formatToTime(): String {
-    val hours = this / SecondsInHour
-    val minutes = this % SecondsInHour / SecondsInMinute
-    val seconds = this % SecondsInMinute
-
-    return if (hours > 0) {
-        "%02d:%02d:%02d".format(Locale.getDefault(), hours, minutes, seconds)
-    } else {
-        "%02d:%02d".format(Locale.getDefault(), minutes, seconds)
     }
 }
 
