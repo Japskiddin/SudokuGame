@@ -191,7 +191,7 @@ private fun RecordItem(
         ) {
             GamePreview(
                 board = item.board,
-                modifier = Modifier.size(120.dp),
+                modifier = Modifier.size(130.dp),
                 outerCornerRadius = 6.dp,
                 numberTextSize = 8.sp,
             )
