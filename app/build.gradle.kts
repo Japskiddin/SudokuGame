@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.app.android.compose)
     alias(libs.plugins.app.hilt)
     alias(libs.plugins.app.detekt)
+    alias(libs.plugins.app.test)
 }
 
 android {
@@ -16,10 +17,10 @@ android {
         versionCode = libs.versions.appVersion.code.get().toInt()
         versionName = libs.versions.appVersion.name.get()
         setProperty("archivesBaseName", "sudoku-$versionName-$versionCode")
-        resourceConfigurations += setOf("ru", "en")
+        resourceConfigurations += listOf("ru", "en")
         ndk {
             //noinspection ChromeOsAbiSupport
-            abiFilters += setOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
         }
     }
 
