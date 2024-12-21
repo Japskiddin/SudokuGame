@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.japskiddin.sudoku.database.SudokuDatabase
 import io.github.japskiddin.sudoku.database.dao.BoardDao
-import io.github.japskiddin.sudoku.database.dao.RecordDao
+import io.github.japskiddin.sudoku.database.dao.HistoryDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import javax.inject.Singleton
 
@@ -22,9 +22,9 @@ object DatabaseModule {
     ): SudokuDatabase = SudokuDatabase(context)
 
     @Provides
-    fun provideRecordDao(
+    fun provideHistoryDao(
         sudokuDatabase: SudokuDatabase
-    ): RecordDao = sudokuDatabase.recordDao
+    ): HistoryDao = sudokuDatabase.historyDao
 
     @Provides
     fun provideBoardDao(

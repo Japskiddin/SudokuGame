@@ -2,10 +2,10 @@
     "formatVersion": 1,
     "database": {
         "version": 1,
-        "identityHash": "fbe6bc4358a7679f7aafd13314fc4b7e",
+        "identityHash": "7ff8fe7a761a8f1319b9f84919a4bc83",
         "entities": [
             {
-                "tableName": "record",
+                "tableName": "history",
                 "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `time` INTEGER NOT NULL, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
                 "fields": [
                     {
@@ -183,7 +183,7 @@
         "views": [],
         "setupQueries": [
             "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fbe6bc4358a7679f7aafd13314fc4b7e')"
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ff8fe7a761a8f1319b9f84919a4bc83')"
         ]
     }
 }

@@ -3,7 +3,7 @@
     <string name="app_name">Судоку</string>
     <string name="start_game">Начать игру</string>
     <string name="settings">Настройки</string>
-    <string name="records">Рекорды</string>
+    <string name="history">История</string>
     <string name="continue_game">Продолжить</string>
     <string name="preparing_game_please_wait">Подготовка игры. Пожалуйста, подождите…</string>
     <string name="err_generate_sudoku">Не удалось создать игру. Пожалуйста, попробуйте ещё раз.</string>

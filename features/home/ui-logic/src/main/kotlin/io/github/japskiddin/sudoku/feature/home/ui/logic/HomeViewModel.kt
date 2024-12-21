@@ -80,7 +80,7 @@ internal constructor(
         when (action) {
             is UiAction.ContinueGame -> continueCurrentGame()
             is UiAction.ShowSettings -> showSettings()
-            is UiAction.ShowRecords -> showRecords()
+            is UiAction.ShowHistory -> showHistory()
             is UiAction.PrepareNewGame -> prepareNewGame(action.mode)
             is UiAction.CloseError -> closeError()
         }
@@ -100,8 +100,8 @@ internal constructor(
         appNavigator.tryNavigateTo(Destination.Settings())
     }
 
-    private fun showRecords() {
-        appNavigator.tryNavigateTo(Destination.Records())
+    private fun showHistory() {
+        appNavigator.tryNavigateTo(Destination.History())
     }
 
     private fun closeError() {

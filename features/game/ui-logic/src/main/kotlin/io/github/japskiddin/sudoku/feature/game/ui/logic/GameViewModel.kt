@@ -20,7 +20,7 @@ import io.github.japskiddin.sudoku.core.model.convertToList
 import io.github.japskiddin.sudoku.core.model.convertToString
 import io.github.japskiddin.sudoku.core.model.initiate
 import io.github.japskiddin.sudoku.core.model.isEmpty
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToRecordsUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToHistoryUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightErrorCellsPreferenceUseCase
@@ -67,7 +67,7 @@ internal constructor(
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
     private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>,
-    private val addToRecordsUseCase: Provider<AddToRecordsUseCase>,
+    private val addToHistoryUseCase: Provider<AddToHistoryUseCase>,
     getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
     getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>,
     getResetTimerPreferenceUseCase: Provider<GetResetTimerPreferenceUseCase>,
@@ -353,7 +353,7 @@ internal constructor(
         if (state.mistakes >= state.difficulty.mistakesLimit) {
             gameState.update { it.copy(status = GameState.Status.FAILED) }
             stopTimer()
-            addToRecords(GameStatus.FAILED)
+            addToHistory(GameStatus.FAILED)
         }
     }
 
@@ -363,7 +363,7 @@ internal constructor(
         if (isCompleted) {
             gameState.update { it.copy(status = GameState.Status.COMPLETED) }
             stopTimer()
-            addToRecords(GameStatus.COMPLETED)
+            addToHistory(GameStatus.COMPLETED)
         }
     }
 
@@ -388,10 +388,10 @@ internal constructor(
         saveGame()
     }
 
-    private fun addToRecords(status: GameStatus) {
+    private fun addToHistory(status: GameStatus) {
         val state = gameState.value
         viewModelScope.launch {
-            addToRecordsUseCase.get().invoke(
+            addToHistoryUseCase.get().invoke(
                 uid = boardUid,
                 board = state.board.convertToString(),
                 notes = state.notes.convertToString(),

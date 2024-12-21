@@ -8,8 +8,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.feature.game.ui.GameScreen
+import io.github.japskiddin.sudoku.feature.history.ui.HistoryScreen
 import io.github.japskiddin.sudoku.feature.home.ui.HomeScreen
-import io.github.japskiddin.sudoku.feature.records.ui.RecordsScreen
 import io.github.japskiddin.sudoku.feature.settings.ui.SettingsScreen
 import io.github.japskiddin.sudoku.game.ui.navigation.NavHost
 import io.github.japskiddin.sudoku.game.ui.navigation.NavigationEffect
@@ -45,8 +45,8 @@ private fun MainScreen(viewModel: MainViewModel) {
                 composable(destination = Destination.Settings) {
                     SettingsScreen()
                 }
-                composable(destination = Destination.Records) {
-                    RecordsScreen()
+                composable(destination = Destination.History) {
+                    HistoryScreen()
                 }
             }
         }

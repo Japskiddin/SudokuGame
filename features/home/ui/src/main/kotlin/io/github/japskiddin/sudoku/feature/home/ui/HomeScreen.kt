@@ -66,7 +66,7 @@ private fun HomeScreen(viewModel: HomeViewModel) {
         currentYear = viewModel.currentYear,
         onContinueButtonClick = { viewModel.onAction(UiAction.ContinueGame) },
         onSettingsButtonClick = { viewModel.onAction(UiAction.ShowSettings) },
-        onRecordsButtonClick = { viewModel.onAction(UiAction.ShowRecords) },
+        onHistoryButtonClick = { viewModel.onAction(UiAction.ShowHistory) },
         onPrepareGame = { mode ->
             viewModel.onAction(
                 UiAction.PrepareNewGame(mode)
@@ -82,7 +82,7 @@ private fun HomeScreenContent(
     state: UiState,
     currentYear: String,
     onContinueButtonClick: () -> Unit,
-    onRecordsButtonClick: () -> Unit,
+    onHistoryButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onPrepareGame: (GameMode) -> Unit,
     onErrorClose: () -> Unit,
@@ -97,7 +97,7 @@ private fun HomeScreenContent(
             gameMode = state.gameMode,
             onPrepareGame = onPrepareGame,
             onContinueButtonClick = onContinueButtonClick,
-            onRecordsButtonClick = onRecordsButtonClick,
+            onHistoryButtonClick = onHistoryButtonClick,
             onSettingsButtonClick = onSettingsButtonClick
         )
 
@@ -122,7 +122,7 @@ private fun Menu(
     isShowContinueButton: Boolean,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onRecordsButtonClick: () -> Unit,
+    onHistoryButtonClick: () -> Unit,
     onPrepareGame: (GameMode) -> Unit,
     modifier: Modifier = Modifier,
     screenWidthPercent: Float = .8f,
@@ -185,7 +185,7 @@ private fun Menu(
                     onStartButtonClick = onStartButtonClick,
                     onContinueButtonClick = onContinueButtonClick,
                     onSettingsButtonClick = onSettingsButtonClick,
-                    onRecordsButtonClick = onRecordsButtonClick
+                    onHistoryButtonClick = onHistoryButtonClick
                 )
             } else {
                 MenuPortrait(
@@ -194,7 +194,7 @@ private fun Menu(
                     onStartButtonClick = onStartButtonClick,
                     onContinueButtonClick = onContinueButtonClick,
                     onSettingsButtonClick = onSettingsButtonClick,
-                    onRecordsButtonClick = onRecordsButtonClick
+                    onHistoryButtonClick = onHistoryButtonClick
                 )
             }
 
@@ -221,7 +221,7 @@ private fun MenuLandscape(
     onStartButtonClick: () -> Unit,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onRecordsButtonClick: () -> Unit,
+    onHistoryButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -258,9 +258,9 @@ private fun MenuLandscape(
             ) { onSettingsButtonClick() }
             Spacer(modifier = Modifier.height(12.dp))
             GameButton(
-                icon = painterResource(id = R.drawable.ic_records),
-                text = stringResource(id = CoreUiR.string.records)
-            ) { onRecordsButtonClick() }
+                icon = painterResource(id = R.drawable.ic_history),
+                text = stringResource(id = CoreUiR.string.history)
+            ) { onHistoryButtonClick() }
         }
     }
 }
@@ -271,7 +271,7 @@ private fun MenuPortrait(
     onStartButtonClick: () -> Unit,
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
-    onRecordsButtonClick: () -> Unit,
+    onHistoryButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -304,9 +304,9 @@ private fun MenuPortrait(
         ) { onSettingsButtonClick() }
         Spacer(modifier = Modifier.height(12.dp))
         GameButton(
-            icon = painterResource(id = R.drawable.ic_records),
-            text = stringResource(id = CoreUiR.string.records)
-        ) { onRecordsButtonClick() }
+            icon = painterResource(id = R.drawable.ic_history),
+            text = stringResource(id = CoreUiR.string.history)
+        ) { onHistoryButtonClick() }
     }
 }
 
@@ -371,7 +371,7 @@ private fun HomeContentPreview(
             state = state,
             currentYear = "2024",
             onContinueButtonClick = {},
-            onRecordsButtonClick = {},
+            onHistoryButtonClick = {},
             onSettingsButtonClick = {},
             onPrepareGame = { _ -> },
             onErrorClose = {}

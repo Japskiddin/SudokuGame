@@ -1,7 +1,7 @@
 package io.github.japskiddin.sudoku.database.utils
 
 import io.github.japskiddin.sudoku.database.entities.BoardDBO
-import io.github.japskiddin.sudoku.database.entities.RecordDBO
+import io.github.japskiddin.sudoku.database.entities.HistoryDBO
 import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
 
 internal fun createDummyBoard(
@@ -28,10 +28,10 @@ internal fun createDummySavedGame(
     notes = notes,
 )
 
-internal fun createDummyRecord(
+internal fun createDummyHistory(
     uid: Long,
     time: Long = System.currentTimeMillis(),
-): RecordDBO = RecordDBO(
+): HistoryDBO = HistoryDBO(
     uid = uid,
     time = time,
 )

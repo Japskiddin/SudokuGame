@@ -146,7 +146,7 @@ dependencies {
     implementation(projects.features.settings.uiLogic)
     implementation(projects.features.settings.domain)
 
-    implementation(projects.features.records.ui)
-    implementation(projects.features.records.uiLogic)
-    implementation(projects.features.records.domain)
+    implementation(projects.features.history.ui)
+    implementation(projects.features.history.uiLogic)
+    implementation(projects.features.history.domain)
 }

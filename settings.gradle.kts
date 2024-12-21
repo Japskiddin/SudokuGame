@@ -53,7 +53,7 @@ include(
     ":features:settings:ui",
     ":features:settings:ui-logic",
     ":features:settings:domain",
-    ":features:records:ui",
-    ":features:records:ui-logic",
-    ":features:records:domain",
+    ":features:history:ui",
+    ":features:history:ui-logic",
+    ":features:history:domain",
 )

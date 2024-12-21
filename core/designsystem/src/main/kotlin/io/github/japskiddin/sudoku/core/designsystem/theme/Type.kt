@@ -51,7 +51,7 @@ public data class Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp
     ),
-    val record: TextStyle = TextStyle(
+    val history: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp

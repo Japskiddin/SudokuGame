@@ -1,14 +1,14 @@
 package io.github.japskiddin.sudoku.data.utils
 
-import io.github.japskiddin.sudoku.core.model.Record
-import io.github.japskiddin.sudoku.database.entities.RecordDBO
+import io.github.japskiddin.sudoku.core.model.History
+import io.github.japskiddin.sudoku.database.entities.HistoryDBO
 
-internal fun Record.toRecordDBO() = RecordDBO(
+internal fun History.toHistoryDBO() = HistoryDBO(
     uid = this.uid,
     time = this.time,
 )
 
-internal fun RecordDBO.toRecord() = Record(
+internal fun HistoryDBO.toHistory() = History(
     uid = this.uid,
     time = this.time,
 )

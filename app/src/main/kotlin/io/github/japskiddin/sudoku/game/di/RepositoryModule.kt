@@ -6,22 +6,22 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import io.github.japskiddin.sudoku.core.domain.BoardDataSource
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
-import io.github.japskiddin.sudoku.core.domain.RecordDataSource
-import io.github.japskiddin.sudoku.core.domain.RecordRepository
+import io.github.japskiddin.sudoku.core.domain.HistoryDataSource
+import io.github.japskiddin.sudoku.core.domain.HistoryRepository
 import io.github.japskiddin.sudoku.core.domain.SavedGameDataSource
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.domain.SettingsDataSource
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.data.BoardDataSourceImpl
 import io.github.japskiddin.sudoku.data.BoardRepositoryImpl
-import io.github.japskiddin.sudoku.data.RecordDataSourceImpl
-import io.github.japskiddin.sudoku.data.RecordRepositoryImpl
+import io.github.japskiddin.sudoku.data.HistoryDataSourceImpl
+import io.github.japskiddin.sudoku.data.HistoryRepositoryImpl
 import io.github.japskiddin.sudoku.data.SavedGameDataSourceImpl
 import io.github.japskiddin.sudoku.data.SavedGameRepositoryImpl
 import io.github.japskiddin.sudoku.data.SettingsDataSourceImpl
 import io.github.japskiddin.sudoku.data.SettingsRepositoryImpl
 import io.github.japskiddin.sudoku.database.dao.BoardDao
-import io.github.japskiddin.sudoku.database.dao.RecordDao
+import io.github.japskiddin.sudoku.database.dao.HistoryDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 
@@ -29,9 +29,9 @@ import io.github.japskiddin.sudoku.datastore.SettingsDatastore
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
     @Provides
-    fun provideRecordDataSource(
-        recordDao: RecordDao
-    ): RecordDataSource = RecordDataSourceImpl(recordDao)
+    fun provideHistoryDataSource(
+        historyDao: HistoryDao
+    ): HistoryDataSource = HistoryDataSourceImpl(historyDao)
 
     @Provides
     fun provideBoardDataSource(
@@ -49,9 +49,9 @@ object RepositoryModule {
     ): SettingsDataSource = SettingsDataSourceImpl(datastore)
 
     @Provides
-    fun provideRecordRepository(
-        recordDataSource: RecordDataSource
-    ): RecordRepository = RecordRepositoryImpl(recordDataSource)
+    fun provideHistoryRepository(
+        historyDataSource: HistoryDataSource
+    ): HistoryRepository = HistoryRepositoryImpl(historyDataSource)
 
     @Provides
     fun provideBoardRepository(
