@@ -17,5 +17,4 @@ android {
 
 dependencies {
     implementation(projects.features.game.domain)
-    implementation(projects.core.game)
 }

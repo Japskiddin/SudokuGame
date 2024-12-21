@@ -9,3 +9,7 @@ plugins {
 kotlin {
     explicitApi = ExplicitApiMode.Strict
 }
+
+dependencies {
+    api(projects.core.game)
+}

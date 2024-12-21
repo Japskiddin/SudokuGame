@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.records.ui.logic
 
+import io.github.japskiddin.sudoku.core.model.BoardImmutableList
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
@@ -7,7 +8,7 @@ import io.github.japskiddin.sudoku.core.model.GameType
 public data class RecordUI(
     val uid: Long,
     val time: Long,
-    val board: String,
+    val board: BoardImmutableList,
     val difficulty: GameDifficulty,
     val type: GameType,
     val actions: Int,

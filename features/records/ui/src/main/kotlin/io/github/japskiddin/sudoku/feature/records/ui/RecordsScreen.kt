@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -29,14 +30,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
+import io.github.japskiddin.sudoku.feature.records.ui.components.GamePreview
 import io.github.japskiddin.sudoku.feature.records.ui.logic.RecordUI
 import io.github.japskiddin.sudoku.feature.records.ui.logic.RecordsViewModel
 import io.github.japskiddin.sudoku.feature.records.ui.logic.UiAction
@@ -44,6 +49,7 @@ import io.github.japskiddin.sudoku.feature.records.ui.utils.toFormattedDate
 import io.github.japskiddin.sudoku.feature.records.ui.utils.toFormattedString
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.random.Random
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
@@ -138,7 +144,7 @@ private fun RecordItem(
         color = SudokuTheme.colors.onCard,
     )
 
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
@@ -147,69 +153,77 @@ private fun RecordItem(
             )
             .padding(12.dp)
     ) {
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(
-            modifier = Modifier.weight(1f)
+        BasicText(
+            text = item.time.toFormattedDate(),
+            style = textStyle.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        BasicText(
+            text = stringResource(
+                id = CoreUiR.string.status,
+                item.status.toFormattedString(),
+            ),
+            style = textStyle,
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        BasicText(
+            text = stringResource(
+                id = CoreUiR.string.started_at,
+                item.startedAt.toFormattedDate(),
+            ),
+            style = textStyle,
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        BasicText(
+            text = stringResource(
+                id = CoreUiR.string.finished_at,
+                item.finishedAt.toFormattedDate(),
+            ),
+            style = textStyle,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            BasicText(
-                text = item.time.toFormattedDate(),
-                style = textStyle.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
+            GamePreview(
+                board = item.board,
+                modifier = Modifier.weight(1f),
+                isDrawBoardFrame = true,
+                outerCornerRadius = 6.dp,
+                numberTextSize = 8.sp,
             )
-            Spacer(modifier = Modifier.height(6.dp))
-            BasicText(
-                text = stringResource(
-                    id = CoreUiR.string.status,
-                    item.status.toFormattedString(),
-                ),
-                style = textStyle,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            BasicText(
-                text = stringResource(
-                    id = CoreUiR.string.started_at,
-                    item.startedAt.toFormattedDate(),
-                ),
-                style = textStyle,
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            BasicText(
-                text = stringResource(
-                    id = CoreUiR.string.finished_at,
-                    item.finishedAt.toFormattedDate(),
-                ),
-                style = textStyle,
-            )
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            BasicText(
-                text = stringResource(
-                    id = CoreUiR.string.play_time,
-                    item.playTime.toFormattedTime(),
-                ),
-                style = textStyle,
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            BasicText(
-                text = stringResource(
-                    id = CoreUiR.string.current_actions,
-                    item.actions,
-                ),
-                style = textStyle,
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            BasicText(
-                text = stringResource(
-                    id = CoreUiR.string.current_mistakes,
-                    item.mistakes,
-                    item.difficulty.mistakesLimit
-                ),
-                style = textStyle,
-            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                BasicText(
+                    text = stringResource(
+                        id = CoreUiR.string.play_time,
+                        item.playTime.toFormattedTime(),
+                    ),
+                    style = textStyle,
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                BasicText(
+                    text = stringResource(
+                        id = CoreUiR.string.current_actions,
+                        item.actions,
+                    ),
+                    style = textStyle,
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                BasicText(
+                    text = stringResource(
+                        id = CoreUiR.string.current_mistakes,
+                        item.mistakes,
+                        item.difficulty.mistakesLimit
+                    ),
+                    style = textStyle,
+                )
+            }
         }
     }
 }
@@ -229,7 +243,11 @@ private fun RecordsContentPreview() {
         RecordUI(
             uid = 1L,
             time = 1000221L,
-            board = "",
+            board = List(9) { row ->
+                List(9) { col ->
+                    BoardCell(row, col, Random.nextInt(9))
+                }
+            }.toImmutable(),
             difficulty = GameDifficulty.INTERMEDIATE,
             type = GameType.DEFAULT9X9,
             actions = 1,
