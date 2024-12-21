@@ -31,15 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
-import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.history.ui.components.GamePreview
@@ -51,7 +48,6 @@ import io.github.japskiddin.sudoku.feature.history.ui.utils.toFormattedDate
 import io.github.japskiddin.sudoku.feature.history.ui.utils.toFormattedString
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlin.random.Random
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
@@ -192,9 +188,8 @@ private fun HistoryItem(
         ) {
             GamePreview(
                 board = item.board,
+                size = item.type.size,
                 modifier = Modifier.size(130.dp),
-                outerCornerRadius = 6.dp,
-                numberTextSize = 8.sp,
             )
             Spacer(modifier = Modifier.width(6.dp))
             Column(
@@ -244,11 +239,7 @@ private fun HistoryContentPreview() {
         HistoryUI(
             uid = 1L,
             time = 1000221L,
-            board = List(9) { row ->
-                List(9) { col ->
-                    BoardCell(row, col, Random.nextInt(9))
-                }
-            }.toImmutable(),
+            board = "",
             difficulty = GameDifficulty.INTERMEDIATE,
             type = GameType.DEFAULT9X9,
             actions = 1,
