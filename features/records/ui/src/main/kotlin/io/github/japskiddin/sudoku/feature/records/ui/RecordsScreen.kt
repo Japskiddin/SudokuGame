@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
@@ -190,8 +191,7 @@ private fun RecordItem(
         ) {
             GamePreview(
                 board = item.board,
-                modifier = Modifier.weight(1f),
-                isDrawBoardFrame = true,
+                modifier = Modifier.size(120.dp),
                 outerCornerRadius = 6.dp,
                 numberTextSize = 8.sp,
             )

@@ -57,15 +57,14 @@ internal fun GamePreview(
     board: BoardImmutableList,
     modifier: Modifier = Modifier,
     outerCornerRadius: Dp = 6.dp,
-    outerStrokeWidth: Dp = 1.dp,
-    innerStrokeWidth: Dp = 0.8.dp,
+    outerStrokeWidth: Dp = 0.8.dp,
+    innerStrokeWidth: Dp = 0.5.dp,
     numberTextSize: TextUnit = when (board.size) {
-        GameType.DEFAULT6X6.size -> 32.sp
-        GameType.DEFAULT9X9.size -> 26.sp
-        GameType.DEFAULT12X12.size -> 24.sp
-        else -> 14.sp
+        GameType.DEFAULT6X6.size -> 16.sp
+        GameType.DEFAULT9X9.size -> 11.sp
+        GameType.DEFAULT12X12.size -> 9.sp
+        else -> 22.sp
     },
-    isDrawBoardFrame: Boolean = false,
     numberColor: Color = SudokuTheme.colors.boardNumberNormal,
     cellColor: Color = SudokuTheme.colors.boardCellNormal,
     outerStrokeColor: Color = Color.Black,
@@ -145,14 +144,12 @@ internal fun GamePreview(
                 }
             }
 
-            if (isDrawBoardFrame) {
-                drawBoardFrame(
-                    outerStrokeColor = outerStrokeColor,
-                    outerStrokeWidth = outerStrokeWidthPx,
-                    maxWidth = maxWidth,
-                    cornerRadius = cornerRadius
-                )
-            }
+            drawBoardFrame(
+                outerStrokeColor = outerStrokeColor,
+                outerStrokeWidth = outerStrokeWidthPx,
+                maxWidth = maxWidth,
+                cornerRadius = cornerRadius
+            )
 
             drawHorizontalLines(
                 boardSize = boardSize,
