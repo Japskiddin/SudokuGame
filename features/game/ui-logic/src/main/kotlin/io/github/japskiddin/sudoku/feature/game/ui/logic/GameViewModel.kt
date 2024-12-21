@@ -7,17 +7,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
-import io.github.japskiddin.sudoku.core.game.utils.convertToList
-import io.github.japskiddin.sudoku.core.game.utils.convertToString
-import io.github.japskiddin.sudoku.core.game.utils.initiate
 import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
 import io.github.japskiddin.sudoku.core.game.utils.isValidCellDynamic
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
+import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
+import io.github.japskiddin.sudoku.core.model.convertToList
+import io.github.japskiddin.sudoku.core.model.convertToString
+import io.github.japskiddin.sudoku.core.model.initiate
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToRecordsUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
@@ -184,8 +185,11 @@ internal constructor(
             val boardDifficulty = boardEntity.difficulty
             val board = boardEntity.board
 
-            val initialBoard = board.convertToList(boardType)
-            initialBoard.initiate()
+            val initialBoard: BoardList = board
+                .convertToList(boardType)
+                .apply {
+                    initiate()
+                }
 
             val solvedBoard = if (boardEntity.solvedBoard.isSudokuFilled()) {
                 boardEntity.solvedBoard.convertToList(boardType)

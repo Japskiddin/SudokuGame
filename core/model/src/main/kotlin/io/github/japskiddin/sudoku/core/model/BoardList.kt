@@ -1,13 +1,21 @@
-package io.github.japskiddin.sudoku.core.game.utils
+package io.github.japskiddin.sudoku.core.model
 
 import io.github.japskiddin.sudoku.core.common.BoardParseException
-import io.github.japskiddin.sudoku.core.model.BoardCell
-import io.github.japskiddin.sudoku.core.model.BoardList
-import io.github.japskiddin.sudoku.core.model.BoardNote
-import io.github.japskiddin.sudoku.core.model.GameType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 private const val RADIX: Int = 13
 private val defaultSeparators = listOf('0', '.')
+
+public typealias BoardImmutableList = ImmutableList<ImmutableList<BoardCell>>
+
+public typealias BoardList = List<List<BoardCell>>
+
+public val emptyBoardList: BoardList = List(9) { List(9) { BoardCell.Empty } }
+
+public fun BoardList.toImmutable(): BoardImmutableList = map { item -> item.toImmutableList() }.toImmutableList()
+
+public fun BoardImmutableList.toList(): BoardList = map { item -> item.toList() }.toList()
 
 public fun BoardList.initiate() {
     forEach { cells ->
@@ -72,50 +80,6 @@ public fun BoardList.convertToString(
                 }
             )
         }
-    }
-    return sb.toString()
-}
-
-public fun IntArray.convertToString(
-    emptySeparator: Char = '0'
-): String {
-    val sb = StringBuilder()
-    forEach {
-        sb.append(
-            if (it != 0) {
-                it.toString(RADIX)
-            } else {
-                emptySeparator
-            }
-        )
-    }
-    return sb.toString()
-}
-
-@Suppress("MagicNumber")
-public fun String.convertToList(): List<BoardNote> {
-    val boardNotes = mutableListOf<BoardNote>()
-    var i = 0
-    while (i < length) {
-        val index = indexOf(';', i)
-        val toParse = substring(i..index)
-        val row = boardDigitToInt(toParse[0])
-        val col = boardDigitToInt(toParse[2])
-        val value = boardDigitToInt(toParse[4])
-        boardNotes.add(BoardNote(row, col, value))
-        i += index - i + 1
-    }
-    return boardNotes.toList()
-}
-
-public fun List<BoardNote>.convertToString(): String {
-    val sb = StringBuilder()
-    // row,col,number;row,col,number....row,col,number;
-    // e.g 0,3,1;0,3,5;7,7,5;
-    forEach {
-        sb.append(
-            "${it.row.toString(RADIX)},${it.col.toString(RADIX)},${it.value.toString(RADIX)};"
-        )
     }
     return sb.toString()
 }

@@ -2,10 +2,10 @@ package io.github.japskiddin.sudoku.feature.home.domain.usecase
 
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
-import io.github.japskiddin.sudoku.core.game.utils.convertToString
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameMode
+import io.github.japskiddin.sudoku.core.model.convertToString
 import javax.inject.Inject
 
 public class GenerateSudokuUseCase @Inject constructor() {

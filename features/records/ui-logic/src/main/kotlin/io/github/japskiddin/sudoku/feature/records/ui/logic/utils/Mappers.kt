@@ -1,6 +1,6 @@
 package io.github.japskiddin.sudoku.feature.records.ui.logic.utils
 
-import io.github.japskiddin.sudoku.core.game.utils.convertToList
+import io.github.japskiddin.sudoku.core.model.convertToList
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.feature.records.domain.usecase.CombinedRecord
 import io.github.japskiddin.sudoku.feature.records.ui.logic.RecordUI
