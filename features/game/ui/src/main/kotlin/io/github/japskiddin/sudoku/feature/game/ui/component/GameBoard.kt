@@ -63,6 +63,8 @@ private const val MinZoomRange = 1f
 private const val MaxZoomRange = 3f
 private const val Radix = 16
 
+// TODO: добавить ImmutableBoardList
+
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun GameBoard(
@@ -408,8 +410,8 @@ internal fun GameBoard(
             )
 
             drawNumbers(
-                boardSize = boardSize,
                 board = board,
+                boardSize = boardSize,
                 isErrorsHighlight = isErrorsHighlight,
                 errorNumberPaint = errorNumberPaint,
                 lockedNumberPaint = lockedNumberPaint,
@@ -643,8 +645,8 @@ private fun DrawScope.drawRoundCellBackground(
 
 @Suppress("CyclomaticComplexMethod")
 private fun DrawScope.drawNumbers(
-    boardSize: Int,
     board: BoardList,
+    boardSize: Int,
     isErrorsHighlight: Boolean,
     errorNumberPaint: TextPaint,
     lockedNumberPaint: TextPaint,
@@ -658,21 +660,22 @@ private fun DrawScope.drawNumbers(
     drawIntoCanvas { canvas ->
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
-                val number = board[i][j]
-                if (number.value != 0) {
+                val cell = board[i][j]
+                val number = cell.value
+                if (number != 0) {
                     val paint = when {
-                        number.isError && isErrorsHighlight -> errorNumberPaint
-                        number.isSelected(selectedCell, isIdenticalNumberHighlight) -> selectedNumberPaint
-                        number.isLocked -> lockedNumberPaint
+                        cell.isError && isErrorsHighlight -> errorNumberPaint
+                        cell.isSelected(selectedCell, isIdenticalNumberHighlight) -> selectedNumberPaint
+                        cell.isLocked -> lockedNumberPaint
                         else -> numberPaint
                     }
 
-                    val textToDraw = if (isQuestions) "?" else number.value.toString(Radix).uppercase()
+                    val textToDraw = if (isQuestions) "?" else number.toString(Radix).uppercase()
                     val textBounds = android.graphics.Rect()
                     paint.getTextBounds(textToDraw, 0, 1, textBounds)
                     val textWidth = paint.measureText(textToDraw)
-                    val textPosX = number.col * cellSize + (cellSize - textWidth) / 2f
-                    val textPosY = number.row * cellSize + (cellSize + textBounds.height()) / 2f
+                    val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
+                    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
                     canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
                 }
             }
@@ -783,8 +786,12 @@ private fun GameBoardPreview() {
 
     SudokuTheme {
         GameBoard(
-            board = state.board,
-            selectedCell = state.selectedCell,
+            board = getSampleBoardForPreview(),
+            selectedCell = BoardCell(
+                row = 3,
+                col = 2,
+                value = 3
+            ),
             onSelectCell = {},
             notes = notes
         )

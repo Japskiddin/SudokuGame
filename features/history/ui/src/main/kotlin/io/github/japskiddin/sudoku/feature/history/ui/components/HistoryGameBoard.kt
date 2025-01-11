@@ -37,16 +37,22 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
+import io.github.japskiddin.sudoku.core.model.toImmutable
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
+import kotlin.random.Random
+
+private const val Radix = 16
 
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
-internal fun GamePreview(
-    board: String,
-    size: Int,
+internal fun HistoryGameBoard(
+    board: ImmutableBoardList,
+    size: Int = board.size,
     modifier: Modifier = Modifier,
     outerCornerRadius: Dp = 6.dp,
     outerStrokeWidth: Dp = 0.8.dp,
@@ -145,8 +151,8 @@ internal fun GamePreview(
             )
 
             drawNumbers(
-                size = size,
                 board = board,
+                size = size,
                 numberPaint = numberPaint,
                 cellSize = cellSizePx
             )
@@ -214,29 +220,24 @@ private fun DrawScope.drawVerticalLines(
 
 @Suppress("CyclomaticComplexMethod")
 private fun DrawScope.drawNumbers(
+    board: ImmutableBoardList,
     size: Int,
-    board: String,
     numberPaint: TextPaint,
     cellSize: Float,
 ) {
     drawIntoCanvas { canvas ->
         for (i in 0 until size) {
             for (j in 0 until size) {
-                val value = board[size * j + i]
-                if (value != '0') {
-                    val number = value.uppercase()
+                val cell = board[i][j]
+                val number = cell.value
+                if (number != 0) {
+                    val textToDraw = number.toString(Radix).uppercase()
                     val textBounds = android.graphics.Rect()
-                    numberPaint.getTextBounds(number, 0, 1, textBounds)
-                    val textWidth = numberPaint.measureText(number)
-                    val textHeight = textBounds.height()
-                    val textPosX = i * cellSize + (cellSize - textWidth) / 2f
-                    val textPosY = j * cellSize + cellSize - (cellSize - textHeight) / 2f
-                    canvas.nativeCanvas.drawText(
-                        number,
-                        textPosX,
-                        textPosY,
-                        numberPaint
-                    )
+                    numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
+                    val textWidth = numberPaint.measureText(textToDraw)
+                    val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
+                    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
+                    canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, numberPaint)
                 }
             }
         }
@@ -244,14 +245,17 @@ private fun DrawScope.drawNumbers(
 }
 
 @Preview(
-    name = "Game Board Preview",
+    name = "History Game Board Preview",
 )
 @Composable
-private fun GameBoardPreview() {
+private fun HistoryGameBoardPreview() {
     SudokuTheme {
-        GamePreview(
-            board = "0000100000040000000000000700000000000900000000680000000000000005000000000000000",
-            size = GameType.DEFAULT9X9.size,
+        HistoryGameBoard(
+            board = List(9) { row ->
+                List(9) { col ->
+                    BoardCell(row, col, Random.nextInt(9))
+                }
+            }.toImmutable(),
             modifier = Modifier
                 .background(Color.White)
                 .padding(12.dp)

@@ -16,10 +16,10 @@ import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.MistakesMethod
-import io.github.japskiddin.sudoku.core.model.convertToList
 import io.github.japskiddin.sudoku.core.model.convertToString
 import io.github.japskiddin.sudoku.core.model.initiate
 import io.github.japskiddin.sudoku.core.model.isEmpty
+import io.github.japskiddin.sudoku.core.model.toBoardList
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToHistoryUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
@@ -186,20 +186,20 @@ internal constructor(
             val board = boardEntity.board
 
             val initialBoard: BoardList = board
-                .convertToList(boardType)
+                .toBoardList(boardType)
                 .apply {
                     initiate()
                 }
 
             val solvedBoard = if (boardEntity.solvedBoard.isSudokuFilled()) {
-                boardEntity.solvedBoard.convertToList(boardType)
+                boardEntity.solvedBoard.toBoardList(boardType)
             } else {
                 solveBoardUseCase.get().invoke(board, boardType, initialBoard)
             }
 
             val savedGame = getSavedGameUseCase.get().invoke(boardUid)
             if (savedGame != null) {
-                val savedBoard = savedGame.board.convertToList(boardType)
+                val savedBoard = savedGame.board.toBoardList(boardType)
                 val restoredBoard = restoreGameUseCase.get().invoke(
                     savedBoard,
                     boardType,

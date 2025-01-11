@@ -1,8 +1,8 @@
 package io.github.japskiddin.sudoku.feature.game.ui.utils
 
 import io.github.japskiddin.sudoku.core.model.BoardCell
-import io.github.japskiddin.sudoku.core.model.BoardImmutableList
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import kotlin.random.Random
 
@@ -14,7 +14,7 @@ internal fun findGameTypeBySize(size: Int): GameType = when (size) {
     else -> throw IllegalArgumentException("Incorrect game type size: $size")
 }
 
-internal fun getSampleBoardForPreview(size: Int = 9): BoardImmutableList = List(size) { row ->
+internal fun getSampleBoardForPreview(size: Int = 9): ImmutableBoardList = List(size) { row ->
     List(size) { col ->
         BoardCell(row, col, Random.nextInt(size))
     }

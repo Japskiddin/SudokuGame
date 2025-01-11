@@ -7,15 +7,15 @@ import kotlinx.collections.immutable.toImmutableList
 private const val RADIX: Int = 13
 private val defaultSeparators = listOf('0', '.')
 
-public typealias BoardImmutableList = ImmutableList<ImmutableList<BoardCell>>
+public typealias ImmutableBoardList = ImmutableList<ImmutableList<BoardCell>>
 
 public typealias BoardList = List<List<BoardCell>>
 
 public val emptyBoardList: BoardList = List(9) { List(9) { BoardCell.Empty } }
 
-public fun BoardList.toImmutable(): BoardImmutableList = map { item -> item.toImmutableList() }.toImmutableList()
+public fun BoardList.toImmutable(): ImmutableBoardList = map { item -> item.toImmutableList() }.toImmutableList()
 
-public fun BoardImmutableList.toList(): BoardList = map { item -> item.toList() }.toList()
+public fun ImmutableBoardList.toList(): BoardList = map { item -> item.toList() }.toList()
 
 public fun BoardList.initiate() {
     forEach { cells ->
@@ -25,7 +25,7 @@ public fun BoardList.initiate() {
     }
 }
 
-public fun String.convertToList(
+public fun String.toBoardList(
     gameType: GameType,
     locked: Boolean = false,
     emptySeparator: Char? = null
