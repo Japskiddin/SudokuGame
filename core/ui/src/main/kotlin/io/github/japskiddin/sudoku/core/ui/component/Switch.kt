@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,12 +39,9 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 public fun Switch(
     checked: Boolean,
     modifier: Modifier = Modifier,
-    checkedTrackColor: Color = SudokuTheme.colors.switchCheckedTrack,
-    uncheckedTrackColor: Color = SudokuTheme.colors.switchUncheckedTrack,
-    checkThumbColor: Color = SudokuTheme.colors.switchCheckedThumb,
-    uncheckThumbColor: Color = SudokuTheme.colors.switchUncheckedThumb,
-    borderColor: Color = SudokuTheme.colors.switchBorder,
+    enabled: Boolean = true,
     borderWidth: Dp = 4.dp,
+    colors: SwitchColors = SwitchDefaults.colors(),
     onCheckedChange: (Boolean) -> Unit,
 ) {
     val thumbPosition by animateFloatAsState(
@@ -59,22 +60,9 @@ public fun Switch(
         },
         label = "thumb radius"
     )
-    val trackColor by animateColorAsState(
-        targetValue = if (checked) {
-            checkedTrackColor
-        } else {
-            uncheckedTrackColor
-        },
-        label = "track color"
-    )
-    val thumbColor by animateColorAsState(
-        targetValue = if (checked) {
-            checkThumbColor
-        } else {
-            uncheckThumbColor
-        },
-        label = "thumb color"
-    )
+    val trackColor by colors.trackColor(enabled, checked)
+    val thumbColor by colors.thumbColor(enabled, checked)
+    val borderColor by colors.borderColor(enabled)
     val interactionSource = remember { MutableInteractionSource() }
 
     Canvas(
@@ -199,6 +187,118 @@ private fun calculateThumbOffset(
     stop: Float,
     fraction: Float
 ): Float = start + (stop - start) * fraction
+
+@Stable
+public interface SwitchColors {
+    @Composable
+    public fun trackColor(enabled: Boolean, checked: Boolean): State<Color>
+
+    @Composable
+    public fun thumbColor(enabled: Boolean, checked: Boolean): State<Color>
+
+    @Composable
+    public fun borderColor(enabled: Boolean): State<Color>
+}
+
+private object SwitchDefaults {
+    @Composable
+    fun colors(
+        checkedTrackColor: Color = SudokuTheme.colors.switchCheckedTrack,
+        uncheckedTrackColor: Color = SudokuTheme.colors.switchUncheckedTrack,
+        checkThumbColor: Color = SudokuTheme.colors.switchCheckedThumb,
+        uncheckThumbColor: Color = SudokuTheme.colors.switchUncheckedThumb,
+        borderColor: Color = SudokuTheme.colors.switchBorder,
+    ): SwitchColors =
+        DefaultSwitchColors(
+            checkedTrackColor = checkedTrackColor,
+            uncheckedTrackColor = uncheckedTrackColor,
+            checkThumbColor = checkThumbColor,
+            uncheckThumbColor = uncheckThumbColor,
+            borderColor = borderColor,
+        )
+}
+
+@Immutable
+private class DefaultSwitchColors(
+    private val checkedTrackColor: Color,
+    private val uncheckedTrackColor: Color,
+    private val checkThumbColor: Color,
+    private val uncheckThumbColor: Color,
+    private val borderColor: Color,
+) : SwitchColors {
+    @Composable
+    override fun trackColor(enabled: Boolean, checked: Boolean): State<Color> {
+        return animateColorAsState(
+            targetValue = if (enabled) {
+                if (checked) {
+                    checkedTrackColor
+                } else {
+                    uncheckedTrackColor
+                }
+            } else {
+                if (checked) {
+                    checkedTrackColor.copy(alpha = 0.8f)
+                } else {
+                    uncheckedTrackColor.copy(alpha = 0.8f)
+                }
+            },
+            label = "track color"
+        )
+    }
+
+    @Composable
+    override fun thumbColor(enabled: Boolean, checked: Boolean): State<Color> {
+        return animateColorAsState(
+            targetValue = if (enabled) {
+                if (checked) {
+                    checkThumbColor
+                } else {
+                    uncheckThumbColor
+                }
+            } else {
+                if (checked) {
+                    checkThumbColor.copy(alpha = 0.8f)
+                } else {
+                    uncheckThumbColor.copy(alpha = 0.8f)
+                }
+            },
+            label = "thumb color"
+        )
+    }
+
+    @Composable
+    override fun borderColor(enabled: Boolean): State<Color> {
+        return rememberUpdatedState(
+            if (enabled) {
+                borderColor
+            } else {
+                borderColor.copy(alpha = 0.8f)
+            }
+        )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DefaultSwitchColors) return false
+
+        if (checkedTrackColor != other.checkedTrackColor) return false
+        if (uncheckedTrackColor != other.uncheckedTrackColor) return false
+        if (checkThumbColor != other.checkThumbColor) return false
+        if (uncheckThumbColor != other.uncheckThumbColor) return false
+        if (borderColor != other.borderColor) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = checkedTrackColor.hashCode()
+        result = 31 * result + uncheckedTrackColor.hashCode()
+        result = 31 * result + checkThumbColor.hashCode()
+        result = 31 * result + uncheckThumbColor.hashCode()
+        result = 31 * result + borderColor.hashCode()
+        return result
+    }
+}
 
 @Preview(
     showBackground = true,
