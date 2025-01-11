@@ -39,11 +39,11 @@ public class Colors(
     onBackground: Color,
     dialog: Color,
     onDialog: Color,
-    menuButtonForegroundNormal: Color,
-    menuButtonForegroundPressed: Color,
-    menuButtonBackgroundNormal: Color,
-    menuButtonBackgroundPressed: Color,
-    onMenuButton: Color,
+    gameButtonForegroundNormal: Color,
+    gameButtonForegroundPressed: Color,
+    gameButtonBackgroundNormal: Color,
+    gameButtonBackgroundPressed: Color,
+    onGameButton: Color,
     boardCellNormal: Color,
     boardCellSelected: Color,
     boardNumberNormal: Color,
@@ -70,15 +70,15 @@ public class Colors(
         private set
     public var onDialog: Color by mutableStateOf(onDialog)
         private set
-    public var menuButtonForegroundNormal: Color by mutableStateOf(menuButtonForegroundNormal)
+    public var gameButtonForegroundNormal: Color by mutableStateOf(gameButtonForegroundNormal)
         private set
-    public var menuButtonForegroundPressed: Color by mutableStateOf(menuButtonForegroundPressed)
+    public var gameButtonForegroundPressed: Color by mutableStateOf(gameButtonForegroundPressed)
         private set
-    public var menuButtonBackgroundNormal: Color by mutableStateOf(menuButtonBackgroundNormal)
+    public var gameButtonBackgroundNormal: Color by mutableStateOf(gameButtonBackgroundNormal)
         private set
-    public var menuButtonBackgroundPressed: Color by mutableStateOf(menuButtonBackgroundPressed)
+    public var gameButtonBackgroundPressed: Color by mutableStateOf(gameButtonBackgroundPressed)
         private set
-    public var onMenuButton: Color by mutableStateOf(onMenuButton)
+    public var onGameButton: Color by mutableStateOf(onGameButton)
         private set
     public var boardCellNormal: Color by mutableStateOf(boardCellNormal)
         private set
@@ -114,11 +114,11 @@ public class Colors(
         onBackground: Color = this.onBackground,
         dialog: Color = this.dialog,
         onDialog: Color = this.onDialog,
-        menuButtonForegroundNormal: Color = this.menuButtonForegroundNormal,
-        menuButtonForegroundPressed: Color = this.menuButtonForegroundPressed,
-        menuButtonBackgroundNormal: Color = this.menuButtonBackgroundNormal,
-        menuButtonBackgroundPressed: Color = this.menuButtonBackgroundPressed,
-        onMenuButton: Color = this.onMenuButton,
+        gameButtonForegroundNormal: Color = this.gameButtonForegroundNormal,
+        gameButtonForegroundPressed: Color = this.gameButtonForegroundPressed,
+        gameButtonBackgroundNormal: Color = this.gameButtonBackgroundNormal,
+        gameButtonBackgroundPressed: Color = this.gameButtonBackgroundPressed,
+        onGameButton: Color = this.onGameButton,
         boardCellNormal: Color = this.boardCellNormal,
         boardCellSelected: Color = this.boardCellSelected,
         boardNumberNormal: Color = this.boardNumberNormal,
@@ -139,11 +139,11 @@ public class Colors(
         onBackground = onBackground,
         dialog = dialog,
         onDialog = onDialog,
-        menuButtonForegroundNormal = menuButtonForegroundNormal,
-        menuButtonForegroundPressed = menuButtonForegroundPressed,
-        menuButtonBackgroundNormal = menuButtonBackgroundNormal,
-        menuButtonBackgroundPressed = menuButtonBackgroundPressed,
-        onMenuButton = onMenuButton,
+        gameButtonForegroundNormal = gameButtonForegroundNormal,
+        gameButtonForegroundPressed = gameButtonForegroundPressed,
+        gameButtonBackgroundNormal = gameButtonBackgroundNormal,
+        gameButtonBackgroundPressed = gameButtonBackgroundPressed,
+        onGameButton = onGameButton,
         boardCellNormal = boardCellNormal,
         boardCellSelected = boardCellSelected,
         boardNumberNormal = boardNumberNormal,
@@ -166,11 +166,11 @@ public class Colors(
         onBackground = other.onBackground
         dialog = other.dialog
         onDialog = other.onDialog
-        menuButtonForegroundNormal = other.menuButtonForegroundNormal
-        menuButtonForegroundPressed = other.menuButtonForegroundPressed
-        menuButtonBackgroundNormal = other.menuButtonBackgroundNormal
-        menuButtonBackgroundPressed = other.menuButtonBackgroundPressed
-        onMenuButton = other.onMenuButton
+        gameButtonForegroundNormal = other.gameButtonForegroundNormal
+        gameButtonForegroundPressed = other.gameButtonForegroundPressed
+        gameButtonBackgroundNormal = other.gameButtonBackgroundNormal
+        gameButtonBackgroundPressed = other.gameButtonBackgroundPressed
+        onGameButton = other.onGameButton
         boardCellNormal = other.boardCellNormal
         boardCellSelected = other.boardCellSelected
         boardNumberNormal = other.boardNumberNormal
@@ -194,11 +194,11 @@ internal val ThemeColors: Colors = Colors(
     onBackground = Color.White,
     dialog = Color.White,
     onDialog = Color.Black,
-    menuButtonForegroundNormal = HippieBlue,
-    menuButtonForegroundPressed = GreenishBlue,
-    menuButtonBackgroundNormal = LightNavyBlue,
-    menuButtonBackgroundPressed = Elephant,
-    onMenuButton = Color.White,
+    gameButtonForegroundNormal = HippieBlue,
+    gameButtonForegroundPressed = GreenishBlue,
+    gameButtonBackgroundNormal = LightNavyBlue,
+    gameButtonBackgroundPressed = Elephant,
+    onGameButton = Color.White,
     boardCellNormal = Color.White,
     boardCellSelected = DenimBlue,
     boardNumberNormal = Color.Black,

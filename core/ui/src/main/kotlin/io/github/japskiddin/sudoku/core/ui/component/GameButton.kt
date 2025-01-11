@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,29 +41,19 @@ public fun GameButton(
     text: String,
     modifier: Modifier = Modifier,
     icon: Painter? = null,
+    enabled: Boolean = true,
     iconSize: Dp = 24.dp,
     cornerRadius: Dp = 8.dp,
     strokeWidth: Dp = 2.dp,
     bottomStroke: Dp = 6.dp,
-    foregroundNormalColor: Color = SudokuTheme.colors.menuButtonForegroundNormal,
-    foregroundPressedColor: Color = SudokuTheme.colors.menuButtonForegroundPressed,
-    backgroundNormalColor: Color = SudokuTheme.colors.menuButtonBackgroundNormal,
-    backgroundPressedColor: Color = SudokuTheme.colors.menuButtonBackgroundPressed,
+    colors: GameButtonColors = GameButtonDefaults.colors(),
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-
-    val buttonForegroundColor = if (isPressed) {
-        foregroundPressedColor
-    } else {
-        foregroundNormalColor
-    }
-    val buttonBackgroundColor = if (isPressed) {
-        backgroundPressedColor
-    } else {
-        backgroundNormalColor
-    }
+    val foregroundColor by colors.foregroundColor(enabled, isPressed)
+    val backgroundColor by colors.backgroundColor(enabled, isPressed)
+    val contentColor by colors.contentColor(enabled)
 
     Row(
         modifier = modifier
@@ -71,8 +65,8 @@ public fun GameButton(
                 onClick = onClick
             )
             .drawBorder(
-                backgroundColor = buttonBackgroundColor,
-                foregroundColor = buttonForegroundColor,
+                backgroundColor = backgroundColor,
+                foregroundColor = foregroundColor,
                 strokeWidth = strokeWidth,
                 cornerRadius = cornerRadius,
                 bottomStroke = bottomStroke
@@ -83,9 +77,9 @@ public fun GameButton(
         GameButtonContent(
             icon = icon,
             text = text,
-            textColor = SudokuTheme.colors.onMenuButton,
+            textColor = contentColor,
             iconSize = iconSize,
-            outlineColor = buttonBackgroundColor
+            outlineColor = backgroundColor
         )
     }
 }
@@ -155,6 +149,108 @@ private fun Modifier.drawBorder(
         )
     }
 )
+
+@Stable
+public interface GameButtonColors {
+    @Composable
+    public fun foregroundColor(enabled: Boolean, pressed: Boolean): State<Color>
+
+    @Composable
+    public fun backgroundColor(enabled: Boolean, pressed: Boolean): State<Color>
+
+    @Composable
+    public fun contentColor(enabled: Boolean): State<Color>
+}
+
+private object GameButtonDefaults {
+    @Composable
+    fun colors(
+        foregroundNormalColor: Color = SudokuTheme.colors.gameButtonForegroundNormal,
+        foregroundPressedColor: Color = SudokuTheme.colors.gameButtonForegroundPressed,
+        backgroundNormalColor: Color = SudokuTheme.colors.gameButtonBackgroundNormal,
+        backgroundPressedColor: Color = SudokuTheme.colors.gameButtonBackgroundPressed,
+        contentColor: Color = SudokuTheme.colors.onGameButton,
+    ): GameButtonColors =
+        DefaultGameButtonColors(
+            foregroundNormalColor = foregroundNormalColor,
+            foregroundPressedColor = foregroundPressedColor,
+            backgroundNormalColor = backgroundNormalColor,
+            backgroundPressedColor = backgroundPressedColor,
+            contentColor = contentColor,
+        )
+}
+
+@Immutable
+private class DefaultGameButtonColors(
+    private val foregroundNormalColor: Color,
+    private val foregroundPressedColor: Color,
+    private val backgroundNormalColor: Color,
+    private val backgroundPressedColor: Color,
+    private val contentColor: Color,
+) : GameButtonColors {
+    @Composable
+    override fun foregroundColor(enabled: Boolean, pressed: Boolean): State<Color> {
+        return rememberUpdatedState(
+            if (enabled) {
+                if (pressed) {
+                    foregroundPressedColor
+                } else {
+                    foregroundNormalColor
+                }
+            } else {
+                foregroundNormalColor.copy(alpha = 0.8f)
+            }
+        )
+    }
+
+    @Composable
+    override fun backgroundColor(enabled: Boolean, pressed: Boolean): State<Color> {
+        return rememberUpdatedState(
+            if (enabled) {
+                if (pressed) {
+                    backgroundPressedColor
+                } else {
+                    backgroundNormalColor
+                }
+            } else {
+                backgroundNormalColor.copy(alpha = 0.8f)
+            }
+        )
+    }
+
+    @Composable
+    override fun contentColor(enabled: Boolean): State<Color> {
+        return rememberUpdatedState(
+            if (enabled) {
+                contentColor
+            } else {
+                contentColor.copy(alpha = 0.8f)
+            }
+        )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DefaultGameButtonColors) return false
+
+        if (foregroundNormalColor != other.foregroundNormalColor) return false
+        if (foregroundPressedColor != other.foregroundPressedColor) return false
+        if (backgroundNormalColor != other.backgroundNormalColor) return false
+        if (backgroundPressedColor != other.backgroundPressedColor) return false
+        if (contentColor != other.contentColor) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = foregroundNormalColor.hashCode()
+        result = 31 * result + foregroundPressedColor.hashCode()
+        result = 31 * result + backgroundNormalColor.hashCode()
+        result = 31 * result + backgroundPressedColor.hashCode()
+        result = 31 * result + contentColor.hashCode()
+        return result
+    }
+}
 
 @Preview(
     name = "Game Button",
