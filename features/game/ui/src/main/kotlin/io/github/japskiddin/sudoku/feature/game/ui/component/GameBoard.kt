@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.nativeCanvas
@@ -49,10 +48,9 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardNote
-import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
 import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
-import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 import kotlin.math.ceil
@@ -63,15 +61,14 @@ private const val MinZoomRange = 1f
 private const val MaxZoomRange = 3f
 private const val Radix = 16
 
-// TODO: добавить ImmutableBoardList
-
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun GameBoard(
-    board: BoardList,
-    selectedCell: BoardCell,
+    board: ImmutableBoardList,
     modifier: Modifier = Modifier,
-    gameType: GameType = findGameTypeBySize(board.size),
+    size: Int = board.size,
+    selectedCell: BoardCell = BoardCell.Empty,
+    gameType: GameType = findGameTypeBySize(size),
     outerCornerRadius: Dp = 12.dp,
     outerStrokeWidth: Dp = 1.5.dp,
     innerStrokeWidth: Dp = 1.dp,
@@ -91,16 +88,13 @@ internal fun GameBoard(
     isErrorsHighlight: Boolean = true,
     isPositionCells: Boolean = true,
     isEnabled: Boolean = true,
-    isQuestions: Boolean = false,
     isRenderNotes: Boolean = true,
     isZoomable: Boolean = false,
-    isDrawBoardFrame: Boolean = false,
-    isCrossHighlight: Boolean = false,
     notes: List<BoardNote> = emptyList(),
     numberColor: Color = SudokuTheme.colors.boardNumberNormal,
     selectedNumberColor: Color = SudokuTheme.colors.boardNumberSelected,
-    lockedNumberColor: Color = Color.Black,
-    errorNumberColor: Color = Color.Red,
+    lockedNumberColor: Color = SudokuTheme.colors.boardNumberLocked,
+    errorNumberColor: Color = SudokuTheme.colors.boardNumberError,
     cellColor: Color = SudokuTheme.colors.boardCellNormal,
     selectedCellColor: Color = SudokuTheme.colors.boardCellSelected,
     noteColor: Color = numberColor.copy(alpha = 0.8f),
@@ -131,26 +125,25 @@ internal fun GameBoard(
             )
     ) {
         val maxWidth = constraints.maxWidth.toFloat()
-        val boardSize = gameType.size
 
-        val cellSizePx by remember(boardSize) {
-            mutableFloatStateOf(maxWidth / boardSize.toFloat())
+        val cellSizePx by remember(size) {
+            mutableFloatStateOf(maxWidth / size.toFloat())
         }
 
-        val cellSizeDividerWidth by remember(boardSize) {
-            mutableFloatStateOf(cellSizePx / ceil(sqrt(boardSize.toFloat())))
+        val cellSizeDividerWidth by remember(size) {
+            mutableFloatStateOf(cellSizePx / ceil(sqrt(size.toFloat())))
         }
 
-        val cellSizeDividerHeight by remember(boardSize) {
-            mutableFloatStateOf(cellSizePx / floor(sqrt(boardSize.toFloat())))
+        val cellSizeDividerHeight by remember(size) {
+            mutableFloatStateOf(cellSizePx / floor(sqrt(size.toFloat())))
         }
 
-        val verticalInnerStrokeThickness by remember(boardSize) {
-            mutableIntStateOf(floor(sqrt(boardSize.toFloat())).toInt())
+        val verticalInnerStrokeThickness by remember(size) {
+            mutableIntStateOf(floor(sqrt(size.toFloat())).toInt())
         }
 
-        val horizontalInnerStrokeThickness by remember(boardSize) {
-            mutableIntStateOf(ceil(sqrt(boardSize.toFloat())).toInt())
+        val horizontalInnerStrokeThickness by remember(size) {
+            mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt())
         }
 
         var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
@@ -306,89 +299,48 @@ internal fun GameBoard(
             }
 
         Canvas(
-            modifier = if (isZoomable) boardModifier.then(zoomModifier) else boardModifier
+            modifier = if (isZoomable) {
+                boardModifier.then(zoomModifier)
+            } else {
+                boardModifier
+            }
         ) {
-            // закрашиваем все клетки цветом фона
-            for (i in 0 until boardSize) {
-                for (j in 0 until boardSize) {
-                    val cell = board[i][j]
-                    drawCell(
-                        cornerRadius = cornerRadius,
-                        color = cellColor,
-                        boardSize = boardSize,
-                        cellSize = cellSize,
-                        cellOffset = Offset(
-                            x = cell.col * cellSizePx,
-                            y = cell.row * cellSizePx
-                        )
-                    )
-                }
-            }
+            fillAllCellsWithBackground(
+                board = board,
+                size = size,
+                cornerRadius = cornerRadius,
+                cellColor = cellColor,
+                cellSize = cellSize,
+                cellSizePx = cellSizePx
+            )
 
-            // закрашиваем выделенную клетку, если есть
-            if (selectedCell.row >= 0 && selectedCell.col >= 0) {
-                val selectedOffset = Offset(
-                    x = selectedCell.col * cellSizePx,
-                    y = selectedCell.row * cellSizePx
-                )
-
-                drawCell(
+            val hasSelectedCell = selectedCell.row >= 0 && selectedCell.col >= 0
+            if (hasSelectedCell) {
+                drawSelectedCell(
+                    selectedCell = selectedCell,
                     cornerRadius = cornerRadius,
-                    color = selectedCellColor,
-                    boardSize = boardSize,
+                    selectedCellColor = selectedCellColor,
                     cellSize = cellSize,
-                    cellOffset = selectedOffset
+                    isPositionCells = isPositionCells,
+                    cellSizePx = cellSizePx,
+                    size = size
                 )
-                if (isPositionCells) {
-                    drawVerticalPositionCells(
-                        cornerRadius = cornerRadius,
-                        color = selectedCellColor.copy(alpha = 0.2f),
-                        boardSize = boardSize,
-                        cellSize = cellSize,
-                        cellOffset = selectedOffset
-                    )
-                    drawHorizontalPositionCells(
-                        cornerRadius = cornerRadius,
-                        color = selectedCellColor.copy(alpha = 0.2f),
-                        boardSize = boardSize,
-                        cellSize = cellSize,
-                        cellOffset = selectedOffset
-                    )
-                }
             }
 
-            // закрашиваем клетки с таким же значением
             if (isIdenticalNumbersHighlight) {
-                for (i in 0 until boardSize) {
-                    for (j in 0 until boardSize) {
-                        val cell = board[i][j]
-                        if (cell.value == selectedCell.value && cell.value != 0) {
-                            drawCell(
-                                cornerRadius = cornerRadius,
-                                color = selectedCellColor.copy(alpha = 0.6f),
-                                boardSize = boardSize,
-                                cellSize = cellSize,
-                                cellOffset = Offset(
-                                    x = cell.col * cellSizePx,
-                                    y = cell.row * cellSizePx
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (isDrawBoardFrame) {
-                drawBoardFrame(
-                    outerStrokeColor = outerStrokeColor,
-                    outerStrokeWidth = outerStrokeWidthPx,
-                    maxWidth = maxWidth,
-                    cornerRadius = cornerRadius
+                fillIdenticalCells(
+                    board = board,
+                    size = size,
+                    selectedCell = selectedCell,
+                    selectedCellColor = selectedCellColor,
+                    cornerRadius = cornerRadius,
+                    cellSize = cellSize,
+                    cellSizePx = cellSizePx
                 )
             }
 
             drawHorizontalLines(
-                boardSize = boardSize,
+                boardSize = size,
                 cellSize = cellSizePx,
                 innerStrokeThickness = horizontalInnerStrokeThickness,
                 outerStrokeColor = outerStrokeColor,
@@ -399,7 +351,7 @@ internal fun GameBoard(
             )
 
             drawVerticalLines(
-                boardSize = boardSize,
+                boardSize = size,
                 cellSize = cellSizePx,
                 innerStrokeThickness = verticalInnerStrokeThickness,
                 outerStrokeColor = outerStrokeColor,
@@ -411,7 +363,7 @@ internal fun GameBoard(
 
             drawNumbers(
                 board = board,
-                boardSize = boardSize,
+                boardSize = size,
                 isErrorsHighlight = isErrorsHighlight,
                 errorNumberPaint = errorNumberPaint,
                 lockedNumberPaint = lockedNumberPaint,
@@ -419,11 +371,11 @@ internal fun GameBoard(
                 selectedCell = selectedCell,
                 isIdenticalNumberHighlight = isIdenticalNumbersHighlight,
                 numberPaint = numberPaint,
-                isQuestions = isQuestions,
                 cellSize = cellSizePx
             )
 
-            if (notes.isNotEmpty() && !isQuestions && isRenderNotes) {
+            val canDrawNotes = notes.isNotEmpty() && isRenderNotes
+            if (canDrawNotes) {
                 drawNotes(
                     gameType = gameType,
                     paint = notePaint,
@@ -433,44 +385,100 @@ internal fun GameBoard(
                     cellSizeDividerHeight = cellSizeDividerHeight
                 )
             }
+        }
+    }
+}
 
-            if (isCrossHighlight) {
-                val sectionHeight = gameType.sectionHeight
-                val sectionWidth = gameType.sectionWidth
-                for (i in 0 until boardSize / sectionWidth) {
-                    for (j in 0 until boardSize / sectionHeight) {
-                        @Suppress("ComplexCondition")
-                        if ((i % 2 == 0 && j % 2 != 0) ||
-                            (i % 2 != 0 && j % 2 == 0)
-                        ) {
-                            drawRect(
-                                color = selectedCellColor.copy(alpha = 0.1f),
-                                topLeft = Offset(
-                                    x = i * sectionWidth * cellSizePx,
-                                    y = j * sectionHeight * cellSizePx
-                                ),
-                                size = Size(cellSizePx * sectionWidth, cellSizePx * sectionHeight)
-                            )
-                        }
-                    }
-                }
+private fun DrawScope.fillIdenticalCells(
+    board: ImmutableBoardList,
+    size: Int,
+    selectedCell: BoardCell,
+    selectedCellColor: Color,
+    cornerRadius: CornerRadius,
+    cellSize: Size,
+    cellSizePx: Float,
+) {
+    for (i in 0 until size) {
+        for (j in 0 until size) {
+            val cell = board[i][j]
+            if (cell.value == selectedCell.value && cell.value != 0) {
+                drawCell(
+                    cornerRadius = cornerRadius,
+                    color = selectedCellColor.copy(alpha = 0.6f),
+                    boardSize = size,
+                    cellSize = cellSize,
+                    cellOffset = Offset(
+                        x = cell.col * cellSizePx,
+                        y = cell.row * cellSizePx
+                    )
+                )
             }
         }
     }
 }
 
-private fun DrawScope.drawBoardFrame(
-    outerStrokeColor: Color,
-    outerStrokeWidth: Float,
-    maxWidth: Float,
+private fun DrawScope.drawSelectedCell(
+    selectedCell: BoardCell,
     cornerRadius: CornerRadius,
+    selectedCellColor: Color,
+    cellSize: Size,
+    isPositionCells: Boolean,
+    cellSizePx: Float,
+    size: Int,
 ) {
-    drawRoundRect(
-        color = outerStrokeColor,
-        size = Size(maxWidth, maxWidth),
-        cornerRadius = cornerRadius,
-        style = Stroke(width = outerStrokeWidth)
+    val selectedOffset = Offset(
+        x = selectedCell.col * cellSizePx,
+        y = selectedCell.row * cellSizePx
     )
+
+    drawCell(
+        cornerRadius = cornerRadius,
+        color = selectedCellColor,
+        boardSize = size,
+        cellSize = cellSize,
+        cellOffset = selectedOffset
+    )
+    if (isPositionCells) {
+        drawVerticalPositionCells(
+            cornerRadius = cornerRadius,
+            color = selectedCellColor.copy(alpha = 0.2f),
+            boardSize = size,
+            cellSize = cellSize,
+            cellOffset = selectedOffset
+        )
+        drawHorizontalPositionCells(
+            cornerRadius = cornerRadius,
+            color = selectedCellColor.copy(alpha = 0.2f),
+            boardSize = size,
+            cellSize = cellSize,
+            cellOffset = selectedOffset
+        )
+    }
+}
+
+private fun DrawScope.fillAllCellsWithBackground(
+    board: ImmutableBoardList,
+    size: Int,
+    cornerRadius: CornerRadius,
+    cellColor: Color,
+    cellSize: Size,
+    cellSizePx: Float,
+) {
+    for (i in 0 until size) {
+        for (j in 0 until size) {
+            val cell = board[i][j]
+            drawCell(
+                cornerRadius = cornerRadius,
+                color = cellColor,
+                boardSize = size,
+                cellSize = cellSize,
+                cellOffset = Offset(
+                    x = cell.col * cellSizePx,
+                    y = cell.row * cellSizePx
+                )
+            )
+        }
+    }
 }
 
 private fun DrawScope.drawHorizontalLines(
@@ -643,7 +651,6 @@ private fun DrawScope.drawRoundCellBackground(
     drawPath(path = path, color = color)
 }
 
-@Suppress("CyclomaticComplexMethod")
 private fun DrawScope.drawNumbers(
     board: BoardList,
     boardSize: Int,
@@ -653,33 +660,59 @@ private fun DrawScope.drawNumbers(
     numberPaint: TextPaint,
     selectedNumberPaint: TextPaint,
     selectedCell: BoardCell,
-    isQuestions: Boolean,
     isIdenticalNumberHighlight: Boolean,
     cellSize: Float,
 ) {
-    drawIntoCanvas { canvas ->
-        for (i in 0 until boardSize) {
-            for (j in 0 until boardSize) {
-                val cell = board[i][j]
-                val number = cell.value
-                if (number != 0) {
-                    val paint = when {
-                        cell.isError && isErrorsHighlight -> errorNumberPaint
-                        cell.isSelected(selectedCell, isIdenticalNumberHighlight) -> selectedNumberPaint
-                        cell.isLocked -> lockedNumberPaint
-                        else -> numberPaint
-                    }
-
-                    val textToDraw = if (isQuestions) "?" else number.toString(Radix).uppercase()
-                    val textBounds = android.graphics.Rect()
-                    paint.getTextBounds(textToDraw, 0, 1, textBounds)
-                    val textWidth = paint.measureText(textToDraw)
-                    val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
-                    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
-                    canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
-                }
+    for (i in 0 until boardSize) {
+        for (j in 0 until boardSize) {
+            val cell = board[i][j]
+            val number = cell.value
+            if (number != 0) {
+                drawNumber(
+                    cell = cell,
+                    number = number,
+                    isErrorsHighlight = isErrorsHighlight,
+                    errorNumberPaint = errorNumberPaint,
+                    lockedNumberPaint = lockedNumberPaint,
+                    numberPaint = numberPaint,
+                    selectedNumberPaint = selectedNumberPaint,
+                    selectedCell = selectedCell,
+                    isIdenticalNumberHighlight = isIdenticalNumberHighlight,
+                    cellSize = cellSize
+                )
             }
         }
+    }
+}
+
+private fun DrawScope.drawNumber(
+    cell: BoardCell,
+    number: Int,
+    isErrorsHighlight: Boolean,
+    errorNumberPaint: TextPaint,
+    lockedNumberPaint: TextPaint,
+    numberPaint: TextPaint,
+    selectedNumberPaint: TextPaint,
+    selectedCell: BoardCell,
+    isIdenticalNumberHighlight: Boolean,
+    cellSize: Float,
+) {
+    val paint = when {
+        cell.isError && isErrorsHighlight -> errorNumberPaint
+        cell.isSelected(selectedCell, isIdenticalNumberHighlight) -> selectedNumberPaint
+        cell.isLocked -> lockedNumberPaint
+        else -> numberPaint
+    }
+
+    val textToDraw = number.toString(Radix).uppercase()
+    val textBounds = android.graphics.Rect()
+    paint.getTextBounds(textToDraw, 0, 1, textBounds)
+    val textWidth = paint.measureText(textToDraw)
+    val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
+    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
+
+    drawIntoCanvas { canvas ->
+        canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
     }
 }
 
@@ -709,6 +742,14 @@ private fun DrawScope.drawNotes(
     }
 }
 
+private fun BoardCell.isSelected(
+    selectedCell: BoardCell,
+    isIdenticalNumberHighlight: Boolean,
+): Boolean {
+    return (isIdenticalNumberHighlight && value == selectedCell.value) ||
+        (selectedCell.row == row && selectedCell.col == col)
+}
+
 @Suppress("MagicNumber")
 private fun getNoteColumnNumber(
     number: Int,
@@ -729,14 +770,6 @@ private fun getNoteColumnNumber(
     }
 
     else -> 0
-}
-
-private fun BoardCell.isSelected(
-    selectedCell: BoardCell,
-    isIdenticalNumberHighlight: Boolean,
-): Boolean {
-    return (isIdenticalNumberHighlight && value == selectedCell.value) ||
-        (selectedCell.row == row && selectedCell.col == col)
 }
 
 @Suppress("MagicNumber")
@@ -767,23 +800,6 @@ private fun getNoteRowNumber(
 )
 @Composable
 private fun GameBoardPreview() {
-    val notes: List<BoardNote> = listOf(
-        BoardNote(row = 2, col = 2, value = 5),
-    )
-    val state = GameUiState(
-        board = getSampleBoardForPreview(),
-        selectedCell = BoardCell(
-            row = 3,
-            col = 2,
-            value = 3
-        ),
-        type = GameType.DEFAULT9X9,
-        difficulty = GameDifficulty.INTERMEDIATE,
-        actions = 0,
-        mistakes = 0,
-        time = 0L
-    )
-
     SudokuTheme {
         GameBoard(
             board = getSampleBoardForPreview(),
@@ -793,7 +809,9 @@ private fun GameBoardPreview() {
                 value = 3
             ),
             onSelectCell = {},
-            notes = notes
+            notes = listOf(
+                BoardNote(row = 2, col = 2, value = 5),
+            )
         )
     }
 }

@@ -48,6 +48,8 @@ public class Colors(
     boardCellSelected: Color,
     boardNumberNormal: Color,
     boardNumberSelected: Color,
+    boardNumberError: Color,
+    boardNumberLocked: Color,
     switchUncheckedThumb: Color,
     switchUncheckedTrack: Color,
     switchCheckedThumb: Color,
@@ -88,6 +90,10 @@ public class Colors(
         private set
     public var boardNumberSelected: Color by mutableStateOf(boardNumberSelected)
         private set
+    public var boardNumberError: Color by mutableStateOf(boardNumberError)
+        private set
+    public var boardNumberLocked: Color by mutableStateOf(boardNumberLocked)
+        private set
     public var switchUncheckedThumb: Color by mutableStateOf(switchUncheckedThumb)
         private set
     public var switchUncheckedTrack: Color by mutableStateOf(switchUncheckedTrack)
@@ -123,6 +129,8 @@ public class Colors(
         boardCellSelected: Color = this.boardCellSelected,
         boardNumberNormal: Color = this.boardNumberNormal,
         boardNumberSelected: Color = this.boardNumberSelected,
+        boardNumberError: Color = this.boardNumberError,
+        boardNumberLocked: Color = this.boardNumberLocked,
         switchUncheckedThumb: Color = this.switchUncheckedThumb,
         switchUncheckedTrack: Color = this.switchUncheckedTrack,
         switchCheckedThumb: Color = this.switchCheckedThumb,
@@ -148,6 +156,8 @@ public class Colors(
         boardCellSelected = boardCellSelected,
         boardNumberNormal = boardNumberNormal,
         boardNumberSelected = boardNumberSelected,
+        boardNumberError = boardNumberError,
+        boardNumberLocked = boardNumberLocked,
         switchUncheckedThumb = switchUncheckedThumb,
         switchUncheckedTrack = switchUncheckedTrack,
         switchCheckedThumb = switchCheckedThumb,
@@ -175,6 +185,8 @@ public class Colors(
         boardCellSelected = other.boardCellSelected
         boardNumberNormal = other.boardNumberNormal
         boardNumberSelected = other.boardNumberSelected
+        boardNumberError = other.boardNumberError
+        boardNumberLocked = other.boardNumberLocked
         switchUncheckedThumb = other.switchUncheckedThumb
         switchUncheckedTrack = other.switchUncheckedTrack
         switchCheckedThumb = other.switchCheckedThumb
@@ -203,6 +215,8 @@ internal val ThemeColors: Colors = Colors(
     boardCellSelected = DenimBlue,
     boardNumberNormal = Color.Black,
     boardNumberSelected = Color.White,
+    boardNumberError = Color.Red,
+    boardNumberLocked = Color.Black,
     switchUncheckedThumb = Rope,
     switchUncheckedTrack = Color.White,
     switchCheckedThumb = Color.White,
