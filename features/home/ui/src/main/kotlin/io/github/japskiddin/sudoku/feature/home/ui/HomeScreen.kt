@@ -45,6 +45,7 @@ import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog
 import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
@@ -169,7 +170,6 @@ private fun Menu(
                 .fillMaxWidth()
                 .weight(1f)
                 .wrapContentHeight()
-            val orientation = LocalConfiguration.current.orientation
             val onStartButtonClick: () -> Unit = {
                 if (isShowContinueButton) {
                     showContinueDialog = true
@@ -178,7 +178,7 @@ private fun Menu(
                 }
             }
 
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (isLandscape()) {
                 MenuLandscape(
                     modifier = menuModifier,
                     isShowContinueButton = isShowContinueButton,

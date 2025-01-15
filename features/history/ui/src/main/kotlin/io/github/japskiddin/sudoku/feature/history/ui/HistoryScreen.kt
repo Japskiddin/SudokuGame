@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.history.ui
 
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +38,7 @@ import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.history.ui.components.HistoryGameBoard
 import io.github.japskiddin.sudoku.feature.history.ui.logic.HistoryUI
@@ -104,9 +103,8 @@ private fun HistoryList(
     history: ImmutableList<HistoryUI>,
     modifier: Modifier = Modifier,
 ) {
-    val orientation = LocalConfiguration.current.orientation
     LazyColumn(
-        modifier = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        modifier = if (isLandscape()) {
             modifier.displayCutoutPadding()
         } else {
             modifier
@@ -145,8 +143,7 @@ private fun HistoryItem(
         color = SudokuTheme.colors.onCard,
     )
 
-    val orientation = LocalConfiguration.current.orientation
-    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+    if (isLandscape()) {
         LandscapeHistoryItem(
             item = item,
             textStyle = textStyle,

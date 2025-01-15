@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.settings.ui
 
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.component.HorizontalDivider
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiAction
@@ -112,8 +111,7 @@ private fun SettingsContent(
         )
 
         val scrollState = rememberScrollState()
-        val orientation = LocalConfiguration.current.orientation
-        val insetsModifier = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        val insetsModifier = if (isLandscape()) {
             Modifier
                 .navigationBarsPadding()
                 .displayCutoutPadding()
