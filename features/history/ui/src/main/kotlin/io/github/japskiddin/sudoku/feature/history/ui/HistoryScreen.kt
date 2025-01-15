@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,6 +45,7 @@ import io.github.japskiddin.sudoku.feature.history.ui.components.HistoryGameBoar
 import io.github.japskiddin.sudoku.feature.history.ui.logic.HistoryUI
 import io.github.japskiddin.sudoku.feature.history.ui.logic.HistoryViewModel
 import io.github.japskiddin.sudoku.feature.history.ui.logic.UiAction
+import io.github.japskiddin.sudoku.feature.history.ui.utils.cardBackground
 import io.github.japskiddin.sudoku.feature.history.ui.utils.toFormattedDate
 import io.github.japskiddin.sudoku.feature.history.ui.utils.toFormattedString
 import kotlinx.collections.immutable.ImmutableList
@@ -144,14 +145,97 @@ private fun HistoryItem(
         color = SudokuTheme.colors.onCard,
     )
 
+    val orientation = LocalConfiguration.current.orientation
+    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        LandscapeHistoryItem(
+            item = item,
+            textStyle = textStyle,
+            modifier = modifier,
+        )
+    } else {
+        PortraitHistoryItem(
+            item = item,
+            textStyle = textStyle,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun LandscapeHistoryItem(
+    item: HistoryUI,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .cardBackground()
+    ) {
+        HistoryGameBoard(
+            board = item.board,
+            size = item.type.size,
+            modifier = Modifier.size(130.dp),
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Statistics(
+            item = item,
+            textStyle = textStyle,
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        GameplayInformation(
+            item = item,
+            textStyle = textStyle,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+private fun PortraitHistoryItem(
+    item: HistoryUI,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = SudokuTheme.colors.card,
-                shape = RoundedCornerShape(12.dp)
+            .cardBackground()
+    ) {
+        Statistics(
+            item = item,
+            textStyle = textStyle,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            HistoryGameBoard(
+                board = item.board,
+                size = item.type.size,
+                modifier = Modifier.size(130.dp),
             )
-            .padding(12.dp)
+            Spacer(modifier = Modifier.width(6.dp))
+            GameplayInformation(
+                item = item,
+                textStyle = textStyle,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun Statistics(
+    item: HistoryUI,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
     ) {
         BasicText(
             text = item.time.toFormattedDate(),
@@ -183,46 +267,42 @@ private fun HistoryItem(
             ),
             style = textStyle,
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            HistoryGameBoard(
-                board = item.board,
-                size = item.type.size,
-                modifier = Modifier.size(130.dp),
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                BasicText(
-                    text = stringResource(
-                        id = CoreUiR.string.play_time,
-                        item.playTime.toFormattedTime(),
-                    ),
-                    style = textStyle,
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                BasicText(
-                    text = stringResource(
-                        id = CoreUiR.string.current_actions,
-                        item.actions,
-                    ),
-                    style = textStyle,
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                BasicText(
-                    text = stringResource(
-                        id = CoreUiR.string.current_mistakes,
-                        item.mistakes,
-                        item.difficulty.mistakesLimit
-                    ),
-                    style = textStyle,
-                )
-            }
-        }
+    }
+}
+
+@Composable
+private fun GameplayInformation(
+    item: HistoryUI,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+    ) {
+        BasicText(
+            text = stringResource(
+                id = CoreUiR.string.play_time,
+                item.playTime.toFormattedTime(),
+            ),
+            style = textStyle,
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        BasicText(
+            text = stringResource(
+                id = CoreUiR.string.current_actions,
+                item.actions,
+            ),
+            style = textStyle,
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        BasicText(
+            text = stringResource(
+                id = CoreUiR.string.current_mistakes,
+                item.mistakes,
+                item.difficulty.mistakesLimit
+            ),
+            style = textStyle,
+        )
     }
 }
 
