@@ -317,13 +317,16 @@ private fun GameplayInformation(
 )
 @Composable
 private fun HistoryContentPreview() {
+    @Suppress("MagicNumber")
+    val boardSize = 9
+
     val history: ImmutableList<HistoryUI> = persistentListOf(
         HistoryUI(
             uid = 1L,
             time = 1000221L,
-            board = List(9) { row ->
-                List(9) { col ->
-                    BoardCell(row, col, Random.nextInt(9))
+            board = List(boardSize) { row ->
+                List(boardSize) { col ->
+                    BoardCell(row, col, Random.nextInt(boardSize))
                 }
             }.toImmutable(),
             difficulty = GameDifficulty.INTERMEDIATE,

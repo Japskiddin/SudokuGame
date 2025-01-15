@@ -75,7 +75,7 @@ internal fun HistoryGameBoard(
     ) {
         val maxWidth = constraints.maxWidth.toFloat()
 
-        val cellSizePx by remember(size) {
+        val cellSize by remember(size) {
             mutableFloatStateOf(maxWidth / size.toFloat())
         }
 
@@ -130,7 +130,7 @@ internal fun HistoryGameBoard(
 
             drawHorizontalLines(
                 boardSize = size,
-                cellSize = cellSizePx,
+                cellSize = cellSize,
                 innerStrokeThickness = horizontalInnerStrokeThickness,
                 outerStrokeColor = outerStrokeColor,
                 outerStrokeWidth = outerStrokeWidthPx,
@@ -141,7 +141,7 @@ internal fun HistoryGameBoard(
 
             drawVerticalLines(
                 boardSize = size,
-                cellSize = cellSizePx,
+                cellSize = cellSize,
                 innerStrokeThickness = verticalInnerStrokeThickness,
                 outerStrokeColor = outerStrokeColor,
                 outerStrokeWidth = outerStrokeWidthPx,
@@ -154,7 +154,7 @@ internal fun HistoryGameBoard(
                 board = board,
                 boardSize = size,
                 numberPaint = numberPaint,
-                cellSize = cellSizePx
+                cellSize = cellSize
             )
         }
     }
