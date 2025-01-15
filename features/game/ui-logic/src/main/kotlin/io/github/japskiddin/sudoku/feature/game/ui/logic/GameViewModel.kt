@@ -384,6 +384,7 @@ internal constructor(
     }
 
     private fun pauseGame() {
+        selectBoardCell(BoardCell.Empty)
         stopTimer()
         saveGame()
     }
