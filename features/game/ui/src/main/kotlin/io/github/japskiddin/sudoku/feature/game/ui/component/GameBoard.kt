@@ -46,20 +46,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardCell
-import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.BoardNote
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
+import io.github.japskiddin.sudoku.core.model.toImmutable
+import io.github.japskiddin.sudoku.core.ui.utils.BoardRadix
+import io.github.japskiddin.sudoku.core.ui.utils.drawHorizontalLines
+import io.github.japskiddin.sudoku.core.ui.utils.drawVerticalLines
 import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
-import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
+import kotlin.random.Random
 
 private const val MinZoomRange = 1f
 private const val MaxZoomRange = 3f
-private const val Radix = 16
 
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
@@ -481,50 +483,6 @@ private fun DrawScope.fillAllCellsWithBackground(
     }
 }
 
-private fun DrawScope.drawHorizontalLines(
-    boardSize: Int,
-    cellSize: Float,
-    innerStrokeThickness: Int,
-    outerStrokeColor: Color,
-    outerStrokeWidth: Float,
-    maxWidth: Float,
-    innerStrokeWidth: Float,
-    innerStrokeColor: Color,
-) {
-    for (i in 1 until boardSize) {
-        val isOuterStroke = i % innerStrokeThickness == 0
-        drawLine(
-            color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
-            start = Offset(cellSize * i.toFloat(), 0f),
-            end = Offset(cellSize * i.toFloat(), maxWidth),
-            strokeWidth = if (isOuterStroke) outerStrokeWidth else innerStrokeWidth
-        )
-    }
-}
-
-private fun DrawScope.drawVerticalLines(
-    boardSize: Int,
-    cellSize: Float,
-    innerStrokeThickness: Int,
-    outerStrokeColor: Color,
-    outerStrokeWidth: Float,
-    maxWidth: Float,
-    innerStrokeWidth: Float,
-    innerStrokeColor: Color,
-) {
-    for (i in 1 until boardSize) {
-        val isOuterStroke = i % innerStrokeThickness == 0
-        if (maxWidth >= cellSize * i) {
-            drawLine(
-                color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
-                start = Offset(0f, cellSize * i.toFloat()),
-                end = Offset(maxWidth, cellSize * i.toFloat()),
-                strokeWidth = if (isOuterStroke) outerStrokeWidth else innerStrokeWidth
-            )
-        }
-    }
-}
-
 private fun DrawScope.drawVerticalPositionCells(
     cornerRadius: CornerRadius,
     color: Color,
@@ -652,7 +610,7 @@ private fun DrawScope.drawRoundCellBackground(
 }
 
 private fun DrawScope.drawNumbers(
-    board: BoardList,
+    board: ImmutableBoardList,
     boardSize: Int,
     isErrorsHighlight: Boolean,
     errorNumberPaint: TextPaint,
@@ -704,7 +662,7 @@ private fun DrawScope.drawNumber(
         else -> numberPaint
     }
 
-    val textToDraw = number.toString(Radix).uppercase()
+    val textToDraw = number.toString(BoardRadix).uppercase()
     val textBounds = android.graphics.Rect()
     paint.getTextBounds(textToDraw, 0, 1, textBounds)
     val textWidth = paint.measureText(textToDraw)
@@ -729,7 +687,7 @@ private fun DrawScope.drawNotes(
 
     drawIntoCanvas { canvas ->
         notes.forEach { note ->
-            val textToDraw = note.value.toString(Radix).uppercase()
+            val textToDraw = note.value.toString(BoardRadix).uppercase()
             val noteTextMeasure = paint.measureText(textToDraw)
             val noteRowNumber = getNoteRowNumber(note.value, gameType)
             val textPosX = note.col * cellSize + cellSizeDividerWidth / 2f +
@@ -800,9 +758,20 @@ private fun getNoteRowNumber(
 )
 @Composable
 private fun GameBoardPreview() {
+    @Suppress("MagicNumber")
+    val boardSize = 9
+
     SudokuTheme {
         GameBoard(
-            board = getSampleBoardForPreview(),
+            board = List(boardSize) { row ->
+                List(boardSize) { col ->
+                    BoardCell(
+                        row = row,
+                        col = col,
+                        value = Random.nextInt(boardSize)
+                    )
+                }
+            }.toImmutable(),
             selectedCell = BoardCell(
                 row = 3,
                 col = 2,
@@ -810,7 +779,11 @@ private fun GameBoardPreview() {
             ),
             onSelectCell = {},
             notes = listOf(
-                BoardNote(row = 2, col = 2, value = 5),
+                BoardNote(
+                    row = 2,
+                    col = 2,
+                    value = 5
+                ),
             )
         )
     }

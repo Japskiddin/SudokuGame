@@ -16,4 +16,6 @@ android {
 
 dependencies {
     api(projects.core.designsystem)
+    implementation(projects.core.model)
+    implementation(libs.jetbrains.kotlinx.immutable)
 }

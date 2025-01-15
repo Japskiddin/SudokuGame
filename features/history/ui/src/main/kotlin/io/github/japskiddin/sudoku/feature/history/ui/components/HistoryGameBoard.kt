@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -41,12 +40,13 @@ import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
 import io.github.japskiddin.sudoku.core.model.toImmutable
+import io.github.japskiddin.sudoku.core.ui.utils.BoardRadix
+import io.github.japskiddin.sudoku.core.ui.utils.drawHorizontalLines
+import io.github.japskiddin.sudoku.core.ui.utils.drawVerticalLines
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
 import kotlin.random.Random
-
-private const val Radix = 16
 
 @Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
@@ -152,7 +152,7 @@ internal fun HistoryGameBoard(
 
             drawNumbers(
                 board = board,
-                size = size,
+                boardSize = size,
                 numberPaint = numberPaint,
                 cellSize = cellSizePx
             )
@@ -174,73 +174,42 @@ private fun DrawScope.drawBoardFrame(
     )
 }
 
-private fun DrawScope.drawHorizontalLines(
-    boardSize: Int,
-    cellSize: Float,
-    innerStrokeThickness: Int,
-    outerStrokeColor: Color,
-    outerStrokeWidth: Float,
-    maxWidth: Float,
-    innerStrokeWidth: Float,
-    innerStrokeColor: Color,
-) {
-    for (i in 1 until boardSize) {
-        val isOuterStroke = i % innerStrokeThickness == 0
-        drawLine(
-            color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
-            start = Offset(cellSize * i.toFloat(), 0f),
-            end = Offset(cellSize * i.toFloat(), maxWidth),
-            strokeWidth = if (isOuterStroke) outerStrokeWidth else innerStrokeWidth
-        )
-    }
-}
-
-private fun DrawScope.drawVerticalLines(
-    boardSize: Int,
-    cellSize: Float,
-    innerStrokeThickness: Int,
-    outerStrokeColor: Color,
-    outerStrokeWidth: Float,
-    maxWidth: Float,
-    innerStrokeWidth: Float,
-    innerStrokeColor: Color,
-) {
-    for (i in 1 until boardSize) {
-        val isOuterStroke = i % innerStrokeThickness == 0
-        if (maxWidth >= cellSize * i) {
-            drawLine(
-                color = if (isOuterStroke) outerStrokeColor else innerStrokeColor,
-                start = Offset(0f, cellSize * i.toFloat()),
-                end = Offset(maxWidth, cellSize * i.toFloat()),
-                strokeWidth = if (isOuterStroke) outerStrokeWidth else innerStrokeWidth
-            )
-        }
-    }
-}
-
-@Suppress("CyclomaticComplexMethod")
 private fun DrawScope.drawNumbers(
     board: ImmutableBoardList,
-    size: Int,
+    boardSize: Int,
     numberPaint: TextPaint,
     cellSize: Float,
 ) {
-    drawIntoCanvas { canvas ->
-        for (i in 0 until size) {
-            for (j in 0 until size) {
-                val cell = board[i][j]
-                val number = cell.value
-                if (number != 0) {
-                    val textToDraw = number.toString(Radix).uppercase()
-                    val textBounds = android.graphics.Rect()
-                    numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
-                    val textWidth = numberPaint.measureText(textToDraw)
-                    val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
-                    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
-                    canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, numberPaint)
-                }
+    for (i in 0 until boardSize) {
+        for (j in 0 until boardSize) {
+            val cell = board[i][j]
+            val number = cell.value
+            if (number != 0) {
+                drawNumber(
+                    cell = cell,
+                    number = number,
+                    numberPaint = numberPaint,
+                    cellSize = cellSize
+                )
             }
         }
+    }
+}
+
+private fun DrawScope.drawNumber(
+    cell: BoardCell,
+    number: Int,
+    numberPaint: TextPaint,
+    cellSize: Float,
+) {
+    val textToDraw = number.toString(BoardRadix).uppercase()
+    val textBounds = android.graphics.Rect()
+    numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
+    val textWidth = numberPaint.measureText(textToDraw)
+    val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
+    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
+    drawIntoCanvas { canvas ->
+        canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, numberPaint)
     }
 }
 
@@ -249,11 +218,18 @@ private fun DrawScope.drawNumbers(
 )
 @Composable
 private fun HistoryGameBoardPreview() {
+    @Suppress("MagicNumber")
+    val boardSize = 9
+
     SudokuTheme {
         HistoryGameBoard(
-            board = List(9) { row ->
-                List(9) { col ->
-                    BoardCell(row, col, Random.nextInt(9))
+            board = List(boardSize) { row ->
+                List(boardSize) { col ->
+                    BoardCell(
+                        row = row,
+                        col = col,
+                        value = Random.nextInt(boardSize)
+                    )
                 }
             }.toImmutable(),
             modifier = Modifier
