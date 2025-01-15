@@ -11,6 +11,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.jetbrains.kotlinx.immutable)
     api(projects.core.game)
 }

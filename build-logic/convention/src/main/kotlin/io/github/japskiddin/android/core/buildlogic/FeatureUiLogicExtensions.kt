@@ -10,7 +10,6 @@ internal fun Project.configureFeatureUiLogic() {
         implementation(libs.androidx.lifecycle.viewmodel)
         implementation(libs.androidx.lifecycle.viewmodel.savedstate)
         implementation(libs.jetbrains.kotlinx.coroutines.android)
-        implementation(libs.jetbrains.kotlinx.immutable)
         implementation(project(":core:common-android"))
         implementation(project(":core:navigation"))
         implementation(project(":core:model"))

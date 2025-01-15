@@ -11,5 +11,5 @@ kotlin {
 
 dependencies {
     implementation(projects.core.common)
-    implementation(libs.jetbrains.kotlinx.immutable)
+    api(libs.jetbrains.kotlinx.immutable)
 }
