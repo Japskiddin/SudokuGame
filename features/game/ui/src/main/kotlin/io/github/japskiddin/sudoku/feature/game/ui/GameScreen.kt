@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -48,12 +49,14 @@ import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
+import io.github.japskiddin.sudoku.feature.game.ui.logic.PreferencesUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
@@ -184,48 +187,121 @@ private fun Game(
             .padding(12.dp)
     ) {
         Menu(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 12.dp,
-                    end = 12.dp
-                ),
+            modifier = Modifier.fillMaxWidth(),
             onSettingsClick = onSettingsClick,
         )
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1f)
-        ) {
-            InfoPanel(
-                type = gameState.type,
-                difficulty = gameState.difficulty,
-                actions = gameState.actions,
-                mistakes = gameState.mistakes,
-                time = gameState.time,
-                isShowTimer = preferencesState.isShowTimer,
-                isMistakesLimit = preferencesState.isMistakesLimit
+        Spacer(modifier = Modifier.height(6.dp))
+
+        val gameModifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(1f)
+        if (isLandscape()) {
+            LandscapeGameContent(
+                gameState = gameState,
+                preferencesState = preferencesState,
+                onSelectCell = onSelectCell,
+                onInputCell = onInputCell,
+                onToolClick = onToolClick,
+                modifier = gameModifier,
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            GameBoard(
-                board = gameState.board,
-                selectedCell = gameState.selectedCell,
-                isErrorsHighlight = preferencesState.isHighlightErrorCells,
-                isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
-                isPositionCells = preferencesState.isHighlightSelectedCell,
-            ) { boardCell ->
-                onSelectCell(boardCell)
-            }
-            Spacer(modifier = Modifier.height(6.dp))
-            ToolPanel(onToolClick = onToolClick)
-            Spacer(modifier = Modifier.height(6.dp))
-            InputPanel(
-                board = gameState.board,
-                showRemainingNumbers = preferencesState.isShowRemainingNumbers,
-                onClick = onInputCell
+        } else {
+            PortraitGameContent(
+                gameState = gameState,
+                preferencesState = preferencesState,
+                onSelectCell = onSelectCell,
+                onInputCell = onInputCell,
+                onToolClick = onToolClick,
+                modifier = gameModifier,
             )
         }
+    }
+}
+
+@Composable
+private fun LandscapeGameContent(
+    gameState: GameUiState,
+    preferencesState: PreferencesUiState,
+    onSelectCell: (BoardCell) -> Unit,
+    onInputCell: (Int) -> Unit,
+    onToolClick: (ToolAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        InfoPanel(
+            type = gameState.type,
+            difficulty = gameState.difficulty,
+            actions = gameState.actions,
+            mistakes = gameState.mistakes,
+            time = gameState.time,
+            isShowTimer = preferencesState.isShowTimer,
+            isMistakesLimit = preferencesState.isMistakesLimit
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        GameBoard(
+            board = gameState.board,
+            selectedCell = gameState.selectedCell,
+            isErrorsHighlight = preferencesState.isHighlightErrorCells,
+            isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
+            isPositionCells = preferencesState.isHighlightSelectedCell,
+            modifier = Modifier.fillMaxHeight(),
+        ) { boardCell ->
+            onSelectCell(boardCell)
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        ToolPanel(onToolClick = onToolClick)
+        Spacer(modifier = Modifier.width(12.dp))
+        InputPanel(
+            board = gameState.board,
+            showRemainingNumbers = preferencesState.isShowRemainingNumbers,
+            onClick = onInputCell
+        )
+    }
+}
+
+@Composable
+private fun PortraitGameContent(
+    gameState: GameUiState,
+    preferencesState: PreferencesUiState,
+    onSelectCell: (BoardCell) -> Unit,
+    onInputCell: (Int) -> Unit,
+    onToolClick: (ToolAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        InfoPanel(
+            type = gameState.type,
+            difficulty = gameState.difficulty,
+            actions = gameState.actions,
+            mistakes = gameState.mistakes,
+            time = gameState.time,
+            isShowTimer = preferencesState.isShowTimer,
+            isMistakesLimit = preferencesState.isMistakesLimit
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        GameBoard(
+            board = gameState.board,
+            selectedCell = gameState.selectedCell,
+            isErrorsHighlight = preferencesState.isHighlightErrorCells,
+            isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
+            isPositionCells = preferencesState.isHighlightSelectedCell,
+            modifier = Modifier.fillMaxWidth(),
+        ) { boardCell ->
+            onSelectCell(boardCell)
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        ToolPanel(onToolClick = onToolClick)
+        Spacer(modifier = Modifier.height(6.dp))
+        InputPanel(
+            board = gameState.board,
+            showRemainingNumbers = preferencesState.isShowRemainingNumbers,
+            onClick = onInputCell
+        )
     }
 }
 
@@ -349,8 +425,13 @@ private fun Complete(
 }
 
 @Preview(
-    name = "Game Content",
+    name = "Game Content - Portrait mode",
     device = Devices.PIXEL_2,
+)
+@Preview(
+    name = "Game Content - Landscape mode",
+    widthDp = 732,
+    heightDp = 412,
 )
 @Composable
 private fun GameContentPreview(

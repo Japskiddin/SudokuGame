@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 
@@ -37,54 +40,127 @@ internal fun InputPanel(
     gameType: GameType = findGameTypeBySize(board.size),
     onClick: (Int) -> Unit,
 ) {
-    if (gameType == GameType.DEFAULT12X12) {
-        TwoColumnInputPanel(
-            modifier = modifier,
-            onClick = { value -> onClick(value) },
-            board = board,
-            showRemainingNumbers = showRemainingNumbers,
-        )
+    if (isLandscape()) {
+        Row(
+            modifier = modifier.fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (gameType == GameType.DEFAULT12X12) {
+                InputPanelContent(
+                    modifier = modifier,
+                    values = IntRange(start = 1, endInclusive = 6),
+                    board = board,
+                    showRemainingNumbers = showRemainingNumbers,
+                ) { value -> onClick(value) }
+                Spacer(modifier = Modifier.width(12.dp))
+                InputPanelContent(
+                    modifier = modifier,
+                    values = IntRange(start = 7, endInclusive = 12),
+                    board = board,
+                    showRemainingNumbers = showRemainingNumbers,
+                ) { value -> onClick(value) }
+            } else {
+                InputPanelContent(
+                    modifier = modifier,
+                    values = IntRange(start = 1, endInclusive = 6),
+                    board = board,
+                    showRemainingNumbers = showRemainingNumbers,
+                ) { value -> onClick(value) }
+                Spacer(modifier = Modifier.width(12.dp))
+                InputPanelContent(
+                    modifier = modifier,
+                    values = IntRange(start = 7, endInclusive = gameType.size),
+                    board = board,
+                    showRemainingNumbers = showRemainingNumbers,
+                ) { value -> onClick(value) }
+            }
+        }
     } else {
-        InputPanelContent(
-            modifier = modifier,
-            onClick = { value -> onClick(value) },
-            values = IntRange(start = 1, endInclusive = gameType.size),
-            board = board,
-            showRemainingNumbers = showRemainingNumbers,
-        )
-    }
-}
-
-@Composable
-private fun TwoColumnInputPanel(
-    board: BoardList,
-    showRemainingNumbers: Boolean,
-    modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        InputPanelContent(
-            modifier = modifier,
-            onClick = { value -> onClick(value) },
-            values = IntRange(start = 1, endInclusive = 6),
-            board = board,
-            showRemainingNumbers = showRemainingNumbers,
-        )
-        InputPanelContent(
-            modifier = modifier,
-            onClick = { value -> onClick(value) },
-            values = IntRange(start = 7, endInclusive = 12),
-            board = board,
-            showRemainingNumbers = showRemainingNumbers,
-        )
+        if (gameType == GameType.DEFAULT12X12) {
+            Column(
+                modifier = modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                InputPanelContent(
+                    modifier = modifier,
+                    values = IntRange(start = 1, endInclusive = 6),
+                    board = board,
+                    showRemainingNumbers = showRemainingNumbers,
+                ) { value -> onClick(value) }
+                Spacer(modifier = Modifier.height(6.dp))
+                InputPanelContent(
+                    modifier = modifier,
+                    values = IntRange(start = 7, endInclusive = 12),
+                    board = board,
+                    showRemainingNumbers = showRemainingNumbers,
+                ) { value -> onClick(value) }
+            }
+        } else {
+            InputPanelContent(
+                modifier = modifier,
+                values = IntRange(start = 1, endInclusive = gameType.size),
+                board = board,
+                showRemainingNumbers = showRemainingNumbers,
+            ) { value -> onClick(value) }
+        }
     }
 }
 
 @Composable
 private fun InputPanelContent(
+    board: BoardList,
+    showRemainingNumbers: Boolean,
+    values: IntRange,
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
+) {
+    if (isLandscape()) {
+        LandscapeInputPanelContent(
+            board = board,
+            showRemainingNumbers = showRemainingNumbers,
+            values = values,
+            modifier = modifier,
+            onClick = onClick
+        )
+    } else {
+        PortraitInputPanelContent(
+            board = board,
+            showRemainingNumbers = showRemainingNumbers,
+            values = values,
+            modifier = modifier,
+            onClick = onClick
+        )
+    }
+}
+
+@Composable
+private fun LandscapeInputPanelContent(
+    board: BoardList,
+    showRemainingNumbers: Boolean,
+    values: IntRange,
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
+) {
+    Column(
+        modifier = modifier.fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        for (i in values) {
+            val counter = board.countByValue(i)
+            InputButton(
+                value = i,
+                counter = counter,
+                showRemainingNumbers = showRemainingNumbers,
+                modifier = Modifier.weight(1f),
+                onClick = onClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun PortraitInputPanelContent(
     board: BoardList,
     showRemainingNumbers: Boolean,
     values: IntRange,
@@ -144,25 +220,99 @@ private fun InputButton(
         it.padding(6.dp)
     }
 
+    val color = if (counter > 0) {
+        buttonColor
+    } else {
+        buttonColor.copy(alpha = 0.4f)
+    }
+
+    val textModifier = if (showRemainingNumbers) {
+        Modifier
+    } else {
+        Modifier.padding(
+            top = 6.dp,
+            bottom = 6.dp
+        )
+    }
+
+    if (isLandscape()) {
+        LandscapeInputButton(
+            value = value,
+            counter = counter,
+            color = color,
+            textModifier = textModifier,
+            buttonModifier = buttonModifier,
+            showRemainingNumbers = showRemainingNumbers,
+            valueTextSize = valueTextSize,
+            counterTextSize = counterTextSize
+        )
+    } else {
+        PortraitInputButton(
+            value = value,
+            counter = counter,
+            color = color,
+            textModifier = textModifier,
+            buttonModifier = buttonModifier,
+            showRemainingNumbers = showRemainingNumbers,
+            valueTextSize = valueTextSize,
+            counterTextSize = counterTextSize
+        )
+    }
+}
+
+@Composable
+private fun LandscapeInputButton(
+    value: Int,
+    counter: Int,
+    color: Color,
+    textModifier: Modifier,
+    buttonModifier: Modifier,
+    showRemainingNumbers: Boolean,
+    valueTextSize: TextUnit = 16.sp,
+    counterTextSize: TextUnit = 10.sp,
+) {
+    Row(
+        modifier = buttonModifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BasicText(
+            text = value.toString(),
+            style = SudokuTheme.typography.gameButton.copy(
+                fontSize = valueTextSize,
+                color = color
+            ),
+            modifier = textModifier,
+        )
+
+        if (showRemainingNumbers) {
+            Spacer(modifier = Modifier.width(6.dp))
+            BasicText(
+                text = counter.toString(),
+                style = SudokuTheme.typography.gameButton.copy(
+                    fontSize = counterTextSize,
+                    fontWeight = FontWeight.Normal,
+                    color = color
+                ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PortraitInputButton(
+    value: Int,
+    counter: Int,
+    color: Color,
+    textModifier: Modifier,
+    buttonModifier: Modifier,
+    showRemainingNumbers: Boolean,
+    valueTextSize: TextUnit = 16.sp,
+    counterTextSize: TextUnit = 10.sp,
+) {
     Column(
         modifier = buttonModifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val color = if (counter > 0) {
-            buttonColor
-        } else {
-            buttonColor.copy(alpha = 0.4f)
-        }
-
-        val textModifier = if (showRemainingNumbers) {
-            Modifier
-        } else {
-            Modifier.padding(
-                top = 6.dp,
-                bottom = 6.dp
-            )
-        }
-
         BasicText(
             text = value.toString(),
             style = SudokuTheme.typography.gameButton.copy(
@@ -197,7 +347,14 @@ private fun BoardList.countByValue(
 }
 
 @Preview(
-    name = "Input Panel",
+    name = "Input Panel - Portrait",
+    showBackground = true,
+    backgroundColor = 0xFFFAA468,
+)
+@Preview(
+    name = "Input Panel - Landscape",
+    widthDp = 732,
+    heightDp = 412,
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )

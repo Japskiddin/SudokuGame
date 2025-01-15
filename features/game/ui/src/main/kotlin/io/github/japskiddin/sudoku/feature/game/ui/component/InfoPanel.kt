@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.feature.game.ui.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -10,12 +11,14 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
@@ -34,6 +37,96 @@ internal fun InfoPanel(
         color = SudokuTheme.colors.onPrimary
     )
 
+    if (isLandscape()) {
+        LandscapeInfoPanel(
+            type = type,
+            difficulty = difficulty,
+            time = time,
+            actions = actions,
+            mistakes = mistakes,
+            isShowTimer = isShowTimer,
+            isMistakesLimit = isMistakesLimit,
+            textStyle = textStyle,
+            modifier = modifier,
+        )
+    } else {
+        PortraitInfoPanel(
+            type = type,
+            difficulty = difficulty,
+            time = time,
+            actions = actions,
+            mistakes = mistakes,
+            isShowTimer = isShowTimer,
+            isMistakesLimit = isMistakesLimit,
+            textStyle = textStyle,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun LandscapeInfoPanel(
+    type: GameType,
+    difficulty: GameDifficulty,
+    time: Long,
+    actions: Int,
+    mistakes: Int,
+    isShowTimer: Boolean,
+    isMistakesLimit: Boolean,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxHeight()) {
+        BasicText(
+            text = type.title,
+            style = textStyle
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        BasicText(
+            text = stringResource(difficulty.getName()),
+            style = textStyle
+        )
+        if (isShowTimer) {
+            Spacer(modifier = Modifier.height(6.dp))
+            BasicText(
+                text = time.toFormattedTime(),
+                style = textStyle
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        BasicText(
+            text = stringResource(
+                CoreUiR.string.current_actions,
+                actions
+            ),
+            style = textStyle
+        )
+        if (isMistakesLimit) {
+            Spacer(modifier = Modifier.height(6.dp))
+            BasicText(
+                text = stringResource(
+                    CoreUiR.string.current_mistakes,
+                    mistakes,
+                    difficulty.mistakesLimit
+                ),
+                style = textStyle
+            )
+        }
+    }
+}
+
+@Composable
+private fun PortraitInfoPanel(
+    type: GameType,
+    difficulty: GameDifficulty,
+    time: Long,
+    actions: Int,
+    mistakes: Int,
+    isShowTimer: Boolean,
+    isMistakesLimit: Boolean,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
     Row(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
             BasicText(
@@ -78,7 +171,14 @@ internal fun InfoPanel(
 }
 
 @Preview(
-    name = "Info Panel",
+    name = "Info Panel - Portrait",
+    showBackground = true,
+    backgroundColor = 0xFFFAA468,
+)
+@Preview(
+    name = "Info Panel - Landscape",
+    widthDp = 732,
+    heightDp = 412,
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.R
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
@@ -53,7 +55,73 @@ internal fun ToolPanel(
         )
     }
 
-    Row(modifier = modifier.fillMaxWidth()) {
+    if (isLandscape()) {
+        LandscapeToolPanel(
+            modifier = modifier,
+            onShowDialog = { showResetDialog = true },
+            onToolClick = onToolClick
+        )
+    } else {
+        PortraitToolPanel(
+            modifier = modifier,
+            onShowDialog = { showResetDialog = true },
+            onToolClick = onToolClick
+        )
+    }
+}
+
+@Composable
+private fun LandscapeToolPanel(
+    modifier: Modifier = Modifier,
+    onShowDialog: () -> Unit,
+    onToolClick: (ToolAction) -> Unit
+) {
+    Column(
+        modifier = modifier.fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ToolButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = CoreUiR.string.tool_eraser),
+            icon = painterResource(id = R.drawable.ic_tool_eraser),
+            showDescription = false,
+        ) { onToolClick(ToolAction.ERASER) }
+        ToolButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = CoreUiR.string.tool_undo),
+            icon = painterResource(id = R.drawable.ic_tool_undo),
+            showDescription = false,
+        ) { onToolClick(ToolAction.UNDO) }
+        ToolButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = CoreUiR.string.tool_redo),
+            icon = painterResource(id = R.drawable.ic_tool_redo),
+            showDescription = false,
+        ) { onToolClick(ToolAction.REDO) }
+        ToolButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = CoreUiR.string.tool_note),
+            icon = painterResource(id = R.drawable.ic_tool_note),
+            showDescription = false,
+        ) { onToolClick(ToolAction.NOTE) }
+        ToolButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = CoreUiR.string.tool_reset),
+            icon = painterResource(id = R.drawable.ic_tool_reset),
+            showDescription = false,
+        ) { onShowDialog() }
+    }
+}
+
+@Composable
+private fun PortraitToolPanel(
+    modifier: Modifier = Modifier,
+    onShowDialog: () -> Unit,
+    onToolClick: (ToolAction) -> Unit
+) {
+    Row(
+        modifier = modifier.fillMaxWidth()
+    ) {
         ToolButton(
             modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_eraser),
@@ -78,7 +146,7 @@ internal fun ToolPanel(
             modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset)
-        ) { showResetDialog = true }
+        ) { onShowDialog() }
     }
 }
 
@@ -91,6 +159,7 @@ private fun ToolButton(
     textSize: TextUnit = 16.sp,
     textColor: Color = SudokuTheme.colors.gamePanelNormal,
     pressedTextColor: Color = SudokuTheme.colors.gamePanelPressed,
+    showDescription: Boolean = true,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -119,19 +188,28 @@ private fun ToolButton(
             colorFilter = ColorFilter.tint(color = buttonColor),
             modifier = Modifier.size(iconSize)
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        BasicText(
-            text = text,
-            style = SudokuTheme.typography.toolButton.copy(
-                color = buttonColor,
-                fontSize = textSize
-            ),
-        )
+        if (showDescription) {
+            Spacer(modifier = Modifier.height(6.dp))
+            BasicText(
+                text = text,
+                style = SudokuTheme.typography.toolButton.copy(
+                    color = buttonColor,
+                    fontSize = textSize
+                ),
+            )
+        }
     }
 }
 
 @Preview(
-    name = "Tool Panel",
+    name = "Tool Panel - Portrait",
+    showBackground = true,
+    backgroundColor = 0xFFFAA468,
+)
+@Preview(
+    name = "Tool Panel - Landscape",
+    widthDp = 732,
+    heightDp = 412,
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )

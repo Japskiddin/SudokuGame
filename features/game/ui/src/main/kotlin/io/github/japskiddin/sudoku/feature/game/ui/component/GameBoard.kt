@@ -11,7 +11,6 @@ import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -54,6 +53,7 @@ import io.github.japskiddin.sudoku.core.ui.utils.BoardRadix
 import io.github.japskiddin.sudoku.core.ui.utils.drawHorizontalLines
 import io.github.japskiddin.sudoku.core.ui.utils.drawVerticalLines
 import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -106,7 +106,6 @@ internal fun GameBoard(
 ) {
     BoxWithConstraints(
         modifier = modifier
-            .fillMaxWidth()
             .aspectRatio(1f)
             .background(
                 color = SudokuTheme.colors.onPrimary,
@@ -126,10 +125,14 @@ internal fun GameBoard(
                 offsetY = (-2).dp
             )
     ) {
-        val maxWidth = constraints.maxWidth.toFloat()
+        val maxSize = if (isLandscape()) {
+            constraints.maxHeight.toFloat()
+        } else {
+            constraints.maxWidth.toFloat()
+        }
 
         val cellSizePx by remember(size) {
-            mutableFloatStateOf(maxWidth / size.toFloat())
+            mutableFloatStateOf(maxSize / size.toFloat())
         }
 
         val cellSizeDividerWidth by remember(size) {
@@ -280,13 +283,13 @@ internal fun GameBoard(
                             zoom = newScale
                             if (offset.x < 0) {
                                 offset = Offset(0f, offset.y)
-                            } else if (maxWidth - offset.x < maxWidth / zoom) {
-                                offset = offset.copy(x = maxWidth - maxWidth / zoom)
+                            } else if (maxSize - offset.x < maxSize / zoom) {
+                                offset = offset.copy(x = maxSize - maxSize / zoom)
                             }
                             if (offset.y < 0) {
                                 offset = Offset(offset.x, 0f)
-                            } else if (maxWidth - offset.y < maxWidth / zoom) {
-                                offset = offset.copy(y = maxWidth - maxWidth / zoom)
+                            } else if (maxSize - offset.y < maxSize / zoom) {
+                                offset = offset.copy(y = maxSize - maxSize / zoom)
                             }
                         }
                     }
@@ -347,7 +350,7 @@ internal fun GameBoard(
                 innerStrokeThickness = horizontalInnerStrokeThickness,
                 outerStrokeColor = outerStrokeColor,
                 outerStrokeWidth = outerStrokeWidthPx,
-                maxWidth = maxWidth,
+                maxWidth = maxSize,
                 innerStrokeWidth = innerStrokeWidthPx,
                 innerStrokeColor = innerStrokeColor
             )
@@ -358,7 +361,7 @@ internal fun GameBoard(
                 innerStrokeThickness = verticalInnerStrokeThickness,
                 outerStrokeColor = outerStrokeColor,
                 outerStrokeWidth = outerStrokeWidthPx,
-                maxWidth = maxWidth,
+                maxWidth = maxSize,
                 innerStrokeWidth = innerStrokeWidthPx,
                 innerStrokeColor = innerStrokeColor
             )
