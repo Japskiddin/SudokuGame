@@ -17,11 +17,14 @@ android {
         versionCode = libs.versions.appVersion.code.get().toInt()
         versionName = libs.versions.appVersion.name.get()
         setProperty("archivesBaseName", "sudoku-$versionName-$versionCode")
-        resourceConfigurations += listOf("ru", "en")
         ndk {
             //noinspection ChromeOsAbiSupport
             abiFilters += listOf("arm64-v8a", "armeabi-v7a")
         }
+    }
+
+    androidResources {
+        localeFilters += listOf("ru", "en")
     }
 
     val keysRepo: String = if (project.hasProperty("Keys.repo")) {
@@ -116,8 +119,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.fragment)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.fragment)
     implementation(libs.androidx.splashscreen)
 
     implementation(libs.dagger.hilt.navigation.compose)
