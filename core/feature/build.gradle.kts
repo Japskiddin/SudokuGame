@@ -17,6 +17,6 @@ dependencies {
     implementation(libs.androidx.annotation)
 
     implementation(projects.core.ui)
-    implementation(projects.core.model)
+    api(projects.core.model)
     implementation(projects.core.common)
 }

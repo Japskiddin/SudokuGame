@@ -24,7 +24,11 @@ android {
     }
 
     androidResources {
-        localeFilters += listOf("ru", "en")
+        @Suppress("UnstableApiUsage")
+        localeFilters += listOf(
+            "ru",
+            "en",
+        )
     }
 
     val keysRepo: String = if (project.hasProperty("Keys.repo")) {
@@ -116,25 +120,18 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.annotation)
-    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.fragment)
     implementation(libs.androidx.splashscreen)
 
     implementation(libs.dagger.hilt.navigation.compose)
 
     implementation(projects.core.commonAndroid)
-    implementation(projects.core.domain)
-    implementation(projects.core.feature)
-    implementation(projects.core.game)
     implementation(projects.core.ui)
-    implementation(projects.core.designsystem)
-    implementation(projects.core.model)
+    implementation(projects.core.data)
     implementation(projects.core.datastore)
     implementation(projects.core.database.data)
-    implementation(projects.core.data)
     implementation(projects.core.navigation)
 
     implementation(projects.features.home.ui)

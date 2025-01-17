@@ -12,7 +12,7 @@ internal fun Project.configureFeatureUiLogic() {
         implementation(libs.jetbrains.kotlinx.coroutines.android)
         implementation(project(":core:common-android"))
         implementation(project(":core:navigation"))
-        implementation(project(":core:model"))
-        implementation(project(":core:feature"))
+        api(project(":core:model"))
+        api(project(":core:feature"))
     }
 }

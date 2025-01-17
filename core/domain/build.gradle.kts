@@ -11,5 +11,5 @@ kotlin {
 
 dependencies {
     implementation(libs.jetbrains.kotlinx.coroutines.core)
-    implementation(projects.core.model)
+    api(projects.core.model)
 }

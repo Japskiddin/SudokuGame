@@ -7,8 +7,8 @@ internal fun Project.configureFeatureDomain() {
     dependencies {
         implementation(libs.javax.inject)
         implementation(libs.jetbrains.kotlinx.coroutines.core)
-        implementation(project(":core:domain"))
+        api(project(":core:domain"))
         implementation(project(":core:common"))
-        implementation(project(":core:model"))
+        api(project(":core:model"))
     }
 }

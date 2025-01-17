@@ -14,14 +14,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
     implementation(libs.jetbrains.kotlinx.coroutines.core)
 
     implementation(projects.core.common)
     implementation(projects.core.domain)
     implementation(projects.core.model)
     implementation(projects.core.database.data)
+    implementation(projects.core.database.entities)
     implementation(projects.core.datastore)
 
-    implementation(libs.javax.inject)
+    api(libs.javax.inject)
 }

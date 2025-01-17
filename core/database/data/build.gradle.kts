@@ -17,6 +17,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
     api(projects.core.database.entities)
+    implementation(libs.androidx.annotation)
 }
