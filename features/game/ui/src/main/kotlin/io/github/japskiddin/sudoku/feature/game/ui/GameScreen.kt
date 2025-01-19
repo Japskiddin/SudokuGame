@@ -166,7 +166,7 @@ private fun Game(
 ) {
     val gameState = state.gameState
     val preferencesState = state.preferencesState
-    KeepScreenOn(preferencesState.isKeepScreenOn)
+    KeepScreenOn(isEnabled = preferencesState.isKeepScreenOn)
 
     Column(
         modifier = Modifier

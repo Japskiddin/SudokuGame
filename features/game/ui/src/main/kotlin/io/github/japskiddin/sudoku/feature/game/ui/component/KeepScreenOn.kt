@@ -11,14 +11,14 @@ private const val FlagKeepScreenOn = WindowManager.LayoutParams.FLAG_KEEP_SCREEN
 
 @Composable
 internal fun KeepScreenOn(
-    isKeepScreenOn: Boolean
+    isEnabled: Boolean
 ) {
     if (!LocalInspectionMode.current) {
         val activity = LocalContext.current as Activity
         val window = activity.window
 
         DisposableEffect(Unit) {
-            if (isKeepScreenOn) {
+            if (isEnabled) {
                 window.addFlags(FlagKeepScreenOn)
             }
 
