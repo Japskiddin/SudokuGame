@@ -176,7 +176,7 @@ private fun Game(
     ) {
         val gameModifier = Modifier.fillMaxSize()
         if (isLandscape()) {
-            LandscapeGameContent(
+            LandscapeGame(
                 gameState = gameState,
                 preferencesState = preferencesState,
                 onSelectCell = onSelectCell,
@@ -186,7 +186,7 @@ private fun Game(
                 modifier = gameModifier,
             )
         } else {
-            PortraitGameContent(
+            PortraitGame(
                 gameState = gameState,
                 preferencesState = preferencesState,
                 onSelectCell = onSelectCell,
@@ -200,7 +200,7 @@ private fun Game(
 }
 
 @Composable
-private fun LandscapeGameContent(
+private fun LandscapeGame(
     gameState: GameUiState,
     preferencesState: PreferencesUiState,
     onSelectCell: (BoardCell) -> Unit,
@@ -230,7 +230,7 @@ private fun LandscapeGameContent(
         Column(
             modifier = Modifier.fillMaxHeight()
         ) {
-            Menu(
+            GameMenu(
                 modifier = Modifier.align(Alignment.End),
                 onSettingsClick = onSettingsClick,
             )
@@ -257,7 +257,7 @@ private fun LandscapeGameContent(
 }
 
 @Composable
-private fun PortraitGameContent(
+private fun PortraitGame(
     gameState: GameUiState,
     preferencesState: PreferencesUiState,
     onSelectCell: (BoardCell) -> Unit,
@@ -270,7 +270,7 @@ private fun PortraitGameContent(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
     ) {
-        Menu(
+        GameMenu(
             modifier = Modifier.align(Alignment.End),
             onSettingsClick = onSettingsClick,
         )
@@ -307,7 +307,7 @@ private fun PortraitGameContent(
 }
 
 @Composable
-private fun Menu(
+private fun GameMenu(
     modifier: Modifier = Modifier,
     onSettingsClick: () -> Unit,
 ) {
