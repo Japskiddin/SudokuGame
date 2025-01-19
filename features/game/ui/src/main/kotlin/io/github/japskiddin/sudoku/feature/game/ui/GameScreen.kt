@@ -1,7 +1,5 @@
 package io.github.japskiddin.sudoku.feature.game.ui
 
-import android.app.Activity
-import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,15 +17,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -53,6 +50,7 @@ import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
+import io.github.japskiddin.sudoku.feature.game.ui.component.KeepScreenOn
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
@@ -168,17 +166,7 @@ private fun Game(
 ) {
     val gameState = state.gameState
     val preferencesState = state.preferencesState
-    val activity = LocalContext.current as Activity
-
-    DisposableEffect(Unit) {
-        if (preferencesState.isKeepScreenOn) {
-            activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-
-        onDispose {
-            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-    }
+    KeepScreenOn(preferencesState.isKeepScreenOn)
 
     Column(
         modifier = Modifier
@@ -246,13 +234,15 @@ private fun LandscapeGameContent(
             isErrorsHighlight = preferencesState.isHighlightErrorCells,
             isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
             isPositionCells = preferencesState.isHighlightSelectedCell,
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .wrapContentWidth(),
         ) { boardCell ->
             onSelectCell(boardCell)
         }
         Spacer(modifier = Modifier.weight(1f))
         ToolPanel(onToolClick = onToolClick)
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(24.dp))
         InputPanel(
             board = gameState.board,
             showRemainingNumbers = preferencesState.isShowRemainingNumbers,

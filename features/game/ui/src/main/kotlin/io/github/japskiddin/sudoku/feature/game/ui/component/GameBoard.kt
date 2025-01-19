@@ -3,6 +3,7 @@
 package io.github.japskiddin.sudoku.feature.game.ui.component
 
 import android.text.TextPaint
+import android.util.Log
 import android.util.TypedValue
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -53,7 +54,6 @@ import io.github.japskiddin.sudoku.core.ui.utils.BoardRadix
 import io.github.japskiddin.sudoku.core.ui.utils.drawHorizontalLines
 import io.github.japskiddin.sudoku.core.ui.utils.drawVerticalLines
 import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
-import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.utils.findGameTypeBySize
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -125,38 +125,42 @@ internal fun GameBoard(
                 offsetY = (-2).dp
             )
     ) {
-        val maxSize = if (isLandscape()) {
-            constraints.maxHeight.toFloat()
-        } else {
-            constraints.maxWidth.toFloat()
-        }
+        val maxSize = constraints.maxWidth.toFloat()
 
         val cellSizePx by remember(size) {
             mutableFloatStateOf(maxSize / size.toFloat())
         }
 
+        val sqrtSize = sqrt(size.toFloat())
+        val ceilSqrtSize = ceil(sqrtSize)
+        val floorSqrtSize = floor(sqrtSize)
+
+        Log.d("TEST", "constraints = $constraints, maxSize = $maxSize, cellSizePx = $cellSizePx")
+
         val cellSizeDividerWidth by remember(size) {
-            mutableFloatStateOf(cellSizePx / ceil(sqrt(size.toFloat())))
+            mutableFloatStateOf(cellSizePx / ceilSqrtSize)
         }
 
         val cellSizeDividerHeight by remember(size) {
-            mutableFloatStateOf(cellSizePx / floor(sqrt(size.toFloat())))
+            mutableFloatStateOf(cellSizePx / floorSqrtSize)
         }
 
         val verticalInnerStrokeThickness by remember(size) {
-            mutableIntStateOf(floor(sqrt(size.toFloat())).toInt())
+            mutableIntStateOf(floorSqrtSize.toInt())
         }
 
         val horizontalInnerStrokeThickness by remember(size) {
-            mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt())
+            mutableIntStateOf(ceilSqrtSize.toInt())
         }
 
-        var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
-        var noteTextSizePx = with(LocalDensity.current) { noteTextSize.toPx() }
+        val density = LocalDensity.current
 
-        val outerCornerRadiusPx: Float = with(LocalDensity.current) { outerCornerRadius.toPx() }
-        val outerStrokeWidthPx = with(LocalDensity.current) { outerStrokeWidth.toPx() }
-        val innerStrokeWidthPx: Float = with(LocalDensity.current) { innerStrokeWidth.toPx() }
+        var numberTextSizePx = with(density) { numberTextSize.toPx() }
+        var noteTextSizePx = with(density) { noteTextSize.toPx() }
+
+        val outerCornerRadiusPx: Float = with(density) { outerCornerRadius.toPx() }
+        val outerStrokeWidthPx = with(density) { outerStrokeWidth.toPx() }
+        val innerStrokeWidthPx: Float = with(density) { innerStrokeWidth.toPx() }
         val cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
 
         var zoom by remember(isEnabled) { mutableFloatStateOf(1f) }
@@ -211,16 +215,17 @@ internal fun GameBoard(
         }
 
         val context = LocalContext.current
+        val displayMetrics = context.resources.displayMetrics
         LaunchedEffect(numberTextSize, noteTextSize) {
             numberTextSizePx = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_SP,
                 numberTextSize.value,
-                context.resources.displayMetrics
+                displayMetrics
             )
             noteTextSizePx = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_SP,
                 noteTextSize.value,
-                context.resources.displayMetrics
+                displayMetrics
             )
             numberPaint = TextPaint().apply {
                 color = numberColor.toArgb()
