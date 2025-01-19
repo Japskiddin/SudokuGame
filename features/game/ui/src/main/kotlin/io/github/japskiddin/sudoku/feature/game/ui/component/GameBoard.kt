@@ -3,7 +3,6 @@
 package io.github.japskiddin.sudoku.feature.game.ui.component
 
 import android.text.TextPaint
-import android.util.Log
 import android.util.TypedValue
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -18,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -127,31 +125,17 @@ internal fun GameBoard(
     ) {
         val maxSize = constraints.maxWidth.toFloat()
 
-        val cellSizePx by remember(size) {
-            mutableFloatStateOf(maxSize / size.toFloat())
-        }
+        val cellSizePx = maxSize / size.toFloat()
 
         val sqrtSize = sqrt(size.toFloat())
         val ceilSqrtSize = ceil(sqrtSize)
         val floorSqrtSize = floor(sqrtSize)
 
-        Log.d("TEST", "constraints = $constraints, maxSize = $maxSize, cellSizePx = $cellSizePx")
+        val cellSizeDividerWidth = cellSizePx / ceilSqrtSize
+        val cellSizeDividerHeight = cellSizePx / floorSqrtSize
 
-        val cellSizeDividerWidth by remember(size) {
-            mutableFloatStateOf(cellSizePx / ceilSqrtSize)
-        }
-
-        val cellSizeDividerHeight by remember(size) {
-            mutableFloatStateOf(cellSizePx / floorSqrtSize)
-        }
-
-        val verticalInnerStrokeThickness by remember(size) {
-            mutableIntStateOf(floorSqrtSize.toInt())
-        }
-
-        val horizontalInnerStrokeThickness by remember(size) {
-            mutableIntStateOf(ceilSqrtSize.toInt())
-        }
+        val verticalInnerStrokeThickness = floorSqrtSize.toInt()
+        val horizontalInnerStrokeThickness = ceilSqrtSize.toInt()
 
         val density = LocalDensity.current
 
