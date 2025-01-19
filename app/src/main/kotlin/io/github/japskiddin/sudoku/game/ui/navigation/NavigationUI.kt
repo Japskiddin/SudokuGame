@@ -1,10 +1,9 @@
 package io.github.japskiddin.sudoku.game.ui.navigation
 
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
@@ -53,7 +52,7 @@ fun NavigationEffect(
     navigationChannel: Channel<NavigationIntent>,
     navHostController: NavHostController
 ) {
-    val activity = LocalContext.current as? Activity
+    val activity = LocalActivity.current
     LaunchedEffect(activity, navHostController, navigationChannel) {
         navigationChannel.receiveAsFlow().collect { intent ->
             if (activity?.isFinishing == true) {

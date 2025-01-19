@@ -198,7 +198,8 @@ private fun Menu(
                 )
             }
 
-            val versionName: String = LocalContext.current.getPackageInfo().versionName.toString()
+            val context = LocalContext.current
+            val versionName: String = context.getPackageInfo().versionName.toString()
             OutlineText(
                 text = versionName,
                 textStyle = SudokuTheme.typography.info,
