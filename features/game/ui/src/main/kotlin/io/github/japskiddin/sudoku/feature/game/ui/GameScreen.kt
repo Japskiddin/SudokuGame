@@ -174,15 +174,7 @@ private fun Game(
             .safeDrawingPadding()
             .padding(12.dp)
     ) {
-        Menu(
-            modifier = Modifier.fillMaxWidth(),
-            onSettingsClick = onSettingsClick,
-        )
-        Spacer(modifier = Modifier.height(6.dp))
-
-        val gameModifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(1f)
+        val gameModifier = Modifier.fillMaxSize()
         if (isLandscape()) {
             LandscapeGameContent(
                 gameState = gameState,
@@ -190,6 +182,7 @@ private fun Game(
                 onSelectCell = onSelectCell,
                 onInputCell = onInputCell,
                 onToolClick = onToolClick,
+                onSettingsClick = onSettingsClick,
                 modifier = gameModifier,
             )
         } else {
@@ -199,6 +192,7 @@ private fun Game(
                 onSelectCell = onSelectCell,
                 onInputCell = onInputCell,
                 onToolClick = onToolClick,
+                onSettingsClick = onSettingsClick,
                 modifier = gameModifier,
             )
         }
@@ -212,21 +206,28 @@ private fun LandscapeGameContent(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        InfoPanel(
-            type = gameState.type,
-            difficulty = gameState.difficulty,
-            actions = gameState.actions,
-            mistakes = gameState.mistakes,
-            time = gameState.time,
-            isShowTimer = preferencesState.isShowTimer,
-            isMistakesLimit = preferencesState.isMistakesLimit
-        )
+        Column {
+            Menu(
+                onSettingsClick = onSettingsClick,
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            InfoPanel(
+                type = gameState.type,
+                difficulty = gameState.difficulty,
+                actions = gameState.actions,
+                mistakes = gameState.mistakes,
+                time = gameState.time,
+                isShowTimer = preferencesState.isShowTimer,
+                isMistakesLimit = preferencesState.isMistakesLimit
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
         GameBoard(
             board = gameState.board,
@@ -258,12 +259,18 @@ private fun PortraitGameContent(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
     ) {
+        Menu(
+            modifier = Modifier.align(Alignment.End),
+            onSettingsClick = onSettingsClick,
+        )
+        Spacer(modifier = Modifier.height(6.dp))
         InfoPanel(
             type = gameState.type,
             difficulty = gameState.difficulty,
@@ -301,7 +308,6 @@ private fun Menu(
     onSettingsClick: () -> Unit,
 ) {
     Row(
-        horizontalArrangement = Arrangement.End,
         modifier = modifier
     ) {
         Image(

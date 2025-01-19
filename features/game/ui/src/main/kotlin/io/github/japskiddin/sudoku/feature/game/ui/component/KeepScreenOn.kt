@@ -15,9 +15,9 @@ internal fun KeepScreenOn(
 ) {
     if (!LocalInspectionMode.current) {
         val activity = LocalContext.current as Activity
-        val window = activity.window
 
         DisposableEffect(Unit) {
+            val window = activity.window
             if (isEnabled) {
                 window.addFlags(FlagKeepScreenOn)
             }
