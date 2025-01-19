@@ -199,6 +199,59 @@ private fun Game(
     }
 }
 
+// @Composable
+// private fun LandscapeGameContent(
+//    gameState: GameUiState,
+//    preferencesState: PreferencesUiState,
+//    onSelectCell: (BoardCell) -> Unit,
+//    onInputCell: (Int) -> Unit,
+//    onToolClick: (ToolAction) -> Unit,
+//    onSettingsClick: () -> Unit,
+//    modifier: Modifier = Modifier,
+// ) {
+//    Row(
+//        verticalAlignment = Alignment.CenterVertically,
+//        modifier = modifier
+//    ) {
+//        Column {
+//            Menu(
+//                onSettingsClick = onSettingsClick,
+//            )
+//            Spacer(modifier = Modifier.height(24.dp))
+//            InfoPanel(
+//                type = gameState.type,
+//                difficulty = gameState.difficulty,
+//                actions = gameState.actions,
+//                mistakes = gameState.mistakes,
+//                time = gameState.time,
+//                isShowTimer = preferencesState.isShowTimer,
+//                isMistakesLimit = preferencesState.isMistakesLimit
+//            )
+//        }
+//        Spacer(modifier = Modifier.weight(1f))
+//        GameBoard(
+//            board = gameState.board,
+//            selectedCell = gameState.selectedCell,
+//            isErrorsHighlight = preferencesState.isHighlightErrorCells,
+//            isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
+//            isPositionCells = preferencesState.isHighlightSelectedCell,
+//            modifier = Modifier
+//                .fillMaxHeight()
+//                .wrapContentWidth(),
+//        ) { boardCell ->
+//            onSelectCell(boardCell)
+//        }
+//        Spacer(modifier = Modifier.weight(1f))
+//        ToolPanel(onToolClick = onToolClick)
+//        Spacer(modifier = Modifier.width(12.dp))
+//        InputPanel(
+//            board = gameState.board,
+//            showRemainingNumbers = preferencesState.isShowRemainingNumbers,
+//            onClick = onInputCell
+//        )
+//    }
+// }
+
 @Composable
 private fun LandscapeGameContent(
     gameState: GameUiState,
@@ -213,22 +266,6 @@ private fun LandscapeGameContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        Column {
-            Menu(
-                onSettingsClick = onSettingsClick,
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            InfoPanel(
-                type = gameState.type,
-                difficulty = gameState.difficulty,
-                actions = gameState.actions,
-                mistakes = gameState.mistakes,
-                time = gameState.time,
-                isShowTimer = preferencesState.isShowTimer,
-                isMistakesLimit = preferencesState.isMistakesLimit
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
         GameBoard(
             board = gameState.board,
             selectedCell = gameState.selectedCell,
@@ -242,13 +279,33 @@ private fun LandscapeGameContent(
             onSelectCell(boardCell)
         }
         Spacer(modifier = Modifier.weight(1f))
-        ToolPanel(onToolClick = onToolClick)
         Spacer(modifier = Modifier.width(12.dp))
-        InputPanel(
-            board = gameState.board,
-            showRemainingNumbers = preferencesState.isShowRemainingNumbers,
-            onClick = onInputCell
-        )
+        Column(
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Menu(
+                modifier = Modifier.align(Alignment.End),
+                onSettingsClick = onSettingsClick,
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            InfoPanel(
+                type = gameState.type,
+                difficulty = gameState.difficulty,
+                actions = gameState.actions,
+                mistakes = gameState.mistakes,
+                time = gameState.time,
+                isShowTimer = preferencesState.isShowTimer,
+                isMistakesLimit = preferencesState.isMistakesLimit
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            ToolPanel(onToolClick = onToolClick)
+            Spacer(modifier = Modifier.height(6.dp))
+            InputPanel(
+                board = gameState.board,
+                showRemainingNumbers = preferencesState.isShowRemainingNumbers,
+                onClick = onInputCell
+            )
+        }
     }
 }
 

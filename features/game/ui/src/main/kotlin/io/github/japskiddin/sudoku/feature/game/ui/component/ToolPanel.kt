@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,7 +33,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.feature.game.ui.R
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
@@ -56,62 +54,15 @@ internal fun ToolPanel(
         )
     }
 
-    if (isLandscape()) {
-        LandscapeToolPanel(
-            modifier = modifier,
-            onShowDialog = { showResetDialog = true },
-            onToolClick = onToolClick
-        )
-    } else {
-        PortraitToolPanel(
-            modifier = modifier,
-            onShowDialog = { showResetDialog = true },
-            onToolClick = onToolClick
-        )
-    }
+    ToolPanelContent(
+        modifier = modifier,
+        onShowDialog = { showResetDialog = true },
+        onToolClick = onToolClick
+    )
 }
 
 @Composable
-private fun LandscapeToolPanel(
-    modifier: Modifier = Modifier,
-    onShowDialog: () -> Unit,
-    onToolClick: (ToolAction) -> Unit
-) {
-    Column(
-        modifier = modifier.fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ) {
-        ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_eraser),
-            icon = painterResource(id = R.drawable.ic_tool_eraser),
-            showDescription = false,
-        ) { onToolClick(ToolAction.ERASER) }
-        ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_undo),
-            icon = painterResource(id = R.drawable.ic_tool_undo),
-            showDescription = false,
-        ) { onToolClick(ToolAction.UNDO) }
-        ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_redo),
-            icon = painterResource(id = R.drawable.ic_tool_redo),
-            showDescription = false,
-        ) { onToolClick(ToolAction.REDO) }
-        ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_note),
-            icon = painterResource(id = R.drawable.ic_tool_note),
-            showDescription = false,
-        ) { onToolClick(ToolAction.NOTE) }
-        ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_reset),
-            icon = painterResource(id = R.drawable.ic_tool_reset),
-            showDescription = false,
-        ) { onShowDialog() }
-    }
-}
-
-@Composable
-private fun PortraitToolPanel(
+private fun ToolPanelContent(
     modifier: Modifier = Modifier,
     onShowDialog: () -> Unit,
     onToolClick: (ToolAction) -> Unit
@@ -149,8 +100,8 @@ private fun ToolButton(
     text: String,
     icon: Painter,
     modifier: Modifier = Modifier,
-    iconSize: Dp = 36.dp,
-    textSize: TextUnit = 16.sp,
+    iconSize: Dp = 24.dp,
+    textSize: TextUnit = 14.sp,
     textColor: Color = SudokuTheme.colors.gamePanelNormal,
     pressedTextColor: Color = SudokuTheme.colors.gamePanelPressed,
     showDescription: Boolean = true,
@@ -172,7 +123,7 @@ private fun ToolButton(
                 indication = LocalIndication.current,
                 onClick = onClick,
             )
-            .padding(6.dp),
+            .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -196,13 +147,6 @@ private fun ToolButton(
 
 @Preview(
     name = "Tool Panel - Portrait",
-    showBackground = true,
-    backgroundColor = 0xFFFAA468,
-)
-@Preview(
-    name = "Tool Panel - Landscape",
-    widthDp = 732,
-    heightDp = 412,
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )
