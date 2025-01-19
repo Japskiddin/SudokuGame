@@ -5,6 +5,7 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -78,34 +79,30 @@ private fun LandscapeToolPanel(
 ) {
     Column(
         modifier = modifier.fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_eraser),
             icon = painterResource(id = R.drawable.ic_tool_eraser),
             showDescription = false,
         ) { onToolClick(ToolAction.ERASER) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_undo),
             icon = painterResource(id = R.drawable.ic_tool_undo),
             showDescription = false,
         ) { onToolClick(ToolAction.UNDO) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_redo),
             icon = painterResource(id = R.drawable.ic_tool_redo),
             showDescription = false,
         ) { onToolClick(ToolAction.REDO) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_note),
             icon = painterResource(id = R.drawable.ic_tool_note),
             showDescription = false,
         ) { onToolClick(ToolAction.NOTE) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset),
             showDescription = false,
@@ -120,30 +117,27 @@ private fun PortraitToolPanel(
     onToolClick: (ToolAction) -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_eraser),
             icon = painterResource(id = R.drawable.ic_tool_eraser)
         ) { onToolClick(ToolAction.ERASER) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_undo),
             icon = painterResource(id = R.drawable.ic_tool_undo)
         ) { onToolClick(ToolAction.UNDO) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_redo),
             icon = painterResource(id = R.drawable.ic_tool_redo)
         ) { onToolClick(ToolAction.REDO) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_note),
             icon = painterResource(id = R.drawable.ic_tool_note)
         ) { onToolClick(ToolAction.NOTE) }
         ToolButton(
-            modifier = Modifier.weight(1f),
             text = stringResource(id = CoreUiR.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset)
         ) { onShowDialog() }
@@ -172,8 +166,8 @@ private fun ToolButton(
     }
 
     Column(
-        modifier = Modifier
-            .then(modifier)
+        modifier = modifier
+            .padding(6.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,

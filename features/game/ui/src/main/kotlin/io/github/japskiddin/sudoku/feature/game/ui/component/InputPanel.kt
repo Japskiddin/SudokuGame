@@ -52,7 +52,7 @@ internal fun InputPanel(
                     board = board,
                     showRemainingNumbers = showRemainingNumbers,
                 ) { value -> onClick(value) }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 InputPanelContent(
                     modifier = modifier,
                     values = IntRange(start = 7, endInclusive = 12),
@@ -62,14 +62,14 @@ internal fun InputPanel(
             } else {
                 InputPanelContent(
                     modifier = modifier,
-                    values = IntRange(start = 1, endInclusive = 6),
+                    values = IntRange(start = 1, endInclusive = 5),
                     board = board,
                     showRemainingNumbers = showRemainingNumbers,
                 ) { value -> onClick(value) }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 InputPanelContent(
                     modifier = modifier,
-                    values = IntRange(start = 7, endInclusive = gameType.size),
+                    values = IntRange(start = 6, endInclusive = gameType.size),
                     board = board,
                     showRemainingNumbers = showRemainingNumbers,
                 ) { value -> onClick(value) }
@@ -143,7 +143,7 @@ private fun LandscapeInputPanelContent(
 ) {
     Column(
         modifier = modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         for (i in values) {
@@ -152,7 +152,6 @@ private fun LandscapeInputPanelContent(
                 value = i,
                 counter = counter,
                 showRemainingNumbers = showRemainingNumbers,
-                modifier = Modifier.weight(1f),
                 onClick = onClick
             )
         }
@@ -170,7 +169,7 @@ private fun PortraitInputPanelContent(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         for (i in values) {
             val counter = board.countByValue(i)
@@ -178,7 +177,6 @@ private fun PortraitInputPanelContent(
                 value = i,
                 counter = counter,
                 showRemainingNumbers = showRemainingNumbers,
-                modifier = Modifier.weight(1f),
                 onClick = onClick
             )
         }
@@ -207,17 +205,16 @@ private fun InputButton(
     }
 
     val buttonModifier = if (counter > 0) {
-        Modifier
-            .then(modifier)
+        modifier
+            .padding(6.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
                 onClick = { onClick(value) },
             )
+            .padding(6.dp)
     } else {
-        Modifier.then(modifier)
-    }.also {
-        it.padding(6.dp)
+        modifier.padding(6.dp)
     }
 
     val color = if (counter > 0) {

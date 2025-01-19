@@ -243,7 +243,7 @@ private fun LandscapeGameContent(
         }
         Spacer(modifier = Modifier.weight(1f))
         ToolPanel(onToolClick = onToolClick)
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(12.dp))
         InputPanel(
             board = gameState.board,
             showRemainingNumbers = preferencesState.isShowRemainingNumbers,
