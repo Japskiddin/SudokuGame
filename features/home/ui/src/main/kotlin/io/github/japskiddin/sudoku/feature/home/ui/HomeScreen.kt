@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.home.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -324,8 +322,7 @@ private fun Error(
             .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
-        val configuration = LocalConfiguration.current
-        val widthPercent = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        val widthPercent = if (isLandscape()) {
             .6f
         } else {
             1f

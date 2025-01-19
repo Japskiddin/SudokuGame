@@ -41,12 +41,14 @@ import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
+import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
+import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
@@ -133,13 +135,14 @@ private fun GameScreenContent(
             modifier = screenModifier
         )
 
-        is UiState.Complete -> Complete(
+        is UiState.Result -> Result(
+            status = state.status,
+            actions = state.actions,
+            mistakes = state.mistakes,
+            mistakesLimit = state.mistakesLimit,
+            time = state.time,
+            onClose = onCloseGame,
             modifier = screenModifier
-        )
-
-        is UiState.Fail -> Fail(
-            modifier = screenModifier,
-            onClose = onCloseGame
         )
 
         is UiState.Loading -> Loading(
@@ -363,7 +366,12 @@ private fun Error(
 }
 
 @Composable
-private fun Fail(
+private fun Result(
+    status: GameStatus,
+    actions: Int,
+    mistakes: Int,
+    mistakesLimit: Int,
+    time: Long,
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -374,14 +382,58 @@ private fun Fail(
             .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
+        val widthPercent = if (isLandscape()) {
+            .6f
+        } else {
+            1f
+        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(16.dp)
+                .fillMaxWidth(widthPercent)
                 .dialogBackground()
         ) {
             BasicText(
-                text = "",
+                text = stringResource(
+                    id = if (status == GameStatus.COMPLETED) {
+                        CoreUiR.string.congratulations
+                    } else {
+                        CoreUiR.string.game_over
+                    }
+                ),
+                style = SudokuTheme.typography.panel.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
+            )
+            BasicText(
+                text = stringResource(
+                    id = CoreUiR.string.current_actions,
+                    actions,
+                ),
+                style = SudokuTheme.typography.panel.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
+            )
+            BasicText(
+                text = stringResource(
+                    id = CoreUiR.string.current_mistakes,
+                    mistakes,
+                    mistakesLimit,
+                ),
+                style = SudokuTheme.typography.panel.copy(
+                    color = SudokuTheme.colors.primary,
+                    textAlign = TextAlign.Center
+                ),
+            )
+            BasicText(
+                text = stringResource(
+                    id = CoreUiR.string.play_time,
+                    time.toFormattedTime(),
+                ),
                 style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
@@ -392,34 +444,6 @@ private fun Fail(
                 icon = painterResource(id = CoreUiR.drawable.ic_close),
                 text = stringResource(id = CoreUiR.string.close)
             ) { onClose() }
-        }
-    }
-}
-
-@Composable
-private fun Complete(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .then(modifier)
-            .background(SudokuTheme.colors.primary)
-            .safeDrawingPadding()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(16.dp)
-                .dialogBackground()
-        ) {
-            BasicText(
-                text = stringResource(id = CoreUiR.string.game_completed),
-                style = SudokuTheme.typography.panel.copy(
-                    color = SudokuTheme.colors.primary,
-                    textAlign = TextAlign.Center
-                ),
-            )
         }
     }
 }
@@ -469,7 +493,12 @@ private class UiStateProvider : PreviewParameterProvider<UiState> {
             UiState.Game(gameState = gameState),
             UiState.Loading,
             UiState.Error(code = GameError.BOARD_NOT_FOUND),
-            UiState.Complete,
-            UiState.Fail
+            UiState.Result(
+                actions = 2,
+                mistakes = 1,
+                mistakesLimit = 12,
+                time = 100001L,
+                status = GameStatus.COMPLETED
+            ),
         )
 }

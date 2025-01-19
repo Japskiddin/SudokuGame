@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.core.ui.component
 
-import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -23,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
+import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 
 @Composable
 public fun Loading(
@@ -58,8 +57,7 @@ private fun LoadingContent(
             .background(SudokuTheme.colors.primary)
             .safeContentPadding()
     ) {
-        val configuration = LocalConfiguration.current
-        val widthPercent = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        val widthPercent = if (isLandscape()) {
             .6f
         } else {
             1f

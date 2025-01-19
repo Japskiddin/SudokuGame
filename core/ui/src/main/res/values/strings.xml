@@ -26,7 +26,6 @@
     <string name="tool_redo">Redo</string>
     <string name="tool_note">Note</string>
     <string name="tool_reset">Reset</string>
-    <string name="game_completed">Game completed!</string>
     <string name="close">Close</string>
     <string name="current_mistakes">Mistakes: %d / %d</string>
     <string name="current_actions">Actions: %d</string>
@@ -58,4 +57,6 @@
     <string name="finished_at">Finished at: %s</string>
     <string name="last_played">Last played: %s</string>
     <string name="play_time">Play time: %s</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="game_over">Game over</string>
 </resources>

@@ -37,7 +37,6 @@
     <string name="tool_redo">Повторить</string>
     <string name="tool_note">Заметка</string>
     <string name="tool_reset">Сбросить</string>
-    <string name="game_completed">Игра завершена!</string>
     <string name="close">Закрыть</string>
     <string name="current_mistakes">Ошибок: %d / %d</string>
     <string name="current_actions">Действий: %d</string>

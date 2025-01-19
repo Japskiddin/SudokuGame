@@ -125,8 +125,22 @@ internal constructor(
         when {
             gameState.error != GameError.NONE -> UiState.Error(gameState.error)
             gameState.status == GameState.Status.LOADING -> UiState.Loading
-            gameState.status == GameState.Status.COMPLETED -> UiState.Complete
-            gameState.status == GameState.Status.FAILED -> UiState.Fail
+            gameState.status == GameState.Status.COMPLETED -> UiState.Result(
+                actions = gameState.actions,
+                mistakes = gameState.mistakes,
+                mistakesLimit = gameState.difficulty.mistakesLimit,
+                time = gameState.time,
+                status = GameStatus.COMPLETED
+            )
+
+            gameState.status == GameState.Status.FAILED -> UiState.Result(
+                actions = gameState.actions,
+                mistakes = gameState.mistakes,
+                mistakesLimit = gameState.difficulty.mistakesLimit,
+                time = gameState.time,
+                status = GameStatus.FAILED
+            )
+
             else -> UiState.Game(
                 gameState = gameState.toGameUiState(),
                 preferencesState = preferencesUiState
