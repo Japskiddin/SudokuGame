@@ -167,7 +167,6 @@ private fun ToolButton(
 
     Column(
         modifier = modifier
-            .padding(6.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,

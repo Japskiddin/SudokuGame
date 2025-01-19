@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,34 +44,57 @@ internal fun InputPanel(
             modifier = modifier.fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (gameType == GameType.DEFAULT12X12) {
-                InputPanelContent(
-                    modifier = modifier,
-                    values = IntRange(start = 1, endInclusive = 6),
-                    board = board,
-                    showRemainingNumbers = showRemainingNumbers,
-                ) { value -> onClick(value) }
-                Spacer(modifier = Modifier.width(6.dp))
-                InputPanelContent(
-                    modifier = modifier,
-                    values = IntRange(start = 7, endInclusive = 12),
-                    board = board,
-                    showRemainingNumbers = showRemainingNumbers,
-                ) { value -> onClick(value) }
-            } else {
-                InputPanelContent(
-                    modifier = modifier,
-                    values = IntRange(start = 1, endInclusive = 5),
-                    board = board,
-                    showRemainingNumbers = showRemainingNumbers,
-                ) { value -> onClick(value) }
-                Spacer(modifier = Modifier.width(6.dp))
-                InputPanelContent(
-                    modifier = modifier,
-                    values = IntRange(start = 6, endInclusive = gameType.size),
-                    board = board,
-                    showRemainingNumbers = showRemainingNumbers,
-                ) { value -> onClick(value) }
+            when (gameType) {
+                GameType.DEFAULT12X12 -> {
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 1, endInclusive = 5),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 6, endInclusive = 10),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 11, endInclusive = 12),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                }
+
+                GameType.DEFAULT6X6 -> {
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 1, endInclusive = 3),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 4, endInclusive = 6),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                }
+
+                else -> {
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 1, endInclusive = 5),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                    InputPanelContentColumn(
+                        modifier = modifier,
+                        values = IntRange(start = 6, endInclusive = gameType.size),
+                        board = board,
+                        showRemainingNumbers = showRemainingNumbers,
+                    ) { value -> onClick(value) }
+                }
             }
         }
     } else {
@@ -81,14 +103,13 @@ internal fun InputPanel(
                 modifier = modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                InputPanelContent(
+                InputPanelContentRow(
                     modifier = modifier,
                     values = IntRange(start = 1, endInclusive = 6),
                     board = board,
                     showRemainingNumbers = showRemainingNumbers,
                 ) { value -> onClick(value) }
-                Spacer(modifier = Modifier.height(6.dp))
-                InputPanelContent(
+                InputPanelContentRow(
                     modifier = modifier,
                     values = IntRange(start = 7, endInclusive = 12),
                     board = board,
@@ -96,7 +117,7 @@ internal fun InputPanel(
                 ) { value -> onClick(value) }
             }
         } else {
-            InputPanelContent(
+            InputPanelContentRow(
                 modifier = modifier,
                 values = IntRange(start = 1, endInclusive = gameType.size),
                 board = board,
@@ -107,34 +128,7 @@ internal fun InputPanel(
 }
 
 @Composable
-private fun InputPanelContent(
-    board: BoardList,
-    showRemainingNumbers: Boolean,
-    values: IntRange,
-    modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit,
-) {
-    if (isLandscape()) {
-        LandscapeInputPanelContent(
-            board = board,
-            showRemainingNumbers = showRemainingNumbers,
-            values = values,
-            modifier = modifier,
-            onClick = onClick
-        )
-    } else {
-        PortraitInputPanelContent(
-            board = board,
-            showRemainingNumbers = showRemainingNumbers,
-            values = values,
-            modifier = modifier,
-            onClick = onClick
-        )
-    }
-}
-
-@Composable
-private fun LandscapeInputPanelContent(
+private fun InputPanelContentColumn(
     board: BoardList,
     showRemainingNumbers: Boolean,
     values: IntRange,
@@ -146,10 +140,10 @@ private fun LandscapeInputPanelContent(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        for (i in values) {
-            val counter = board.countByValue(i)
+        values.forEach { value ->
+            val counter = board.countByValue(value)
             InputButton(
-                value = i,
+                value = value,
                 counter = counter,
                 showRemainingNumbers = showRemainingNumbers,
                 onClick = onClick
@@ -159,7 +153,7 @@ private fun LandscapeInputPanelContent(
 }
 
 @Composable
-private fun PortraitInputPanelContent(
+private fun InputPanelContentRow(
     board: BoardList,
     showRemainingNumbers: Boolean,
     values: IntRange,
@@ -171,10 +165,10 @@ private fun PortraitInputPanelContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        for (i in values) {
-            val counter = board.countByValue(i)
+        values.forEach { value ->
+            val counter = board.countByValue(value)
             InputButton(
-                value = i,
+                value = value,
                 counter = counter,
                 showRemainingNumbers = showRemainingNumbers,
                 onClick = onClick
@@ -206,7 +200,6 @@ private fun InputButton(
 
     val buttonModifier = if (counter > 0) {
         modifier
-            .padding(6.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
@@ -286,6 +279,7 @@ private fun InputPanelPreview() {
     SudokuTheme {
         InputPanel(
             board = getSampleBoardForPreview(),
+            gameType = GameType.DEFAULT6X6,
             showRemainingNumbers = true,
             onClick = {}
         )
