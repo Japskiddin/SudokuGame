@@ -28,8 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -42,6 +40,7 @@ import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
+import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog
@@ -342,15 +341,8 @@ private fun Error(
     }
 }
 
-@Preview(
-    name = "Home Content - Portrait mode",
-    device = Devices.PIXEL_2,
-)
-@Preview(
-    name = "Home Content - Landscape mode",
-    widthDp = 732,
-    heightDp = 412,
-)
+@Suppress("UnusedPrivateMember")
+@SudokuPreview
 @Composable
 private fun HomeContentPreview(
     @PreviewParameter(HomeStateProvider::class) state: UiState

@@ -26,8 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +36,7 @@ import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
+import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.history.ui.components.HistoryGameBoard
@@ -303,15 +302,8 @@ private fun GameplayInformation(
     }
 }
 
-@Preview(
-    name = "History Content - Portrait mode",
-    device = Devices.PIXEL_2,
-)
-@Preview(
-    name = "History Content - Landscape mode",
-    widthDp = 732,
-    heightDp = 412,
-)
+@Suppress("UnusedPrivateMember")
+@SudokuPreview
 @Composable
 private fun HistoryContentPreview() {
     @Suppress("MagicNumber")

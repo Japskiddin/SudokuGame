@@ -15,10 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 
 @Composable
@@ -79,15 +78,8 @@ private fun LoadingContent(
     }
 }
 
-@Preview(
-    name = "Loading - Portrait mode",
-    device = Devices.PIXEL_2,
-)
-@Preview(
-    name = "Loading - Landscape mode",
-    widthDp = 732,
-    heightDp = 412,
-)
+@Suppress("UnusedPrivateMember")
+@SudokuPreview
 @Composable
 private fun LoadingPreview() {
     SudokuTheme {

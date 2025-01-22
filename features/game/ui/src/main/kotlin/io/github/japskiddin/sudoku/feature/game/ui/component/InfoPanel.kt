@@ -82,14 +82,7 @@ internal fun InfoPanel(
 }
 
 @Preview(
-    name = "Info Panel - Portrait",
-    showBackground = true,
-    backgroundColor = 0xFFFAA468,
-)
-@Preview(
-    name = "Info Panel - Landscape",
-    widthDp = 732,
-    heightDp = 412,
+    name = "Info Panel",
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )

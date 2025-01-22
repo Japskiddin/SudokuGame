@@ -28,8 +28,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -46,6 +44,7 @@ import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
+import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
@@ -444,15 +443,8 @@ private fun Result(
     }
 }
 
-@Preview(
-    name = "Game Content - Portrait mode",
-    device = Devices.PIXEL_2,
-)
-@Preview(
-    name = "Game Content - Landscape mode",
-    widthDp = 732,
-    heightDp = 412,
-)
+@Suppress("UnusedPrivateMember")
+@SudokuPreview
 @Composable
 private fun GameContentPreview(
     @PreviewParameter(UiStateProvider::class) state: UiState,

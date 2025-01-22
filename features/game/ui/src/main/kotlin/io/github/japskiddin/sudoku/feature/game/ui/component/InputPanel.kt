@@ -176,7 +176,7 @@ private fun BoardList.countByValue(
 }
 
 @Preview(
-    name = "Input Panel - Portrait",
+    name = "Input Panel",
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )

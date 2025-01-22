@@ -146,7 +146,7 @@ private fun ToolButton(
 }
 
 @Preview(
-    name = "Tool Panel - Portrait",
+    name = "Tool Panel",
     showBackground = true,
     backgroundColor = 0xFFFAA468,
 )
