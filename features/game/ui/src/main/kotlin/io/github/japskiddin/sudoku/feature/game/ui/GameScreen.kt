@@ -46,8 +46,8 @@ import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
-import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
+import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
@@ -345,9 +345,7 @@ private fun Error(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(16.dp)
-                .dialogBackground()
+            modifier = Modifier.panelBackground()
         ) {
             BasicText(
                 text = message,
@@ -365,6 +363,7 @@ private fun Error(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun Result(
     status: GameStatus,
@@ -382,19 +381,15 @@ private fun Result(
             .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
-        val widthPercent = if (isLandscape()) {
-            .6f
-        } else {
-            1f
-        }
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(widthPercent)
-                .dialogBackground()
+            modifier = Modifier.panelBackground()
         ) {
+            Image(
+                painter = painterResource(id = CoreUiR.drawable.logo),
+                contentDescription = stringResource(id = CoreUiR.string.app_name),
+                modifier = Modifier.size(80.dp)
+            )
             BasicText(
                 text = stringResource(
                     id = if (status == GameStatus.COMPLETED) {
@@ -408,13 +403,14 @@ private fun Result(
                     textAlign = TextAlign.Center
                 ),
             )
+            Spacer(modifier = Modifier.height(12.dp))
             BasicText(
                 text = stringResource(
                     id = CoreUiR.string.current_actions,
                     actions,
                 ),
-                style = SudokuTheme.typography.panel.copy(
-                    color = SudokuTheme.colors.primary,
+                style = SudokuTheme.typography.dialog.copy(
+                    color = SudokuTheme.colors.onDialog,
                     textAlign = TextAlign.Center
                 ),
             )
@@ -424,8 +420,8 @@ private fun Result(
                     mistakes,
                     mistakesLimit,
                 ),
-                style = SudokuTheme.typography.panel.copy(
-                    color = SudokuTheme.colors.primary,
+                style = SudokuTheme.typography.dialog.copy(
+                    color = SudokuTheme.colors.onDialog,
                     textAlign = TextAlign.Center
                 ),
             )
@@ -434,8 +430,8 @@ private fun Result(
                     id = CoreUiR.string.play_time,
                     time.toFormattedTime(),
                 ),
-                style = SudokuTheme.typography.panel.copy(
-                    color = SudokuTheme.colors.primary,
+                style = SudokuTheme.typography.dialog.copy(
+                    color = SudokuTheme.colors.onDialog,
                     textAlign = TextAlign.Center
                 ),
             )

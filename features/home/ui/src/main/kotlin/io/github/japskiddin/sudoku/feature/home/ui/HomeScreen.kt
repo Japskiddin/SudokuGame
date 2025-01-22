@@ -42,8 +42,8 @@ import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
-import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
+import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog
 import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
@@ -322,18 +322,9 @@ private fun Error(
             .background(SudokuTheme.colors.primary)
             .safeDrawingPadding()
     ) {
-        val widthPercent = if (isLandscape()) {
-            .6f
-        } else {
-            1f
-        }
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(widthPercent)
-                .dialogBackground()
+            modifier = Modifier.panelBackground()
         ) {
             BasicText(
                 text = stringResource(id = errorCode.toStringRes()),

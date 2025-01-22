@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -20,8 +19,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.ui.utils.dialogBackground
-import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
+import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 
 @Composable
 public fun Loading(
@@ -57,18 +55,9 @@ private fun LoadingContent(
             .background(SudokuTheme.colors.primary)
             .safeContentPadding()
     ) {
-        val widthPercent = if (isLandscape()) {
-            .6f
-        } else {
-            1f
-        }
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(widthPercent)
-                .dialogBackground()
+            modifier = Modifier.panelBackground()
         ) {
             BasicText(
                 text = text,

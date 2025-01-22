@@ -4,6 +4,7 @@ import android.graphics.BlurMaskFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -20,6 +21,23 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+
+private const val PanelWidthPercentLandscape: Float = .6f
+private const val PanelWidthPercentPortrait: Float = 1f
+
+@Composable
+public fun Modifier.panelBackground(): Modifier = this.then(
+    Modifier
+        .padding(16.dp)
+        .fillMaxWidth(
+            if (isLandscape()) {
+                PanelWidthPercentLandscape
+            } else {
+                PanelWidthPercentPortrait
+            }
+        )
+        .dialogBackground()
+)
 
 @Composable
 public fun Modifier.dialogBackground(): Modifier = this.then(
