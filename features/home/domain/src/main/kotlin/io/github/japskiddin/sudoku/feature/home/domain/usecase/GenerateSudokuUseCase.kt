@@ -1,17 +1,23 @@
 package io.github.japskiddin.sudoku.feature.home.domain.usecase
 
+import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
 import io.github.japskiddin.sudoku.core.model.Board
 import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.model.convertToString
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-public class GenerateSudokuUseCase @Inject constructor() {
-    public operator fun invoke(
+public class GenerateSudokuUseCase
+@Inject
+constructor(
+    private val appDispatchers: AppDispatchers,
+) {
+    public suspend operator fun invoke(
         mode: GameMode
-    ): Board {
+    ): Board = withContext(appDispatchers.default) {
         val type = mode.type
         val difficulty = mode.difficulty
         val boardSize = type.size
@@ -40,7 +46,7 @@ public class GenerateSudokuUseCase @Inject constructor() {
             }
         }
 
-        return Board(
+        Board(
             board = puzzle.convertToString(),
             solvedBoard = solvedPuzzle.convertToString(),
             difficulty = difficulty,

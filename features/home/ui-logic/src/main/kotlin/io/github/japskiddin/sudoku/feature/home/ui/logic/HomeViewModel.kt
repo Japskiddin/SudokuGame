@@ -117,7 +117,7 @@ internal constructor(
     private fun startNewGame(mode: GameMode) {
         menuState.update { it.copy(isLoading = true) }
 
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             val savedGame = gameState.value.lastGame
             deleteSavedGameUseCase.get().invoke(savedGame)
 

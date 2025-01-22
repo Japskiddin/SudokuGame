@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
@@ -21,7 +20,7 @@ import io.github.japskiddin.sudoku.core.model.initiate
 import io.github.japskiddin.sudoku.core.model.isEmpty
 import io.github.japskiddin.sudoku.core.model.toBoardList
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToHistoryUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameCompletedUseCase
+import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameStatusUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightErrorCellsPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightSelectedCellPreferenceUseCase
@@ -37,6 +36,7 @@ import io.github.japskiddin.sudoku.feature.game.domain.usecase.SaveGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.combine
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.copyBoard
+import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.utils.toGameUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
@@ -59,14 +59,13 @@ public class GameViewModel
 @Inject
 internal constructor(
     private val appNavigator: AppNavigator,
-    private val appDispatchers: AppDispatchers,
     private val savedState: SavedStateHandle,
     private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val saveGameUseCase: Provider<SaveGameUseCase>,
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
-    private val checkGameCompletedUseCase: Provider<CheckGameCompletedUseCase>,
+    private val checkGameStatusUseCase: Provider<CheckGameStatusUseCase>,
     private val addToHistoryUseCase: Provider<AddToHistoryUseCase>,
     getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
     getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>,
@@ -187,7 +186,7 @@ internal constructor(
             return
         }
 
-        viewModelScope.launch(appDispatchers.io) {
+        viewModelScope.launch {
             val boardEntity = try {
                 getBoardUseCase.get().invoke(boardUid)
             } catch (ex: BoardNotFoundException) {
@@ -250,7 +249,7 @@ internal constructor(
 
     private fun startTimer() {
         stopTimer()
-        timerJob = viewModelScope.launch(appDispatchers.io) {
+        timerJob = viewModelScope.launch {
             while (true) {
                 delay(TIMER_DELAY)
                 gameState.update { it.copy(time = it.time + 1) }
@@ -315,8 +314,7 @@ internal constructor(
             )
         }
         addToGameHistory()
-        checkGameCompleted()
-        checkGameFailed()
+        checkGameStatus()
     }
 
     private fun resetBoard() {
@@ -362,34 +360,21 @@ internal constructor(
         gameState.update { it.copy(selectedCell = cell) }
     }
 
-    private fun checkGameFailed() {
+    private fun checkGameStatus() {
         val state = gameState.value
-        if (state.mistakes >= state.difficulty.mistakesLimit) {
-            gameState.update { it.copy(status = GameState.Status.FAILED) }
-            stopTimer()
-            addToHistory(GameStatus.FAILED)
-        }
-    }
-
-    private fun checkGameCompleted() {
-        checkBoardSolved()
-        val isCompleted = checkGameCompletedUseCase.get().invoke(gameState.value.board, gameState.value.solvedBoard)
-        if (isCompleted) {
-            gameState.update { it.copy(status = GameState.Status.COMPLETED) }
-            stopTimer()
-            addToHistory(GameStatus.COMPLETED)
-        }
-    }
-
-    private fun checkBoardSolved() {
-        val state = gameState.value
-        if (gameState.value.solvedBoard.isEmpty()) {
-            val solvedBoard = solveBoardUseCase.get().invoke(
-                state.board.convertToString(),
-                state.type,
-                gameState.value.initialBoard
+        viewModelScope.launch {
+            val status = checkGameStatusUseCase.get().invoke(
+                board = gameState.value.board,
+                solvedBoard = gameState.value.solvedBoard,
+                mistakes = state.mistakes,
+                difficulty = state.difficulty
             )
-            gameState.update { it.copy(solvedBoard = solvedBoard) }
+
+            if (status == GameStatus.FAILED || status == GameStatus.COMPLETED) {
+                gameState.update { it.copy(status = status.toGameState()) }
+                stopTimer()
+                addToHistory(status)
+            }
         }
     }
 
