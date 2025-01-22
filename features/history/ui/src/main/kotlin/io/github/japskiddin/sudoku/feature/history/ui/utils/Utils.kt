@@ -19,6 +19,6 @@ internal fun GameStatus.toFormattedString(): String = stringResource(
     id = when (this) {
         GameStatus.COMPLETED -> CoreUiR.string.completed
         GameStatus.FAILED -> CoreUiR.string.failed
-        GameStatus.IN_PROGRESS -> CoreUiR.string.in_progress
+        GameStatus.IN_PROGRESS -> CoreUiR.string.game_in_progress
     }
 )

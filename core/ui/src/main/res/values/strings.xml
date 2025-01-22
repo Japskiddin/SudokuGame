@@ -52,7 +52,7 @@
     <string name="status">Status: %s</string>
     <string name="completed">Completed</string>
     <string name="failed">Failed</string>
-    <string name="in_progress">In progress</string>
+    <string name="game_in_progress">In progress</string>
     <string name="started_at">Started at: %s</string>
     <string name="finished_at">Finished at: %s</string>
     <string name="last_played">Last played: %s</string>

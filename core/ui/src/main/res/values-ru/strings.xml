@@ -49,4 +49,14 @@
     <string name="reset_timer">Сбрасывать таймер</string>
     <string name="reset_timer_desc">Сбрасывать таймер при сбросе игры</string>
     <string name="settings_section_general">Общее</string>
+    <string name="status">Статус: %s</string>
+    <string name="completed">Завершено</string>
+    <string name="failed">Неудача</string>
+    <string name="game_in_progress">В процессе</string>
+    <string name="started_at">Начата: %s</string>
+    <string name="finished_at">Завершена: %s</string>
+    <string name="last_played">Последняя игра: %s</string>
+    <string name="play_time">Время игры: %s</string>
+    <string name="congratulations">Поздравляем!</string>
+    <string name="game_over">Игра окончена</string>
 </resources>
