@@ -84,10 +84,10 @@ private fun ToolPanelContent(
             text = stringResource(id = CoreUiR.string.tool_redo),
             icon = painterResource(id = R.drawable.ic_tool_redo)
         ) { onToolClick(ToolAction.REDO) }
-        ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_note),
-            icon = painterResource(id = R.drawable.ic_tool_note)
-        ) { onToolClick(ToolAction.NOTE) }
+//        ToolButton(
+//            text = stringResource(id = CoreUiR.string.tool_note),
+//            icon = painterResource(id = R.drawable.ic_tool_note)
+//        ) { onToolClick(ToolAction.NOTE) }
         ToolButton(
             text = stringResource(id = CoreUiR.string.tool_reset),
             icon = painterResource(id = R.drawable.ic_tool_reset)
