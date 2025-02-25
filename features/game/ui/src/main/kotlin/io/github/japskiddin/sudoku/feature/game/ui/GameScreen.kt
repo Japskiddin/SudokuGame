@@ -247,13 +247,13 @@ private fun LandscapeGame(
                 isMistakesLimit = preferencesState.isMistakesLimit
             )
             Spacer(modifier = Modifier.weight(1f))
-            ToolPanel(onToolClick = onToolClick)
-            Spacer(modifier = Modifier.height(6.dp))
             InputPanel(
                 board = gameState.board,
                 showRemainingNumbers = preferencesState.isShowRemainingNumbers,
                 onClick = onInputCell
             )
+            Spacer(modifier = Modifier.height(6.dp))
+            ToolPanel(onToolClick = onToolClick)
         }
     }
 }
@@ -298,13 +298,13 @@ private fun PortraitGame(
             onSelectCell(boardCell)
         }
         Spacer(modifier = Modifier.weight(1f))
-        ToolPanel(onToolClick = onToolClick)
-        Spacer(modifier = Modifier.height(6.dp))
         InputPanel(
             board = gameState.board,
             showRemainingNumbers = preferencesState.isShowRemainingNumbers,
             onClick = onInputCell
         )
+        Spacer(modifier = Modifier.height(6.dp))
+        ToolPanel(onToolClick = onToolClick)
     }
 }
 
