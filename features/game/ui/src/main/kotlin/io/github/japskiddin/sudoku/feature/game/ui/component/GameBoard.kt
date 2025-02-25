@@ -142,9 +142,9 @@ internal fun GameBoard(
         var numberTextSizePx = with(density) { numberTextSize.toPx() }
         var noteTextSizePx = with(density) { noteTextSize.toPx() }
 
-        val outerCornerRadiusPx: Float = with(density) { outerCornerRadius.toPx() }
+        val outerCornerRadiusPx = with(density) { outerCornerRadius.toPx() }
         val outerStrokeWidthPx = with(density) { outerStrokeWidth.toPx() }
-        val innerStrokeWidthPx: Float = with(density) { innerStrokeWidth.toPx() }
+        val innerStrokeWidthPx = with(density) { innerStrokeWidth.toPx() }
         val cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
 
         var zoom by remember(isEnabled) { mutableFloatStateOf(1f) }
