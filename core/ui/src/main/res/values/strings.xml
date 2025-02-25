@@ -21,7 +21,7 @@
     <string name="err_unknown">Unknown error.</string>
     <string name="err_generate_level">Failed to generate level. Please try again.</string>
     <string name="level_creation">Level creation…</string>
-    <string name="tool_eraser">Eraser</string>
+    <string name="tool_eraser">Erase</string>
     <string name="tool_undo">Undo</string>
     <string name="tool_redo">Redo</string>
     <string name="tool_note">Note</string>

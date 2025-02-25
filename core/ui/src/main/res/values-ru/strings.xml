@@ -32,11 +32,11 @@
     <string name="err_unknown">Неизвестная ошибка.</string>
     <string name="err_generate_level">Не удалось создать уровень. Пожалуйста, попробуйте ещё раз.</string>
     <string name="level_creation">Создание уровня…</string>
-    <string name="tool_eraser">Ластик</string>
-    <string name="tool_undo">Отменить</string>
-    <string name="tool_redo">Повторить</string>
+    <string name="tool_eraser">Стереть</string>
+    <string name="tool_undo">Отмена</string>
+    <string name="tool_redo">Повтор</string>
     <string name="tool_note">Заметка</string>
-    <string name="tool_reset">Сбросить</string>
+    <string name="tool_reset">Сброс</string>
     <string name="close">Закрыть</string>
     <string name="current_mistakes">Ошибок: %d / %d</string>
     <string name="current_actions">Действий: %d</string>
