@@ -38,13 +38,14 @@ import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
+import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
-import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialog
-import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialog
+import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialogContent
+import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialogContent
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
@@ -129,24 +130,32 @@ private fun Menu(
     var showDifficultyDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showContinueDialog) {
-        ContinueDialog(
-            onDismiss = { showContinueDialog = false },
-            onConfirm = {
-                showContinueDialog = false
-                showDifficultyDialog = true
-            }
-        )
+        GameDialog(
+            showDialog = showContinueDialog,
+            onDismiss = { showContinueDialog = false }
+        ) {
+            ContinueDialogContent(
+                onConfirm = {
+                    showContinueDialog = false
+                    showDifficultyDialog = true
+                }
+            )
+        }
     }
 
     if (showDifficultyDialog) {
-        DifficultyDialog(
-            gameMode = gameMode,
-            onDismiss = { showDifficultyDialog = false },
-            onConfirm = { mode ->
-                showDifficultyDialog = false
-                onPrepareGame(mode)
-            }
-        )
+        GameDialog(
+            showDialog = showDifficultyDialog,
+            onDismiss = { showDifficultyDialog = false }
+        ) {
+            DifficultyDialogContent(
+                gameMode = gameMode,
+                onConfirm = { mode ->
+                    showDifficultyDialog = false
+                    onPrepareGame(mode)
+                }
+            )
+        }
     }
 
     Box(

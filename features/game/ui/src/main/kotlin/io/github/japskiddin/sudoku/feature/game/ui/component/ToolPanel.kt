@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
+import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.feature.game.ui.R
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
@@ -44,8 +45,11 @@ internal fun ToolPanel(
 ) {
     var showResetDialog by rememberSaveable { mutableStateOf(false) }
 
-    if (showResetDialog) {
-        ResetDialog(
+    GameDialog(
+        showDialog = showResetDialog,
+        onDismiss = { showResetDialog = false }
+    ) {
+        ResetDialogContent(
             onDismiss = { showResetDialog = false },
             onConfirm = {
                 showResetDialog = false

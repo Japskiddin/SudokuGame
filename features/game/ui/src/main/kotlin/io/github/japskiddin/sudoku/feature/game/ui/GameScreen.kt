@@ -233,11 +233,14 @@ private fun LandscapeGame(
             modifier = Modifier.fillMaxHeight()
         ) {
             GameMenu(
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(end = 12.dp),
                 onSettingsClick = onSettingsClick,
             )
             Spacer(modifier = Modifier.height(6.dp))
             InfoPanel(
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp),
                 type = gameState.type,
                 difficulty = gameState.difficulty,
                 actions = gameState.actions,
@@ -273,11 +276,14 @@ private fun PortraitGame(
         modifier = modifier
     ) {
         GameMenu(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(end = 12.dp),
             onSettingsClick = onSettingsClick,
         )
         Spacer(modifier = Modifier.height(6.dp))
         InfoPanel(
+            modifier = Modifier.padding(start = 12.dp, end = 12.dp),
             type = gameState.type,
             difficulty = gameState.difficulty,
             actions = gameState.actions,
