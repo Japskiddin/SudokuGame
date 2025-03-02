@@ -4,10 +4,11 @@
     android:viewportWidth="101"
     android:viewportHeight="100">
     <group
+        android:name="group"
         android:scaleX="0.56774193"
         android:scaleY="0.56212074"
-        android:translateX="21.56356"
-        android:translateY="22.682493">
+        android:pivotX="50"
+        android:pivotY="50">
         <path
             android:pathData="M51.18,90C38.68,87 25.18,68.1 25.18,58.5C24.18,49.33 24.68,30.5 33.68,28C42.68,23 57.68,23 68.68,28.5C76.68,32 77.68,46.9 77.68,52.5C77.68,76.5 54.78,90 51.18,90Z"
             android:fillColor="#FE8532" />

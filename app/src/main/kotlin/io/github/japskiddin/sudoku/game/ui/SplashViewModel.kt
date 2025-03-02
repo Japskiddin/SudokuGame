@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.game.ui
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,9 @@ constructor() : ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(SPLASH_SCREEN_DURATION)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                delay(SPLASH_SCREEN_DURATION)
+            }
             _isShowSplashScreen.update { false }
         }
     }
