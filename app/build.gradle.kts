@@ -25,10 +25,7 @@ android {
 
     androidResources {
         @Suppress("UnstableApiUsage")
-        localeFilters += listOf(
-            "ru",
-            "en",
-        )
+        generateLocaleConfig = true
     }
 
     val keysRepo: String = if (project.hasProperty("Keys.repo")) {
