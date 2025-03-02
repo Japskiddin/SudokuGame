@@ -19,7 +19,7 @@ android {
         setProperty("archivesBaseName", "sudoku-$versionName-$versionCode")
         ndk {
             //noinspection ChromeOsAbiSupport
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
         }
     }
 
@@ -110,7 +110,8 @@ android {
 
     applicationVariants.all {
         val variant = this
-        variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
             .forEach { output ->
                 val outputFileName =
                     "sudoku-${variant.versionName}-${variant.versionCode}-${buildType.name}.apk"
