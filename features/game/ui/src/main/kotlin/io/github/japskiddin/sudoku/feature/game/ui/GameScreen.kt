@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -183,6 +182,7 @@ private fun Game(
             LandscapeGame(
                 gameState = gameState,
                 preferencesState = preferencesState,
+                maxWidth = maxWidth,
                 onSelectCell = onSelectCell,
                 onInputCell = onInputCell,
                 onToolClick = onToolClick,
@@ -208,6 +208,7 @@ private fun Game(
 private fun LandscapeGame(
     gameState: GameUiState,
     preferencesState: PreferencesUiState,
+    maxWidth: Dp,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
@@ -260,7 +261,9 @@ private fun LandscapeGame(
                 onInputCell(value)
             }
             Spacer(modifier = Modifier.height(6.dp))
-            ToolPanel { action ->
+            ToolPanel(
+                showDescription = maxWidth >= 580.dp
+            ) { action ->
                 onToolClick(action)
             }
         }
@@ -280,6 +283,7 @@ private fun PortraitGame(
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
         GameMenu(
@@ -305,7 +309,6 @@ private fun PortraitGame(
             isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
             isPositionCells = preferencesState.isHighlightSelectedCell,
             modifier = Modifier
-                .fillMaxWidth()
                 .weight(1f)
                 .padding(top = 6.dp, bottom = 6.dp),
         ) { boardCell ->
