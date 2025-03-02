@@ -283,7 +283,6 @@ private fun PortraitGame(
         )
         Spacer(modifier = Modifier.height(6.dp))
         InfoPanel(
-            modifier = Modifier.padding(start = 12.dp, end = 12.dp),
             type = gameState.type,
             difficulty = gameState.difficulty,
             actions = gameState.actions,
@@ -292,20 +291,19 @@ private fun PortraitGame(
             isShowTimer = preferencesState.isShowTimer,
             isMistakesLimit = preferencesState.isMistakesLimit
         )
-        Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(6.dp))
         GameBoard(
             board = gameState.board,
             selectedCell = gameState.selectedCell,
             isErrorsHighlight = preferencesState.isHighlightErrorCells,
             isIdenticalNumbersHighlight = preferencesState.isHighlightSimilarCells,
             isPositionCells = preferencesState.isHighlightSelectedCell,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(top = 6.dp, bottom = 6.dp),
         ) { boardCell ->
             onSelectCell(boardCell)
         }
-        Spacer(modifier = Modifier.height(6.dp))
-        Spacer(modifier = Modifier.weight(1f))
         InputPanel(
             board = gameState.board,
             showRemainingNumbers = preferencesState.isShowRemainingNumbers,
