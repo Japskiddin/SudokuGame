@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -170,7 +172,7 @@ private fun Game(
     val preferencesState = state.preferencesState
     KeepScreenOn(isEnabled = preferencesState.isKeepScreenOn)
 
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .then(modifier)
             .safeDrawingPadding()
@@ -191,6 +193,7 @@ private fun Game(
             PortraitGame(
                 gameState = gameState,
                 preferencesState = preferencesState,
+                maxHeight = maxHeight,
                 onSelectCell = onSelectCell,
                 onInputCell = onInputCell,
                 onToolClick = onToolClick,
@@ -253,10 +256,13 @@ private fun LandscapeGame(
             InputPanel(
                 board = gameState.board,
                 showRemainingNumbers = preferencesState.isShowRemainingNumbers,
-                onClick = onInputCell
-            )
+            ) { value ->
+                onInputCell(value)
+            }
             Spacer(modifier = Modifier.height(6.dp))
-            ToolPanel(onToolClick = onToolClick)
+            ToolPanel { action ->
+                onToolClick(action)
+            }
         }
     }
 }
@@ -265,6 +271,7 @@ private fun LandscapeGame(
 private fun PortraitGame(
     gameState: GameUiState,
     preferencesState: PreferencesUiState,
+    maxHeight: Dp,
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
@@ -307,10 +314,13 @@ private fun PortraitGame(
         InputPanel(
             board = gameState.board,
             showRemainingNumbers = preferencesState.isShowRemainingNumbers,
-            onClick = onInputCell
-        )
+        ) { value ->
+            onInputCell(value)
+        }
         Spacer(modifier = Modifier.height(6.dp))
-        ToolPanel(onToolClick = onToolClick)
+        ToolPanel(showDescription = maxHeight >= 560.dp) { action ->
+            onToolClick(action)
+        }
     }
 }
 

@@ -39,7 +39,7 @@ public data class Typography(
     val gameInfo: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
+        fontSize = 12.sp
     ),
     val gameButton: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,

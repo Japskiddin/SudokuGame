@@ -42,6 +42,7 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 @Composable
 internal fun ToolPanel(
     modifier: Modifier = Modifier,
+    showDescription: Boolean = true,
     onToolClick: (ToolAction) -> Unit
 ) {
     var showResetDialog by rememberSaveable { mutableStateOf(false) }
@@ -62,13 +63,16 @@ internal fun ToolPanel(
     ToolPanelContent(
         modifier = modifier,
         onShowDialog = { showResetDialog = true },
-        onToolClick = onToolClick
-    )
+        showDescription = showDescription,
+    ) { action ->
+        onToolClick(action)
+    }
 }
 
 @Composable
 private fun ToolPanelContent(
     modifier: Modifier = Modifier,
+    showDescription: Boolean,
     onShowDialog: () -> Unit,
     onToolClick: (ToolAction) -> Unit
 ) {
@@ -79,15 +83,18 @@ private fun ToolPanelContent(
     ) {
         ToolButton(
             text = stringResource(id = CoreUiR.string.tool_eraser),
-            icon = painterResource(id = R.drawable.ic_tool_eraser)
+            icon = painterResource(id = R.drawable.ic_tool_eraser),
+            showDescription = showDescription,
         ) { onToolClick(ToolAction.ERASER) }
         ToolButton(
             text = stringResource(id = CoreUiR.string.tool_undo),
-            icon = painterResource(id = R.drawable.ic_tool_undo)
+            icon = painterResource(id = R.drawable.ic_tool_undo),
+            showDescription = showDescription,
         ) { onToolClick(ToolAction.UNDO) }
         ToolButton(
             text = stringResource(id = CoreUiR.string.tool_redo),
-            icon = painterResource(id = R.drawable.ic_tool_redo)
+            icon = painterResource(id = R.drawable.ic_tool_redo),
+            showDescription = showDescription,
         ) { onToolClick(ToolAction.REDO) }
 //        ToolButton(
 //            text = stringResource(id = CoreUiR.string.tool_note),
@@ -95,7 +102,8 @@ private fun ToolPanelContent(
 //        ) { onToolClick(ToolAction.NOTE) }
         ToolButton(
             text = stringResource(id = CoreUiR.string.tool_reset),
-            icon = painterResource(id = R.drawable.ic_tool_reset)
+            icon = painterResource(id = R.drawable.ic_tool_reset),
+            showDescription = showDescription,
         ) { onShowDialog() }
     }
 }
