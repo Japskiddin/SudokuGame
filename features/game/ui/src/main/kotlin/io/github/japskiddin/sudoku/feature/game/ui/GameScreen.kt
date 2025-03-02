@@ -228,7 +228,7 @@ private fun LandscapeGame(
             onSelectCell(boardCell)
         }
         Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(6.dp))
         Column(
             modifier = Modifier.fillMaxHeight()
         ) {
@@ -293,6 +293,7 @@ private fun PortraitGame(
             isMistakesLimit = preferencesState.isMistakesLimit
         )
         Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(6.dp))
         GameBoard(
             board = gameState.board,
             selectedCell = gameState.selectedCell,
@@ -303,6 +304,7 @@ private fun PortraitGame(
         ) { boardCell ->
             onSelectCell(boardCell)
         }
+        Spacer(modifier = Modifier.height(6.dp))
         Spacer(modifier = Modifier.weight(1f))
         InputPanel(
             board = gameState.board,

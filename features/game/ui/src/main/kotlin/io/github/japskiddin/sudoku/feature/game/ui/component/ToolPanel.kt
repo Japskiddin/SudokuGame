@@ -105,7 +105,7 @@ private fun ToolButton(
     icon: Painter,
     modifier: Modifier = Modifier,
     iconSize: Dp = 24.dp,
-    textSize: TextUnit = 14.sp,
+    textSize: TextUnit = 12.sp,
     textColor: Color = SudokuTheme.colors.gamePanelNormal,
     pressedTextColor: Color = SudokuTheme.colors.gamePanelPressed,
     showDescription: Boolean = true,
