@@ -105,23 +105,7 @@ internal fun GameBoard(
     BoxWithConstraints(
         modifier = modifier
             .aspectRatio(1f)
-            .background(
-                color = SudokuTheme.colors.onPrimary,
-                shape = RoundedCornerShape(size = 16.dp)
-            )
-            .padding(6.dp)
-            .innerShadow(
-                shape = RoundedCornerShape(size = 12.dp),
-                color = Color.Black.copy(alpha = .8f),
-                offsetX = 2.dp,
-                offsetY = 2.dp
-            )
-            .innerShadow(
-                shape = RoundedCornerShape(size = 12.dp),
-                color = Color.White.copy(alpha = .8f),
-                offsetX = (-2).dp,
-                offsetY = (-2).dp
-            )
+            .boardBackground()
     ) {
         val maxSize = constraints.maxWidth.toFloat()
 
@@ -744,6 +728,28 @@ private fun getNoteRowNumber(
 
     else -> 0
 }
+
+@Composable
+private fun Modifier.boardBackground(): Modifier = this.then(
+    Modifier
+        .background(
+            color = SudokuTheme.colors.onPrimary,
+            shape = RoundedCornerShape(size = 16.dp)
+        )
+        .padding(4.dp)
+        .innerShadow(
+            shape = RoundedCornerShape(size = 12.dp),
+            color = Color.Black.copy(alpha = .8f),
+            offsetX = 2.dp,
+            offsetY = 2.dp
+        )
+        .innerShadow(
+            shape = RoundedCornerShape(size = 12.dp),
+            color = Color.White.copy(alpha = .8f),
+            offsetX = (-2).dp,
+            offsetY = (-2).dp
+        )
+)
 
 @Preview(
     name = "Game Board Preview",
