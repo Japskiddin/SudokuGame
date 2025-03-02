@@ -118,9 +118,9 @@ private fun InputButton(
                 indication = LocalIndication.current,
                 onClick = { onClick(value) },
             )
-            .padding(6.dp)
+            .padding(2.dp)
     } else {
-        modifier.padding(6.dp)
+        modifier.padding(2.dp)
     }
 
     val color = if (counter > 0) {
@@ -133,8 +133,8 @@ private fun InputButton(
         Modifier
     } else {
         Modifier.padding(
-            top = 6.dp,
-            bottom = 6.dp
+            top = 2.dp,
+            bottom = 2.dp
         )
     }
 
@@ -152,7 +152,7 @@ private fun InputButton(
         )
 
         if (showRemainingNumbers) {
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             BasicText(
                 text = counter.toString(),
                 style = SudokuTheme.typography.gameButton.copy(
@@ -170,7 +170,9 @@ private fun BoardList.countByValue(
 ): Int {
     var foundValues = 0
     forEach { cells ->
-        foundValues += cells.count { cell -> cell.value == value }
+        foundValues += cells.count { cell ->
+            cell.value == value
+        }
     }
     return count() - foundValues
 }
