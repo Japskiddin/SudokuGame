@@ -19,7 +19,7 @@ internal fun Project.configureDetekt() {
     }
 
     extensions.configure<DetektExtension> {
-        config.setFrom(rootProject.files("default-detekt-config.yml"))
+        config.setFrom(rootProject.files("config/default-detekt-config.yml"))
     }
 
     dependencies {
