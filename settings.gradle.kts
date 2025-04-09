@@ -1,3 +1,6 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "Sudoku"
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -27,8 +30,6 @@ dependencyResolutionManagement {
     }
 }
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-rootProject.name = "Sudoku"
 include(
     ":app",
     ":core:navigation",
