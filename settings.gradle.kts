@@ -2,7 +2,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "Sudoku"
 
 pluginManagement {
-    includeBuild("build-logic")
+    includeBuild("./gradle/build-logic")
     repositories {
         google {
             content {

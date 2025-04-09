@@ -9,7 +9,6 @@ class JvmConventionPlugin : Plugin<Project> {
         with(target) {
             plugins {
                 apply(libs.plugins.jetbrains.kotlin.jvm.get().pluginId)
-                apply(libs.plugins.dependency.analysis.get().pluginId)
             }
 
             configureJvm()
