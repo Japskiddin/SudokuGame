@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
+import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
+import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.game.utils.isSudokuFilled
 import io.github.japskiddin.sudoku.core.game.utils.isValidCell
@@ -22,15 +24,6 @@ import io.github.japskiddin.sudoku.core.model.toBoardList
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.AddToHistoryUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.CheckGameStatusUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetBoardUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightErrorCellsPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightSelectedCellPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetHighlightSimilarCellsPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetKeepScreenOnPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetMistakesLimitPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetResetTimerPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetSavedGameUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowRemainingNumbersPreferenceUseCase
-import io.github.japskiddin.sudoku.feature.game.domain.usecase.GetShowTimerPreferenceUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.RestoreGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SaveGameUseCase
 import io.github.japskiddin.sudoku.feature.game.domain.usecase.SolveBoardUseCase
@@ -60,33 +53,26 @@ public class GameViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val savedState: SavedStateHandle,
-    private val getSavedGameUseCase: Provider<GetSavedGameUseCase>,
+    private val settingsRepository: SettingsRepository,
+    private val savedGameRepository: SavedGameRepository,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val saveGameUseCase: Provider<SaveGameUseCase>,
     private val restoreGameUseCase: Provider<RestoreGameUseCase>,
     private val solveBoardUseCase: Provider<SolveBoardUseCase>,
     private val checkGameStatusUseCase: Provider<CheckGameStatusUseCase>,
     private val addToHistoryUseCase: Provider<AddToHistoryUseCase>,
-    getMistakesLimitPreferenceUseCase: Provider<GetMistakesLimitPreferenceUseCase>,
-    getShowTimerPreferenceUseCase: Provider<GetShowTimerPreferenceUseCase>,
-    getResetTimerPreferenceUseCase: Provider<GetResetTimerPreferenceUseCase>,
-    getHighlightErrorCellsPreferenceUseCase: Provider<GetHighlightErrorCellsPreferenceUseCase>,
-    getHighlightSimilarCellsPreferenceUseCase: Provider<GetHighlightSimilarCellsPreferenceUseCase>,
-    getHighlightSelectedCellPreferenceUseCase: Provider<GetHighlightSelectedCellPreferenceUseCase>,
-    getKeepScreenOnPreferenceUseCase: Provider<GetKeepScreenOnPreferenceUseCase>,
-    getShowRemainingNumbersPreferenceUseCase: Provider<GetShowRemainingNumbersPreferenceUseCase>,
 ) : ViewModel() {
     private lateinit var gameHistoryManager: GameHistoryManager
 
     private val preferencesUiState: StateFlow<PreferencesUiState> = combine(
-        getMistakesLimitPreferenceUseCase.get().invoke(),
-        getShowTimerPreferenceUseCase.get().invoke(),
-        getResetTimerPreferenceUseCase.get().invoke(),
-        getHighlightErrorCellsPreferenceUseCase.get().invoke(),
-        getHighlightSimilarCellsPreferenceUseCase.get().invoke(),
-        getHighlightSelectedCellPreferenceUseCase.get().invoke(),
-        getKeepScreenOnPreferenceUseCase.get().invoke(),
-        getShowRemainingNumbersPreferenceUseCase.get().invoke(),
+        settingsRepository.isMistakesLimit(),
+        settingsRepository.isShowTimer(),
+        settingsRepository.isResetTimer(),
+        settingsRepository.isHighlightErrorCells(),
+        settingsRepository.isHighlightSimilarCells(),
+        settingsRepository.isHighlightSelectedCell(),
+        settingsRepository.isKeepScreenOn(),
+        settingsRepository.isShowRemainingNumbers(),
     ) {
             isMistakesLimit,
             isShowTimer,
@@ -210,7 +196,7 @@ internal constructor(
                 solveBoardUseCase.get().invoke(board, boardType, initialBoard)
             }
 
-            val savedGame = getSavedGameUseCase.get().invoke(boardUid)
+            val savedGame = savedGameRepository.get(boardUid)
             if (savedGame != null) {
                 val savedBoard = savedGame.board.toBoardList(boardType)
                 val restoredBoard = restoreGameUseCase.get().invoke(
