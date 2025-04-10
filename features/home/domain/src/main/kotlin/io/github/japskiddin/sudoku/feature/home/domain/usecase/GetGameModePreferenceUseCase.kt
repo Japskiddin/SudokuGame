@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 public class GetGameModePreferenceUseCase
-@Inject constructor(
+@Inject
+constructor(
     private val settingsRepository: SettingsRepository
 ) {
     public operator fun invoke(): Flow<GameMode> {

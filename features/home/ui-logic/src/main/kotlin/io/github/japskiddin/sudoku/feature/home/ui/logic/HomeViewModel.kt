@@ -5,16 +5,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
+import io.github.japskiddin.sudoku.core.domain.BoardRepository
+import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
+import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameMode
-import io.github.japskiddin.sudoku.feature.home.domain.usecase.CreateBoardUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.DeleteSavedGameUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GenerateSudokuUseCase
-import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetCurrentYearUseCase
 import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetGameModePreferenceUseCase
-import io.github.japskiddin.sudoku.feature.home.domain.usecase.GetLastGameUseCase
-import io.github.japskiddin.sudoku.feature.home.domain.usecase.SetGameModePreferenceUseCase
 import io.github.japskiddin.sudoku.feature.home.ui.logic.utils.toMenuUiState
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import io.github.japskiddin.sudoku.navigation.Destination
@@ -25,6 +24,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -35,17 +35,16 @@ public class HomeViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val appDispatchers: AppDispatchers,
-    private val createBoardUseCase: Provider<CreateBoardUseCase>,
+    private val settingsRepository: SettingsRepository,
+    private val boardRepository: BoardRepository,
+    savedGameRepository: SavedGameRepository,
     private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
-    private val getCurrentYearUseCase: Provider<GetCurrentYearUseCase>,
-    private val setGameModeUseCase: Provider<SetGameModePreferenceUseCase>,
     private val deleteSavedGameUseCase: Provider<DeleteSavedGameUseCase>,
-    getLastGameUseCase: Provider<GetLastGameUseCase>,
     getGameModeUseCase: Provider<GetGameModePreferenceUseCase>,
 ) : ViewModel() {
     private val gameState: StateFlow<GameState> = combine(
         getGameModeUseCase.get().invoke(),
-        getLastGameUseCase.get().invoke(),
+        savedGameRepository.getLast(),
     ) { gameMode, lastGame ->
         GameState(
             mode = gameMode,
@@ -74,7 +73,7 @@ internal constructor(
     )
 
     public val currentYear: String
-        get() = getCurrentYearUseCase.get().invoke()
+        get() = Calendar.getInstance().get(Calendar.YEAR).toString()
 
     public fun onAction(action: UiAction) {
         when (action) {
@@ -110,7 +109,7 @@ internal constructor(
 
     private fun saveGameMode(mode: GameMode) {
         viewModelScope.launch {
-            setGameModeUseCase.get().invoke(mode)
+            settingsRepository.setGameMode(mode)
         }
     }
 
@@ -130,7 +129,7 @@ internal constructor(
                 menuState.update { it.copy(isLoading = false) }
             }
 
-            val insertedBoardUid = createBoardUseCase.get().invoke(board)
+            val insertedBoardUid = boardRepository.insert(board)
             appNavigator.navigateTo(Destination.Game(insertedBoardUid))
         }
     }

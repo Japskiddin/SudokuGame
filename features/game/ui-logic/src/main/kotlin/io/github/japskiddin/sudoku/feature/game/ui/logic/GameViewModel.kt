@@ -53,7 +53,7 @@ public class GameViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val savedState: SavedStateHandle,
-    private val settingsRepository: SettingsRepository,
+    settingsRepository: SettingsRepository,
     private val savedGameRepository: SavedGameRepository,
     private val getBoardUseCase: Provider<GetBoardUseCase>,
     private val saveGameUseCase: Provider<SaveGameUseCase>,
