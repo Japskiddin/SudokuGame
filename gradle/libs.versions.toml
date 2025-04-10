@@ -32,6 +32,8 @@ androidx-arch-core-testing = "2.2.0"
 detekt = "1.23.8"
 detekt-rules-compose = "0.4.22"
 
+tracer = "1.0.4"
+
 # Used directly in gradle plugins
 
 androidSdk-min = "21"
@@ -112,6 +114,13 @@ detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", 
 detekt-rules-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-rules-compose" }
 # endregion
 
+# region Tracer
+tracer = { module = "ru.ok.tracer:tracer-platform", version.ref = "tracer" }
+tracer-crash-report = { module = "ru.ok.tracer:tracer-crash-report" }
+tracer-crash-report-native = { module = "ru.ok.tracer:tracer-crash-report-native" }
+tracer-heap-dumps = { module = "ru.ok.tracer:tracer-heap-dumps" }
+# endregion
+
 # region Project internal convention plugin
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 android-tools-common = { module = "com.android.tools:common", version.ref = "android-tools" }
@@ -132,6 +141,11 @@ compose = [
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-runtime",
 ]
+tracer = [
+    "tracer-crash-report",
+    "tracer-crash-report-native",
+    "tracer-heap-dumps"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -144,6 +158,7 @@ google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+tracer = { id = "ru.ok.tracer", version.ref = "tracer" }
 
 # region Project internal convention plugins
 app-android-application = { id = "app.android.application", version = "unspecified" }

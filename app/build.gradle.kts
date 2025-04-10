@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
 import java.util.*
 
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.app.hilt)
     alias(libs.plugins.app.detekt)
     alias(libs.plugins.app.test)
+    alias(libs.plugins.tracer)
 }
 
 android {
@@ -123,6 +125,9 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.splashscreen)
 
+    implementation(platform(libs.tracer))
+    implementation(libs.bundles.tracer)
+
     implementation(libs.dagger.hilt.navigation.compose)
 
     implementation(projects.core.commonAndroid)
@@ -147,4 +152,15 @@ dependencies {
     implementation(projects.features.history.ui)
     implementation(projects.features.history.uiLogic)
     implementation(projects.features.history.domain)
+}
+
+tracer {
+    val localProperties = gradleLocalProperties(rootDir, providers)
+    create("defaultConfig") {
+        pluginToken = localProperties.getProperty("tracer-pluginToken")
+        appToken = localProperties.getProperty("tracer-appToken")
+
+        uploadMapping = true
+        uploadNativeSymbols = true
+    }
 }
