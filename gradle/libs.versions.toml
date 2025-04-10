@@ -38,8 +38,8 @@ androidSdk-min = "21"
 androidSdk-compile = "35"
 androidSdk-target = "35"
 
-appVersion-name = "1.0.1"
-appVersion-code = "7"
+appVersion-name = "1.0.2"
+appVersion-code = "8"
 
 jvm = "21"
 
