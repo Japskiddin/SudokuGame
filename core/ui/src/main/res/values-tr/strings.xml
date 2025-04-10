@@ -59,4 +59,5 @@
     <string name="play_time">Oyun süresi: %s</string>
     <string name="congratulations">Tebrikler!</string>
     <string name="game_over">Oyun bitti</string>
+    <string name="history_placeholder">Oynadığınız oyunlar burada yer alacak</string>
 </resources>

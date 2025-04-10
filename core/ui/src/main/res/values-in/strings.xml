@@ -59,4 +59,5 @@
     <string name="play_time">Waktu bermain: %s</string>
     <string name="congratulations">Selamat!</string>
     <string name="game_over">Permainan berakhir</string>
+    <string name="history_placeholder">Game yang Anda mainkan akan berada di sini</string>
 </resources>

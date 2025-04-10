@@ -59,4 +59,5 @@
     <string name="play_time">Speltid: %s</string>
     <string name="congratulations">Grattis!</string>
     <string name="game_over">Spelet slut</string>
+    <string name="history_placeholder">Dina spelade spel kommer att finnas här</string>
 </resources>

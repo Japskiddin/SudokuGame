@@ -59,4 +59,5 @@
     <string name="play_time">Време репродукције: %s</string>
     <string name="congratulations">Честитамо!</string>
     <string name="game_over">Игра је готова</string>
+    <string name="history_placeholder">Ваше игране игре ће се налазити овде</string>
 </resources>

@@ -59,4 +59,5 @@
     <string name="play_time">Lejátszási idő: %s</string>
     <string name="congratulations">Gratulálok!</string>
     <string name="game_over">A játéknak vége</string>
+    <string name="history_placeholder">A lejátszott játékaid itt találhatók</string>
 </resources>

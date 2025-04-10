@@ -59,4 +59,5 @@
     <string name="play_time">Время игры: %s</string>
     <string name="congratulations">Поздравляем!</string>
     <string name="game_over">Игра окончена</string>
+    <string name="history_placeholder">Здесь будут находиться ваши сыгранные игры</string>
 </resources>

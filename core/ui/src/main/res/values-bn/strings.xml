@@ -59,4 +59,5 @@
     <string name="play_time">খেলার সময়: %s</string>
     <string name="congratulations">অভিনন্দন!</string>
     <string name="game_over">খেলা শেষ</string>
+    <string name="history_placeholder">আপনার খেলা গেমগুলি এখানে থাকবে</string>
 </resources>

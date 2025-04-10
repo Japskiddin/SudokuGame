@@ -59,4 +59,5 @@
     <string name="play_time">Doba přehrávání: %s</string>
     <string name="congratulations">Gratuluji!</string>
     <string name="game_over">Konec hry</string>
+    <string name="history_placeholder">Zde budou umístěny vaše odehrané hry</string>
 </resources>

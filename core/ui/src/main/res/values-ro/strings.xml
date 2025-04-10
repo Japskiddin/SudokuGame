@@ -59,4 +59,5 @@
     <string name="play_time">Timp de joc: %s</string>
     <string name="congratulations">Felicitări!</string>
     <string name="game_over">Joc încheiat</string>
+    <string name="history_placeholder">Jocurile pe care le-ați jucat vor fi localizate aici</string>
 </resources>

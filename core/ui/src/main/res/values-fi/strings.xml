@@ -59,4 +59,5 @@
     <string name="play_time">Peliaika: %s</string>
     <string name="congratulations">Onnittelut!</string>
     <string name="game_over">Peli ohi</string>
+    <string name="history_placeholder">Pelaamasi pelit sijaitsevat täällä</string>
 </resources>

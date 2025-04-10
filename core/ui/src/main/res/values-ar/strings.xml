@@ -59,4 +59,5 @@
     <string name="play_time">وقت اللعب: %s</string>
     <string name="congratulations">تهانينا!</string>
     <string name="game_over">انتهت اللعبة</string>
+    <string name="history_placeholder">سيتم وضع الألعاب التي لعبتها هنا</string>
 </resources>

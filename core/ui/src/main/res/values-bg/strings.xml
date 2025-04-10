@@ -59,4 +59,5 @@
     <string name="play_time">Време за игра: %s</string>
     <string name="congratulations">честито!</string>
     <string name="game_over">Играта приключи</string>
+    <string name="history_placeholder">Вашите играни игри ще бъдат разположени тук</string>
 </resources>

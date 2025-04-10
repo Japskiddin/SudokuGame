@@ -59,4 +59,5 @@
     <string name="play_time">Play time: %s</string>
     <string name="congratulations">Congratulations!</string>
     <string name="game_over">Game over</string>
+    <string name="history_placeholder">Your played games will be located here</string>
 </resources>

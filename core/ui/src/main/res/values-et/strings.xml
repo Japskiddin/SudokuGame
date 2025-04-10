@@ -59,4 +59,5 @@
     <string name="play_time">Mänguaeg: %s</string>
     <string name="congratulations">Palju õnne!</string>
     <string name="game_over">Mäng läbi</string>
+    <string name="history_placeholder">Teie mängitud mängud asuvad siin</string>
 </resources>
