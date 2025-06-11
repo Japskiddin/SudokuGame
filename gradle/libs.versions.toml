@@ -1,24 +1,24 @@
 [versions]
-agp = "8.9.1"
-kotlin = "2.1.20"
+agp = "8.9.3"
+kotlin = "2.1.21"
 
-android-tools = "31.9.1"
+android-tools = "31.10.1"
 
 androidx-annotation = "1.9.1"
-androidx-core-ktx = "1.15.0"
-androidx-lifecycle = "2.8.7"
+androidx-core-ktx = "1.16.0"
+androidx-lifecycle = "2.9.1"
 androidx-activity = "1.10.1"
-androidx-compose-bom = "2025.03.01"
-androidx-room = "2.6.1"
-androidx-datastore = "1.1.4"
+androidx-compose-bom = "2025.06.00"
+androidx-room = "2.7.1"
+androidx-datastore = "1.1.7"
 androidx-splashscreen = "1.0.1"
 
 kotlinx-coroutines = "1.10.2"
-kotlinx-immutable = "0.3.8"
+kotlinx-immutable = "0.4.0"
 
-ksp = "2.1.20-1.0.32"
+ksp = "2.1.21-2.0.2"
 
-dagger-hilt = "2.56.1"
+dagger-hilt = "2.56.2"
 dagger-hilt-navigation-compose = "1.2.0"
 javax-inject = "1"
 
@@ -32,7 +32,9 @@ androidx-arch-core-testing = "2.2.0"
 detekt = "1.23.8"
 detekt-rules-compose = "0.4.22"
 
-tracer = "1.0.4"
+tracer = "1.0.10"
+
+caupain = "1.2.1"
 
 # Used directly in gradle plugins
 
@@ -159,6 +161,7 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "da
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 tracer = { id = "ru.ok.tracer", version.ref = "tracer" }
+caupain = { id = "com.deezer.caupain", version.ref = "caupain" }
 
 # region Project internal convention plugins
 app-android-application = { id = "app.android.application", version = "unspecified" }
