@@ -44,7 +44,4 @@ internal fun GameStatus.toInt() = when (this) {
     GameStatus.IN_PROGRESS -> 0
     GameStatus.FAILED -> 1
     GameStatus.COMPLETED -> 2
-    else -> throw IncorrectGameStatusException(
-        "Incorrect game status value. Value must be ${GameStatus.entries}, found $this"
-    )
 }

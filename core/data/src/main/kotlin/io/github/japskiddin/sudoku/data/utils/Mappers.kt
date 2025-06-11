@@ -11,9 +11,6 @@ internal fun GameDifficulty.toInt() = when (this) {
     GameDifficulty.INTERMEDIATE -> 2
     GameDifficulty.HARD -> 3
     GameDifficulty.EXPERT -> 4
-    else -> throw IncorrectGameDifficultyException(
-        "Incorrect game difficulty value. Value must be ${GameDifficulty.entries}, found $this"
-    )
 }
 
 @Suppress("MagicNumber")
@@ -34,9 +31,6 @@ internal fun GameType.toInt() = when (this) {
     GameType.DEFAULT6X6 -> 1
     GameType.DEFAULT9X9 -> 2
     GameType.DEFAULT12X12 -> 3
-    else -> throw IncorrectGameDifficultyException(
-        "Incorrect game difficulty value. Value must be ${GameType.entries}, found $this"
-    )
 }
 
 @Suppress("MagicNumber")
