@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.3"
+agp = "8.10.1"
 kotlin = "2.1.21"
 
 android-tools = "31.10.1"
@@ -39,8 +39,8 @@ caupain = "1.2.1"
 # Used directly in gradle plugins
 
 androidSdk-min = "21"
-androidSdk-compile = "35"
-androidSdk-target = "35"
+androidSdk-compile = "36"
+androidSdk-target = "36"
 
 appVersion-name = "1.0.3"
 appVersion-code = "9"
