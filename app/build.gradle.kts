@@ -88,10 +88,6 @@ android {
         }
     }
 
-    lint {
-        abortOnError = false
-    }
-
     packaging {
         resources {
             excludes += listOf(
