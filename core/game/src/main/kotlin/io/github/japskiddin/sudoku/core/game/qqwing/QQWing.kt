@@ -135,20 +135,6 @@ public class QQWing(
     }
 
     /**
-     * Get the number of cells that are set in the puzzle (as opposed to figured
-     * out in the solution
-     */
-    @Suppress("unused")
-    public val givenCount: Int
-        get() {
-            var count = 0
-            for (i in 0 until BOARD_SIZE) {
-                if (puzzle[i] != 0) count++
-            }
-            return count
-        }
-
-    /**
      * Set the board to the given puzzle. The given puzzle must be an array of
      * 81 integers.
      */
@@ -484,8 +470,6 @@ public class QQWing(
         }
     }
 
-    private fun printHistory(v: ArrayList<LogItem?>) = print(historyToString(v))
-
     private fun historyToString(v: ArrayList<LogItem?>): String {
         val sb = StringBuilder()
         if (!recordHistory) {
@@ -513,34 +497,11 @@ public class QQWing(
         return sb.toString()
     }
 
-    @Suppress("unused")
-    public fun printSolveInstructions() {
-        print(getSolveInstructionsString())
-    }
-
     public fun getSolveInstructionsString(): String = if (isSolved()) {
         historyToString(solveInstructions)
     } else {
         "No solve instructions - Puzzle is not possible to solve."
     }
-
-    @Suppress("unused")
-    public fun getSolveInstructions(): List<LogItem?> = if (isSolved()) {
-        Collections.unmodifiableList(solveInstructions)
-    } else {
-        emptyList<LogItem>()
-    }
-
-    @Suppress("unused")
-    public fun printSolveHistory() {
-        printHistory(solveHistory)
-    }
-
-    @Suppress("unused")
-    public fun getSolveHistoryString(): String = historyToString(solveHistory)
-
-    @Suppress("unused")
-    public fun getSolveHistory(): List<LogItem?> = Collections.unmodifiableList(solveHistory)
 
     public fun solve(): Boolean {
         reset()
@@ -571,19 +532,6 @@ public class QQWing(
     }
 
     /**
-     * return true if the puzzle has a solution
-     * and only a single solution
-     */
-    @Suppress("unused")
-    public fun hasUniqueSolution(): Boolean = countSolutionsLimited() == 1
-
-    /**
-     * Count the number of solutions to the puzzle
-     */
-    @Suppress("unused")
-    public fun countSolutions(): Int = countSolutions(false)
-
-    /**
      * Count the number of solutions to the puzzle
      * but return two any time there are two or
      * more solutions.  This method will run much
@@ -592,9 +540,9 @@ public class QQWing(
      * when you are interested in knowing if the
      * puzzle has zero, one, or multiple solutions.
      */
-    public fun countSolutionsLimited(): Int = countSolutions(true)
+    public fun countSolutionsLimited(): Int = countSolutions()
 
-    private fun countSolutions(limitToTwo: Boolean): Int {
+    private fun countSolutions(limitToTwo: Boolean = true): Int {
         // Don't record history while generating.
         val recHistory = recordHistory
         setRecordHistory(false)
@@ -1579,81 +1527,6 @@ public class QQWing(
             valIndex++
         }
     }
-
-    /**
-     * print the given BOARD_SIZEd array of ints as a sudoku puzzle. Use print
-     * options from member variables.
-     */
-    private fun print(sudoku: IntArray) {
-        print(puzzleToString(sudoku))
-    }
-
-    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
-    private fun puzzleToString(sudoku: IntArray): String {
-        val sb = StringBuilder()
-        for (i in 0 until BOARD_SIZE) {
-            if (printStyle == PrintStyle.READABLE) {
-                sb.append(" ")
-            }
-            if (sudoku[i] == 0) {
-                sb.append('.')
-            } else {
-                sb.append(sudoku[i])
-            }
-            if (i == BOARD_SIZE - 1) {
-                if (printStyle == PrintStyle.CSV) {
-                    sb.append(",")
-                } else {
-                    sb.append(NEW_LINE)
-                }
-                if (printStyle == PrintStyle.READABLE || printStyle == PrintStyle.COMPACT) {
-                    sb.append(NEW_LINE)
-                }
-            } else if (i % ROW_COL_SEC_SIZE == ROW_COL_SEC_SIZE - 1) {
-                if (printStyle == PrintStyle.READABLE || printStyle == PrintStyle.COMPACT) {
-                    sb.append(NEW_LINE)
-                }
-                if (i % SEC_GROUP_SIZE == SEC_GROUP_SIZE - 1) {
-                    if (printStyle == PrintStyle.READABLE) {
-                        sb.append("-------|-------|-------").append(NEW_LINE)
-                    }
-                }
-            } else if (i % GRID_SIZE_ROW == GRID_SIZE_ROW - 1) {
-                if (printStyle == PrintStyle.READABLE) {
-                    sb.append(" |")
-                }
-            }
-        }
-        return sb.toString()
-    }
-
-    /**
-     * Print the sudoku puzzle.
-     */
-    @Suppress("unused")
-    public fun printPuzzle() {
-        print(puzzle)
-    }
-
-    @Suppress("unused")
-    public fun getPuzzleString(): String = puzzleToString(puzzle)
-
-    @Suppress("unused")
-    public fun clonePuzzle(): IntArray = puzzle.clone()
-
-    /**
-     * Print the sudoku solution.
-     */
-    @Suppress("unused")
-    public fun printSolution() {
-        print(solution)
-    }
-
-    @Suppress("unused")
-    public fun getSolutionString(): String = puzzleToString(solution)
-
-    @Suppress("unused")
-    public fun cloneSolution(): IntArray = solution.clone()
 
     /**
      * Given a vector of LogItems, determine how many log items in the vector
