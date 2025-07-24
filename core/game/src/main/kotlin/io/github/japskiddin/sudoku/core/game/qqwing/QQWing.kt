@@ -308,10 +308,12 @@ public class QQWing(
     public fun generatePuzzle(): Boolean = generatePuzzleSymmetry(Symmetry.NONE)
 
     @Suppress("CyclomaticComplexMethod", "LongMethod", "NestedBlockDepth")
-    public fun generatePuzzleSymmetry(symmetry: Symmetry): Boolean {
-        @Suppress("NAME_SHADOWING")
-        var symmetry = symmetry
-        if (symmetry == Symmetry.RANDOM) symmetry = randomSymmetry
+    public fun generatePuzzleSymmetry(initialSymmetry: Symmetry): Boolean {
+        val symmetry = if (initialSymmetry == Symmetry.RANDOM) {
+            randomSymmetry
+        } else {
+            initialSymmetry
+        }
 
         // Don't record history while generating.
         val recHistory = recordHistory
