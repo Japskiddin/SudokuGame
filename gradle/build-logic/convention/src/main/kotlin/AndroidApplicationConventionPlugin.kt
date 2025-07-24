@@ -20,7 +20,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 this as ApplicationExtension
 
                 defaultConfig {
-                    targetSdk = libs.versions.androidSdk.target.get().toString().toInt()
+                    targetSdk = libs.versions.androidSdk.target.get().toInt()
                     vectorDrawables { useSupportLibrary = true }
                 }
 
@@ -34,7 +34,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
                 bundle {
                     language {
-                        @Suppress("UnstableApiUsage")
                         enableSplit = false
                     }
                 }
