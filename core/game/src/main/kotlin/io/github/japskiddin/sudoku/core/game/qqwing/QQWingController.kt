@@ -70,22 +70,19 @@ public class QQWingController {
 
     /**
      * Generate a new sudoku based on a given seed, but only accept challenge sudokus with a certain probability
-     * @param seed the seed based on which the sudoku should be calculated
-     * @param challengePermission the probability with which a challenge sudoku is accepted upon calculation
-     * @param challengeIterations the amount of times a challenge sudoku can be rejected in a row before being
+     * @param initialSeed the seed based on which the sudoku should be calculated
+     * @param permission the probability with which a challenge sudoku is accepted upon calculation
+     * @param iterations the amount of times a challenge sudoku can be rejected in a row before being
      * accepted with a probability of 100%
      * @return the generated sudoku
      */
     public fun generateFromSeed(
-        seed: Int,
-        challengePermission: Double = 1.0,
-        challengeIterations: Int = 1
+        initialSeed: Int,
+        permission: Double = 1.0,
+        iterations: Int = 1
     ): IntArray? {
-        @Suppress("NAME_SHADOWING")
-        var seed = seed
-
-        @Suppress("NAME_SHADOWING")
-        var challengeIterations = challengeIterations
+        var seed = initialSeed
+        var challengeIterations = iterations
         generated.clear()
         val generator = QQWing(GameType.DEFAULT9X9, GameDifficulty.UNSPECIFIED)
         var continueSearch = true
@@ -96,7 +93,7 @@ public class QQWingController {
             generator.setRandom(seed)
             generator.setRecordHistory(true)
             generator.generatePuzzle()
-            if (generator.difficulty !== GameDifficulty.EXPERT || random.nextDouble() < challengePermission) {
+            if (generator.difficulty !== GameDifficulty.EXPERT || random.nextDouble() < permission) {
                 continueSearch = false
             } else {
                 challengeIterations--
@@ -236,17 +233,10 @@ public class QQWingController {
         // defaults for options
         public var needNow: Boolean = false
 
-        @Suppress("unused")
-        public var printPuzzle: Boolean = false
         public var printSolution: Boolean = false
         public var printHistory: Boolean = false
         public var printInstructions: Boolean = false
 
-        @Suppress("unused")
-        public var timer: Boolean = false
-
-        @Suppress("unused")
-        public var countSolutions: Boolean = false
         public var action: Action = Action.NONE
         public var logHistory: Boolean = false
         public var printStyle: PrintStyle = PrintStyle.READABLE
