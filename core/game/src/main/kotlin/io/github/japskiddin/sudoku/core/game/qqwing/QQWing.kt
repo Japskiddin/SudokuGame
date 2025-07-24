@@ -360,43 +360,34 @@ public class QQWing(
                 var positionsym3 = -1
                 when (symmetry) {
                     Symmetry.ROTATE90 -> {
-                        positionsym2 =
-                            rowColumnToCell(
-                                ROW_COL_SEC_SIZE - 1 - cellToColumn(position),
-                                cellToRow(position)
-                            )
-                        positionsym3 =
-                            rowColumnToCell(
-                                cellToColumn(position),
-                                ROW_COL_SEC_SIZE - 1 - cellToRow(position)
-                            )
-                        positionsym1 =
-                            rowColumnToCell(
-                                ROW_COL_SEC_SIZE - 1 - cellToRow(position),
-                                ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
-                            )
+                        positionsym2 = rowColumnToCell(
+                            ROW_COL_SEC_SIZE - 1 - cellToColumn(position),
+                            cellToRow(position)
+                        )
+                        positionsym3 = rowColumnToCell(
+                            cellToColumn(position),
+                            ROW_COL_SEC_SIZE - 1 - cellToRow(position)
+                        )
+                        positionsym1 = rowColumnToCell(
+                            ROW_COL_SEC_SIZE - 1 - cellToRow(position),
+                            ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
+                        )
                     }
 
-                    Symmetry.ROTATE180 ->
-                        positionsym1 =
-                            rowColumnToCell(
-                                ROW_COL_SEC_SIZE - 1 - cellToRow(position),
-                                ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
-                            )
+                    Symmetry.ROTATE180 -> positionsym1 = rowColumnToCell(
+                        ROW_COL_SEC_SIZE - 1 - cellToRow(position),
+                        ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
+                    )
 
-                    Symmetry.MIRROR ->
-                        positionsym1 =
-                            rowColumnToCell(
-                                cellToRow(position),
-                                ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
-                            )
+                    Symmetry.MIRROR -> positionsym1 = rowColumnToCell(
+                        cellToRow(position),
+                        ROW_COL_SEC_SIZE - 1 - cellToColumn(position)
+                    )
 
-                    Symmetry.FLIP ->
-                        positionsym1 =
-                            rowColumnToCell(
-                                ROW_COL_SEC_SIZE - 1 - cellToRow(position),
-                                cellToColumn(position)
-                            )
+                    Symmetry.FLIP -> positionsym1 = rowColumnToCell(
+                        ROW_COL_SEC_SIZE - 1 - cellToRow(position),
+                        cellToColumn(position)
+                    )
 
                     else -> {}
                 }
