@@ -49,62 +49,6 @@ public class QQWingController {
         return generated.poll()
     }
 
-    public fun generateMultiple(
-        type: GameType,
-        difficulty: GameDifficulty,
-        amount: Int
-    ): LinkedList<IntArray> {
-        generated.clear()
-        with(options) {
-            numberToGenerate = amount
-            gameDifficulty = difficulty
-            needNow = true
-            action = Action.GENERATE
-            printSolution = false
-            threads = Runtime.getRuntime().availableProcessors()
-            gameType = type
-        }
-        doAction()
-        return generated
-    }
-
-    /**
-     * Generate a new sudoku based on a given seed, but only accept challenge sudokus with a certain probability
-     * @param initialSeed the seed based on which the sudoku should be calculated
-     * @param permission the probability with which a challenge sudoku is accepted upon calculation
-     * @param iterations the amount of times a challenge sudoku can be rejected in a row before being
-     * accepted with a probability of 100%
-     * @return the generated sudoku
-     */
-    public fun generateFromSeed(
-        initialSeed: Int,
-        permission: Double = 1.0,
-        iterations: Int = 1
-    ): IntArray? {
-        var seed = initialSeed
-        var challengeIterations = iterations
-        generated.clear()
-        val generator = QQWing(GameType.DEFAULT9X9, GameDifficulty.UNSPECIFIED)
-        var continueSearch = true
-        val random = Random(seed.toLong())
-        val seedFactor = 2
-        while (continueSearch && challengeIterations > 0) {
-            seed *= seedFactor
-            generator.setRandom(seed)
-            generator.setRecordHistory(true)
-            generator.generatePuzzle()
-            if (generator.difficulty !== GameDifficulty.EXPERT || random.nextDouble() < permission) {
-                continueSearch = false
-            } else {
-                challengeIterations--
-            }
-        }
-        generated.add(generator.puzzle)
-        options.gameType = GameType.DEFAULT9X9
-        options.gameDifficulty = generator.difficulty
-        return generated.poll()
-    }
-
     public fun solve(gameBoard: IntArray?, type: GameType): IntArray {
         isImpossible = false
         level = gameBoard

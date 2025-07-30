@@ -32,8 +32,15 @@ constructor(
             }
         }
         val qqWingController = QQWingController()
-        val generatedBoard = qqWingController.generate(type, difficulty) ?: throw SudokuNotGeneratedException()
-        val solvedBoard = qqWingController.solve(generatedBoard, type)
+
+        val generatedBoard: IntArray
+        val solvedBoard: IntArray
+        try {
+            generatedBoard = qqWingController.generate(type, difficulty) ?: throw SudokuNotGeneratedException()
+            solvedBoard = qqWingController.solve(generatedBoard, type)
+        } catch (_: IllegalArgumentException) {
+            throw SudokuNotGeneratedException()
+        }
 
         if (qqWingController.isImpossible || qqWingController.solutionCount != 1) {
             throw SudokuNotGeneratedException()

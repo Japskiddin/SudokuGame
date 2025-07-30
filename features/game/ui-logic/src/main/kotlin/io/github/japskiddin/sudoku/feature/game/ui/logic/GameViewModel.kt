@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
+import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
@@ -193,7 +194,12 @@ internal constructor(
             val solvedBoard = if (boardEntity.solvedBoard.isSudokuFilled()) {
                 boardEntity.solvedBoard.toBoardList(boardType)
             } else {
-                solveBoardUseCase.get().invoke(board, boardType, initialBoard)
+                try {
+                    solveBoardUseCase.get().invoke(board, boardType, initialBoard)
+                } catch (e: SudokuNotGeneratedException) {
+                    gameState.update { it.copy(error = e.toGameError()) }
+                    return@launch
+                }
             }
 
             val savedGame = savedGameRepository.get(boardUid)
