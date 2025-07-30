@@ -13,7 +13,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             plugins {
                 apply(libs.plugins.android.application.get().pluginId)
-                apply(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+                apply(libs.plugins.kotlin.android.get().pluginId)
             }
 
             androidConfig {

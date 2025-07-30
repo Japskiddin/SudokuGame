@@ -11,7 +11,7 @@ fun Project.configureJUnitAndroid() {
         androidTestImplementation(libs.google.truth)
         androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
-        if (pluginManager.hasPlugin(libs.plugins.jetbrains.compose.compiler.get().pluginId)) {
+        if (pluginManager.hasPlugin(libs.plugins.compose.compiler.get().pluginId)) {
             androidTestImplementation(platform(libs.androidx.compose.bom))
             androidTestImplementation(libs.androidx.compose.ui.test.junit4)
         }

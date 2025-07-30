@@ -11,7 +11,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             plugins {
                 apply(libs.plugins.android.library.get().pluginId)
-                apply(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+                apply(libs.plugins.kotlin.android.get().pluginId)
             }
 
             androidConfig {

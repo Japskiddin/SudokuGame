@@ -9,7 +9,7 @@ class AndroidComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             plugins {
-                apply(libs.plugins.jetbrains.compose.compiler.get().pluginId)
+                apply(libs.plugins.compose.compiler.get().pluginId)
             }
 
             androidConfig {

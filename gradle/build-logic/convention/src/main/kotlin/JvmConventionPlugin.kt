@@ -8,7 +8,7 @@ class JvmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             plugins {
-                apply(libs.plugins.jetbrains.kotlin.jvm.get().pluginId)
+                apply(libs.plugins.kotlin.jvm.get().pluginId)
             }
 
             configureJvm()
