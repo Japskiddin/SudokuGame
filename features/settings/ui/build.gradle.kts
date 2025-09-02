@@ -13,6 +13,10 @@ kotlin {
 
 android {
     namespace = "io.github.japskiddin.sudoku.feature.settings.ui"
+
+    androidResources {
+        enable = true
+    }
 }
 
 dependencies {
