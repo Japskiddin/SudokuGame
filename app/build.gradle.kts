@@ -18,9 +18,8 @@ android {
         applicationId = "io.github.japskiddin.sudoku.game"
         versionCode = libs.versions.appVersion.code.get().toInt()
         versionName = libs.versions.appVersion.name.get()
-        setProperty("archivesBaseName", "sudoku-$versionName-$versionCode")
+        base.archivesName = "sudoku-$versionName-$versionCode"
         ndk {
-            //noinspection ChromeOsAbiSupport
             abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
         }
     }
@@ -28,6 +27,10 @@ android {
     androidResources {
         @Suppress("UnstableApiUsage")
         generateLocaleConfig = true
+    }
+
+    buildFeatures {
+        resValues = true
     }
 
     val keysRepo: String = if (project.hasProperty("Keys.repo")) {

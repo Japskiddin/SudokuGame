@@ -12,4 +12,8 @@ kotlin {
 
 android {
     namespace = "io.github.japskiddin.sudoku.core.designsystem"
+
+    androidResources {
+        enable = true
+    }
 }
