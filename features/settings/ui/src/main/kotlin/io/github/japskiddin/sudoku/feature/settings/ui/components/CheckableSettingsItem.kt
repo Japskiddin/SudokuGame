@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.settings.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,9 +25,7 @@ internal fun CheckableSettingsItem(
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .clickable { onCheckedChange(!checked) }
-            .padding(12.dp),
+        modifier = modifier.padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
