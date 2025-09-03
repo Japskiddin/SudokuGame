@@ -105,7 +105,7 @@ private fun SettingsContent(
                 .fillMaxWidth()
                 .statusBarsPadding()
                 .displayCutoutPadding()
-                .padding(12.dp),
+                .padding(top = 12.dp, bottom = 12.dp),
             onBack = onBack,
         )
 
