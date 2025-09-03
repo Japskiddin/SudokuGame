@@ -12,7 +12,7 @@
                     android:repeatCount="infinite"
                     android:repeatMode="reverse"
                     android:valueFrom="0.3"
-                    android:valueTo="0.7"
+                    android:valueTo="0.65"
                     android:valueType="floatType" />
                 <objectAnimator
                     android:duration="700"
@@ -21,7 +21,7 @@
                     android:repeatCount="infinite"
                     android:repeatMode="reverse"
                     android:valueFrom="0.3"
-                    android:valueTo="0.7"
+                    android:valueTo="0.65"
                     android:valueType="floatType" />
                 <objectAnimator
                     android:duration="900"
