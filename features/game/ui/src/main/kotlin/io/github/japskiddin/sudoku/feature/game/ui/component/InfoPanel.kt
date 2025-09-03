@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,16 +50,18 @@ internal fun InfoPanel(
                 text = stringResource(difficulty.getName()),
                 style = textStyle
             )
-            if (isShowTimer) {
-                Spacer(modifier = Modifier.height(6.dp))
-                BasicText(
-                    text = time.toFormattedTime(),
-                    style = textStyle
-                )
-            }
         }
         Spacer(modifier = Modifier.width(6.dp))
-        Column {
+        if (isShowTimer) {
+            BasicText(
+                text = time.toFormattedTime(),
+                style = textStyle
+            )
+        }
+        Spacer(modifier = Modifier.width(6.dp))
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
             BasicText(
                 text = stringResource(
                     CoreUiR.string.current_actions,
