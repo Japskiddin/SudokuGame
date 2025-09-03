@@ -252,7 +252,7 @@ private fun TitleSection(
             end = 12.dp
         ),
         text = title,
-        style = SudokuTheme.typography.dialog.copy(
+        style = SudokuTheme.typography.settingsSection.copy(
             color = SudokuTheme.colors.onPrimary,
         ),
     )

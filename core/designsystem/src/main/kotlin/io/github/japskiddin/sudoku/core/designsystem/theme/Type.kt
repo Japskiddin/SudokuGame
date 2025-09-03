@@ -56,6 +56,21 @@ public data class Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
+    val settingsSection: TextStyle = TextStyle(
+        fontFamily = MerriweatherFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    val settingsTitle: TextStyle = TextStyle(
+        fontFamily = MerriweatherFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp
+    ),
+    val settingsDescription: TextStyle = TextStyle(
+        fontFamily = MerriweatherFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
 )
 
 internal val LocalTypography = staticCompositionLocalOf { Typography() }
