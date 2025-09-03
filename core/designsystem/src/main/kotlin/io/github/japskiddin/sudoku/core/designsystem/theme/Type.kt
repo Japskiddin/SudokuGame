@@ -5,6 +5,7 @@ package io.github.japskiddin.sudoku.core.designsystem.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -42,6 +43,11 @@ public data class Typography(
         fontSize = 12.sp
     ),
     val gameButton: TextStyle = TextStyle(
+        fontFamily = FontFamily.Serif,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
+    ),
+    val outlineText: TextStyle = TextStyle(
         fontFamily = MerriweatherFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp

@@ -109,7 +109,6 @@ private fun GameButtonContent(
         }
         OutlineText(
             text = text,
-            textStyle = SudokuTheme.typography.gameButton,
             fillColor = textColor,
             outlineColor = outlineColor,
             modifier = Modifier

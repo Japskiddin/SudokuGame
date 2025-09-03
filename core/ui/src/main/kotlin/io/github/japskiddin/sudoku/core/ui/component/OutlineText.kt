@@ -21,7 +21,7 @@ public fun OutlineText(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
-    textStyle: TextStyle = SudokuTheme.typography.gameButton,
+    textStyle: TextStyle = SudokuTheme.typography.outlineText,
     fillColor: Color = Color.White,
     outlineColor: Color = Color.Black,
     outlineWidth: Dp = 2.dp,
