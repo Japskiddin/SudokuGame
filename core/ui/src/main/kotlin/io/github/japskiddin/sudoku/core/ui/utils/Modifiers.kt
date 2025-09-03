@@ -47,19 +47,6 @@ public fun Modifier.dialogBackground(): Modifier = this.then(
             color = SudokuTheme.colors.dialog,
             shape = RoundedCornerShape(size = 16.dp)
         )
-        .padding(4.dp)
-        .innerShadow(
-            shape = RoundedCornerShape(size = 12.dp),
-            color = Color.Black.copy(alpha = .8f),
-            offsetX = 2.dp,
-            offsetY = 2.dp
-        )
-        .innerShadow(
-            shape = RoundedCornerShape(size = 12.dp),
-            color = Color.White.copy(alpha = .8f),
-            offsetX = (-2).dp,
-            offsetY = (-2).dp
-        )
         .padding(16.dp)
 )
 
