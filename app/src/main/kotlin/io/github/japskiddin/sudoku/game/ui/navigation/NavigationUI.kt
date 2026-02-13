@@ -1,11 +1,11 @@
 package io.github.japskiddin.sudoku.game.ui.navigation
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -37,14 +37,15 @@ fun NavGraphBuilder.composable(
     destination: Destination,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable (NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.() -> Unit,
 ) {
     composable(
         route = destination.fullRoute,
         arguments = arguments,
         deepLinks = deepLinks,
-        content = content
-    )
+    ) {
+        content()
+    }
 }
 
 @Composable
