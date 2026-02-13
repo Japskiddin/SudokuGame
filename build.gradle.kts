@@ -15,6 +15,13 @@ plugins {
     alias(libs.plugins.caupain)
 }
 
+buildscript {
+    dependencies {
+        classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.ksp.gradle.plugin)
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(layout.buildDirectory)
 }

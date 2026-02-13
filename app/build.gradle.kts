@@ -16,21 +16,9 @@ android {
 
     defaultConfig {
         applicationId = "io.github.japskiddin.sudoku.game"
-        versionCode = libs.versions.appVersion.code.get().toInt()
-        versionName = libs.versions.appVersion.name.get()
+        versionCode = libs.versions.app.versionCode.get().toInt()
+        versionName = libs.versions.app.versionName.get()
         base.archivesName = "sudoku-$versionName-$versionCode"
-        ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
-        }
-    }
-
-    androidResources {
-        @Suppress("UnstableApiUsage")
-        generateLocaleConfig = true
-    }
-
-    buildFeatures {
-        resValues = true
     }
 
     val keysRepo: String = if (project.hasProperty("Keys.repo")) {
@@ -88,21 +76,6 @@ android {
         }
         debug {
             signingConfig = releaseSigning
-        }
-    }
-
-    packaging {
-        resources {
-            excludes += listOf(
-                "/META-INF/{AL2.0,LGPL2.1}",
-                "/kotlin/**",
-                "META-INF/androidx.*.version",
-                "META-INF/com.google.*.version",
-                "META-INF/kotlinx_*.version",
-                "kotlin-tooling-metadata.json",
-                "DebugProbesKt.bin",
-                "META-INF/com/android/build/gradle/*"
-            )
         }
     }
 }

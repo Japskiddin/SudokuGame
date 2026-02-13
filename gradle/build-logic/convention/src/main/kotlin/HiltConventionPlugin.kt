@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.ApplicationExtension
-import io.github.japskiddin.android.core.buildlogic.androidExtension
 import io.github.japskiddin.android.core.buildlogic.implementation
 import io.github.japskiddin.android.core.buildlogic.ksp
 import io.github.japskiddin.android.core.buildlogic.libs
@@ -13,10 +11,10 @@ class HiltConventionPlugin : Plugin<Project> {
         with(target) {
             plugins {
                 apply(libs.plugins.google.devtools.ksp.get().pluginId)
-            }
 
-            if (androidExtension is ApplicationExtension) {
-                pluginManager.apply(libs.plugins.dagger.hilt.android.get().pluginId)
+                withPlugin(libs.plugins.android.application.get().pluginId) {
+                    apply(libs.plugins.dagger.hilt.android.get().pluginId)
+                }
             }
 
             dependencies {

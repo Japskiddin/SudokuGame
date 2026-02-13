@@ -1,5 +1,5 @@
 [versions]
-agp = "8.12.2"
+agp = "9.0.0"
 kotlin = "2.2.10"
 
 android-tools = "31.12.2"
@@ -16,7 +16,7 @@ androidx-splashscreen = "1.0.1"
 kotlinx-coroutines = "1.10.2"
 kotlinx-immutable = "0.4.0"
 
-ksp = "2.2.10-2.0.2"
+ksp = "2.3.2"
 
 dagger-hilt = "2.57.1"
 dagger-hilt-navigation-compose = "1.2.0"
@@ -38,12 +38,12 @@ caupain = "1.5.1"
 
 # Used directly in gradle plugins
 
-androidSdk-min = "21"
-androidSdk-compile = "36"
-androidSdk-target = "36"
+android-minSdk = "21"
+android-compileSdk = "36"
+android-targetSdk = "36"
 
-appVersion-name = "1.0.5"
-appVersion-code = "11"
+app-versionName = "1.0.5"
+app-versionCode = "11"
 
 jvm = "21"
 
