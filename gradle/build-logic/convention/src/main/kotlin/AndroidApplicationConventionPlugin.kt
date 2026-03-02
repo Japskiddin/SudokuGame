@@ -43,13 +43,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     generateLocaleConfig = true
                 }
 
-                bundle {
-                    language {
-                        @Suppress("UnstableApiUsage")
-                        enableSplit = false
-                    }
-                }
-
                 dependenciesInfo {
                     includeInApk = false
                     includeInBundle = false
