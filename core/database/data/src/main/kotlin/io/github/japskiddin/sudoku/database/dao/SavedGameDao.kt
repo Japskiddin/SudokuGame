@@ -37,7 +37,7 @@ public interface SavedGameDao {
     )
     public fun getLastPlayable(limit: Int): Flow<Map<SavedGameDBO, BoardDBO>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public suspend fun insert(savedGame: SavedGameDBO): Long
 
     @Insert

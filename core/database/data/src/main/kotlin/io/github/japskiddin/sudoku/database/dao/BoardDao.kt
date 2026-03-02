@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import io.github.japskiddin.sudoku.database.entities.BoardDBO
@@ -35,7 +36,7 @@ public interface BoardDao {
     @Insert
     public suspend fun insert(boards: List<BoardDBO>): List<Long>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public suspend fun insert(board: BoardDBO): Long
 
     @Delete

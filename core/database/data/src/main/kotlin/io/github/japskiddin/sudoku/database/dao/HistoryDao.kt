@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.github.japskiddin.sudoku.database.entities.BoardDBO
 import io.github.japskiddin.sudoku.database.entities.HistoryDBO
@@ -30,7 +31,7 @@ public interface HistoryDao {
     @Query("SELECT * FROM ${HistoryDBO.TABLE} ORDER BY ${HistoryDBO.COLUMN_TIME} ASC")
     public fun getAllSortedByTime(): Flow<List<HistoryDBO>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public suspend fun insert(history: HistoryDBO): Long
 
     @Insert
