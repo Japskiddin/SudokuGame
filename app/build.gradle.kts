@@ -122,6 +122,6 @@ tracer {
         appToken = localProperties.getProperty("tracer-appToken")
 
         uploadMapping = true
-        uploadNativeSymbols = true
+        uploadNativeSymbols = false
     }
 }

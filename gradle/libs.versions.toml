@@ -145,7 +145,6 @@ compose = [
 ]
 tracer = [
     "tracer-crash-report",
-    "tracer-crash-report-native",
     "tracer-heap-dumps"
 ]
 

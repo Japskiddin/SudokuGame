@@ -12,11 +12,8 @@ import ru.ok.tracer.heap.dumps.HeapDumpConfiguration
 class GameApplication : Application(), HasTracerConfiguration {
     override val tracerConfiguration: List<TracerConfiguration>
         get() = listOf(
-            CoreTracerConfiguration.build {
-            },
-            CrashReportConfiguration.build {
-            },
-            HeapDumpConfiguration.build {
-            },
+            CoreTracerConfiguration.build {},
+            CrashReportConfiguration.build {},
+            HeapDumpConfiguration.build {},
         )
 }
