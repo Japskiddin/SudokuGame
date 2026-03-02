@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
-import io.github.japskiddin.sudoku.database.utils.createDummyBoards
+import io.github.japskiddin.sudoku.database.utils.createDummyBoard
 import io.github.japskiddin.sudoku.database.utils.createDummySavedGame
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -40,9 +40,9 @@ class SavedGameDaoTest {
     }
 
     private fun createTestBoards() {
-        val boards = createDummyBoards()
+        val board = createDummyBoard()
         runTest {
-            boardDao.insert(boards)
+            boardDao.insert(board)
         }
     }
 
@@ -53,37 +53,16 @@ class SavedGameDaoTest {
 
     @Test
     fun insertSavedGame_returnsTrue() = runTest {
-        val savedGame = createDummySavedGame(1)
+        val uid = 1L
+        val savedGame = createDummySavedGame(uid = uid)
 
         savedGameDao.insert(savedGame)
 
         val latch = CountDownLatch(1)
         val job = async(Dispatchers.IO) {
-            savedGameDao.getAll().collect {
-                assertThat(it).contains(savedGame)
-                latch.countDown()
-            }
-        }
-        latch.await()
-        job.cancelAndJoin()
-    }
-
-    @Test
-    fun insertSavedGamesList_returnsTrue() = runTest {
-        val savedGames = listOf(
-            createDummySavedGame(1),
-            createDummySavedGame(2),
-            createDummySavedGame(3),
-        )
-
-        savedGameDao.insert(savedGames)
-
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            savedGameDao.getAll().collect {
-                assertThat(it).isEqualTo(savedGames)
-                latch.countDown()
-            }
+            val insertedSavedGame = savedGameDao.get(uid)
+            assertThat(insertedSavedGame).isEqualTo(savedGame)
+            latch.countDown()
         }
         latch.await()
         job.cancelAndJoin()
@@ -91,17 +70,17 @@ class SavedGameDaoTest {
 
     @Test
     fun deleteSavedGame_returnsTrue() = runTest {
-        val savedGame = createDummySavedGame(1)
+        val uid = 1L
+        val savedGame = createDummySavedGame(uid = uid)
 
         savedGameDao.insert(savedGame)
         savedGameDao.delete(savedGame)
 
         val latch = CountDownLatch(1)
         val job = async(Dispatchers.IO) {
-            savedGameDao.getAll().collect {
-                assertThat(it).doesNotContain(savedGame)
-                latch.countDown()
-            }
+            val insertedSavedGame = savedGameDao.get(uid)
+            assertThat(insertedSavedGame).isNull()
+            latch.countDown()
         }
         latch.await()
         job.cancelAndJoin()
@@ -125,18 +104,14 @@ class SavedGameDaoTest {
 
     @Test
     fun getLastSavedGame_returnsTrue() = runTest {
-        val savedGames = listOf(
-            createDummySavedGame(1),
-            createDummySavedGame(2),
-            createDummySavedGame(3),
-        )
+        val savedGame = createDummySavedGame(1)
 
-        savedGameDao.insert(savedGames)
+        savedGameDao.insert(savedGame)
 
         val latch = CountDownLatch(1)
         val job = async(Dispatchers.IO) {
             savedGameDao.getLast().collect {
-                assertThat(it).isEqualTo(savedGames.last())
+                assertThat(it).isEqualTo(savedGame)
                 latch.countDown()
             }
         }

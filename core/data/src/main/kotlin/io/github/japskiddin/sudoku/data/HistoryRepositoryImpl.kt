@@ -13,9 +13,5 @@ constructor(
 ) : HistoryRepository {
     override fun getAll(): Flow<List<History>> = historyDataSource.getAll()
 
-    override suspend fun get(uid: Long): History? = historyDataSource.get(uid)
-
     override suspend fun insert(history: History): Long = historyDataSource.insert(history)
-
-    override suspend fun delete(history: History): Unit = historyDataSource.delete(history)
 }

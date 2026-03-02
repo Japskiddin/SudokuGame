@@ -18,9 +18,5 @@ constructor(
         list.map { historyDBO -> historyDBO.toHistory() }
     }
 
-    override suspend fun get(uid: Long): History? = historyDao.get(uid)?.toHistory()
-
     override suspend fun insert(history: History): Long = historyDao.insert(history.toHistoryDBO())
-
-    override suspend fun delete(history: History): Unit = historyDao.delete(history.toHistoryDBO())
 }
