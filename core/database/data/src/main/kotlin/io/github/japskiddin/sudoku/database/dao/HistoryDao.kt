@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 public interface HistoryDao {
     @Query("SELECT * FROM ${HistoryDBO.TABLE} WHERE ${HistoryDBO.COLUMN_BOARD_UID} == :uid")
-    public suspend fun get(uid: Long): HistoryDBO
+    public suspend fun get(uid: Long): HistoryDBO?
 
     @Query("SELECT * from ${HistoryDBO.TABLE}")
     public fun getAll(): Flow<List<HistoryDBO>>
