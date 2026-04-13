@@ -310,20 +310,7 @@ internal constructor(
     }
 
     private fun resetBoard() {
-        gameState.update {
-            it.copy(
-                board = it.initialBoard,
-                actions = 0,
-                mistakes = 0,
-                notes = listOf(),
-                time = if (preferencesUiState.value.isResetTimer) {
-                    0L
-                } else {
-                    it.time
-                },
-                selectedCell = BoardCell.Empty
-            )
-        }
+        gameState.update { it.resetProgress(preferencesUiState.value.isResetTimer) }
         gameHistoryManager = GameHistoryManager(gameState.value.toGameHistory())
         saveGame()
     }
@@ -338,14 +325,7 @@ internal constructor(
     }
 
     private fun updateBoardFromHistory(gameHistory: GameHistory) {
-        gameState.update {
-            it.copy(
-                board = gameHistory.board,
-                notes = gameHistory.notes,
-                actions = gameHistory.actions,
-                mistakes = gameHistory.mistakes,
-            )
-        }
+        gameState.update { it.restoreFromHistory(gameHistory) }
     }
 
     private fun addToGameHistory() {
@@ -420,10 +400,3 @@ internal constructor(
         private const val TIMER_DELAY = 1000L
     }
 }
-
-private fun GameState.toGameHistory(): GameHistory = GameHistory(
-    board = board,
-    notes = notes,
-    actions = actions,
-    mistakes = mistakes,
-)

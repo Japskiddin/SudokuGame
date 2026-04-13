@@ -46,3 +46,26 @@ internal data class GameState(
         )
     }
 }
+
+internal fun GameState.toGameHistory(): GameHistory = GameHistory(
+    board = board,
+    notes = notes,
+    actions = actions,
+    mistakes = mistakes,
+)
+
+internal fun GameState.restoreFromHistory(gameHistory: GameHistory): GameState = copy(
+    board = gameHistory.board,
+    notes = gameHistory.notes,
+    actions = gameHistory.actions,
+    mistakes = gameHistory.mistakes,
+)
+
+internal fun GameState.resetProgress(isResetTimer: Boolean): GameState = copy(
+    board = initialBoard,
+    actions = 0,
+    mistakes = 0,
+    notes = listOf(),
+    time = if (isResetTimer) 0L else time,
+    selectedCell = BoardCell.Empty,
+)
