@@ -1,5 +1,5 @@
-import com.deezer.caupain.model.StabilityLevelPolicy
 import com.deezer.caupain.plugin.DependenciesUpdateTask
+import com.deezer.caupain.policies.StabilityLevelPolicy
 
 plugins {
     alias(libs.plugins.android.application) apply false
