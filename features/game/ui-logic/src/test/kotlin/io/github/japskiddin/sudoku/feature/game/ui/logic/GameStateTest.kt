@@ -22,8 +22,6 @@ class GameStateTest {
 
         assertEquals(state.board, history.board)
         assertEquals(state.notes, history.notes)
-        assertEquals(state.actions, history.actions)
-        assertEquals(state.mistakes, history.mistakes)
     }
 
     @Test
@@ -37,16 +35,12 @@ class GameStateTest {
         val history = GameHistory(
             board = boardWithValue(9),
             notes = listOf(BoardNote(0, 0, 9)),
-            actions = 5,
-            mistakes = 3,
         )
 
         val restored = initial.restoreFromHistory(history)
 
         assertEquals(history.board, restored.board)
         assertEquals(history.notes, restored.notes)
-        assertEquals(history.actions, restored.actions)
-        assertEquals(history.mistakes, restored.mistakes)
     }
 
     @Test

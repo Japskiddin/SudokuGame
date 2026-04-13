@@ -50,15 +50,11 @@ internal data class GameState(
 internal fun GameState.toGameHistory(): GameHistory = GameHistory(
     board = board,
     notes = notes,
-    actions = actions,
-    mistakes = mistakes,
 )
 
 internal fun GameState.restoreFromHistory(gameHistory: GameHistory): GameState = copy(
     board = gameHistory.board,
     notes = gameHistory.notes,
-    actions = gameHistory.actions,
-    mistakes = gameHistory.mistakes,
 )
 
 internal fun GameState.resetProgress(isResetTimer: Boolean): GameState = copy(

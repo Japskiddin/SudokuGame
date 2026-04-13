@@ -9,21 +9,15 @@ import org.junit.Test
 class GameHistoryManagerTest {
     @Test
     fun addState_clearsRedoStackAfterNewBranch() {
-        val initial = history(
+        val initial = createHistory(
             value = 1,
-            actions = 0,
-            mistakes = 0,
         )
         val manager = GameHistoryManager(initial)
-        val second = history(
+        val second = createHistory(
             value = 2,
-            actions = 1,
-            mistakes = 1,
         )
-        val replacement = history(
+        val replacement = createHistory(
             value = 3,
-            actions = 2,
-            mistakes = 0,
         )
 
         manager.addState(second)
@@ -36,16 +30,12 @@ class GameHistoryManagerTest {
 
     @Test
     fun undo_returnsPreviousSnapshotWithCounters() {
-        val initial = history(
+        val initial = createHistory(
             value = 1,
-            actions = 0,
-            mistakes = 0,
         )
         val manager = GameHistoryManager(initial)
-        val changed = history(
+        val changed = createHistory(
             value = 5,
-            actions = 4,
-            mistakes = 2,
             notes = listOf(BoardNote(0, 0, 5)),
         )
         manager.addState(changed)
@@ -57,16 +47,12 @@ class GameHistoryManagerTest {
 
     @Test
     fun redo_restoresLatestSnapshotWithCounters() {
-        val initial = history(
+        val initial = createHistory(
             value = 1,
-            actions = 0,
-            mistakes = 0,
         )
         val manager = GameHistoryManager(initial)
-        val changed = history(
+        val changed = createHistory(
             value = 7,
-            actions = 3,
-            mistakes = 1,
             notes = listOf(BoardNote(0, 0, 7)),
         )
         manager.addState(changed)
@@ -77,15 +63,11 @@ class GameHistoryManagerTest {
         assertEquals(changed, restored)
     }
 
-    private fun history(
+    private fun createHistory(
         value: Int,
-        actions: Int,
-        mistakes: Int,
         notes: List<BoardNote> = emptyList(),
     ): GameHistory = GameHistory(
         board = listOf(listOf(BoardCell(row = 0, col = 0, value = value))),
         notes = notes,
-        actions = actions,
-        mistakes = mistakes,
     )
 }

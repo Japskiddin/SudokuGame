@@ -39,12 +39,10 @@ class SavedGameDaoTest {
         createTestBoards()
     }
 
-    private fun createTestBoards() {
-        runTest {
-            boardDao.insert(createDummyBoard(uid = 0))
-            boardDao.insert(createDummyBoard(uid = 1))
-            boardDao.insert(createDummyBoard(uid = 2))
-        }
+    private fun createTestBoards() = runTest {
+        boardDao.insert(createDummyBoard(uid = 0))
+        boardDao.insert(createDummyBoard(uid = 1))
+        boardDao.insert(createDummyBoard(uid = 2))
     }
 
     @After
