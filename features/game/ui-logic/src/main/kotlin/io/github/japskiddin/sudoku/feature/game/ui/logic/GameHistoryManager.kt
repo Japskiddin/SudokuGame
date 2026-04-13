@@ -43,5 +43,7 @@ internal class GameHistoryManager(
 
 internal data class GameHistory(
     val board: BoardList,
-    val notes: List<BoardNote>
+    val notes: List<BoardNote>,
+    val actions: Int,
+    val mistakes: Int,
 )

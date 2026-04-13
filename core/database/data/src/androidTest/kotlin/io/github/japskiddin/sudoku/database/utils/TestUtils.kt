@@ -22,10 +22,14 @@ internal fun createDummySavedGame(
     uid: Long,
     board: String = "760000009040500800090006364500040041904070000836900000000080900000006007407000580",
     notes: String = "",
+    lastPlayed: Long = 0L,
+    status: Int = 0,
 ): SavedGameDBO = SavedGameDBO(
     uid = uid,
     board = board,
     notes = notes,
+    lastPlayed = lastPlayed,
+    status = status,
 )
 
 internal fun createDummyHistory(

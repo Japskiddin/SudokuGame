@@ -40,9 +40,10 @@ class SavedGameDaoTest {
     }
 
     private fun createTestBoards() {
-        val board = createDummyBoard()
         runTest {
-            boardDao.insert(board)
+            boardDao.insert(createDummyBoard(uid = 0))
+            boardDao.insert(createDummyBoard(uid = 1))
+            boardDao.insert(createDummyBoard(uid = 2))
         }
     }
 
@@ -112,6 +113,33 @@ class SavedGameDaoTest {
         val job = async(Dispatchers.IO) {
             savedGameDao.getLast().collect {
                 assertThat(it).isEqualTo(savedGame)
+                latch.countDown()
+            }
+        }
+        latch.await()
+        job.cancelAndJoin()
+    }
+
+    @Test
+    fun getLastSavedGame_returnsMostRecentInProgressGame() = runTest {
+        val activeSavedGame = createDummySavedGame(
+            uid = 1,
+            lastPlayed = 10L,
+            status = 0,
+        )
+        val completedSavedGame = createDummySavedGame(
+            uid = 2,
+            lastPlayed = 20L,
+            status = 2,
+        )
+
+        savedGameDao.insert(activeSavedGame)
+        savedGameDao.insert(completedSavedGame)
+
+        val latch = CountDownLatch(1)
+        val job = async(Dispatchers.IO) {
+            savedGameDao.getLast().collect {
+                assertThat(it).isEqualTo(activeSavedGame)
                 latch.countDown()
             }
         }

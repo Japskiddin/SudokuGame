@@ -234,7 +234,7 @@ internal constructor(
             }
 
             saveGame()
-            gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
+            gameHistoryManager = GameHistoryManager(gameState.value.toGameHistory())
             startTimer()
         }
     }
@@ -314,6 +314,8 @@ internal constructor(
             it.copy(
                 board = it.initialBoard,
                 actions = 0,
+                mistakes = 0,
+                notes = listOf(),
                 time = if (preferencesUiState.value.isResetTimer) {
                     0L
                 } else {
@@ -322,7 +324,7 @@ internal constructor(
                 selectedCell = BoardCell.Empty
             )
         }
-        gameHistoryManager = GameHistoryManager(GameHistory(board = gameState.value.board, notes = listOf()))
+        gameHistoryManager = GameHistoryManager(gameState.value.toGameHistory())
         saveGame()
     }
 
@@ -336,13 +338,18 @@ internal constructor(
     }
 
     private fun updateBoardFromHistory(gameHistory: GameHistory) {
-        gameState.update { it.copy(board = gameHistory.board, notes = gameHistory.notes) }
+        gameState.update {
+            it.copy(
+                board = gameHistory.board,
+                notes = gameHistory.notes,
+                actions = gameHistory.actions,
+                mistakes = gameHistory.mistakes,
+            )
+        }
     }
 
     private fun addToGameHistory() {
-        val gameState = gameState.value
-        val gameHistory = GameHistory(board = gameState.board, notes = gameState.notes)
-        gameHistoryManager.addState(gameHistory)
+        gameHistoryManager.addState(gameState.value.toGameHistory())
     }
 
     private fun notesBoard() {
@@ -413,3 +420,10 @@ internal constructor(
         private const val TIMER_DELAY = 1000L
     }
 }
+
+private fun GameState.toGameHistory(): GameHistory = GameHistory(
+    board = board,
+    notes = notes,
+    actions = actions,
+    mistakes = mistakes,
+)

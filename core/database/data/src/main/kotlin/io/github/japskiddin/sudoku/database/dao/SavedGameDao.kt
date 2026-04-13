@@ -14,7 +14,14 @@ public interface SavedGameDao {
     @Query("SELECT * FROM saved_game WHERE board_uid == :boardUid")
     public suspend fun get(boardUid: Long): SavedGameDBO?
 
-    @Query("SELECT * FROM saved_game ORDER BY board_uid DESC LIMIT 1")
+    @Query(
+        """
+        SELECT * FROM saved_game
+        WHERE status = 0
+        ORDER BY last_played DESC, board_uid DESC
+        LIMIT 1
+        """
+    )
     public fun getLast(): Flow<SavedGameDBO?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
