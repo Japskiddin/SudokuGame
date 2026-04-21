@@ -260,14 +260,14 @@ private fun MenuLandscape(
             ) { onStartButtonClick() }
             Spacer(modifier = Modifier.height(12.dp))
             GameButton(
-                icon = painterResource(id = R.drawable.ic_settings),
-                text = stringResource(id = CoreUiR.string.settings)
-            ) { onSettingsButtonClick() }
-            Spacer(modifier = Modifier.height(12.dp))
-            GameButton(
                 icon = painterResource(id = R.drawable.ic_history),
                 text = stringResource(id = CoreUiR.string.history)
             ) { onHistoryButtonClick() }
+            Spacer(modifier = Modifier.height(12.dp))
+            GameButton(
+                icon = painterResource(id = R.drawable.ic_settings),
+                text = stringResource(id = CoreUiR.string.settings)
+            ) { onSettingsButtonClick() }
         }
     }
 }
@@ -306,14 +306,14 @@ private fun MenuPortrait(
         ) { onStartButtonClick() }
         Spacer(modifier = Modifier.height(12.dp))
         GameButton(
-            icon = painterResource(id = R.drawable.ic_settings),
-            text = stringResource(id = CoreUiR.string.settings)
-        ) { onSettingsButtonClick() }
-        Spacer(modifier = Modifier.height(12.dp))
-        GameButton(
             icon = painterResource(id = R.drawable.ic_history),
             text = stringResource(id = CoreUiR.string.history)
         ) { onHistoryButtonClick() }
+        Spacer(modifier = Modifier.height(12.dp))
+        GameButton(
+            icon = painterResource(id = R.drawable.ic_settings),
+            text = stringResource(id = CoreUiR.string.settings)
+        ) { onSettingsButtonClick() }
     }
 }
 
