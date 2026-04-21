@@ -11,15 +11,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -100,6 +103,7 @@ private fun InputButton(
     counterTextSize: TextUnit = 10.sp,
     textColor: Color = SudokuTheme.colors.gamePanelNormal,
     pressedTextColor: Color = SudokuTheme.colors.gamePanelPressed,
+    padding: Dp = 4.dp,
     onClick: (Int) -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -113,14 +117,15 @@ private fun InputButton(
 
     val buttonModifier = if (counter > 0) {
         modifier
+            .clip(RoundedCornerShape(4.dp))
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
                 onClick = { onClick(value) },
             )
-            .padding(2.dp)
+            .padding(padding)
     } else {
-        modifier.padding(2.dp)
+        modifier.padding(padding)
     }
 
     val color = if (counter > 0) {
@@ -132,10 +137,7 @@ private fun InputButton(
     val textModifier = if (showRemainingNumbers) {
         Modifier
     } else {
-        Modifier.padding(
-            top = 2.dp,
-            bottom = 2.dp
-        )
+        Modifier.padding(vertical = 2.dp)
     }
 
     Column(
@@ -143,7 +145,7 @@ private fun InputButton(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BasicText(
-            text = value.toString(),
+            text = value.toDisplayValue(),
             style = SudokuTheme.typography.gameButton.copy(
                 fontSize = valueTextSize,
                 color = color
@@ -163,6 +165,14 @@ private fun InputButton(
             )
         }
     }
+}
+
+@Suppress("MagicNumber")
+private fun Int.toDisplayValue(): String = when (this) {
+    10 -> "A"
+    11 -> "B"
+    12 -> "C"
+    else -> this.toString()
 }
 
 private fun BoardList.countByValue(
@@ -187,7 +197,7 @@ private fun InputPanelPreview() {
     SudokuTheme {
         InputPanel(
             board = getSampleBoardForPreview(),
-            gameType = GameType.DEFAULT6X6,
+            gameType = GameType.DEFAULT12X12,
             showRemainingNumbers = true,
             onClick = {}
         )
