@@ -1,8 +1,8 @@
 [versions]
-agp = "9.1.0"
+agp = "9.1.1"
 kotlin = "2.3.20"
 
-android-tools = "32.0.1"
+android-tools = "32.1.1"
 
 androidx-annotation = "1.10.0"
 androidx-core-ktx = "1.18.0"
@@ -32,15 +32,15 @@ androidx-arch-core-testing = "2.2.0"
 detekt = "1.23.8"
 detekt-rules-compose = "0.5.7"
 
-tracer = "1.2.2"
+tracer = "1.3.0"
 
 caupain = "1.9.1"
 
 # Used directly in gradle plugins
 
 android-minSdk = "23"
-android-compileSdk = "36"
-android-targetSdk = "36"
+android-compileSdk = "37"
+android-targetSdk = "37"
 
 app-versionName = "1.0.8"
 app-versionCode = "14"
