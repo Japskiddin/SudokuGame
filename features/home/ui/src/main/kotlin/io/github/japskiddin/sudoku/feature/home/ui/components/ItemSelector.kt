@@ -1,14 +1,20 @@
 package io.github.japskiddin.sudoku.feature.home.ui.components
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -52,13 +59,12 @@ internal fun ItemSelector(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_arrow_left),
-            contentDescription = stringResource(id = CoreUiR.string.swipe_left),
-            modifier = Modifier
-                .size(buttonSize)
-                .clickable { onSwipeLeft() },
-            colorFilter = ColorFilter.tint(color = iconTint)
+        Button(
+            icon = R.drawable.ic_arrow_left,
+            description = CoreUiR.string.swipe_left,
+            size = buttonSize,
+            tint = iconTint,
+            onClick = onSwipeLeft,
         )
         AnimatedContent(
             targetState = itemPos,
@@ -84,15 +90,44 @@ internal fun ItemSelector(
                 ),
             )
         }
-        Image(
-            painter = painterResource(id = R.drawable.ic_arrow_right),
-            contentDescription = stringResource(id = CoreUiR.string.swipe_right),
-            modifier = Modifier
-                .size(buttonSize)
-                .clickable { onSwipeRight() },
-            colorFilter = ColorFilter.tint(color = iconTint)
+        Button(
+            icon = R.drawable.ic_arrow_right,
+            description = CoreUiR.string.swipe_right,
+            size = buttonSize,
+            tint = iconTint,
+            onClick = onSwipeRight,
         )
     }
+}
+
+@Composable
+private fun Button(
+    @DrawableRes icon: Int,
+    @StringRes description: Int,
+    size: Dp,
+    tint: Color,
+    onClick: () -> Unit,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Image(
+        painter = painterResource(id = icon),
+        contentDescription = stringResource(id = description),
+        modifier = Modifier
+            .size(size)
+            .clip(CircleShape)
+            .indication(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) {
+                onClick()
+            },
+        colorFilter = ColorFilter.tint(color = tint)
+    )
 }
 
 @Preview(
