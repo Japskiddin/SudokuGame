@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +53,6 @@ import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
-import io.github.japskiddin.sudoku.feature.game.ui.component.KeepScreenOn
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
@@ -169,11 +169,17 @@ private fun Game(
 ) {
     val gameState = state.gameState
     val preferencesState = state.preferencesState
-    KeepScreenOn(isEnabled = preferencesState.isKeepScreenOn)
+
+    val wakeModifier = if (preferencesState.isKeepScreenOn) {
+        Modifier.keepScreenOn()
+    } else {
+        Modifier
+    }
 
     BoxWithConstraints(
         modifier = Modifier
             .then(modifier)
+            .then(wakeModifier)
             .safeDrawingPadding()
             .padding(12.dp)
     ) {
