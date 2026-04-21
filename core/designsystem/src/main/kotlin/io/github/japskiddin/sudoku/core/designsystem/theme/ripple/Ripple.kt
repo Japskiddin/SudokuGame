@@ -52,22 +52,19 @@ public fun ripple(
     bounded: Boolean = true,
     radius: Dp = Dp.Unspecified,
     color: Color = Color.Unspecified
-): IndicationNodeFactory {
-    return if (radius == Dp.Unspecified && color == Color.Unspecified) {
-        if (bounded) return DefaultBoundedRipple else DefaultUnboundedRipple
+): IndicationNodeFactory =
+    if (radius == Dp.Unspecified && color == Color.Unspecified) {
+        if (bounded) DefaultBoundedRipple else DefaultUnboundedRipple
     } else {
         RippleNodeFactory(bounded, radius, color)
     }
-}
 
 @Stable
 public fun ripple(
     color: ColorProducer,
     bounded: Boolean = true,
     radius: Dp = Dp.Unspecified
-): IndicationNodeFactory {
-    return RippleNodeFactory(bounded, radius, color)
-}
+): IndicationNodeFactory = RippleNodeFactory(bounded, radius, color)
 
 private fun createRippleModifierNode(
     interactionSource: InteractionSource,
@@ -75,9 +72,7 @@ private fun createRippleModifierNode(
     radius: Dp,
     color: ColorProducer,
     rippleAlpha: () -> RippleAlpha
-): DelegatableNode {
-    return createPlatformRippleNode(interactionSource, bounded, radius, color, rippleAlpha)
-}
+): DelegatableNode = createPlatformRippleNode(interactionSource, bounded, radius, color, rippleAlpha)
 
 private object RippleDefaults {
     val RippleAlpha: RippleAlpha =

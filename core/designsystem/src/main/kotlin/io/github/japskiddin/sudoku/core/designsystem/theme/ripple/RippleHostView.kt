@@ -3,18 +3,16 @@ package io.github.japskiddin.sudoku.core.designsystem.theme.ripple
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Build
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import java.lang.reflect.Method
+import androidx.core.graphics.drawable.toDrawable
 import kotlin.math.roundToInt
 
 internal class RippleHostView(context: Context) : View(context) {
@@ -176,7 +174,7 @@ private class UnprojectedRipple(private val bounded: Boolean) :
         // ripple
         // against
         /* mask */
-        if (bounded) ColorDrawable(android.graphics.Color.WHITE) else null
+        if (bounded) android.graphics.Color.WHITE.toDrawable() else null
     ) {
     private var rippleColor: Color? = null
 
@@ -208,22 +206,7 @@ private class UnprojectedRipple(private val bounded: Boolean) :
     fun trySetRadius(radius: Int) {
         if (rippleRadius != radius) {
             rippleRadius = radius
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                try {
-                    if (!setMaxRadiusFetched) {
-                        setMaxRadiusFetched = true
-                        setMaxRadiusMethod =
-                            RippleDrawable::class
-                                .java
-                                .getDeclaredMethod("setMaxRadius", Int::class.javaPrimitiveType)
-                    }
-                    setMaxRadiusMethod?.invoke(this, radius)
-                } catch (e: Exception) {
-                    // Fail silently
-                }
-            } else {
-                MRadiusHelper.setRadius(this, radius)
-            }
+            MRadiusHelper.setRadius(this, radius)
         }
     }
 
@@ -246,16 +229,10 @@ private class UnprojectedRipple(private val bounded: Boolean) :
         return color.copy(alpha = transformedAlpha)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private object MRadiusHelper {
         /** Sets the [radius] for the given [ripple]. */
         fun setRadius(ripple: RippleDrawable, radius: Int) {
             ripple.radius = radius
         }
-    }
-
-    companion object {
-        private var setMaxRadiusMethod: Method? = null
-        private var setMaxRadiusFetched = false
     }
 }
