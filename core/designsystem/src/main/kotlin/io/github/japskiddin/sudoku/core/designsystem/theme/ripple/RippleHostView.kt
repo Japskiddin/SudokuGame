@@ -3,6 +3,7 @@ package io.github.japskiddin.sudoku.core.designsystem.theme.ripple
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Build
@@ -12,7 +13,6 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.graphics.drawable.toDrawable
 import kotlin.math.roundToInt
 
 internal class RippleHostView(context: Context) : View(context) {
@@ -174,7 +174,7 @@ private class UnprojectedRipple(private val bounded: Boolean) :
         // ripple
         // against
         /* mask */
-        if (bounded) android.graphics.Color.WHITE.toDrawable() else null
+        if (bounded) ColorDrawable(android.graphics.Color.WHITE) else null
     ) {
     private var rippleColor: Color? = null
 
