@@ -9,7 +9,7 @@ import ru.ok.tracer.crash.report.CrashReportConfiguration
 import ru.ok.tracer.heap.dumps.HeapDumpConfiguration
 
 @HiltAndroidApp
-class GameApplication : Application(), HasTracerConfiguration {
+class App : Application(), HasTracerConfiguration {
     override val tracerConfiguration: List<TracerConfiguration>
         get() = listOf(
             CoreTracerConfiguration.build {},

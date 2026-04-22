@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     `kotlin-dsl`
 }
@@ -7,30 +5,20 @@ plugins {
 group = "io.github.japskiddin.android.core.buildlogic"
 
 dependencies {
-    compileOnly(libs.android.gradle.plugin)
-    compileOnly(libs.kotlin.gradle.plugin)
-    compileOnly(libs.android.tools.common)
-    compileOnly(libs.compose.gradle.plugin)
-    compileOnly(libs.ksp.gradle.plugin)
-    compileOnly(libs.room.gradle.plugin)
-    compileOnly(libs.detekt.gradle.plugin)
+    implementation(libs.android.gradle.plugin)
+    implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.android.tools.common)
+    implementation(libs.compose.gradle.plugin)
+    implementation(libs.ksp.gradle.plugin)
+    implementation(libs.room.gradle.plugin)
+    implementation(libs.detekt.gradle.plugin)
+
     // Workaround for version catalog working inside precompiled scripts
     // Issue - https://github.com/gradle/gradle/issues/15383
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
-private val projectJavaVersion: JavaVersion = JavaVersion.toVersion(libs.versions.jvm.get())
-
-java {
-    sourceCompatibility = projectJavaVersion
-    targetCompatibility = projectJavaVersion
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.fromTarget(projectJavaVersion.toString())
-    }
-}
+kotlin { jvmToolchain(libs.versions.jvm.get().toInt()) }
 
 tasks {
     validatePlugins {
@@ -61,9 +49,9 @@ gradlePlugin {
             id = "app.detekt"
             implementationClass = "DetektConventionPlugin"
         }
-        register("hilt") {
-            id = "app.hilt"
-            implementationClass = "HiltConventionPlugin"
+        register("di") {
+            id = "app.di"
+            implementationClass = "DIConventionPlugin"
         }
         register("room") {
             id = "app.room"

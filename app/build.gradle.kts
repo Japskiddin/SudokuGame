@@ -5,7 +5,7 @@ import java.util.*
 plugins {
     alias(libs.plugins.app.android.application)
     alias(libs.plugins.app.android.compose)
-    alias(libs.plugins.app.hilt)
+    alias(libs.plugins.app.di)
     alias(libs.plugins.app.detekt)
     alias(libs.plugins.app.test)
     alias(libs.plugins.tracer)
