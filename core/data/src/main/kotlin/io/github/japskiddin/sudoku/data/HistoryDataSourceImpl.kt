@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+@dev.zacsweers.metro.Inject
 public class HistoryDataSourceImpl
 @Inject
 constructor(
