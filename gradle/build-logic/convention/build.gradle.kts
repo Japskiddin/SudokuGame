@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.ksp.gradle.plugin)
     implementation(libs.room.gradle.plugin)
     implementation(libs.detekt.gradle.plugin)
+    implementation(libs.metro.gradle.plugin)
 
     // Workaround for version catalog working inside precompiled scripts
     // Issue - https://github.com/gradle/gradle/issues/15383

@@ -11,6 +11,7 @@ class DIConventionPlugin : Plugin<Project> {
         with(target) {
             plugins {
                 apply(libs.plugins.google.devtools.ksp.get().pluginId)
+                apply(libs.plugins.metro.get().pluginId)
 
                 withPlugin(libs.plugins.android.application.get().pluginId) {
                     apply(libs.plugins.dagger.hilt.android.get().pluginId)
