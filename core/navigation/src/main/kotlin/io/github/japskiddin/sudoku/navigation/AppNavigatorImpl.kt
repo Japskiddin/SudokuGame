@@ -1,9 +1,15 @@
 package io.github.japskiddin.sudoku.navigation
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+@dev.zacsweers.metro.Inject
 public class AppNavigatorImpl
 @Inject
 constructor() : AppNavigator {
