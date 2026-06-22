@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
@@ -35,12 +34,7 @@ import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiState
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
-public fun SettingsScreen() {
-    SettingsScreen(viewModel = hiltViewModel())
-}
-
-@Composable
-private fun SettingsScreen(viewModel: SettingsViewModel) {
+public fun SettingsScreen(viewModel: SettingsViewModel) {
     BackHandler {
         viewModel.onAction(UiAction.Back)
     }

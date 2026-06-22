@@ -1,37 +1,20 @@
 package io.github.japskiddin.sudoku.game.di
 
 import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
-import io.github.japskiddin.sudoku.core.common.Logger
-import io.github.japskiddin.sudoku.core.common.android.AndroidLogcatLogger
 import io.github.japskiddin.sudoku.datastore.SettingsDatastore
-import io.github.japskiddin.sudoku.navigation.AppNavigator
-import io.github.japskiddin.sudoku.navigation.AppNavigatorImpl
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
+@BindingContainer
 object AppModule {
+    @SingleIn(AppScope::class)
     @Provides
-    @Singleton
-    fun provideSettingsDatastore(
-        @ApplicationContext context: Context
-    ): SettingsDatastore = SettingsDatastore(context)
+    fun provideAppDispatchers(): AppDispatchers = AppDispatchers()
 
+    @SingleIn(AppScope::class)
     @Provides
-    @Singleton
-    fun provideAppCoroutineDispatchers(): AppDispatchers = AppDispatchers()
-
-    @Provides
-    @Singleton
-    fun provideAppNavigator(): AppNavigator = AppNavigatorImpl()
-
-    @Provides
-    @Singleton
-    fun provideLogger(): Logger = AndroidLogcatLogger()
+    fun provideSettingsDatastore(application: Context): SettingsDatastore = SettingsDatastore(application)
 }

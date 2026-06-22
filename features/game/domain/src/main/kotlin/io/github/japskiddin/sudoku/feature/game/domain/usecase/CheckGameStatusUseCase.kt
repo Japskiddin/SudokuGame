@@ -1,15 +1,14 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-public class CheckGameStatusUseCase
 @Inject
-constructor(
+public class CheckGameStatusUseCase(
     private val appDispatchers: AppDispatchers,
 ) {
     public suspend operator fun invoke(
@@ -21,9 +20,7 @@ constructor(
         return withContext(appDispatchers.default) {
             when {
                 isGameFailed(mistakes, difficulty) -> GameStatus.FAILED
-
                 isGameCompleted(board, solvedBoard) -> GameStatus.COMPLETED
-
                 else -> GameStatus.IN_PROGRESS
             }
         }

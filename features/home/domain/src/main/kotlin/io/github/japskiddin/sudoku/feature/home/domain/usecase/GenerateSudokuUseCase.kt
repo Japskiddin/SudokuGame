@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.home.domain.usecase
 
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
@@ -8,11 +9,9 @@ import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.model.convertToString
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-public class GenerateSudokuUseCase
 @Inject
-constructor(
+public class GenerateSudokuUseCase(
     private val appDispatchers: AppDispatchers,
 ) {
     public suspend operator fun invoke(

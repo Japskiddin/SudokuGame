@@ -33,7 +33,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
@@ -64,12 +63,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPrevie
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
-public fun GameScreen() {
-    GameScreen(viewModel = hiltViewModel())
-}
-
-@Composable
-private fun GameScreen(viewModel: GameViewModel) {
+public fun GameScreen(viewModel: GameViewModel) {
     BackHandler {
         viewModel.onAction(UiAction.Back)
     }

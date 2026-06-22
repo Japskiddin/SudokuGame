@@ -1,14 +1,13 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.SavedGame
 import io.github.japskiddin.sudoku.core.model.isCurrent
-import javax.inject.Inject
 
-public class SaveGameUseCase
 @Inject
-constructor(
+public class SaveGameUseCase(
     private val savedGameRepository: SavedGameRepository
 ) {
     public suspend operator fun invoke(

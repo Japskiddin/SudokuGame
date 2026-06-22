@@ -1,13 +1,12 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.model.Board
-import javax.inject.Inject
 
-public class GetBoardUseCase
 @Inject
-constructor(
+public class GetBoardUseCase(
     private val boardRepository: BoardRepository
 ) {
     public suspend operator fun invoke(uid: Long): Board {

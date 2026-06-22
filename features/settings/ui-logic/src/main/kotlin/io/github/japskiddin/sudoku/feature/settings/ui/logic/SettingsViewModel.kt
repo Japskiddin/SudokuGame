@@ -1,8 +1,12 @@
 package io.github.japskiddin.sudoku.feature.settings.ui.logic
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import dev.zacsweers.metro.Inject
+import io.github.japskiddin.sudoku.core.common.android.di.ViewModelKey
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.navigation.AppNavigator
 import kotlinx.coroutines.flow.SharingStarted
@@ -10,12 +14,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "LongParameterList")
-@HiltViewModel
-public class SettingsViewModel
 @Inject
+@ViewModelKey
+public class SettingsViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val settingsRepository: SettingsRepository,
@@ -104,6 +107,20 @@ internal constructor(
     private fun updateResetTimer(enabled: Boolean) {
         viewModelScope.launch {
             settingsRepository.setResetTimer(enabled)
+        }
+    }
+
+    public companion object {
+        public fun factory(
+            appNavigator: AppNavigator,
+            settingsRepository: SettingsRepository,
+        ): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SettingsViewModel(
+                    appNavigator = appNavigator,
+                    settingsRepository = settingsRepository,
+                )
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.app.android.application)
     alias(libs.plugins.app.android.compose)
     alias(libs.plugins.app.di)
-    alias(libs.plugins.app.di.metro)
     alias(libs.plugins.app.detekt)
     alias(libs.plugins.app.test)
     alias(libs.plugins.tracer)
@@ -86,11 +85,11 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.splashscreen)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(platform(libs.tracer))
     implementation(libs.bundles.tracer)
-
-    implementation(libs.dagger.hilt.navigation.compose)
 
     implementation(projects.core.commonAndroid)
     implementation(projects.core.ui)

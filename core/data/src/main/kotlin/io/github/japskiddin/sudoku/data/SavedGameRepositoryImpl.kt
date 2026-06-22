@@ -1,14 +1,16 @@
 package io.github.japskiddin.sudoku.data
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.domain.SavedGameDataSource
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.model.SavedGame
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-public class SavedGameRepositoryImpl
+@ContributesBinding(AppScope::class)
 @Inject
-constructor(
+public class SavedGameRepositoryImpl(
     private val savedGameDataSource: SavedGameDataSource
 ) : SavedGameRepository {
     override suspend fun get(uid: Long): SavedGame? = savedGameDataSource.get(uid)

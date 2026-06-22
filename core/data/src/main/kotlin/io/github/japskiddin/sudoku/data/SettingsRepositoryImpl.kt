@@ -1,16 +1,18 @@
 package io.github.japskiddin.sudoku.data
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.domain.SettingsDataSource
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.core.model.AppPreferences
 import io.github.japskiddin.sudoku.core.model.GameMode
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-public class SettingsRepositoryImpl
+@ContributesBinding(AppScope::class)
 @Inject
-constructor(
+public class SettingsRepositoryImpl(
     private val settingsDataSource: SettingsDataSource
 ) : SettingsRepository {
     override suspend fun setMistakesLimit(enabled: Boolean): Unit = settingsDataSource.setMistakesLimit(enabled)

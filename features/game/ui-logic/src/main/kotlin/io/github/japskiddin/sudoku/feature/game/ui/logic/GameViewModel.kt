@@ -2,10 +2,15 @@ package io.github.japskiddin.sudoku.feature.game.ui.logic
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.common.BoardNotFoundException
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
+import io.github.japskiddin.sudoku.core.common.android.di.ViewModelKey
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.core.feature.utils.toGameError
@@ -43,25 +48,24 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Provider
+import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
-@HiltViewModel
+@Inject
+@ViewModelKey
 public class GameViewModel
 @Suppress("LongParameterList")
-@Inject
 internal constructor(
     private val appNavigator: AppNavigator,
     private val savedState: SavedStateHandle,
     settingsRepository: SettingsRepository,
     private val savedGameRepository: SavedGameRepository,
-    private val getBoardUseCase: Provider<GetBoardUseCase>,
-    private val saveGameUseCase: Provider<SaveGameUseCase>,
-    private val restoreGameUseCase: Provider<RestoreGameUseCase>,
-    private val solveBoardUseCase: Provider<SolveBoardUseCase>,
-    private val checkGameStatusUseCase: Provider<CheckGameStatusUseCase>,
-    private val addToHistoryUseCase: Provider<AddToHistoryUseCase>,
+    private val getBoardUseCase: GetBoardUseCase,
+    private val saveGameUseCase: SaveGameUseCase,
+    private val restoreGameUseCase: RestoreGameUseCase,
+    private val solveBoardUseCase: SolveBoardUseCase,
+    private val checkGameStatusUseCase: CheckGameStatusUseCase,
+    private val addToHistoryUseCase: AddToHistoryUseCase,
 ) : ViewModel() {
     private lateinit var gameHistoryManager: GameHistoryManager
 
@@ -110,7 +114,9 @@ internal constructor(
     ) { gameState, preferencesUiState ->
         when {
             gameState.error != GameError.NONE -> UiState.Error(gameState.error)
+
             gameState.status == GameState.Status.LOADING -> UiState.Loading
+
             gameState.status == GameState.Status.COMPLETED -> UiState.Result(
                 actions = gameState.actions,
                 mistakes = gameState.mistakes,
@@ -175,7 +181,7 @@ internal constructor(
 
         viewModelScope.launch {
             val boardEntity = try {
-                getBoardUseCase.get().invoke(boardUid)
+                getBoardUseCase.invoke(boardUid)
             } catch (ex: BoardNotFoundException) {
                 gameState.update { it.copy(error = ex.toGameError()) }
                 return@launch
@@ -195,7 +201,7 @@ internal constructor(
                 boardEntity.solvedBoard.toBoardList(boardType)
             } else {
                 try {
-                    solveBoardUseCase.get().invoke(board, boardType, initialBoard)
+                    solveBoardUseCase.invoke(board, boardType, initialBoard)
                 } catch (e: SudokuNotGeneratedException) {
                     gameState.update { it.copy(error = e.toGameError()) }
                     return@launch
@@ -205,7 +211,7 @@ internal constructor(
             val savedGame = savedGameRepository.get(boardUid)
             if (savedGame != null) {
                 val savedBoard = savedGame.board.toBoardList(boardType)
-                val restoredBoard = restoreGameUseCase.get().invoke(
+                val restoredBoard = restoreGameUseCase.invoke(
                     savedBoard,
                     boardType,
                     initialBoard,
@@ -243,7 +249,7 @@ internal constructor(
         stopTimer()
         timerJob = viewModelScope.launch {
             while (true) {
-                delay(TIMER_DELAY)
+                delay(TIMER_DELAY.milliseconds)
                 gameState.update { it.copy(time = it.time + 1) }
             }
         }
@@ -342,7 +348,7 @@ internal constructor(
     private fun checkGameStatus() {
         val state = gameState.value
         viewModelScope.launch {
-            val status = checkGameStatusUseCase.get().invoke(
+            val status = checkGameStatusUseCase.invoke(
                 board = gameState.value.board,
                 solvedBoard = gameState.value.solvedBoard,
                 mistakes = state.mistakes,
@@ -370,7 +376,7 @@ internal constructor(
     private fun addToHistory(status: GameStatus) {
         val state = gameState.value
         viewModelScope.launch {
-            addToHistoryUseCase.get().invoke(
+            addToHistoryUseCase.invoke(
                 uid = boardUid,
                 board = state.board.convertToString(),
                 notes = state.notes.convertToString(),
@@ -385,7 +391,7 @@ internal constructor(
     private fun saveGame() {
         val state = gameState.value
         viewModelScope.launch {
-            saveGameUseCase.get().invoke(
+            saveGameUseCase.invoke(
                 uid = boardUid,
                 board = state.board.convertToString(),
                 notes = state.notes.convertToString(),
@@ -396,7 +402,35 @@ internal constructor(
         }
     }
 
-    private companion object {
+    public companion object {
         private const val TIMER_DELAY = 1000L
+
+        public fun factory(
+            appNavigator: AppNavigator,
+            settingsRepository: SettingsRepository,
+            savedGameRepository: SavedGameRepository,
+            getBoardUseCase: GetBoardUseCase,
+            saveGameUseCase: SaveGameUseCase,
+            restoreGameUseCase: RestoreGameUseCase,
+            solveBoardUseCase: SolveBoardUseCase,
+            checkGameStatusUseCase: CheckGameStatusUseCase,
+            addToHistoryUseCase: AddToHistoryUseCase,
+        ): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val savedStateHandle = createSavedStateHandle()
+                GameViewModel(
+                    appNavigator = appNavigator,
+                    savedState = savedStateHandle,
+                    settingsRepository = settingsRepository,
+                    savedGameRepository = savedGameRepository,
+                    getBoardUseCase = getBoardUseCase,
+                    saveGameUseCase = saveGameUseCase,
+                    restoreGameUseCase = restoreGameUseCase,
+                    solveBoardUseCase = solveBoardUseCase,
+                    checkGameStatusUseCase = checkGameStatusUseCase,
+                    addToHistoryUseCase = addToHistoryUseCase,
+                )
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.app.android.library)
     alias(libs.plugins.app.test)
     alias(libs.plugins.app.detekt)
-    alias(libs.plugins.app.di.metro)
+    alias(libs.plugins.app.di)
 }
 
 android {
@@ -18,6 +18,4 @@ dependencies {
     implementation(projects.core.database.data)
     implementation(projects.core.database.entities)
     implementation(projects.core.datastore)
-
-    api(libs.javax.inject)
 }

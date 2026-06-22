@@ -11,7 +11,7 @@ class FeatureUiLogicConventionPlugin : Plugin<Project> {
             dependencies {
                 implementation(libs.androidx.core.ktx)
                 implementation(libs.androidx.lifecycle.runtime)
-                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.viewmodel.ktx)
                 implementation(libs.androidx.lifecycle.viewmodel.savedstate)
                 implementation(libs.jetbrains.kotlinx.coroutines.android)
                 implementation(project(":core:common-android"))

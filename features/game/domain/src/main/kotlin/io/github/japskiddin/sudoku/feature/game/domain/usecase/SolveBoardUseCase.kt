@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.game.domain.usecase
 
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.game.qqwing.QQWingController
@@ -7,11 +8,9 @@ import io.github.japskiddin.sudoku.core.model.BoardCell
 import io.github.japskiddin.sudoku.core.model.BoardList
 import io.github.japskiddin.sudoku.core.model.GameType
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-public class SolveBoardUseCase
 @Inject
-constructor(
+public class SolveBoardUseCase(
     private val appDispatchers: AppDispatchers,
 ) {
     public suspend operator fun invoke(board: String, gameType: GameType, initialBoard: BoardList): BoardList =

@@ -1,5 +1,8 @@
 package io.github.japskiddin.sudoku.data
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.domain.SavedGameDataSource
 import io.github.japskiddin.sudoku.core.model.SavedGame
 import io.github.japskiddin.sudoku.data.utils.toSavedGame
@@ -7,11 +10,10 @@ import io.github.japskiddin.sudoku.data.utils.toSavedGameDBO
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-public class SavedGameDataSourceImpl
+@ContributesBinding(AppScope::class)
 @Inject
-constructor(
+public class SavedGameDataSourceImpl(
     private val savedGameDao: SavedGameDao
 ) : SavedGameDataSource {
     override suspend fun get(uid: Long): SavedGame? = savedGameDao.get(uid)?.toSavedGame()

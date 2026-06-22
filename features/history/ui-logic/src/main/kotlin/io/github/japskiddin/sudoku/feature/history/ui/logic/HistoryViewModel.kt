@@ -1,8 +1,12 @@
 package io.github.japskiddin.sudoku.feature.history.ui.logic
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import dev.zacsweers.metro.Inject
+import io.github.japskiddin.sudoku.core.common.android.di.ViewModelKey
 import io.github.japskiddin.sudoku.feature.history.domain.usecase.GetHistoryUseCase
 import io.github.japskiddin.sudoku.feature.history.ui.logic.utils.toHistoryUI
 import io.github.japskiddin.sudoku.navigation.AppNavigator
@@ -11,17 +15,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
-import javax.inject.Provider
 
-@HiltViewModel
-public class HistoryViewModel
 @Inject
+@ViewModelKey
+public class HistoryViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
-    getHistoryUseCase: Provider<GetHistoryUseCase>,
+    getHistoryUseCase: GetHistoryUseCase,
 ) : ViewModel() {
-    public val uiState: StateFlow<UiState> = getHistoryUseCase.get().invoke()
+    public val uiState: StateFlow<UiState> = getHistoryUseCase.invoke()
         .map {
             UiState(
                 history = it
@@ -44,4 +46,18 @@ internal constructor(
     }
 
     private fun onBackPressed() = appNavigator.tryNavigateBack()
+
+    public companion object {
+        public fun factory(
+            appNavigator: AppNavigator,
+            getHistoryUseCase: GetHistoryUseCase,
+        ): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                HistoryViewModel(
+                    appNavigator = appNavigator,
+                    getHistoryUseCase = getHistoryUseCase,
+                )
+            }
+        }
+    }
 }

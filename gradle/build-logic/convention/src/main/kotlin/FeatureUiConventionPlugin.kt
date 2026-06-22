@@ -8,13 +8,13 @@ class FeatureUiConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             dependencies {
+                implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.core.ktx)
                 implementation(libs.androidx.lifecycle.runtime)
                 implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.viewmodel.ktx)
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 implementation(libs.androidx.lifecycle.viewmodel.savedstate)
-                implementation(libs.dagger.hilt.navigation.compose)
                 implementation(libs.jetbrains.kotlinx.coroutines.android)
                 implementation(project(":core:ui"))
             }

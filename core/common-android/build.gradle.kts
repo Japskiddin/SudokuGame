@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.app.android.library)
     alias(libs.plugins.app.detekt)
-    alias(libs.plugins.app.di.metro)
+    alias(libs.plugins.app.di)
 }
 
 android {
@@ -9,5 +9,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     api(projects.core.common)
 }

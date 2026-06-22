@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.toStringRes
@@ -53,12 +52,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.utils.getPackageInfo
 import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
-public fun HomeScreen() {
-    HomeScreen(viewModel = hiltViewModel())
-}
-
-@Composable
-private fun HomeScreen(viewModel: HomeViewModel) {
+public fun HomeScreen(viewModel: HomeViewModel) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreenContent(
         state = state,

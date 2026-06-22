@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativePaint
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
@@ -74,7 +75,7 @@ public fun Modifier.innerShadow(
         canvas.saveLayer(rect, paint)
         canvas.drawOutline(shadowOutline, paint)
 
-        val frameworkPaint = paint.asFrameworkPaint()
+        val frameworkPaint = paint.nativePaint
         frameworkPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
 
         if (blur.toPx() > 0) {

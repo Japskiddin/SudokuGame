@@ -1,13 +1,15 @@
 package io.github.japskiddin.sudoku.data
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.domain.BoardDataSource
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.model.Board
-import javax.inject.Inject
 
-public class BoardRepositoryImpl
+@ContributesBinding(AppScope::class)
 @Inject
-constructor(
+public class BoardRepositoryImpl(
     private val boardDataSource: BoardDataSource
 ) : BoardRepository {
     override suspend fun get(uid: Long): Board? = boardDataSource.get(uid)

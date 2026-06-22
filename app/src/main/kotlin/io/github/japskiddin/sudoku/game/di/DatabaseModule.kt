@@ -1,38 +1,27 @@
 package io.github.japskiddin.sudoku.game.di
 
 import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.github.japskiddin.sudoku.database.SudokuDatabase
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.HistoryDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
+@BindingContainer
 object DatabaseModule {
+    @SingleIn(AppScope::class)
     @Provides
-    @Singleton
-    fun provideSudokuDatabase(
-        @ApplicationContext context: Context
-    ): SudokuDatabase = SudokuDatabase(context)
+    fun provideDatabase(application: Context): SudokuDatabase = SudokuDatabase(application)
 
     @Provides
-    fun provideHistoryDao(
-        sudokuDatabase: SudokuDatabase
-    ): HistoryDao = sudokuDatabase.historyDao
+    fun provideHistoryDao(database: SudokuDatabase): HistoryDao = database.historyDao
 
     @Provides
-    fun provideBoardDao(
-        sudokuDatabase: SudokuDatabase
-    ): BoardDao = sudokuDatabase.boardDao
+    fun provideBoardDao(database: SudokuDatabase): BoardDao = database.boardDao
 
     @Provides
-    fun provideSavedGameDao(
-        sudokuDatabase: SudokuDatabase
-    ): SavedGameDao = sudokuDatabase.savedGameDao
+    fun provideSavedGameDao(database: SudokuDatabase): SavedGameDao = database.savedGameDao
 }

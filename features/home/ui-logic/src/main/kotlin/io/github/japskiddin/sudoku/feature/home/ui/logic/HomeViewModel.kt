@@ -1,10 +1,14 @@
 package io.github.japskiddin.sudoku.feature.home.ui.logic
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
+import io.github.japskiddin.sudoku.core.common.android.di.ViewModelKey
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
@@ -25,25 +29,23 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
-import javax.inject.Provider
 
 @Suppress("TooManyFunctions", "LongParameterList")
-@HiltViewModel
-public class HomeViewModel
 @Inject
+@ViewModelKey
+public class HomeViewModel
 internal constructor(
     private val appNavigator: AppNavigator,
     private val appDispatchers: AppDispatchers,
     private val settingsRepository: SettingsRepository,
     private val boardRepository: BoardRepository,
     savedGameRepository: SavedGameRepository,
-    private val generateSudokuUseCase: Provider<GenerateSudokuUseCase>,
-    private val deleteSavedGameUseCase: Provider<DeleteSavedGameUseCase>,
-    getGameModeUseCase: Provider<GetGameModePreferenceUseCase>,
+    private val generateSudokuUseCase: GenerateSudokuUseCase,
+    private val deleteSavedGameUseCase: DeleteSavedGameUseCase,
+    getGameModeUseCase: GetGameModePreferenceUseCase,
 ) : ViewModel() {
     private val gameState: StateFlow<GameState> = combine(
-        getGameModeUseCase.get().invoke(),
+        getGameModeUseCase.invoke(),
         savedGameRepository.getLast(),
     ) { gameMode, lastGame ->
         GameState(
@@ -118,10 +120,10 @@ internal constructor(
 
         viewModelScope.launch {
             val savedGame = gameState.value.lastGame
-            deleteSavedGameUseCase.get().invoke(savedGame)
+            deleteSavedGameUseCase.invoke(savedGame)
 
             val board = try {
-                generateSudokuUseCase.get().invoke(mode)
+                generateSudokuUseCase.invoke(mode)
             } catch (ex: SudokuNotGeneratedException) {
                 menuState.update { it.copy(error = ex.toGameError()) }
                 return@launch
@@ -131,6 +133,32 @@ internal constructor(
 
             val insertedBoardUid = boardRepository.insert(board)
             appNavigator.navigateTo(Destination.Game(insertedBoardUid))
+        }
+    }
+
+    public companion object {
+        public fun factory(
+            appNavigator: AppNavigator,
+            appDispatchers: AppDispatchers,
+            settingsRepository: SettingsRepository,
+            boardRepository: BoardRepository,
+            savedGameRepository: SavedGameRepository,
+            generateSudokuUseCase: GenerateSudokuUseCase,
+            deleteSavedGameUseCase: DeleteSavedGameUseCase,
+            getGameModeUseCase: GetGameModePreferenceUseCase,
+        ): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                HomeViewModel(
+                    appNavigator = appNavigator,
+                    appDispatchers = appDispatchers,
+                    settingsRepository = settingsRepository,
+                    boardRepository = boardRepository,
+                    savedGameRepository = savedGameRepository,
+                    generateSudokuUseCase = generateSudokuUseCase,
+                    deleteSavedGameUseCase = deleteSavedGameUseCase,
+                    getGameModeUseCase = getGameModeUseCase,
+                )
+            }
         }
     }
 }

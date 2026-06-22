@@ -1,5 +1,6 @@
 package io.github.japskiddin.sudoku.feature.history.domain.usecase
 
+import dev.zacsweers.metro.Inject
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.domain.HistoryRepository
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
@@ -8,11 +9,9 @@ import io.github.japskiddin.sudoku.core.model.History
 import io.github.japskiddin.sudoku.core.model.SavedGame
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-public class GetHistoryUseCase
 @Inject
-constructor(
+public class GetHistoryUseCase(
     private val historyRepository: HistoryRepository,
     private val savedGameRepository: SavedGameRepository,
     private val boardRepository: BoardRepository,

@@ -54,10 +54,6 @@ gradlePlugin {
             id = "app.di"
             implementationClass = "DIConventionPlugin"
         }
-        register("diMetro") {
-            id = "app.di.metro"
-            implementationClass = "DIMetroConventionPlugin"
-        }
         register("room") {
             id = "app.room"
             implementationClass = "RoomConventionPlugin"
