@@ -54,12 +54,10 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
-public class GameViewModel
-@Suppress("LongParameterList")
 @AssistedInject
-private constructor(
+public class GameViewModel(
     private val appNavigator: AppNavigator,
-    @Assisted private val savedState: SavedStateHandle,
+    @Assisted private val savedStateHandle: SavedStateHandle,
     settingsRepository: SettingsRepository,
     private val savedGameRepository: SavedGameRepository,
     private val getBoardUseCase: GetBoardUseCase,
@@ -175,7 +173,7 @@ private constructor(
     private fun generateGameLevel() {
         gameState.update { it.copy(status = GameState.Status.LOADING) }
 
-        boardUid = (savedState.get<String>(Destination.KEY_BOARD_UID) ?: Board.ID_EMPTY.toString()).toLong()
+        boardUid = (savedStateHandle.get<String>(Destination.KEY_BOARD_UID) ?: Board.ID_EMPTY.toString()).toLong()
         if (boardUid == Board.ID_EMPTY) {
             gameState.update { it.copy(error = GameError.BOARD_NOT_FOUND) }
             return
