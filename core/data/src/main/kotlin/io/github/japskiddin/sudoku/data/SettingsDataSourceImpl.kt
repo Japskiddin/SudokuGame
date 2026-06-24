@@ -1,0 +1,85 @@
+package io.github.japskiddin.sudoku.data
+
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import io.github.japskiddin.sudoku.core.domain.SettingsDataSource
+import io.github.japskiddin.sudoku.core.model.AppPreferences
+import io.github.japskiddin.sudoku.core.model.GameMode
+import io.github.japskiddin.sudoku.data.utils.toAppPreferences
+import io.github.japskiddin.sudoku.data.utils.toGameMode
+import io.github.japskiddin.sudoku.data.utils.toGameModeDSO
+import io.github.japskiddin.sudoku.datastore.SettingsDatastore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+@Suppress("TooManyFunctions")
+@ContributesBinding(AppScope::class)
+@Inject
+public class SettingsDataSourceImpl(
+    private val dataStore: SettingsDatastore
+) : SettingsDataSource {
+    override suspend fun setMistakesLimit(enabled: Boolean) {
+        dataStore.setMistakesLimit(enabled)
+    }
+
+    override fun isMistakesLimit(): Flow<Boolean> = dataStore.isMistakesLimit
+
+    override suspend fun setShowTimer(enabled: Boolean) {
+        dataStore.setShowTimer(enabled)
+    }
+
+    override fun isShowTimer(): Flow<Boolean> = dataStore.isShowTimer
+
+    override suspend fun setResetTimer(enabled: Boolean) {
+        dataStore.setResetTimer(enabled)
+    }
+
+    override fun isResetTimer(): Flow<Boolean> = dataStore.isResetTimer
+
+    override suspend fun setHighlightErrorCells(enabled: Boolean) {
+        dataStore.setHighlightErrorCells(enabled)
+    }
+
+    override fun isHighlightErrorCells(): Flow<Boolean> = dataStore.isHighlightErrorCells
+
+    override suspend fun setHighlightSimilarCells(enabled: Boolean) {
+        dataStore.setHighlightSimilarCells(enabled)
+    }
+
+    override fun isHighlightSimilarCells(): Flow<Boolean> = dataStore.isHighlightSimilarCells
+
+    override suspend fun setShowRemainingNumbers(enabled: Boolean) {
+        dataStore.setShowRemainingNumbers(enabled)
+    }
+
+    override fun isShowRemainingNumbers(): Flow<Boolean> = dataStore.isShowRemainingNumbers
+
+    override suspend fun setHighlightSelectedCell(enabled: Boolean) {
+        dataStore.setHighlightSelectedCell(enabled)
+    }
+
+    override fun isHighlightSelectedCell(): Flow<Boolean> = dataStore.isHighlightSelectedCell
+
+    override suspend fun setKeepScreenOn(enabled: Boolean) {
+        dataStore.setKeepScreenOn(enabled)
+    }
+
+    override fun isKeepScreenOn(): Flow<Boolean> = dataStore.isKeepScreenOn
+
+    override suspend fun setSaveGameMode(enabled: Boolean) {
+        dataStore.setSaveGameMode(enabled)
+    }
+
+    override fun isSaveGameMode(): Flow<Boolean> = dataStore.isSaveGameMode
+
+    override fun getGameMode(): Flow<GameMode> = dataStore.gameMode.map { mode ->
+        mode?.toGameMode() ?: GameMode.Initial
+    }
+
+    override suspend fun setGameMode(mode: GameMode) {
+        dataStore.setGameMode(mode.toGameModeDSO())
+    }
+
+    override fun getAppPreferences(): Flow<AppPreferences> = dataStore.appPreferences.map { it.toAppPreferences() }
+}

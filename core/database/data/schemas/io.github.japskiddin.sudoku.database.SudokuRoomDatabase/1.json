@@ -1,0 +1,189 @@
+{
+    "formatVersion": 1,
+    "database": {
+        "version": 1,
+        "identityHash": "7ff8fe7a761a8f1319b9f84919a4bc83",
+        "entities": [
+            {
+                "tableName": "history",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `time` INTEGER NOT NULL, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+                "fields": [
+                    {
+                        "fieldPath": "uid",
+                        "columnName": "board_uid",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "time",
+                        "columnName": "time",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    }
+                ],
+                "primaryKey": {
+                    "autoGenerate": false,
+                    "columnNames": [
+                        "board_uid"
+                    ]
+                },
+                "indices": [],
+                "foreignKeys": [
+                    {
+                        "table": "board",
+                        "onDelete": "CASCADE",
+                        "onUpdate": "NO ACTION",
+                        "columns": [
+                            "board_uid"
+                        ],
+                        "referencedColumns": [
+                            "uid"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tableName": "saved_game",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`board_uid` INTEGER NOT NULL, `board` TEXT NOT NULL, `notes` TEXT NOT NULL, `actions` INTEGER NOT NULL DEFAULT 0, `mistakes` INTEGER NOT NULL DEFAULT 0, `time` INTEGER NOT NULL DEFAULT 0, `last_played` INTEGER NOT NULL DEFAULT 0, `started_time` INTEGER NOT NULL DEFAULT 0, `finished_time` INTEGER NOT NULL DEFAULT 0, `status` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`board_uid`), FOREIGN KEY(`board_uid`) REFERENCES `board`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+                "fields": [
+                    {
+                        "fieldPath": "uid",
+                        "columnName": "board_uid",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "board",
+                        "columnName": "board",
+                        "affinity": "TEXT",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "notes",
+                        "columnName": "notes",
+                        "affinity": "TEXT",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "actions",
+                        "columnName": "actions",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    },
+                    {
+                        "fieldPath": "mistakes",
+                        "columnName": "mistakes",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    },
+                    {
+                        "fieldPath": "time",
+                        "columnName": "time",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    },
+                    {
+                        "fieldPath": "lastPlayed",
+                        "columnName": "last_played",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    },
+                    {
+                        "fieldPath": "startedTime",
+                        "columnName": "started_time",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    },
+                    {
+                        "fieldPath": "finishedTime",
+                        "columnName": "finished_time",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    },
+                    {
+                        "fieldPath": "status",
+                        "columnName": "status",
+                        "affinity": "INTEGER",
+                        "notNull": true,
+                        "defaultValue": "0"
+                    }
+                ],
+                "primaryKey": {
+                    "autoGenerate": false,
+                    "columnNames": [
+                        "board_uid"
+                    ]
+                },
+                "indices": [],
+                "foreignKeys": [
+                    {
+                        "table": "board",
+                        "onDelete": "CASCADE",
+                        "onUpdate": "NO ACTION",
+                        "columns": [
+                            "board_uid"
+                        ],
+                        "referencedColumns": [
+                            "uid"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tableName": "board",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `board` TEXT NOT NULL, `solved_board` TEXT NOT NULL, `difficulty` INTEGER NOT NULL, `type` INTEGER NOT NULL)",
+                "fields": [
+                    {
+                        "fieldPath": "uid",
+                        "columnName": "uid",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "board",
+                        "columnName": "board",
+                        "affinity": "TEXT",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "solvedBoard",
+                        "columnName": "solved_board",
+                        "affinity": "TEXT",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "difficulty",
+                        "columnName": "difficulty",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "type",
+                        "columnName": "type",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    }
+                ],
+                "primaryKey": {
+                    "autoGenerate": true,
+                    "columnNames": [
+                        "uid"
+                    ]
+                },
+                "indices": [],
+                "foreignKeys": []
+            }
+        ],
+        "views": [],
+        "setupQueries": [
+            "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ff8fe7a761a8f1319b9f84919a4bc83')"
+        ]
+    }
+}
