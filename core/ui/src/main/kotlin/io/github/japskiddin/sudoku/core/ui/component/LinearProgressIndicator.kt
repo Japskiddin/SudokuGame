@@ -201,7 +201,7 @@ public object ProgressIndicatorDefaults {
      * The default opacity applied to the indicator color to create the background color in a
      * [LinearProgressIndicator].
      */
-    public const val IndicatorBackgroundOpacity: Float = 0.24f
+    public const val INDICATOR_BACKGROUND_OPACITY: Float = 0.24f
 
     /**
      * The default [AnimationSpec] that should be used when animating between progress in a

@@ -1,15 +1,11 @@
 package io.github.japskiddin.sudoku.feature.home.ui.logic
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
-import io.github.japskiddin.sudoku.core.common.AppDispatchers
 import io.github.japskiddin.sudoku.core.common.SudokuNotGeneratedException
 import io.github.japskiddin.sudoku.core.domain.BoardRepository
 import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
@@ -38,7 +34,6 @@ import java.util.*
 @ContributesIntoMap(AppScope::class)
 public class HomeViewModel(
     private val appNavigator: AppNavigator,
-    private val appDispatchers: AppDispatchers,
     private val settingsRepository: SettingsRepository,
     private val boardRepository: BoardRepository,
     savedGameRepository: SavedGameRepository,
@@ -135,32 +130,6 @@ public class HomeViewModel(
 
             val insertedBoardUid = boardRepository.insert(board)
             appNavigator.navigateTo(Destination.Game(insertedBoardUid))
-        }
-    }
-
-    public companion object {
-        public fun factory(
-            appNavigator: AppNavigator,
-            appDispatchers: AppDispatchers,
-            settingsRepository: SettingsRepository,
-            boardRepository: BoardRepository,
-            savedGameRepository: SavedGameRepository,
-            generateSudokuUseCase: GenerateSudokuUseCase,
-            deleteSavedGameUseCase: DeleteSavedGameUseCase,
-            getGameModeUseCase: GetGameModePreferenceUseCase,
-        ): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                HomeViewModel(
-                    appNavigator = appNavigator,
-                    appDispatchers = appDispatchers,
-                    settingsRepository = settingsRepository,
-                    boardRepository = boardRepository,
-                    savedGameRepository = savedGameRepository,
-                    generateSudokuUseCase = generateSudokuUseCase,
-                    deleteSavedGameUseCase = deleteSavedGameUseCase,
-                    getGameModeUseCase = getGameModeUseCase,
-                )
-            }
         }
     }
 }

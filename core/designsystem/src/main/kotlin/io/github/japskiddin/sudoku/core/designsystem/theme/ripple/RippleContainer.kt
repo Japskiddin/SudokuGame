@@ -9,7 +9,7 @@ internal interface RippleHostKey {
 }
 
 internal class RippleContainer(context: Context) : ViewGroup(context) {
-    private val MaxRippleHosts = 5
+    private val maxRippleHosts = 5
 
     private val rippleHosts = mutableListOf<RippleHostView>()
 
@@ -92,7 +92,7 @@ internal class RippleContainer(context: Context) : ViewGroup(context) {
                 }
 
             // Update the index for the next host - loop around if we reach the maximum capacity
-            if (nextHostIndex < MaxRippleHosts - 1) {
+            if (nextHostIndex < maxRippleHosts - 1) {
                 nextHostIndex++
             } else {
                 nextHostIndex = 0

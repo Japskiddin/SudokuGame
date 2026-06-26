@@ -139,12 +139,12 @@ internal class RippleHostView(context: Context) : View(context) {
         // Since it is possible for currentAnimationTimeMillis to be different between here, and
         // when it is called inside RippleForeground, we post for any small difference just to be
         // safe.
-        if (!pressed && timeSinceLastStateChange < MinimumRippleStateChangeTime) {
+        if (!pressed && timeSinceLastStateChange < MINIMUM_RIPPLE_STATE_CHANGE_TIME) {
             resetRippleRunnable = Runnable {
                 ripple?.state = RestingState
                 resetRippleRunnable = null
             }
-            postDelayed(resetRippleRunnable, ResetRippleDelayDuration)
+            postDelayed(resetRippleRunnable, RESET_RIPPLE_DELAY_DURATION)
         } else {
             val state = if (pressed) PressedState else RestingState
             ripple?.state = state
@@ -153,9 +153,9 @@ internal class RippleHostView(context: Context) : View(context) {
     }
 
     companion object {
-        private const val MinimumRippleStateChangeTime = 5L
+        private const val MINIMUM_RIPPLE_STATE_CHANGE_TIME = 5L
 
-        private const val ResetRippleDelayDuration = 50L
+        private const val RESET_RIPPLE_DELAY_DURATION = 50L
 
         private val PressedState =
             intArrayOf(android.R.attr.state_pressed, android.R.attr.state_enabled)

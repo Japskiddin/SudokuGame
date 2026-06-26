@@ -44,7 +44,7 @@ import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
 
 @Composable
 internal fun ItemSelector(
-    currentItem: String,
+    items: List<String>,
     itemPos: Int,
     onSwipeLeft: () -> Unit,
     onSwipeRight: () -> Unit,
@@ -79,9 +79,9 @@ internal fun ItemSelector(
             },
             label = "Animated Text",
             modifier = Modifier.weight(1f)
-        ) { value: Int ->
+        ) { position ->
             BasicText(
-                text = currentItem,
+                text = items[position],
                 style = SudokuTheme.typography.dialog.copy(
                     fontWeight = FontWeight.Medium,
                     fontSize = textSize,
@@ -134,33 +134,38 @@ private fun Button(
     name = "Item Selector",
     showBackground = true,
 )
+@Preview(showBackground = true)
 @Composable
 private fun ItemSelectorPreview() {
     val difficulties = persistentListOf(
         GameDifficulty.EASY,
         GameDifficulty.INTERMEDIATE,
         GameDifficulty.HARD,
-        GameDifficulty.EXPERT
+        GameDifficulty.EXPERT,
     )
+
     var currentItemPos by remember { mutableIntStateOf(1) }
-    val currentItem = difficulties[currentItemPos]
+
+    val items = difficulties.map {
+        stringResource(it.getName())
+    }
 
     SudokuTheme {
         ItemSelector(
-            currentItem = stringResource(id = currentItem.getName()),
-            itemPos = difficulties.indexOf(currentItem),
+            items = items,
+            itemPos = currentItemPos,
             onSwipeLeft = {
-                if (currentItemPos <= 0) {
-                    currentItemPos = difficulties.count() - 1
+                currentItemPos = if (currentItemPos == 0) {
+                    items.lastIndex
                 } else {
-                    currentItemPos--
+                    currentItemPos - 1
                 }
             },
             onSwipeRight = {
-                if (currentItemPos >= difficulties.count() - 1) {
-                    currentItemPos = 0
+                currentItemPos = if (currentItemPos == items.lastIndex) {
+                    0
                 } else {
-                    currentItemPos++
+                    currentItemPos + 1
                 }
             }
         )

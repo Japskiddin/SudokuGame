@@ -3,7 +3,6 @@
 package io.github.japskiddin.sudoku.feature.history.ui.components
 
 import android.text.TextPaint
-import android.util.TypedValue
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -12,13 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
@@ -28,7 +24,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -52,8 +47,8 @@ import kotlin.random.Random
 @Composable
 internal fun HistoryGameBoard(
     board: ImmutableBoardList,
-    size: Int = board.size,
     modifier: Modifier = Modifier,
+    size: Int = board.size,
     outerCornerRadius: Dp = 6.dp,
     outerStrokeWidth: Dp = 0.8.dp,
     innerStrokeWidth: Dp = 0.5.dp,
@@ -87,31 +82,15 @@ internal fun HistoryGameBoard(
             mutableIntStateOf(ceil(sqrt(size.toFloat())).toInt())
         }
 
-        var numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
+        val numberTextSizePx = with(LocalDensity.current) { numberTextSize.toPx() }
 
         val outerCornerRadiusPx: Float = with(LocalDensity.current) { outerCornerRadius.toPx() }
         val outerStrokeWidthPx = with(LocalDensity.current) { outerStrokeWidth.toPx() }
         val innerStrokeWidthPx: Float = with(LocalDensity.current) { innerStrokeWidth.toPx() }
         val cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
 
-        var numberPaint by remember {
-            mutableStateOf(
-                TextPaint().apply {
-                    color = numberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            )
-        }
-
-        val context = LocalContext.current
-        LaunchedEffect(numberTextSize) {
-            numberTextSizePx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                numberTextSize.value,
-                context.resources.displayMetrics
-            )
-            numberPaint = TextPaint().apply {
+        val numberPaint = remember {
+            TextPaint().apply {
                 color = numberColor.toArgb()
                 isAntiAlias = true
                 textSize = numberTextSizePx

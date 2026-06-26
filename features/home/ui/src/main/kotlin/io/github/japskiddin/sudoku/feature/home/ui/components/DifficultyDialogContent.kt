@@ -50,7 +50,7 @@ internal fun DifficultyDialogContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ItemSelector(
-            currentItem = stringResource(id = difficulty.getName()),
+            items = difficulties.map { stringResource(it.getName()) },
             itemPos = difficulties.indexOf(difficulty),
             onSwipeLeft = {
                 val index = difficulties.indexOf(difficulty)
@@ -71,7 +71,7 @@ internal fun DifficultyDialogContent(
         )
         Spacer(modifier = Modifier.height(12.dp))
         ItemSelector(
-            currentItem = type.title,
+            items = types.map { it.title },
             itemPos = types.indexOf(type),
             onSwipeLeft = {
                 val index = types.indexOf(type)

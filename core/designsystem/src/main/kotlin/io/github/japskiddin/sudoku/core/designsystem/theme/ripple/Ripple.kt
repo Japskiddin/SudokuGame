@@ -77,10 +77,10 @@ private fun createRippleModifierNode(
 private object RippleDefaults {
     val RippleAlpha: RippleAlpha =
         RippleAlpha(
-            pressedAlpha = StateTokens.PressedStateLayerOpacity,
-            focusedAlpha = StateTokens.FocusStateLayerOpacity,
-            draggedAlpha = StateTokens.DraggedStateLayerOpacity,
-            hoveredAlpha = StateTokens.HoverStateLayerOpacity
+            pressedAlpha = StateTokens.PRESSED_STATE_LAYER_OPACITY,
+            focusedAlpha = StateTokens.FOCUS_STATE_LAYER_OPACTITY,
+            draggedAlpha = StateTokens.DRAGGED_STATE_LAYER_OPACITY,
+            hoveredAlpha = StateTokens.HOVER_STATE_LAYER_OPACITY
         )
 }
 
@@ -563,10 +563,10 @@ private fun outgoingStateLayerAnimationSpecFor(interaction: Interaction?): Anima
 private val DefaultTweenSpec = TweenSpec<Float>(durationMillis = 15, easing = LinearEasing)
 
 private object StateTokens {
-    const val DraggedStateLayerOpacity = 0.16f
-    const val FocusStateLayerOpacity = 0.1f
-    const val HoverStateLayerOpacity = 0.08f
-    const val PressedStateLayerOpacity = 0.1f
+    const val DRAGGED_STATE_LAYER_OPACITY = 0.16f
+    const val FOCUS_STATE_LAYER_OPACTITY = 0.1f
+    const val HOVER_STATE_LAYER_OPACITY = 0.08f
+    const val PRESSED_STATE_LAYER_OPACITY = 0.1f
 }
 
 private val LocalContentColor = compositionLocalOf { Color.Black }

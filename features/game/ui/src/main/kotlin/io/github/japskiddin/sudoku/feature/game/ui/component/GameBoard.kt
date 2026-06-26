@@ -3,7 +3,6 @@
 package io.github.japskiddin.sudoku.feature.game.ui.component
 
 import android.text.TextPaint
-import android.util.TypedValue
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +33,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -123,8 +120,8 @@ internal fun GameBoard(
 
         val density = LocalDensity.current
 
-        var numberTextSizePx = with(density) { numberTextSize.toPx() }
-        var noteTextSizePx = with(density) { noteTextSize.toPx() }
+        val numberTextSizePx = with(density) { numberTextSize.toPx() }
+        val noteTextSizePx = with(density) { noteTextSize.toPx() }
 
         val outerCornerRadiusPx = with(density) { outerCornerRadius.toPx() }
         val outerStrokeWidthPx = with(density) { outerStrokeWidth.toPx() }
@@ -136,90 +133,20 @@ internal fun GameBoard(
 
         val cellSize = Size(cellSizePx, cellSizePx)
 
-        var numberPaint by remember {
-            mutableStateOf(
-                TextPaint().apply {
-                    color = numberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            )
+        val numberPaint = remember(numberTextSizePx, numberColor) {
+            createTextPaint(numberColor, numberTextSizePx)
         }
-        var selectedNumberPaint by remember {
-            mutableStateOf(
-                TextPaint().apply {
-                    color = selectedNumberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            )
+        val selectedNumberPaint = remember(numberTextSizePx, selectedNumberColor) {
+            createTextPaint(selectedNumberColor, numberTextSizePx)
         }
-        var errorNumberPaint by remember {
-            mutableStateOf(
-                TextPaint().apply {
-                    color = errorNumberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            )
+        val errorNumberPaint = remember(numberTextSizePx, errorNumberColor) {
+            createTextPaint(errorNumberColor, numberTextSizePx)
         }
-        var lockedNumberPaint by remember {
-            mutableStateOf(
-                TextPaint().apply {
-                    color = lockedNumberColor.toArgb()
-                    isAntiAlias = true
-                    textSize = numberTextSizePx
-                }
-            )
+        val lockedNumberPaint = remember(numberTextSizePx, lockedNumberColor) {
+            createTextPaint(lockedNumberColor, numberTextSizePx)
         }
-        var notePaint by remember {
-            mutableStateOf(
-                TextPaint().apply {
-                    color = noteColor.toArgb()
-                    isAntiAlias = true
-                    textSize = noteTextSizePx
-                }
-            )
-        }
-
-        val context = LocalContext.current
-        val displayMetrics = context.resources.displayMetrics
-        LaunchedEffect(numberTextSize, noteTextSize) {
-            numberTextSizePx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                numberTextSize.value,
-                displayMetrics
-            )
-            noteTextSizePx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                noteTextSize.value,
-                displayMetrics
-            )
-            numberPaint = TextPaint().apply {
-                color = numberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
-            selectedNumberPaint = TextPaint().apply {
-                color = selectedNumberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
-            notePaint = TextPaint().apply {
-                color = noteColor.toArgb()
-                isAntiAlias = true
-                textSize = noteTextSizePx
-            }
-            errorNumberPaint = TextPaint().apply {
-                color = errorNumberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
-            lockedNumberPaint = TextPaint().apply {
-                color = lockedNumberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
+        val notePaint = remember(noteTextSizePx, noteColor) {
+            createTextPaint(noteColor, noteTextSizePx)
         }
 
         val boardModifier = Modifier
@@ -510,40 +437,50 @@ private fun DrawScope.drawCell(
 ) {
     val row = (cellOffset.x / cellSize.width).toInt()
     val col = (cellOffset.y / cellSize.height).toInt()
-    if (row == 0 && col == 0) {
-        drawRoundCellBackground(
-            offset = cellOffset,
-            size = cellSize,
-            color = color,
-            topLeftCorner = cornerRadius
-        )
-    } else if (row == boardSize - 1 && col == 0) {
-        drawRoundCellBackground(
-            offset = cellOffset,
-            size = cellSize,
-            color = color,
-            topRightCorner = cornerRadius
-        )
-    } else if (row == 0 && col == boardSize - 1) {
-        drawRoundCellBackground(
-            offset = cellOffset,
-            size = cellSize,
-            color = color,
-            bottomLeftCorner = cornerRadius
-        )
-    } else if (row == boardSize - 1 && col == boardSize - 1) {
-        drawRoundCellBackground(
-            offset = cellOffset,
-            size = cellSize,
-            color = color,
-            bottomRightCorner = cornerRadius
-        )
-    } else {
-        drawCellBackground(
-            offset = cellOffset,
-            size = cellSize,
-            color = color
-        )
+    when (row) {
+        0 if col == 0 -> {
+            drawRoundCellBackground(
+                offset = cellOffset,
+                size = cellSize,
+                color = color,
+                topLeftCorner = cornerRadius
+            )
+        }
+
+        boardSize - 1 if col == 0 -> {
+            drawRoundCellBackground(
+                offset = cellOffset,
+                size = cellSize,
+                color = color,
+                topRightCorner = cornerRadius
+            )
+        }
+
+        0 if col == boardSize - 1 -> {
+            drawRoundCellBackground(
+                offset = cellOffset,
+                size = cellSize,
+                color = color,
+                bottomLeftCorner = cornerRadius
+            )
+        }
+
+        boardSize - 1 if col == boardSize - 1 -> {
+            drawRoundCellBackground(
+                offset = cellOffset,
+                size = cellSize,
+                color = color,
+                bottomRightCorner = cornerRadius
+            )
+        }
+
+        else -> {
+            drawCellBackground(
+                offset = cellOffset,
+                size = cellSize,
+                color = color
+            )
+        }
     }
 }
 
@@ -750,6 +687,15 @@ private fun Modifier.boardBackground(): Modifier = this.then(
             offsetY = (-2).dp
         )
 )
+
+private fun createTextPaint(
+    color: Color,
+    textSize: Float
+) = TextPaint().apply {
+    this.color = color.toArgb()
+    isAntiAlias = true
+    this.textSize = textSize
+}
 
 @Preview(
     name = "Game Board Preview",

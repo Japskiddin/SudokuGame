@@ -593,7 +593,7 @@ public class QQWing(
                 possibilities[i] = 0
             }
         }
-        while (solveInstructions.size > 0 && solveInstructions[solveInstructions.size - 1]!!.round == round) {
+        while (solveInstructions.isNotEmpty() && solveInstructions[solveInstructions.size - 1]!!.round == round) {
             val i = solveInstructions.size - 1
             solveInstructions.removeAt(i)
         }
