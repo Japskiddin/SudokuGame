@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.core.ui.component
 
-import android.view.Window
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -19,8 +18,6 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,9 +61,7 @@ public fun GameDialog(
             GameDialogContent(
                 showDialog = showDialog,
                 onDismiss = onDismiss,
-                onDispose = {
-                    showAnimatedDialog = false
-                }
+                onDispose = { showAnimatedDialog = false }
             ) {
                 content()
             }
@@ -81,13 +76,20 @@ private fun GameDialogContent(
     onDispose: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    val dialogWindow = getDialogWindow()
+    val window = (LocalView.current.parent as? DialogWindowProvider)?.window
 
-    SideEffect {
-        dialogWindow.let { window ->
-            window?.setDimAmount(0f)
-            window?.setWindowAnimations(-1)
+    DisposableEffect(Unit) {
+        window?.apply {
+            setDimAmount(0f)
+            setWindowAnimations(-1)
         }
+        onDispose { onDispose() }
+    }
+
+    val contentWidth = if (isLandscape()) {
+        DialogWidthPercentLandscape
+    } else {
+        DialogWidthPercentPortrait
     }
 
     Box(
@@ -105,9 +107,13 @@ private fun GameDialogContent(
         ) {
             Box(
                 modifier = Modifier
-                    .pointerInput(Unit) { detectTapGestures { onDismiss() } }
-                    .background(Color.Black.copy(alpha = .56f))
                     .fillMaxSize()
+                    .background(Color.Black.copy(alpha = .5f))
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            onDismiss()
+                        }
+                    }
             )
         }
         AnimatedVisibility(
@@ -121,46 +127,30 @@ private fun GameDialogContent(
             ),
             exit = slideOutVertically { it / SlideOutOffsetY } + fadeOut() + scaleOut(targetScale = .95f)
         ) {
-            val contentWidth = if (isLandscape()) {
-                DialogWidthPercentLandscape
-            } else {
-                DialogWidthPercentPortrait
-            }
-
             Box(
                 Modifier
-                    .pointerInput(Unit) { detectTapGestures { } }
                     .fillMaxWidth(contentWidth)
-                    .dialogBackground(),
+                    .dialogBackground()
+                    .pointerInput(Unit) {
+                        detectTapGestures { }
+                    },
                 contentAlignment = Alignment.Center
             ) {
-                var graphicVisible by remember { mutableStateOf(false) }
-
-                LaunchedEffect(Unit) { graphicVisible = true }
-
                 AnimatedVisibility(
-                    visible = graphicVisible,
+                    visible = true,
                     enter = expandVertically(
-                        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                        animationSpec = spring(
+                            stiffness = Spring.StiffnessMediumLow
+                        ),
                         expandFrom = Alignment.CenterVertically,
                     )
                 ) {
                     content()
                 }
             }
-
-            DisposableEffect(Unit) {
-                onDispose {
-                    onDispose()
-                }
-            }
         }
     }
 }
-
-@ReadOnlyComposable
-@Composable
-private fun getDialogWindow(): Window? = (LocalView.current.parent as? DialogWindowProvider)?.window
 
 @Preview(
     name = "Game Dialog",

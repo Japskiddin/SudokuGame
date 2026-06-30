@@ -27,29 +27,25 @@ private const val PanelWidthPercentLandscape: Float = .6f
 private const val PanelWidthPercentPortrait: Float = 1f
 
 @Composable
-public fun Modifier.panelBackground(): Modifier = this.then(
-    Modifier
-        .padding(16.dp)
-        .fillMaxWidth(
-            if (isLandscape()) {
-                PanelWidthPercentLandscape
-            } else {
-                PanelWidthPercentPortrait
-            }
-        )
-        .dialogBackground()
-)
+public fun Modifier.panelBackground(): Modifier = this
+    .padding(16.dp)
+    .fillMaxWidth(
+        if (isLandscape()) {
+            PanelWidthPercentLandscape
+        } else {
+            PanelWidthPercentPortrait
+        }
+    )
+    .dialogBackground()
 
 @Composable
-public fun Modifier.dialogBackground(): Modifier = this.then(
-    Modifier
-        .shadow(8.dp, shape = RoundedCornerShape(16.dp))
-        .background(
-            color = SudokuTheme.colors.dialog,
-            shape = RoundedCornerShape(size = 16.dp)
-        )
-        .padding(16.dp)
-)
+public fun Modifier.dialogBackground(): Modifier = this
+    .shadow(8.dp, shape = RoundedCornerShape(16.dp))
+    .background(
+        color = SudokuTheme.colors.dialog,
+        shape = RoundedCornerShape(size = 16.dp)
+    )
+    .padding(16.dp)
 
 @Composable
 public fun Modifier.innerShadow(
