@@ -136,8 +136,12 @@ private fun GameDialogContent(
                     },
                 contentAlignment = Alignment.Center
             ) {
+                var graphicVisible by remember { mutableStateOf(false) }
+
+                LaunchedEffect(Unit) { graphicVisible = true }
+
                 AnimatedVisibility(
-                    visible = true,
+                    visible = graphicVisible,
                     enter = expandVertically(
                         animationSpec = spring(
                             stiffness = Spring.StiffnessMediumLow
