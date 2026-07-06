@@ -15,7 +15,7 @@ class FeatureUiConventionPlugin : Plugin<Project> {
                 implementation(libs.androidx.lifecycle.viewmodel.ktx)
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 implementation(libs.androidx.lifecycle.viewmodel.savedstate)
-                implementation(libs.jetbrains.kotlinx.coroutines.android)
+                implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.metrox.viewmodel)
                 implementation(libs.metrox.viewmodel.compose)
                 implementation(project(":core:ui"))

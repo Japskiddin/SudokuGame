@@ -10,7 +10,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.core)
 
     implementation(projects.core.common)
     implementation(projects.core.domain)

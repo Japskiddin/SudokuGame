@@ -10,6 +10,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.jetbrains.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.navigation.ui.ktx)
 }

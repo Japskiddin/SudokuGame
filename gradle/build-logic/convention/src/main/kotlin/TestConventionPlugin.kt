@@ -31,7 +31,7 @@ class TestConventionPlugin : Plugin<Project> {
 
             dependencies {
                 testImplementation(libs.junit)
-                testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+                testImplementation(libs.kotlinx.coroutines.test)
             }
         }
     }
@@ -42,7 +42,7 @@ class TestConventionPlugin : Plugin<Project> {
             androidTestImplementation(libs.androidx.test.ext.junit)
             androidTestImplementation(libs.androidx.arch.core.testing)
             androidTestImplementation(libs.google.truth)
-            androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
+            androidTestImplementation(libs.kotlinx.coroutines.test)
 
             if (pluginManager.hasPlugin(libs.plugins.compose.compiler.get().pluginId)) {
                 androidTestImplementation(platform(libs.androidx.compose.bom))

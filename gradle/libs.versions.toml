@@ -8,14 +8,18 @@ androidx-annotation = "1.10.0"
 androidx-core-ktx = "1.19.0"
 androidx-lifecycle = "2.11.0"
 androidx-activity = "1.13.0"
-androidx-compose-bom = "2026.06.00"
-androidx-room = "2.8.4"
+androidx-compose-bom = "2026.06.01"
 androidx-datastore = "1.2.1"
 androidx-splashscreen = "1.2.0"
 androidx-navigation = "2.9.8"
 
 kotlinx-coroutines = "1.11.0"
-kotlinx-immutable = "0.5.0"
+kotlinx-immutable = "0.5.1"
+
+androidx-room = "2.8.4"
+androidx-sqlite = "2.7.0"
+
+compose-multiplatform = "1.11.1"
 
 ksp = "2.3.9"
 
@@ -71,10 +75,23 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
 # endregion
 
+# region Compose Mupliplatform
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+compose-animation = { module = "org.jetbrains.compose.animation:animation", version.ref = "compose-multiplatform" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+compose-ui-unit = { module = "org.jetbrains.compose.ui:ui-unit", version.ref = "compose-multiplatform" }
+compose-ui-graphics = { module = "org.jetbrains.compose.ui:ui-graphics", version.ref = "compose-multiplatform" }
+compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-multiplatform" }
+compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
+# endregion
+
 # region Kotlin
-jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
-jetbrains-kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-immutable" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-immutable" }
 # endregion
 
 # region Lifecycle
@@ -85,11 +102,13 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
 # endregion
 
-# region Room
+# region Database
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "androidx-room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
+androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "androidx-sqlite" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }
 # endregion
 
 # region DataStore
@@ -100,9 +119,11 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso-core" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
-jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 junit = { module = "junit:junit", version.ref = "junit" }
 google-truth = { module = "com.google.truth:truth", version.ref = "google-truth" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 # endregion
 
 # region Detekt
@@ -144,6 +165,15 @@ compose = [
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-runtime",
 ]
+compose-multiplatform = [
+    "compose-foundation",
+    "compose-animation",
+    "compose-ui",
+    "compose-ui-unit",
+    "compose-ui-graphics",
+    "compose-ui-tooling-preview",
+    "compose-runtime",
+]
 tracer = [
     "tracer-crash-report",
     "tracer-heap-dumps"
@@ -151,12 +181,15 @@ tracer = [
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

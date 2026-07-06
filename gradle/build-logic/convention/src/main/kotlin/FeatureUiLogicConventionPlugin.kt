@@ -13,7 +13,7 @@ class FeatureUiLogicConventionPlugin : Plugin<Project> {
                 implementation(libs.androidx.lifecycle.runtime)
                 implementation(libs.androidx.lifecycle.viewmodel.ktx)
                 implementation(libs.androidx.lifecycle.viewmodel.savedstate)
-                implementation(libs.jetbrains.kotlinx.coroutines.android)
+                implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.metrox.viewmodel)
                 implementation(project(":core:common-android"))
                 implementation(project(":core:navigation"))

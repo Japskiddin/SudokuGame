@@ -9,7 +9,7 @@ class FeatureDomainConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             dependencies {
-                implementation(libs.jetbrains.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.coroutines.core)
                 api(project(":core:domain"))
                 implementation(project(":core:common"))
                 api(project(":core:model"))

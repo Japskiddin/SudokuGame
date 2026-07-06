@@ -6,5 +6,5 @@ plugins {
 
 dependencies {
     implementation(projects.core.common)
-    api(libs.jetbrains.kotlinx.immutable)
+    api(libs.kotlinx.immutable)
 }

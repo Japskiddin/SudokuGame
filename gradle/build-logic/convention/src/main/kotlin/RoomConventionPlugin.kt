@@ -12,7 +12,7 @@ class RoomConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.run {
                 apply(libs.plugins.androidx.room.get().pluginId)
-                apply(libs.plugins.google.devtools.ksp.get().pluginId)
+                apply(libs.plugins.ksp.get().pluginId)
             }
 
             extensions.configure<RoomExtension> {

@@ -4,6 +4,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.core)
     api(projects.core.model)
 }
