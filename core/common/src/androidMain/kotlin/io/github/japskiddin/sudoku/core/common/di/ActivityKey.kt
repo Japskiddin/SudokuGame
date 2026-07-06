@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.common.android.di
+package io.github.japskiddin.sudoku.core.common.di
 
 import android.app.Activity
 import dev.zacsweers.metro.MapKey

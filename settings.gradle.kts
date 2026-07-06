@@ -37,7 +37,6 @@ include(
     ":core:database:entities",
     ":core:datastore",
     ":core:common",
-    ":core:common-android",
     ":core:model",
     ":core:domain",
     ":core:game",

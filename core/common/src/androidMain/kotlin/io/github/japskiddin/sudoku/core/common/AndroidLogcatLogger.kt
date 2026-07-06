@@ -1,10 +1,9 @@
-package io.github.japskiddin.sudoku.core.common.android
+package io.github.japskiddin.sudoku.core.common
 
 import android.util.Log
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
-import io.github.japskiddin.sudoku.core.common.Logger
 
 @ContributesBinding(AppScope::class)
 @Inject

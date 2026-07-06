@@ -95,7 +95,7 @@ dependencies {
     implementation(libs.metrox.viewmodel)
     implementation(libs.metrox.viewmodel.compose)
 
-    implementation(projects.core.commonAndroid)
+    implementation(projects.core.common)
     implementation(projects.core.ui)
     implementation(projects.core.data)
     implementation(projects.core.datastore)

@@ -1,4 +1,4 @@
-package io.github.japskiddin.sudoku.core.common.android.di
+package io.github.japskiddin.sudoku.core.common.di
 
 import androidx.lifecycle.ViewModel
 import dev.zacsweers.metro.MapKey

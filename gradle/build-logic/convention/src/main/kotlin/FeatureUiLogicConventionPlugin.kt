@@ -15,7 +15,7 @@ class FeatureUiLogicConventionPlugin : Plugin<Project> {
                 implementation(libs.androidx.lifecycle.viewmodel.savedstate)
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.metrox.viewmodel)
-                implementation(project(":core:common-android"))
+                implementation(project(":core:common"))
                 implementation(project(":core:navigation"))
                 api(project(":core:model"))
                 api(project(":core:feature"))
