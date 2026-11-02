@@ -1,9 +1,9 @@
 package io.github.japskiddin.sudoku.database
 
-import android.content.Context
+import androidx.room.ConstructedBy
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.HistoryDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
@@ -19,6 +19,7 @@ import io.github.japskiddin.sudoku.database.entities.SavedGameDBO
     ],
     version = 1
 )
+@ConstructedBy(SudokuDatabaseConstructor::class)
 internal abstract class SudokuRoomDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 
@@ -30,6 +31,10 @@ internal abstract class SudokuRoomDatabase : RoomDatabase() {
 public class SudokuDatabase internal constructor(
     private val database: SudokuRoomDatabase
 ) {
+    public fun close() {
+        database.close()
+    }
+
     public val historyDao: HistoryDao
         get() = database.historyDao()
     public val boardDao: BoardDao
@@ -42,11 +47,7 @@ public class SudokuDatabase internal constructor(
     }
 }
 
-public fun SudokuDatabase(applicationContext: Context): SudokuDatabase {
-    val sudokuRoomDatabase = Room.databaseBuilder(
-        checkNotNull(applicationContext.applicationContext),
-        SudokuRoomDatabase::class.java,
-        SudokuDatabase.DATABASE_NAME
-    ).build()
-    return SudokuDatabase(sudokuRoomDatabase)
+@Suppress("KotlinNoActualForExpect")
+internal expect object SudokuDatabaseConstructor : RoomDatabaseConstructor<SudokuRoomDatabase> {
+    override fun initialize(): SudokuRoomDatabase
 }
