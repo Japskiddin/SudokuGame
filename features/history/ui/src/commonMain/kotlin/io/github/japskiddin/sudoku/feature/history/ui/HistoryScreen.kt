@@ -1,6 +1,7 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.japskiddin.sudoku.feature.history.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +38,15 @@ import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
+import io.github.japskiddin.sudoku.core.ui.component.BackHandler
+import io.github.japskiddin.sudoku.core.ui.resources.current_actions
+import io.github.japskiddin.sudoku.core.ui.resources.current_mistakes
+import io.github.japskiddin.sudoku.core.ui.resources.finished_at
+import io.github.japskiddin.sudoku.core.ui.resources.history
+import io.github.japskiddin.sudoku.core.ui.resources.history_placeholder
+import io.github.japskiddin.sudoku.core.ui.resources.play_time
+import io.github.japskiddin.sudoku.core.ui.resources.started_at
+import io.github.japskiddin.sudoku.core.ui.resources.status
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
@@ -50,8 +59,9 @@ import io.github.japskiddin.sudoku.feature.history.ui.utils.toFormattedDate
 import io.github.japskiddin.sudoku.feature.history.ui.utils.toFormattedString
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 import kotlin.random.Random
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 public fun HistoryScreen() {
@@ -83,7 +93,7 @@ private fun HistoryContent(
             .background(SudokuTheme.colors.primary)
     ) {
         AppBar(
-            title = stringResource(id = CoreUiR.string.history),
+            title = stringResource(resource = CoreUiRes.string.history),
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
@@ -113,7 +123,7 @@ private fun EmptyHistory(
         contentAlignment = Alignment.Center
     ) {
         BasicText(
-            text = stringResource(id = CoreUiR.string.history_placeholder),
+            text = stringResource(resource = CoreUiRes.string.history_placeholder),
             style = SudokuTheme.typography.panel.copy(
                 color = SudokuTheme.colors.onPrimary,
                 textAlign = TextAlign.Center,
@@ -267,7 +277,7 @@ private fun Statistics(
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = stringResource(
-                id = CoreUiR.string.status,
+                resource = CoreUiRes.string.status,
                 item.status.toFormattedString(),
             ),
             style = textStyle,
@@ -275,7 +285,7 @@ private fun Statistics(
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = stringResource(
-                id = CoreUiR.string.started_at,
+                resource = CoreUiRes.string.started_at,
                 item.startedAt.toFormattedDate(),
             ),
             style = textStyle,
@@ -283,7 +293,7 @@ private fun Statistics(
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = stringResource(
-                id = CoreUiR.string.finished_at,
+                resource = CoreUiRes.string.finished_at,
                 item.finishedAt.toFormattedDate(),
             ),
             style = textStyle,
@@ -302,7 +312,7 @@ private fun GameplayInformation(
     ) {
         BasicText(
             text = stringResource(
-                id = CoreUiR.string.play_time,
+                resource = CoreUiRes.string.play_time,
                 item.playTime.toFormattedTime(),
             ),
             style = textStyle,
@@ -310,7 +320,7 @@ private fun GameplayInformation(
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = stringResource(
-                id = CoreUiR.string.current_actions,
+                resource = CoreUiRes.string.current_actions,
                 item.actions,
             ),
             style = textStyle,
@@ -318,7 +328,7 @@ private fun GameplayInformation(
         Spacer(modifier = Modifier.height(6.dp))
         BasicText(
             text = stringResource(
-                id = CoreUiR.string.current_mistakes,
+                resource = CoreUiRes.string.current_mistakes,
                 item.mistakes,
                 item.difficulty.mistakesLimit
             ),

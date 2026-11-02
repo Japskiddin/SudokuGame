@@ -2,7 +2,6 @@
 
 package io.github.japskiddin.sudoku.feature.history.ui.components
 
-import android.text.TextPaint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -22,8 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -36,6 +33,7 @@ import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.utils.BoardRadix
+import io.github.japskiddin.sudoku.core.ui.utils.BoardTextPaint
 import io.github.japskiddin.sudoku.core.ui.utils.drawHorizontalLines
 import io.github.japskiddin.sudoku.core.ui.utils.drawVerticalLines
 import kotlin.math.ceil
@@ -90,11 +88,7 @@ internal fun HistoryGameBoard(
         val cornerRadius = CornerRadius(outerCornerRadiusPx, outerCornerRadiusPx)
 
         val numberPaint = remember {
-            TextPaint().apply {
-                color = numberColor.toArgb()
-                isAntiAlias = true
-                textSize = numberTextSizePx
-            }
+            BoardTextPaint(numberColor, numberTextSizePx)
         }
 
         Canvas(
@@ -156,7 +150,7 @@ private fun DrawScope.drawBoardFrame(
 private fun DrawScope.drawNumbers(
     board: ImmutableBoardList,
     boardSize: Int,
-    numberPaint: TextPaint,
+    numberPaint: BoardTextPaint,
     cellSize: Float,
 ) {
     for (i in 0 until boardSize) {
@@ -178,17 +172,15 @@ private fun DrawScope.drawNumbers(
 private fun DrawScope.drawNumber(
     cell: BoardCell,
     number: Int,
-    numberPaint: TextPaint,
+    numberPaint: BoardTextPaint,
     cellSize: Float,
 ) {
     val textToDraw = number.toString(BoardRadix).uppercase()
-    val textBounds = android.graphics.Rect()
-    numberPaint.getTextBounds(textToDraw, 0, 1, textBounds)
     val textWidth = numberPaint.measureText(textToDraw)
     val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
-    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
+    val textPosY = cell.row * cellSize + (cellSize + numberPaint.textHeight(textToDraw)) / 2f
     drawIntoCanvas { canvas ->
-        canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, numberPaint)
+        numberPaint.drawText(canvas, textToDraw, textPosX, textPosY)
     }
 }
 
