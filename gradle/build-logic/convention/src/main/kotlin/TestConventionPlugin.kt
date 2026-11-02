@@ -40,6 +40,16 @@ class TestConventionPlugin : Plugin<Project> {
 
             pluginManager.withPlugin(libs.plugins.kotlin.multiplatform.get().pluginId) {
                 extensions.configure<KotlinMultiplatformExtension> {
+                    sourceSets.matching { it.name == "jvmTest" }.configureEach {
+                        dependencies {
+                            implementation(libs.junit)
+                        }
+                    }
+                    sourceSets.matching { it.name == "androidHostTest" }.configureEach {
+                        dependencies {
+                            implementation(libs.junit)
+                        }
+                    }
                     sourceSets.named("commonTest") {
                         dependencies {
                             implementation(libs.kotlin.test)

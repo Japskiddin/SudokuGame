@@ -17,6 +17,7 @@ class DetektConventionPlugin : Plugin<Project> {
             }
 
             tasks.named<Detekt>("detekt") {
+                setSource(fileTree("src") { include("**/*.kt") })
                 reports {
                     xml.required.set(true)
                     html.required.set(true)

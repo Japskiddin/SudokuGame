@@ -32,6 +32,8 @@ dependencyResolutionManagement {
 
 include(
     ":app",
+    ":androidApp",
+    ":desktopApp",
     ":core:navigation",
     ":core:database:data",
     ":core:database:entities",

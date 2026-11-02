@@ -30,6 +30,14 @@ tasks {
 
 gradlePlugin {
     plugins {
+        register("multiplatform") {
+            id = "app.multiplatform"
+            implementationClass = "MultiplatformConventionPlugin"
+        }
+        register("multiplatformCompose") {
+            id = "app.multiplatform.compose"
+            implementationClass = "MultiplatformComposeConventionPlugin"
+        }
         register("androidApplication") {
             id = "app.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
