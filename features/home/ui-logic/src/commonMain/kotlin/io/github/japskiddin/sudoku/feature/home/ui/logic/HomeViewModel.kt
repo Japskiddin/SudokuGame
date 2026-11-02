@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.*
 
 @Suppress("TooManyFunctions", "LongParameterList")
 @Inject
@@ -72,7 +71,7 @@ public class HomeViewModel(
     )
 
     public val currentYear: String
-        get() = Calendar.getInstance().get(Calendar.YEAR).toString()
+        get() = currentYear().toString()
 
     public fun onAction(action: UiAction) {
         when (action) {
