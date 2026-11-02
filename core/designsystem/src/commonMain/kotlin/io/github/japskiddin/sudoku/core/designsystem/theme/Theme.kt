@@ -9,7 +9,7 @@ import io.github.japskiddin.sudoku.core.designsystem.theme.ripple.ripple
 
 @Composable
 public fun SudokuTheme(
-    typography: Typography = SudokuTheme.typography,
+    typography: Typography = rememberTypography(),
     content: @Composable () -> Unit
 ) {
     val colors = remember {

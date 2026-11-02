@@ -17,9 +17,6 @@ private val Rope: Color = Color(0xFF8A4E24)
 private val DenimBlue: Color = Color(0xFF68BEFA)
 
 @Stable
-private val SilkBlue: Color = Color(0xFF428EC2)
-
-@Stable
 private val LightNavyBlue: Color = Color(0xFF235F89)
 
 @Stable

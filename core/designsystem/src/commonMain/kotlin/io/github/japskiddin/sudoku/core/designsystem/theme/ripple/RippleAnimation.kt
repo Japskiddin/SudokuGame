@@ -119,7 +119,9 @@ internal class RippleAnimation(
     }
 }
 
-internal fun getRippleStartRadius(size: Size) = max(size.width, size.height) * 0.3f
+private const val RippleStartRadiusFraction = 0.3f
+
+internal fun getRippleStartRadius(size: Size) = max(size.width, size.height) * RippleStartRadiusFraction
 
 internal fun Density.getRippleEndRadius(bounded: Boolean, size: Size): Float {
     val radiusCoveringBounds = (Offset(size.width, size.height).getDistance() / 2f)
