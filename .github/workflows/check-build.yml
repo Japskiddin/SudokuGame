@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 21
 
       - uses: gradle/gradle-build-action@v3
         with:
@@ -21,6 +21,10 @@ jobs:
       - name: Detekt
         shell: bash
         run: ./gradlew detekt
+
+      - name: JVM tests and Android build
+        shell: bash
+        run: ./gradlew jvmTest :androidApp:assembleDebug
 
       - name: Publish Checkstyle Report
         # You may pin to the exact commit or the version.
