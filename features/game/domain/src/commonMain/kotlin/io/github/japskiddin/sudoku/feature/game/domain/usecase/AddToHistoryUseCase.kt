@@ -6,6 +6,7 @@ import io.github.japskiddin.sudoku.core.domain.SavedGameRepository
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.History
 import io.github.japskiddin.sudoku.core.model.isCurrent
+import kotlin.time.Clock
 
 @Inject
 public class AddToHistoryUseCase(
@@ -21,7 +22,7 @@ public class AddToHistoryUseCase(
         time: Long,
         status: GameStatus,
     ): Long {
-        val currentTimeMillis = System.currentTimeMillis()
+        val currentTimeMillis = Clock.System.now().toEpochMilliseconds()
         val savedGame = savedGameRepository.get(uid)
         if (savedGame != null) {
             if (savedGame.isCurrent()) {
