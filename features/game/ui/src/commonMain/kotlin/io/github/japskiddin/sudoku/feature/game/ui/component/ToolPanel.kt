@@ -25,8 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -35,9 +33,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
-import io.github.japskiddin.sudoku.feature.game.ui.R
+import io.github.japskiddin.sudoku.core.ui.resources.tool_eraser
+import io.github.japskiddin.sudoku.core.ui.resources.tool_redo
+import io.github.japskiddin.sudoku.core.ui.resources.tool_reset
+import io.github.japskiddin.sudoku.core.ui.resources.tool_undo
+import io.github.japskiddin.sudoku.feature.game.ui.resources.Res
+import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_tool_eraser
+import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_tool_redo
+import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_tool_reset
+import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_tool_undo
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 internal fun ToolPanel(
@@ -82,27 +90,27 @@ private fun ToolPanelContent(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_eraser),
-            icon = painterResource(id = R.drawable.ic_tool_eraser),
+            text = stringResource(resource = CoreUiRes.string.tool_eraser),
+            icon = painterResource(resource = Res.drawable.ic_tool_eraser),
             showDescription = showDescription,
         ) { onToolClick(ToolAction.ERASER) }
         ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_undo),
-            icon = painterResource(id = R.drawable.ic_tool_undo),
+            text = stringResource(resource = CoreUiRes.string.tool_undo),
+            icon = painterResource(resource = Res.drawable.ic_tool_undo),
             showDescription = showDescription,
         ) { onToolClick(ToolAction.UNDO) }
         ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_redo),
-            icon = painterResource(id = R.drawable.ic_tool_redo),
+            text = stringResource(resource = CoreUiRes.string.tool_redo),
+            icon = painterResource(resource = Res.drawable.ic_tool_redo),
             showDescription = showDescription,
         ) { onToolClick(ToolAction.REDO) }
 //        ToolButton(
-//            text = stringResource(id = CoreUiR.string.tool_note),
-//            icon = painterResource(id = R.drawable.ic_tool_note)
+//            text = stringResource(resource = CoreUiRes.string.tool_note),
+//            icon = painterResource(resource = Res.drawable.ic_tool_note)
 //        ) { onToolClick(ToolAction.NOTE) }
         ToolButton(
-            text = stringResource(id = CoreUiR.string.tool_reset),
-            icon = painterResource(id = R.drawable.ic_tool_reset),
+            text = stringResource(resource = CoreUiRes.string.tool_reset),
+            icon = painterResource(resource = Res.drawable.ic_tool_reset),
             showDescription = showDescription,
         ) { onShowDialog() }
     }

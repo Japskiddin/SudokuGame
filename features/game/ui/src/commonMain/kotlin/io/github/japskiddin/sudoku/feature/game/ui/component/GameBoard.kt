@@ -2,7 +2,6 @@
 
 package io.github.japskiddin.sudoku.feature.game.ui.component
 
-import android.text.TextPaint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -30,8 +29,6 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +43,7 @@ import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.model.ImmutableBoardList
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.core.ui.utils.BoardRadix
+import io.github.japskiddin.sudoku.core.ui.utils.BoardTextPaint
 import io.github.japskiddin.sudoku.core.ui.utils.drawHorizontalLines
 import io.github.japskiddin.sudoku.core.ui.utils.drawVerticalLines
 import io.github.japskiddin.sudoku.core.ui.utils.innerShadow
@@ -134,19 +132,19 @@ internal fun GameBoard(
         val cellSize = Size(cellSizePx, cellSizePx)
 
         val numberPaint = remember(numberTextSizePx, numberColor) {
-            createTextPaint(numberColor, numberTextSizePx)
+            createBoardTextPaint(numberColor, numberTextSizePx)
         }
         val selectedNumberPaint = remember(numberTextSizePx, selectedNumberColor) {
-            createTextPaint(selectedNumberColor, numberTextSizePx)
+            createBoardTextPaint(selectedNumberColor, numberTextSizePx)
         }
         val errorNumberPaint = remember(numberTextSizePx, errorNumberColor) {
-            createTextPaint(errorNumberColor, numberTextSizePx)
+            createBoardTextPaint(errorNumberColor, numberTextSizePx)
         }
         val lockedNumberPaint = remember(numberTextSizePx, lockedNumberColor) {
-            createTextPaint(lockedNumberColor, numberTextSizePx)
+            createBoardTextPaint(lockedNumberColor, numberTextSizePx)
         }
         val notePaint = remember(noteTextSizePx, noteColor) {
-            createTextPaint(noteColor, noteTextSizePx)
+            createBoardTextPaint(noteColor, noteTextSizePx)
         }
 
         val boardModifier = Modifier
@@ -526,10 +524,10 @@ private fun DrawScope.drawNumbers(
     board: ImmutableBoardList,
     boardSize: Int,
     isErrorsHighlight: Boolean,
-    errorNumberPaint: TextPaint,
-    lockedNumberPaint: TextPaint,
-    numberPaint: TextPaint,
-    selectedNumberPaint: TextPaint,
+    errorNumberPaint: BoardTextPaint,
+    lockedNumberPaint: BoardTextPaint,
+    numberPaint: BoardTextPaint,
+    selectedNumberPaint: BoardTextPaint,
     selectedCell: BoardCell,
     isIdenticalNumberHighlight: Boolean,
     cellSize: Float,
@@ -560,10 +558,10 @@ private fun DrawScope.drawNumber(
     cell: BoardCell,
     number: Int,
     isErrorsHighlight: Boolean,
-    errorNumberPaint: TextPaint,
-    lockedNumberPaint: TextPaint,
-    numberPaint: TextPaint,
-    selectedNumberPaint: TextPaint,
+    errorNumberPaint: BoardTextPaint,
+    lockedNumberPaint: BoardTextPaint,
+    numberPaint: BoardTextPaint,
+    selectedNumberPaint: BoardTextPaint,
     selectedCell: BoardCell,
     isIdenticalNumberHighlight: Boolean,
     cellSize: Float,
@@ -576,27 +574,24 @@ private fun DrawScope.drawNumber(
     }
 
     val textToDraw = number.toString(BoardRadix).uppercase()
-    val textBounds = android.graphics.Rect()
-    paint.getTextBounds(textToDraw, 0, 1, textBounds)
     val textWidth = paint.measureText(textToDraw)
     val textPosX = cell.col * cellSize + (cellSize - textWidth) / 2f
-    val textPosY = cell.row * cellSize + (cellSize + textBounds.height()) / 2f
+    val textPosY = cell.row * cellSize + (cellSize + paint.textHeight(textToDraw)) / 2f
 
     drawIntoCanvas { canvas ->
-        canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
+        paint.drawText(canvas, textToDraw, textPosX, textPosY)
     }
 }
 
 private fun DrawScope.drawNotes(
     gameType: GameType,
-    paint: TextPaint,
+    paint: BoardTextPaint,
     notes: List<BoardNote>,
     cellSize: Float,
     cellSizeDividerWidth: Float,
     cellSizeDividerHeight: Float,
 ) {
-    val noteBounds = android.graphics.Rect()
-    paint.getTextBounds("1", 0, 1, noteBounds)
+    val noteHeight = paint.textHeight("1")
 
     drawIntoCanvas { canvas ->
         notes.forEach { note ->
@@ -607,8 +602,8 @@ private fun DrawScope.drawNotes(
                 (cellSizeDividerWidth * noteRowNumber) - noteTextMeasure / 2f
             val noteColumnNumber = getNoteColumnNumber(note.value, gameType)
             val textPosY = note.row * cellSize + cellSizeDividerHeight / 2f +
-                (cellSizeDividerHeight * noteColumnNumber) + noteBounds.height() / 2f
-            canvas.nativeCanvas.drawText(textToDraw, textPosX, textPosY, paint)
+                (cellSizeDividerHeight * noteColumnNumber) + noteHeight / 2f
+            paint.drawText(canvas, textToDraw, textPosX, textPosY)
         }
     }
 }
@@ -688,14 +683,10 @@ private fun Modifier.boardBackground(): Modifier = this.then(
         )
 )
 
-private fun createTextPaint(
+private fun createBoardTextPaint(
     color: Color,
     textSize: Float
-) = TextPaint().apply {
-    this.color = color.toArgb()
-    isAntiAlias = true
-    this.textSize = textSize
-}
+) = BoardTextPaint(color, textSize)
 
 @Preview(
     name = "Game Board Preview",

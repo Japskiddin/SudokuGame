@@ -11,15 +11,17 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.ui.resources.current_actions
+import io.github.japskiddin.sudoku.core.ui.resources.current_mistakes
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 internal fun InfoPanel(
@@ -64,7 +66,7 @@ internal fun InfoPanel(
         ) {
             BasicText(
                 text = stringResource(
-                    CoreUiR.string.current_actions,
+                    CoreUiRes.string.current_actions,
                     actions
                 ),
                 style = textStyle
@@ -73,7 +75,7 @@ internal fun InfoPanel(
                 Spacer(modifier = Modifier.height(6.dp))
                 BasicText(
                     text = stringResource(
-                        CoreUiR.string.current_mistakes,
+                        CoreUiRes.string.current_mistakes,
                         mistakes,
                         difficulty.mistakesLimit
                     ),

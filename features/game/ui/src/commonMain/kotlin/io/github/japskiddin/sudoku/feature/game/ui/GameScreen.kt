@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.feature.game.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,8 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.keepScreenOn
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -43,9 +40,21 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameError
 import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
+import io.github.japskiddin.sudoku.core.ui.component.BackHandler
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
+import io.github.japskiddin.sudoku.core.ui.resources.app_name
+import io.github.japskiddin.sudoku.core.ui.resources.close
+import io.github.japskiddin.sudoku.core.ui.resources.congratulations
+import io.github.japskiddin.sudoku.core.ui.resources.current_actions
+import io.github.japskiddin.sudoku.core.ui.resources.current_mistakes
+import io.github.japskiddin.sudoku.core.ui.resources.game_over
+import io.github.japskiddin.sudoku.core.ui.resources.ic_close
+import io.github.japskiddin.sudoku.core.ui.resources.level_creation
+import io.github.japskiddin.sudoku.core.ui.resources.logo
+import io.github.japskiddin.sudoku.core.ui.resources.play_time
+import io.github.japskiddin.sudoku.core.ui.resources.settings
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
@@ -59,9 +68,13 @@ import io.github.japskiddin.sudoku.feature.game.ui.logic.GameViewModel
 import io.github.japskiddin.sudoku.feature.game.ui.logic.PreferencesUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
+import io.github.japskiddin.sudoku.feature.game.ui.resources.Res
+import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_menu_settings
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 public fun GameScreen() {
@@ -147,7 +160,7 @@ private fun GameScreenContent(
 
         is UiState.Loading -> Loading(
             modifier = screenModifier,
-            resId = CoreUiR.string.level_creation
+            resId = CoreUiRes.string.level_creation
         )
 
         is UiState.Error -> Error(
@@ -342,8 +355,8 @@ private fun GameMenu(
                 .clip(CircleShape)
                 .size(36.dp)
                 .clickable { onSettingsClick() },
-            painter = painterResource(id = R.drawable.ic_menu_settings),
-            contentDescription = stringResource(id = CoreUiR.string.settings)
+            painter = painterResource(resource = Res.drawable.ic_menu_settings),
+            contentDescription = stringResource(resource = CoreUiRes.string.settings)
         )
     }
 }
@@ -354,7 +367,7 @@ private fun Error(
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val message = stringResource(id = errorCode.toStringRes())
+    val message = stringResource(resource = errorCode.toStringRes())
 
     Box(
         contentAlignment = Alignment.Center,
@@ -376,8 +389,8 @@ private fun Error(
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
-                icon = painterResource(id = CoreUiR.drawable.ic_close),
-                text = stringResource(id = CoreUiR.string.close)
+                icon = painterResource(resource = CoreUiRes.drawable.ic_close),
+                text = stringResource(resource = CoreUiRes.string.close)
             ) { onClose() }
         }
     }
@@ -406,16 +419,16 @@ private fun Result(
             modifier = Modifier.panelBackground()
         ) {
             Image(
-                painter = painterResource(id = CoreUiR.drawable.logo),
-                contentDescription = stringResource(id = CoreUiR.string.app_name),
+                painter = painterResource(resource = CoreUiRes.drawable.logo),
+                contentDescription = stringResource(resource = CoreUiRes.string.app_name),
                 modifier = Modifier.size(80.dp)
             )
             BasicText(
                 text = stringResource(
-                    id = if (status == GameStatus.COMPLETED) {
-                        CoreUiR.string.congratulations
+                    resource = if (status == GameStatus.COMPLETED) {
+                        CoreUiRes.string.congratulations
                     } else {
-                        CoreUiR.string.game_over
+                        CoreUiRes.string.game_over
                     }
                 ),
                 style = SudokuTheme.typography.panel.copy(
@@ -426,7 +439,7 @@ private fun Result(
             Spacer(modifier = Modifier.height(12.dp))
             BasicText(
                 text = stringResource(
-                    id = CoreUiR.string.current_actions,
+                    resource = CoreUiRes.string.current_actions,
                     actions,
                 ),
                 style = SudokuTheme.typography.dialog.copy(
@@ -436,7 +449,7 @@ private fun Result(
             )
             BasicText(
                 text = stringResource(
-                    id = CoreUiR.string.current_mistakes,
+                    resource = CoreUiRes.string.current_mistakes,
                     mistakes,
                     mistakesLimit,
                 ),
@@ -447,7 +460,7 @@ private fun Result(
             )
             BasicText(
                 text = stringResource(
-                    id = CoreUiR.string.play_time,
+                    resource = CoreUiRes.string.play_time,
                     time.toFormattedTime(),
                 ),
                 style = SudokuTheme.typography.dialog.copy(
@@ -457,8 +470,8 @@ private fun Result(
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
-                icon = painterResource(id = CoreUiR.drawable.ic_close),
-                text = stringResource(id = CoreUiR.string.close)
+                icon = painterResource(resource = CoreUiRes.drawable.ic_close),
+                text = stringResource(resource = CoreUiRes.string.close)
             ) { onClose() }
         }
     }
