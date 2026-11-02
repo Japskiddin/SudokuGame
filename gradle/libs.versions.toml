@@ -1,29 +1,29 @@
 [versions]
-agp = "9.2.1"
-kotlin = "2.3.21"
+agp = "9.4.1"
+kotlin = "2.4.21"
 
-android-tools = "32.2.1"
+android-tools = "32.5.0"
 
-androidx-annotation = "1.10.0"
-androidx-core-ktx = "1.19.0"
+androidx-annotation = "1.11.0"
+androidx-core-ktx = "1.19.1"
 androidx-lifecycle = "2.11.0"
 androidx-activity = "1.13.0"
-androidx-compose-bom = "2026.06.01"
-androidx-datastore = "1.2.1"
+androidx-compose-bom = "2026.09.00"
+androidx-datastore = "1.3.0"
 androidx-splashscreen = "1.2.0"
-androidx-navigation = "2.9.8"
+androidx-navigation = "2.10.2"
 
 kotlinx-coroutines = "1.11.0"
-kotlinx-immutable = "0.5.1"
+kotlinx-immutable = "0.5.2"
 
-androidx-room = "2.8.4"
-androidx-sqlite = "2.7.0"
+androidx-room = "2.8.5"
+androidx-sqlite = "2.7.1"
 
-compose-multiplatform = "1.11.1"
+compose-multiplatform = "1.12.2"
 
-ksp = "2.3.9"
+ksp = "2.3.13"
 
-metro = "1.2.1"
+metro = "1.5.1"
 
 junit = "4.13.2"
 google-truth = "1.4.5"
@@ -33,11 +33,11 @@ androidx-test-espresso-core = "3.7.0"
 androidx-arch-core-testing = "2.2.0"
 
 detekt = "1.23.8"
-detekt-rules-compose = "0.6.2"
+detekt-rules-compose = "0.6.8"
 
-tracer = "1.3.4"
+tracer = "1.4.0"
 
-caupain = "1.9.1"
+caupain = "1.10.1"
 
 # Used directly in gradle plugins
 
