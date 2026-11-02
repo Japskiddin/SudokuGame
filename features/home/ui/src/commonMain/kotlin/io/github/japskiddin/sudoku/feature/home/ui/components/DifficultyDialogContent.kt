@@ -11,8 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
@@ -21,11 +19,16 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
-import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.core.ui.resources.start
+import io.github.japskiddin.sudoku.feature.home.ui.resources.Res
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_start
 import kotlinx.collections.immutable.persistentListOf
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
+@Suppress("LongMethod")
 internal fun DifficultyDialogContent(
     gameMode: GameMode,
     onConfirm: (GameMode) -> Unit,
@@ -92,8 +95,8 @@ internal fun DifficultyDialogContent(
         )
         Spacer(modifier = Modifier.height(24.dp))
         GameButton(
-            text = stringResource(id = CoreUiR.string.start),
-            icon = painterResource(id = R.drawable.ic_start)
+            text = stringResource(resource = CoreUiRes.string.start),
+            icon = painterResource(resource = Res.drawable.ic_start)
         ) {
             onConfirm(
                 GameMode(

@@ -24,9 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -41,6 +38,15 @@ import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
+import io.github.japskiddin.sudoku.core.ui.resources.app_name
+import io.github.japskiddin.sudoku.core.ui.resources.close
+import io.github.japskiddin.sudoku.core.ui.resources.continue_game
+import io.github.japskiddin.sudoku.core.ui.resources.history
+import io.github.japskiddin.sudoku.core.ui.resources.ic_close
+import io.github.japskiddin.sudoku.core.ui.resources.preparing_game_please_wait
+import io.github.japskiddin.sudoku.core.ui.resources.settings
+import io.github.japskiddin.sudoku.core.ui.resources.start_game
+import io.github.japskiddin.sudoku.core.ui.utils.LocalAppVersion
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
@@ -49,8 +55,14 @@ import io.github.japskiddin.sudoku.feature.home.ui.components.DifficultyDialogCo
 import io.github.japskiddin.sudoku.feature.home.ui.logic.HomeViewModel
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
-import io.github.japskiddin.sudoku.feature.home.ui.utils.getPackageInfo
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import io.github.japskiddin.sudoku.feature.home.ui.resources.Res
+import io.github.japskiddin.sudoku.feature.home.ui.resources.home_background
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_history
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_settings
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_start
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 public fun HomeScreen() {
@@ -108,12 +120,12 @@ private fun HomeScreenContent(
 
         is UiState.Loading -> Loading(
             modifier = screenModifier,
-            resId = CoreUiR.string.preparing_game_please_wait
+            resId = CoreUiRes.string.preparing_game_please_wait
         )
     }
 }
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 private fun Menu(
     gameMode: GameMode,
@@ -162,7 +174,7 @@ private fun Menu(
         modifier = Modifier
             .then(modifier)
             .paint(
-                painter = painterResource(id = R.drawable.home_background),
+                painter = painterResource(resource = Res.drawable.home_background),
                 contentScale = ContentScale.Crop
             )
             .safeDrawingPadding()
@@ -204,8 +216,7 @@ private fun Menu(
                 )
             }
 
-            val context = LocalContext.current
-            val versionName: String = context.getPackageInfo().versionName.toString()
+            val versionName = LocalAppVersion.current
             OutlineText(
                 text = versionName,
                 textStyle = SudokuTheme.typography.info,
@@ -237,7 +248,7 @@ private fun MenuLandscape(
     ) {
         OutlineText(
             modifier = Modifier.weight(1f),
-            text = stringResource(id = CoreUiR.string.app_name),
+            text = stringResource(resource = CoreUiRes.string.app_name),
             textStyle = SudokuTheme.typography.appTitle,
             fillColor = Color.White,
             outlineColor = Color.Black,
@@ -249,24 +260,24 @@ private fun MenuLandscape(
         ) {
             if (isShowContinueButton) {
                 GameButton(
-                    icon = painterResource(id = R.drawable.ic_start),
-                    text = stringResource(id = CoreUiR.string.continue_game)
+                    icon = painterResource(resource = Res.drawable.ic_start),
+                    text = stringResource(resource = CoreUiRes.string.continue_game)
                 ) { onContinueButtonClick() }
                 Spacer(modifier = Modifier.height(12.dp))
             }
             GameButton(
-                icon = painterResource(id = R.drawable.ic_start),
-                text = stringResource(id = CoreUiR.string.start_game)
+                icon = painterResource(resource = Res.drawable.ic_start),
+                text = stringResource(resource = CoreUiRes.string.start_game)
             ) { onStartButtonClick() }
             Spacer(modifier = Modifier.height(12.dp))
             GameButton(
-                icon = painterResource(id = R.drawable.ic_history),
-                text = stringResource(id = CoreUiR.string.history)
+                icon = painterResource(resource = Res.drawable.ic_history),
+                text = stringResource(resource = CoreUiRes.string.history)
             ) { onHistoryButtonClick() }
             Spacer(modifier = Modifier.height(12.dp))
             GameButton(
-                icon = painterResource(id = R.drawable.ic_settings),
-                text = stringResource(id = CoreUiR.string.settings)
+                icon = painterResource(resource = Res.drawable.ic_settings),
+                text = stringResource(resource = CoreUiRes.string.settings)
             ) { onSettingsButtonClick() }
         }
     }
@@ -286,7 +297,7 @@ private fun MenuPortrait(
         verticalArrangement = Arrangement.Center
     ) {
         OutlineText(
-            text = stringResource(id = CoreUiR.string.app_name),
+            text = stringResource(resource = CoreUiRes.string.app_name),
             textStyle = SudokuTheme.typography.appTitle,
             fillColor = Color.White,
             outlineColor = Color.Black,
@@ -295,24 +306,24 @@ private fun MenuPortrait(
         Spacer(modifier = Modifier.height(36.dp))
         if (isShowContinueButton) {
             GameButton(
-                icon = painterResource(id = R.drawable.ic_start),
-                text = stringResource(id = CoreUiR.string.continue_game)
+                icon = painterResource(resource = Res.drawable.ic_start),
+                text = stringResource(resource = CoreUiRes.string.continue_game)
             ) { onContinueButtonClick() }
             Spacer(modifier = Modifier.height(36.dp))
         }
         GameButton(
-            icon = painterResource(id = R.drawable.ic_start),
-            text = stringResource(id = CoreUiR.string.start_game)
+            icon = painterResource(resource = Res.drawable.ic_start),
+            text = stringResource(resource = CoreUiRes.string.start_game)
         ) { onStartButtonClick() }
         Spacer(modifier = Modifier.height(12.dp))
         GameButton(
-            icon = painterResource(id = R.drawable.ic_history),
-            text = stringResource(id = CoreUiR.string.history)
+            icon = painterResource(resource = Res.drawable.ic_history),
+            text = stringResource(resource = CoreUiRes.string.history)
         ) { onHistoryButtonClick() }
         Spacer(modifier = Modifier.height(12.dp))
         GameButton(
-            icon = painterResource(id = R.drawable.ic_settings),
-            text = stringResource(id = CoreUiR.string.settings)
+            icon = painterResource(resource = Res.drawable.ic_settings),
+            text = stringResource(resource = CoreUiRes.string.settings)
         ) { onSettingsButtonClick() }
     }
 }
@@ -335,7 +346,7 @@ private fun Error(
             modifier = Modifier.panelBackground()
         ) {
             BasicText(
-                text = stringResource(id = errorCode.toStringRes()),
+                text = stringResource(resource = errorCode.toStringRes()),
                 style = SudokuTheme.typography.panel.copy(
                     color = SudokuTheme.colors.primary,
                     textAlign = TextAlign.Center
@@ -343,8 +354,8 @@ private fun Error(
             )
             Spacer(modifier = Modifier.height(24.dp))
             GameButton(
-                icon = painterResource(id = CoreUiR.drawable.ic_close),
-                text = stringResource(id = CoreUiR.string.close)
+                icon = painterResource(resource = CoreUiRes.drawable.ic_close),
+                text = stringResource(resource = CoreUiRes.string.close)
             ) { onClose() }
         }
     }

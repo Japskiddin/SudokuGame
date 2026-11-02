@@ -1,7 +1,5 @@
 package io.github.japskiddin.sudoku.feature.home.ui.components
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -26,8 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,9 +34,17 @@ import androidx.compose.ui.unit.sp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.feature.utils.getName
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
-import io.github.japskiddin.sudoku.feature.home.ui.R
+import io.github.japskiddin.sudoku.core.ui.resources.swipe_left
+import io.github.japskiddin.sudoku.core.ui.resources.swipe_right
+import io.github.japskiddin.sudoku.feature.home.ui.resources.Res
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_arrow_left
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_arrow_right
 import kotlinx.collections.immutable.persistentListOf
-import io.github.japskiddin.sudoku.core.ui.R as CoreUiR
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 internal fun ItemSelector(
@@ -60,8 +64,8 @@ internal fun ItemSelector(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Button(
-            icon = R.drawable.ic_arrow_left,
-            description = CoreUiR.string.swipe_left,
+            icon = Res.drawable.ic_arrow_left,
+            description = CoreUiRes.string.swipe_left,
             size = buttonSize,
             tint = iconTint,
             onClick = onSwipeLeft,
@@ -91,8 +95,8 @@ internal fun ItemSelector(
             )
         }
         Button(
-            icon = R.drawable.ic_arrow_right,
-            description = CoreUiR.string.swipe_right,
+            icon = Res.drawable.ic_arrow_right,
+            description = CoreUiRes.string.swipe_right,
             size = buttonSize,
             tint = iconTint,
             onClick = onSwipeRight,
@@ -102,8 +106,8 @@ internal fun ItemSelector(
 
 @Composable
 private fun Button(
-    @DrawableRes icon: Int,
-    @StringRes description: Int,
+    icon: DrawableResource,
+    description: StringResource,
     size: Dp,
     tint: Color,
     onClick: () -> Unit,
@@ -111,8 +115,8 @@ private fun Button(
     val interactionSource = remember { MutableInteractionSource() }
 
     Image(
-        painter = painterResource(id = icon),
-        contentDescription = stringResource(id = description),
+        painter = painterResource(resource = icon),
+        contentDescription = stringResource(resource = description),
         modifier = Modifier
             .size(size)
             .clip(CircleShape)
