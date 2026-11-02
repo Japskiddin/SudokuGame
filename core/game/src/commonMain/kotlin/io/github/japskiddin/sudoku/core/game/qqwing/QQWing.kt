@@ -2,8 +2,8 @@ package io.github.japskiddin.sudoku.core.game.qqwing
 
 import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameType
-import java.util.*
 import kotlin.math.abs
+import kotlin.random.Random
 
 // @formatter:off
 /*
@@ -147,7 +147,7 @@ public class QQWing(
     }
 
     public fun setRandom(seed: Int) {
-        random = Random(seed.toLong())
+        random = Random(seed)
     }
 
     /**
@@ -1538,7 +1538,7 @@ public class QQWing(
     }
 
     public companion object {
-        private val NEW_LINE = System.getProperties().getProperty("line.separator")
+        private const val NEW_LINE = "\n"
 
         public var GRID_SIZE_ROW: Int = 3
         public var GRID_SIZE_COL: Int = 3
@@ -1546,7 +1546,7 @@ public class QQWing(
         public var SEC_GROUP_SIZE: Int = ROW_COL_SEC_SIZE * GRID_SIZE_ROW
         public var BOARD_SIZE: Int = ROW_COL_SEC_SIZE * ROW_COL_SEC_SIZE
         public var POSSIBILITY_SIZE: Int = BOARD_SIZE * ROW_COL_SEC_SIZE
-        private var random = Random()
+        private var random: Random = Random.Default
 
         private fun fillIncrementing(arr: IntArray): IntArray {
             for (i in arr.indices) {

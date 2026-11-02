@@ -26,16 +26,16 @@ import java.util.concurrent.atomic.AtomicInteger
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 // @formatter:on
-public class QQWingController {
-    public val options: QQWingOptions = QQWingOptions()
+public actual class QQWingController actual constructor() {
+    public actual val options: QQWingOptions = QQWingOptions()
     private var level: IntArray? = null
     private var solution: IntArray = IntArray(81)
     private val generated = LinkedList<IntArray>()
-    public var isImpossible: Boolean = false
+    public actual var isImpossible: Boolean = false
         private set
-    public var solutionCount: Int = 0
+    public actual var solutionCount: Int = 0
 
-    public fun generate(type: GameType, difficulty: GameDifficulty): IntArray? {
+    public actual fun generate(type: GameType, difficulty: GameDifficulty): IntArray? {
         generated.clear()
         with(options) {
             gameDifficulty = difficulty
@@ -49,7 +49,7 @@ public class QQWingController {
         return generated.poll()
     }
 
-    public fun solve(gameBoard: IntArray?, type: GameType): IntArray {
+    public actual fun solve(gameBoard: IntArray?, type: GameType): IntArray {
         isImpossible = false
         level = gameBoard
         with(options) {
@@ -173,23 +173,23 @@ public class QQWingController {
     }
 
     // TODO: заменить на data class
-    public class QQWingOptions {
+    public actual class QQWingOptions actual constructor() {
         // defaults for options
-        public var needNow: Boolean = false
+        public actual var needNow: Boolean = false
 
-        public var printSolution: Boolean = false
-        public var printHistory: Boolean = false
-        public var printInstructions: Boolean = false
+        public actual var printSolution: Boolean = false
+        public actual var printHistory: Boolean = false
+        public actual var printInstructions: Boolean = false
 
-        public var action: Action = Action.NONE
-        public var logHistory: Boolean = false
-        public var printStyle: PrintStyle = PrintStyle.READABLE
-        public var numberToGenerate: Int = 1
-        public var printStats: Boolean = false
-        public var gameDifficulty: GameDifficulty = GameDifficulty.UNSPECIFIED
-        public var gameType: GameType = GameType.UNSPECIFIED
-        public var symmetry: Symmetry = Symmetry.NONE
-        public var threads: Int = Runtime.getRuntime().availableProcessors()
+        public actual var action: Action = Action.NONE
+        public actual var logHistory: Boolean = false
+        public actual var printStyle: PrintStyle = PrintStyle.READABLE
+        public actual var numberToGenerate: Int = 1
+        public actual var printStats: Boolean = false
+        public actual var gameDifficulty: GameDifficulty = GameDifficulty.UNSPECIFIED
+        public actual var gameType: GameType = GameType.UNSPECIFIED
+        public actual var symmetry: Symmetry = Symmetry.NONE
+        public actual var threads: Int = Runtime.getRuntime().availableProcessors()
     }
 
     private fun getPuzzleToSolve(puzzle: IntArray): Boolean {
