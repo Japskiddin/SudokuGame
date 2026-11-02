@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.datastore
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
@@ -8,16 +7,13 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import io.github.japskiddin.sudoku.datastore.model.AppPreferencesDSO
 import io.github.japskiddin.sudoku.datastore.model.GameModeDSO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
-public class SettingsDatastore(applicationContext: Context) {
-    private val Context.createDataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
-    private val dataStore = applicationContext.createDataStore
+public class SettingsDatastore(private val dataStore: DataStore<Preferences>) {
 
     private val mistakesLimitKey = booleanPreferencesKey(KEY_MISTAKES_LIMIT)
     private val timerKey = booleanPreferencesKey(KEY_SHOW_TIMER)
@@ -167,8 +163,6 @@ public class SettingsDatastore(applicationContext: Context) {
         }
 
     private companion object {
-        private const val PREFERENCES_NAME = "settings"
-
         private const val KEY_MISTAKES_LIMIT = "mistakes_limit"
         private const val KEY_SHOW_TIMER = "show_timer"
         private const val KEY_RESET_TIMER = "reset_timer"
