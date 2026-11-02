@@ -16,7 +16,7 @@ import io.github.japskiddin.sudoku.game.ui.navigation.composable
 import io.github.japskiddin.sudoku.navigation.Destination
 
 @Composable
-fun MainScreen() {
+public fun MainScreen() {
     MainScreen(viewModel = metroViewModel())
 }
 

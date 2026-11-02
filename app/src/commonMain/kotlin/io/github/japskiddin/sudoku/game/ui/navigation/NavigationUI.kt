@@ -1,6 +1,5 @@
 package io.github.japskiddin.sudoku.game.ui.navigation
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +16,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
-fun NavHost(
+internal fun NavHost(
     navController: NavHostController,
     startDestination: Destination,
     modifier: Modifier = Modifier,
@@ -33,7 +32,7 @@ fun NavHost(
     )
 }
 
-fun NavGraphBuilder.composable(
+internal fun NavGraphBuilder.composable(
     destination: Destination,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
@@ -49,16 +48,12 @@ fun NavGraphBuilder.composable(
 }
 
 @Composable
-fun NavigationEffect(
+internal fun NavigationEffect(
     navigationChannel: Channel<NavigationIntent>,
     navHostController: NavHostController
 ) {
-    val activity = LocalActivity.current
-    LaunchedEffect(activity, navHostController, navigationChannel) {
+    LaunchedEffect(navHostController, navigationChannel) {
         navigationChannel.receiveAsFlow().collect { intent ->
-            if (activity?.isFinishing == true) {
-                return@collect
-            }
             when (intent) {
                 is NavigationIntent.NavigateBack -> {
                     if (intent.route != null) {
