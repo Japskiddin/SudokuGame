@@ -53,7 +53,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @AssistedInject
 public class GameViewModel(
     private val appNavigator: AppNavigator,
@@ -170,6 +170,7 @@ public class GameViewModel(
         appNavigator.tryNavigateBack()
     }
 
+    @Suppress("LongMethod")
     private fun generateGameLevel() {
         gameState.update { it.copy(status = GameState.Status.LOADING) }
 
