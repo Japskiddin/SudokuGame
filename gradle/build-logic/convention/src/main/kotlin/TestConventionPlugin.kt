@@ -5,8 +5,10 @@ import io.github.japskiddin.android.core.buildlogic.libs
 import io.github.japskiddin.android.core.buildlogic.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class TestConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -29,9 +31,22 @@ class TestConventionPlugin : Plugin<Project> {
                 configureAndroidTests()
             }
 
-            dependencies {
-                testImplementation(libs.junit)
-                testImplementation(libs.kotlinx.coroutines.test)
+            configurations.matching { it.name == "testImplementation" }.all {
+                dependencies {
+                    testImplementation(libs.junit)
+                    testImplementation(libs.kotlinx.coroutines.test)
+                }
+            }
+
+            pluginManager.withPlugin(libs.plugins.kotlin.multiplatform.get().pluginId) {
+                extensions.configure<KotlinMultiplatformExtension> {
+                    sourceSets.named("commonTest") {
+                        dependencies {
+                            implementation(libs.kotlin.test)
+                            implementation(libs.kotlinx.coroutines.test)
+                        }
+                    }
+                }
             }
         }
     }

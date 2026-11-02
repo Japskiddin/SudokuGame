@@ -112,7 +112,8 @@ public class QQWing(
      */
     private var printStyle = PrintStyle.READABLE
     private var gameType = GameType.UNSPECIFIED
-    public var difficulty: GameDifficulty = GameDifficulty.UNSPECIFIED
+    public var difficulty: GameDifficulty =
+        GameDifficulty.UNSPECIFIED
 
     /**
      * Create a new Sudoku board
@@ -690,7 +691,7 @@ public class QQWing(
         if (rowBoxReduction(round)) return true
         if (colBoxReduction(round)) return true
         if (hiddenPairInRow(round)) return true
-        return if (hiddenPairInColumn(round)) true else hiddenPairInSection(round)
+        return hiddenPairInColumn(round) || hiddenPairInSection(round)
     }
 
     @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
