@@ -1,0 +1,24 @@
+package io.github.japskiddin.sudoku.core.ui.component
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
+
+@Composable
+internal actual fun GameDialogWindow(onDismiss: () -> Unit, content: @Composable () -> Unit) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        val window = (LocalView.current.parent as? DialogWindowProvider)?.window
+        DisposableEffect(window) {
+            window?.setDimAmount(0f)
+            window?.setWindowAnimations(-1)
+            onDispose { }
+        }
+        content()
+    }
+}
