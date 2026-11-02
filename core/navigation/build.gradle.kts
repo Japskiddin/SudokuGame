@@ -1,15 +1,17 @@
 plugins {
-    alias(libs.plugins.app.android.library)
+    alias(libs.plugins.app.multiplatform)
+    alias(libs.plugins.app.di)
     alias(libs.plugins.app.test)
     alias(libs.plugins.app.detekt)
-    alias(libs.plugins.app.di)
 }
 
-android {
-    namespace = "io.github.japskiddin.sudoku.navigation"
-}
-
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.navigation.ui.ktx)
+kotlin {
+    android {
+        namespace = "io.github.japskiddin.sudoku.navigation"
+    }
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+        }
+    }
 }
