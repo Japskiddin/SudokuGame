@@ -2,8 +2,6 @@
 agp = "9.4.1"
 kotlin = "2.4.21"
 
-android-tools = "32.5.0"
-
 androidx-annotation = "1.11.0"
 androidx-core-ktx = "1.19.1"
 androidx-lifecycle = "2.11.0"
@@ -80,7 +78,7 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
 # endregion
 
-# region Compose Mupliplatform
+# region Compose Multiplatform
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
 compose-animation = { module = "org.jetbrains.compose.animation:animation", version.ref = "compose-multiplatform" }
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
@@ -112,7 +110,6 @@ androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecyc
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "androidx-room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
 androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "androidx-sqlite" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }
 # endregion
@@ -153,14 +150,13 @@ tracer-heap-dumps = { module = "ru.ok.tracer:tracer-heap-dumps" }
 
 # region Project internal convention plugin
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-android-tools-common = { module = "com.android.tools:common", version.ref = "android-tools" }
 compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "androidx-room" }
 detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref = "metro" }
-# endretion
+# endregion
 
 [bundles]
 compose = [
@@ -191,9 +187,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-android-library = { id = "com.android.library", version.ref = "agp" }
-android-test = { id = "com.android.test", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
@@ -207,7 +200,7 @@ caupain = { id = "com.deezer.caupain", version.ref = "caupain" }
 app-multiplatform = { id = "app.multiplatform", version = "unspecified" }
 app-multiplatform-compose = { id = "app.multiplatform.compose", version = "unspecified" }
 app-android-application = { id = "app.android.application", version = "unspecified" }
-app-android-library = { id = "app.android.library", version = "unspecified" }
+app-compose = { id = "app.compose", version = "unspecified" }
 app-android-compose = { id = "app.android.compose", version = "unspecified" }
 app-detekt = { id = "app.detekt", version = "unspecified" }
 app-jvm = { id = "app.jvm", version = "unspecified" }

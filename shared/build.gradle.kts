@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.app.multiplatform)
     alias(libs.plugins.app.multiplatform.compose)
     alias(libs.plugins.app.di)
     alias(libs.plugins.app.detekt)
@@ -9,7 +8,6 @@ plugins {
 kotlin {
     android {
         namespace = "io.github.japskiddin.sudoku.app"
-        androidResources.enable = true
     }
     sourceSets {
         jvmTest.dependencies {

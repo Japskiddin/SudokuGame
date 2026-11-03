@@ -6,16 +6,8 @@ fun DependencyHandlerScope.implementation(dependency: Any) {
     add("implementation", dependency)
 }
 
-fun DependencyHandlerScope.api(dependency: Any) {
-    add("api", dependency)
-}
-
 fun DependencyHandlerScope.detektPlugins(provider: Any) {
     add("detektPlugins", provider)
-}
-
-fun DependencyHandlerScope.ksp(provider: Any) {
-    add("ksp", provider)
 }
 
 fun DependencyHandlerScope.androidTestImplementation(provider: Any) {

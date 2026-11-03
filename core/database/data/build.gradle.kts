@@ -1,7 +1,5 @@
 plugins {
-    alias(libs.plugins.app.multiplatform)
-    alias(libs.plugins.androidx.room)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.app.room)
     alias(libs.plugins.app.test)
     alias(libs.plugins.app.detekt)
 }
@@ -16,10 +14,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.database.entities)
-            implementation(libs.androidx.room.runtime)
-        }
-        jvmMain.dependencies {
-            implementation(libs.androidx.sqlite.bundled)
         }
         getByName("androidDeviceTest") {
             dependencies {
@@ -30,13 +24,4 @@ kotlin {
             }
         }
     }
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
-dependencies {
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspJvm", libs.androidx.room.compiler)
 }

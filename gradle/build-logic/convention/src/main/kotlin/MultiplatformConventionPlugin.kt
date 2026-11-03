@@ -17,7 +17,6 @@ class MultiplatformConventionPlugin : Plugin<Project> {
                 compileSdk = libs.versions.android.compileSdk.get().toInt()
                 minSdk = libs.versions.android.minSdk.get().toInt()
                 compilerOptions.jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvm.get()))
-                withHostTestBuilder {}.configure {}
             }
             jvm()
         }

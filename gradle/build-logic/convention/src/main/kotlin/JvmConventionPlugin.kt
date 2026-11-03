@@ -5,8 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 class JvmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -15,8 +14,8 @@ class JvmConventionPlugin : Plugin<Project> {
                 apply(libs.plugins.kotlin.jvm.get().pluginId)
             }
 
-            extensions.configure(KotlinProjectExtension::class.java) {
-                explicitApi = ExplicitApiMode.Strict
+            extensions.configure<KotlinJvmProjectExtension> {
+                jvmToolchain(libs.versions.jvm.get().toInt())
             }
 
             extensions.configure<JavaPluginExtension> {

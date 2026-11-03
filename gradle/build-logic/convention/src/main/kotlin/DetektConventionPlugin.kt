@@ -33,7 +33,9 @@ class DetektConventionPlugin : Plugin<Project> {
 
             dependencies {
                 detektPlugins(libs.detekt.formatting)
-                if (pluginManager.hasPlugin(libs.plugins.compose.compiler.get().pluginId)) {
+            }
+            pluginManager.withPlugin(libs.plugins.compose.compiler.get().pluginId) {
+                dependencies {
                     detektPlugins(libs.detekt.rules.compose)
                 }
             }

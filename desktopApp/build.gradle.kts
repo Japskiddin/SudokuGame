@@ -1,12 +1,8 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.app.jvm)
     alias(libs.plugins.compose.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.app.compose)
     alias(libs.plugins.app.di)
-}
-
-kotlin {
-    jvmToolchain(libs.versions.jvm.get().toInt())
 }
 
 dependencies {

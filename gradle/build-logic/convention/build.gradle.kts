@@ -7,7 +7,6 @@ group = "io.github.japskiddin.android.core.buildlogic"
 dependencies {
     implementation(libs.android.gradle.plugin)
     implementation(libs.kotlin.gradle.plugin)
-    implementation(libs.android.tools.common)
     implementation(libs.compose.gradle.plugin)
     implementation(libs.ksp.gradle.plugin)
     implementation(libs.room.gradle.plugin)
@@ -42,9 +41,9 @@ gradlePlugin {
             id = "app.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("androidLibrary") {
-            id = "app.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
+        register("compose") {
+            id = "app.compose"
+            implementationClass = "ComposeConventionPlugin"
         }
         register("androidCompose") {
             id = "app.android.compose"

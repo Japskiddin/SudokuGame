@@ -1,5 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import io.github.japskiddin.android.core.buildlogic.androidTestImplementation
 import io.github.japskiddin.android.core.buildlogic.libs
 import io.github.japskiddin.android.core.buildlogic.testImplementation
@@ -22,13 +22,12 @@ class TestConventionPlugin : Plugin<Project> {
                 configureAndroidTests()
             }
 
-            pluginManager.withPlugin(libs.plugins.android.library.get().pluginId) {
-                extensions.getByType(LibraryExtension::class).apply {
-                    defaultConfig {
-                        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            pluginManager.withPlugin(libs.plugins.android.multiplatform.library.get().pluginId) {
+                extensions.configure<KotlinMultiplatformExtension> {
+                    targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
+                        withHostTestBuilder {}.configure {}
                     }
                 }
-                configureAndroidTests()
             }
 
             configurations.matching { it.name == "testImplementation" }.all {
@@ -68,8 +67,9 @@ class TestConventionPlugin : Plugin<Project> {
             androidTestImplementation(libs.androidx.arch.core.testing)
             androidTestImplementation(libs.google.truth)
             androidTestImplementation(libs.kotlinx.coroutines.test)
-
-            if (pluginManager.hasPlugin(libs.plugins.compose.compiler.get().pluginId)) {
+        }
+        pluginManager.withPlugin(libs.plugins.compose.compiler.get().pluginId) {
+            dependencies {
                 androidTestImplementation(platform(libs.androidx.compose.bom))
                 androidTestImplementation(libs.androidx.compose.ui.test.junit4)
             }
