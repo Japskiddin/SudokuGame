@@ -31,7 +31,7 @@ dependencyResolutionManagement {
 }
 
 include(
-    ":app",
+    ":shared",
     ":androidApp",
     ":desktopApp",
     ":core:navigation",

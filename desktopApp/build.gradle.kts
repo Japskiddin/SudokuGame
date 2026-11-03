@@ -10,7 +10,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(projects.app)
+    implementation(projects.shared)
     implementation(projects.core.common)
     implementation(compose.desktop.currentOs)
 }

@@ -65,7 +65,8 @@ android {
     }
     val signingStore = file(secretProperties["SIGNING_KEYSTORE_PATH"] as String)
     if (signingStore.exists() && listOf("SIGNING_KEYSTORE_PASSWORD", "SIGNING_KEY_ALIAS", "SIGNING_KEY_PASSWORD")
-            .all { secretProperties.getProperty(it).isNotBlank() }) {
+            .all { secretProperties.getProperty(it).isNotBlank() }
+    ) {
         val releaseSigning = signingConfigs.create("release") {
             storeFile = signingStore
             keyAlias = secretProperties.getProperty("SIGNING_KEY_ALIAS")
@@ -77,7 +78,6 @@ android {
             debug { signingConfig = releaseSigning }
         }
     }
-
 }
 
 dependencies {
@@ -94,11 +94,10 @@ dependencies {
     implementation(libs.metrox.viewmodel)
     implementation(libs.metrox.viewmodel.compose)
 
-    implementation(projects.app)
+    implementation(projects.shared)
     implementation(projects.core.common)
     implementation(projects.core.datastore)
     implementation(projects.core.database.data)
-
 }
 
 tracer {
