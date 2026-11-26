@@ -19,5 +19,7 @@ public sealed interface UiAction {
 
     public data class UpdateShowRemainingNumbers(val checked: Boolean) : UiAction
 
+    public data object OpenAbout : UiAction
+
     public data object Back : UiAction
 }

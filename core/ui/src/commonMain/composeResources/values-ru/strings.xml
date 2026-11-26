@@ -3,6 +3,12 @@
     <string name="app_name">Судоку</string>
     <string name="start_game">Начать игру</string>
     <string name="settings">Настройки</string>
+    <string name="about">О приложении</string>
+    <string name="about_description">Решайте судоку на полях разных размеров и выбирайте уровень сложности. Продолжайте игру с того места, где остановились, и смотрите результаты в истории.</string>
+    <string name="about_version">Версия %1$s</string>
+    <string name="about_rate_app">Оценить приложение</string>
+    <string name="about_share_app">Поделиться приложением</string>
+    <string name="about_store_unavailable">Не удалось открыть Google Play.</string>
     <string name="history">История</string>
     <string name="continue_game">Продолжить</string>
     <string name="game_menu">Меню</string>

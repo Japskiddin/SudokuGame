@@ -24,7 +24,9 @@ import dev.zacsweers.metrox.viewmodel.metroViewModel
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.component.BackHandler
+import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.HorizontalDivider
+import io.github.japskiddin.sudoku.core.ui.resources.about
 import io.github.japskiddin.sudoku.core.ui.resources.highlight_cells_with_errors
 import io.github.japskiddin.sudoku.core.ui.resources.highlight_selected_cell
 import io.github.japskiddin.sudoku.core.ui.resources.highlight_selected_cell_desc
@@ -68,50 +70,14 @@ private fun SettingsScreen(viewModel: SettingsViewModel) {
 
     SettingsContent(
         state = state,
-        onUpdateMistakesLimit = { checked ->
-            viewModel.onAction(UiAction.UpdateMistakesLimit(checked))
-        },
-        onUpdateShowTimer = { checked ->
-            viewModel.onAction(UiAction.UpdateShowTimer(checked))
-        },
-        onUpdateResetTimer = { checked ->
-            viewModel.onAction(UiAction.UpdateResetTimer(checked))
-        },
-        onUpdateHighlightErrorCells = { checked ->
-            viewModel.onAction(UiAction.UpdateHighlightErrorCells(checked))
-        },
-        onUpdateHighlightSimilarCells = { checked ->
-            viewModel.onAction(UiAction.UpdateHighlightSimilarCells(checked))
-        },
-        onUpdateShowRemainingNumbers = { checked ->
-            viewModel.onAction(UiAction.UpdateShowRemainingNumbers(checked))
-        },
-        onUpdateHighlightSelectedCell = { checked ->
-            viewModel.onAction(UiAction.UpdateHighlightSelectedCell(checked))
-        },
-        onUpdateKeepScreenOn = { checked ->
-            viewModel.onAction(UiAction.UpdateKeepScreenOn(checked))
-        },
-        onUpdateSaveGameMode = { checked ->
-            viewModel.onAction(UiAction.UpdateSaveGameMode(checked))
-        },
-        onBack = { viewModel.onAction(UiAction.Back) }
+        onAction = viewModel::onAction,
     )
 }
 
 @Composable
 private fun SettingsContent(
     state: UiState,
-    onUpdateMistakesLimit: (Boolean) -> Unit,
-    onUpdateShowTimer: (Boolean) -> Unit,
-    onUpdateResetTimer: (Boolean) -> Unit,
-    onUpdateHighlightErrorCells: (Boolean) -> Unit,
-    onUpdateHighlightSimilarCells: (Boolean) -> Unit,
-    onUpdateShowRemainingNumbers: (Boolean) -> Unit,
-    onUpdateHighlightSelectedCell: (Boolean) -> Unit,
-    onUpdateKeepScreenOn: (Boolean) -> Unit,
-    onUpdateSaveGameMode: (Boolean) -> Unit,
-    onBack: () -> Unit,
+    onAction: (UiAction) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -125,7 +91,7 @@ private fun SettingsContent(
                 .statusBarsPadding()
                 .displayCutoutPadding()
                 .padding(top = 12.dp, bottom = 12.dp),
-            onBack = onBack,
+            onBack = { onAction(UiAction.Back) },
         )
 
         val scrollState = rememberScrollState()
@@ -146,8 +112,8 @@ private fun SettingsContent(
             SectionGeneral(
                 isKeepScreenOn = state.isKeepScreenOn,
                 isSaveGameMode = state.isSaveGameMode,
-                onUpdateKeepScreenOn = onUpdateKeepScreenOn,
-                onUpdateSaveGameMode = onUpdateSaveGameMode
+                onUpdateKeepScreenOn = { onAction(UiAction.UpdateKeepScreenOn(it)) },
+                onUpdateSaveGameMode = { onAction(UiAction.UpdateSaveGameMode(it)) },
             )
             Spacer(modifier = Modifier.height(12.dp))
             SectionGame(
@@ -158,13 +124,17 @@ private fun SettingsContent(
                 isHighlightSimilarCells = state.isHighlightSimilarCells,
                 isShowRemainingNumbers = state.isShowRemainingNumbers,
                 isHighlightSelectedCell = state.isHighlightSelectedCell,
-                onUpdateMistakesLimit = onUpdateMistakesLimit,
-                onUpdateShowTimer = onUpdateShowTimer,
-                onUpdateResetTimer = onUpdateResetTimer,
-                onUpdateHighlightErrorCells = onUpdateHighlightErrorCells,
-                onUpdateHighlightSimilarCells = onUpdateHighlightSimilarCells,
-                onUpdateShowRemainingNumbers = onUpdateShowRemainingNumbers,
-                onUpdateHighlightSelectedCell = onUpdateHighlightSelectedCell,
+                onUpdateMistakesLimit = { onAction(UiAction.UpdateMistakesLimit(it)) },
+                onUpdateShowTimer = { onAction(UiAction.UpdateShowTimer(it)) },
+                onUpdateResetTimer = { onAction(UiAction.UpdateResetTimer(it)) },
+                onUpdateHighlightErrorCells = { onAction(UiAction.UpdateHighlightErrorCells(it)) },
+                onUpdateHighlightSimilarCells = { onAction(UiAction.UpdateHighlightSimilarCells(it)) },
+                onUpdateShowRemainingNumbers = { onAction(UiAction.UpdateShowRemainingNumbers(it)) },
+                onUpdateHighlightSelectedCell = { onAction(UiAction.UpdateHighlightSelectedCell(it)) },
+            )
+            GameButton(
+                text = stringResource(resource = CoreUiRes.string.about),
+                onClick = { onAction(UiAction.OpenAbout) },
             )
         }
     }
@@ -288,16 +258,7 @@ private fun SettingsContentPreview(
     SudokuTheme {
         SettingsContent(
             state = state,
-            onUpdateMistakesLimit = {},
-            onUpdateShowTimer = {},
-            onUpdateResetTimer = {},
-            onUpdateHighlightErrorCells = {},
-            onUpdateHighlightSimilarCells = {},
-            onUpdateKeepScreenOn = {},
-            onUpdateShowRemainingNumbers = {},
-            onUpdateHighlightSelectedCell = {},
-            onUpdateSaveGameMode = {},
-            onBack = {},
+            onAction = {},
         )
     }
 }

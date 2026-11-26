@@ -24,12 +24,15 @@ public sealed class Destination(
 
     public data object Settings : NoArgumentsDestination(DESTINATION_SETTINGS)
 
+    public data object About : NoArgumentsDestination(DESTINATION_ABOUT)
+
     public data object History : NoArgumentsDestination(DESTINATION_HISTORY)
 
     public companion object {
         private const val DESTINATION_HOME = "home"
         private const val DESTINATION_GAME = "game"
         private const val DESTINATION_SETTINGS = "settings"
+        private const val DESTINATION_ABOUT = "about"
         private const val DESTINATION_HISTORY = "history"
 
         public const val KEY_BOARD_UID: String = "board_uid"

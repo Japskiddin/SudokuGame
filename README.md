@@ -3,7 +3,7 @@
 A Sudoku game for Android and desktop, written in Kotlin with Compose
 Multiplatform. Both applications share screens, ViewModels, game rules,
 navigation, dependency injection and persistence. The application has home, game,
-history and settings features, with puzzle generation/solving provided by QQWing.
+history, settings and about features, with puzzle generation/solving provided by QQWing.
 
 ## Getting started
 
@@ -45,6 +45,7 @@ features/
   game/                 Game screen and gameplay state
   history/              Previously played games
   settings/             Application and gameplay preferences
+  about/                App information, version and Android store actions
 config/                 Detekt rules and Compose compiler stability configuration
 gradle/
   build-logic/          Convention plugins (included Gradle build)
@@ -84,7 +85,7 @@ with Android and JVM targets. `androidApp` and `desktopApp` are platform launche
 
 ### Feature layers
 
-Each feature has the same three modules:
+Features use the following modules. About uses the UI and UI logic layers.
 
 | Layer | Contents | Convention |
 | --- | --- | --- |

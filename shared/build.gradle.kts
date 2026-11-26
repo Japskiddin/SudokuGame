@@ -36,6 +36,8 @@ kotlin {
             implementation(projects.features.settings.ui)
             implementation(projects.features.settings.uiLogic)
             implementation(projects.features.settings.domain)
+            implementation(projects.features.about.ui)
+            implementation(projects.features.about.uiLogic)
             implementation(projects.features.history.ui)
             implementation(projects.features.history.uiLogic)
             implementation(projects.features.history.domain)

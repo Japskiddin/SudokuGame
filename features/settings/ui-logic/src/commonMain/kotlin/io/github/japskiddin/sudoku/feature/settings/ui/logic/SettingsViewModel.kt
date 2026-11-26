@@ -8,6 +8,7 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import io.github.japskiddin.sudoku.core.domain.SettingsRepository
 import io.github.japskiddin.sudoku.navigation.AppNavigator
+import io.github.japskiddin.sudoku.navigation.Destination
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -51,6 +52,7 @@ public class SettingsViewModel(
             is UiAction.UpdateKeepScreenOn -> updateKeepScreenOn(action.checked)
             is UiAction.UpdateSaveGameMode -> updateSaveGameMode(action.checked)
             is UiAction.UpdateShowRemainingNumbers -> updateShowRemainingNumbers(action.checked)
+            UiAction.OpenAbout -> appNavigator.tryNavigateTo(Destination.About(), isSingleTop = true)
             is UiAction.Back -> appNavigator.tryNavigateBack()
         }
     }
