@@ -12,3 +12,7 @@ kotlin {
         }
     }
 }
+
+compose.resources {
+    packageOfResClass = "io.github.japskiddin.sudoku.feature.about.ui.resources"
+}

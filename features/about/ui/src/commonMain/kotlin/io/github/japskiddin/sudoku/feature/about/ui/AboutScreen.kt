@@ -40,8 +40,11 @@ import io.github.japskiddin.sudoku.core.ui.resources.app_name
 import io.github.japskiddin.sudoku.core.ui.resources.logo
 import io.github.japskiddin.sudoku.core.ui.utils.LocalAppVersion
 import io.github.japskiddin.sudoku.feature.about.ui.logic.AboutViewModel
+import io.github.japskiddin.sudoku.feature.about.ui.resources.ic_share
+import io.github.japskiddin.sudoku.feature.about.ui.resources.ic_star
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import io.github.japskiddin.sudoku.feature.about.ui.resources.Res as AboutRes
 
 @Composable
 public fun AboutScreen(
@@ -123,7 +126,10 @@ private fun AppInfo() {
 private fun AboutActions(onRateApp: (() -> Boolean)?, onShareApp: (() -> Unit)?) {
     var storeUnavailable by rememberSaveable { mutableStateOf(false) }
     if (onRateApp != null) {
-        GameButton(text = stringResource(Res.string.about_rate_app)) {
+        GameButton(
+            icon = painterResource(AboutRes.drawable.ic_star),
+            text = stringResource(Res.string.about_rate_app),
+        ) {
             storeUnavailable = !onRateApp()
         }
         if (storeUnavailable) {
@@ -134,6 +140,10 @@ private fun AboutActions(onRateApp: (() -> Boolean)?, onShareApp: (() -> Unit)?)
         }
     }
     if (onShareApp != null) {
-        GameButton(text = stringResource(Res.string.about_share_app), onClick = onShareApp)
+        GameButton(
+            icon = painterResource(AboutRes.drawable.ic_share),
+            text = stringResource(Res.string.about_share_app),
+            onClick = onShareApp,
+        )
     }
 }
