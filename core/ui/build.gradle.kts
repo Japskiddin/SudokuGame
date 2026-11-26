@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.app.multiplatform.compose)
+    alias(libs.plugins.app.multiplatform)
+    alias(libs.plugins.app.compose)
     alias(libs.plugins.app.test)
     alias(libs.plugins.app.detekt)
 }

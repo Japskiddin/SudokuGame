@@ -68,11 +68,5 @@ class TestConventionPlugin : Plugin<Project> {
             androidTestImplementation(libs.google.truth)
             androidTestImplementation(libs.kotlinx.coroutines.test)
         }
-        pluginManager.withPlugin(libs.plugins.compose.compiler.get().pluginId) {
-            dependencies {
-                androidTestImplementation(platform(libs.androidx.compose.bom))
-                androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-            }
-        }
     }
 }

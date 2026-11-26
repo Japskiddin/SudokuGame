@@ -6,7 +6,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureUiConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("app.multiplatform.compose")
+        pluginManager.apply("app.multiplatform")
+        pluginManager.apply("app.compose")
         pluginManager.apply("app.detekt")
 
         extensions.configure<KotlinMultiplatformExtension> {
