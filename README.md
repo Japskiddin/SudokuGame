@@ -12,7 +12,7 @@ Requirements:
 - JDK 21.
 - Android SDK with platform 37 installed. Set `sdk.dir` in the untracked
   `local.properties` file, or configure `ANDROID_HOME`.
-- An Android device/emulator running API 26 or newer to run the Android app.
+- A physical Android device running API 26 or newer to verify the Android app.
 
 Use the checked-in Gradle wrapper; a separate Gradle installation is unnecessary.
 The first build downloads dependencies from the configured repositories.
@@ -22,7 +22,7 @@ On Windows, use `gradlew.bat` in place of `./gradlew`.
 # Build the Android debug APK
 ./gradlew :androidApp:assembleDebug
 
-# Install on a connected device or emulator
+# Install on a connected physical device
 ./gradlew :androidApp:installDebug
 
 # Run the desktop application on the current OS
@@ -180,9 +180,13 @@ signing credentials. The Android module also reads `tracer-pluginToken` and
 # Convention plugin compilation and validation
 ./gradlew -p gradle/build-logic :convention:check
 
-# Instrumented tests (requires a connected Android device/emulator)
+# Instrumented tests on a connected physical Android device
 ./gradlew :core:database:data:connectedAndroidDeviceTest :androidApp:connectedDebugAndroidTest
 ```
+
+Verify changed Android flows on a physical Android device and Desktop flows by
+launching the built application on physical hardware with the target OS. See
+[the repository verification rules](AGENTS.md).
 
 Tests cover game/model behavior, feature use cases and game state, navigation,
 data mappings, JVM persistence, graph creation and desktop rendering.
