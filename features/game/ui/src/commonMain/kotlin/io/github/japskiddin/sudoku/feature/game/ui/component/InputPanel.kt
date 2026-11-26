@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
@@ -20,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,13 +47,11 @@ internal fun InputPanel(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             InputPanelContentRow(
-                modifier = modifier,
                 values = IntRange(start = 1, endInclusive = 6),
                 board = board,
                 showRemainingNumbers = showRemainingNumbers,
             ) { value -> onClick(value) }
             InputPanelContentRow(
-                modifier = modifier,
                 values = IntRange(start = 7, endInclusive = 12),
                 board = board,
                 showRemainingNumbers = showRemainingNumbers,
@@ -79,11 +78,11 @@ private fun InputPanelContentRow(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         values.forEach { value ->
             val counter = board.countByValue(value)
             InputButton(
+                modifier = Modifier.weight(1f),
                 value = value,
                 counter = counter,
                 showRemainingNumbers = showRemainingNumbers,
@@ -103,7 +102,6 @@ private fun InputButton(
     counterTextSize: TextUnit = 10.sp,
     textColor: Color = SudokuTheme.colors.gamePanelNormal,
     pressedTextColor: Color = SudokuTheme.colors.gamePanelPressed,
-    padding: Dp = 4.dp,
     onClick: (Int) -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -115,34 +113,26 @@ private fun InputButton(
         textColor
     }
 
-    val buttonModifier = if (counter > 0) {
-        modifier
-            .clip(RoundedCornerShape(4.dp))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = LocalIndication.current,
-                onClick = { onClick(value) },
-            )
-            .padding(padding)
-    } else {
-        modifier.padding(padding)
-    }
-
     val color = if (counter > 0) {
         buttonColor
     } else {
         buttonColor.copy(alpha = 0.4f)
     }
 
-    val textModifier = if (showRemainingNumbers) {
-        Modifier
-    } else {
-        Modifier.padding(vertical = 2.dp)
-    }
-
     Column(
-        modifier = buttonModifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .heightIn(min = 48.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                enabled = counter > 0,
+                role = Role.Button,
+                onClick = { onClick(value) },
+            )
+            .padding(vertical = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
         BasicText(
             text = value.toDisplayValue(),
@@ -150,7 +140,6 @@ private fun InputButton(
                 fontSize = valueTextSize,
                 color = color
             ),
-            modifier = textModifier,
         )
 
         if (showRemainingNumbers) {
