@@ -5,6 +5,7 @@ plugins {
 }
 
 kotlin {
+    compilerOptions.freeCompilerArgs.add("-Xexpect-actual-classes")
     applyDefaultHierarchyTemplate()
     android {
         namespace = "io.github.japskiddin.sudoku.core.game"
