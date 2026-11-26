@@ -15,7 +15,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.getByType(ApplicationExtension::class).apply {
-                compileSdk = libs.versions.android.compileSdk.get().toInt()
+                compileSdk {
+                    version = release(libs.versions.android.compileSdk.get().toInt()) {
+                        minorApiLevel = libs.versions.android.compileSdkMinor.get().toInt()
+                    }
+                }
 
                 defaultConfig {
                     minSdk = libs.versions.android.minSdk.get().toInt()

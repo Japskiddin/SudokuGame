@@ -14,7 +14,11 @@ class MultiplatformConventionPlugin : Plugin<Project> {
             explicitApi()
             jvmToolchain(libs.versions.jvm.get().toInt())
             targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
-                compileSdk = libs.versions.android.compileSdk.get().toInt()
+                compileSdk {
+                    version = release(libs.versions.android.compileSdk.get().toInt()) {
+                        minorApiLevel = libs.versions.android.compileSdkMinor.get().toInt()
+                    }
+                }
                 minSdk = libs.versions.android.minSdk.get().toInt()
                 compilerOptions.jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvm.get()))
             }

@@ -10,7 +10,7 @@ history and settings features, with puzzle generation/solving provided by QQWing
 Requirements:
 
 - JDK 21.
-- Android SDK with platform 37 installed. Set `sdk.dir` in the untracked
+- Android SDK with platform 37.1 installed. Set `sdk.dir` in the untracked
   `local.properties` file, or configure `ANDROID_HOME`.
 - A physical Android device running API 26 or newer to verify the Android app.
 
