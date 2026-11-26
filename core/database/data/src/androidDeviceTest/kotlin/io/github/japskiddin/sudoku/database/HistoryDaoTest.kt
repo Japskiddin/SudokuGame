@@ -10,15 +10,12 @@ import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.HistoryDao
 import io.github.japskiddin.sudoku.database.utils.createDummyBoard
 import io.github.japskiddin.sudoku.database.utils.createDummyHistory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -45,39 +42,21 @@ class HistoryDaoTest {
 
     @Test
     fun insertHistory_returnsTrue() = runTest {
-        val board = createDummyBoard()
-        val history = createDummyHistory(1)
+        val history = createDummyHistory(boardDao.insert(createDummyBoard()))
 
-        boardDao.insert(board)
         historyDao.insert(history)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            historyDao.getAll().collect {
-                assertThat(it).contains(history)
-                latch.countDown()
-            }
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(historyDao.getAll().first()).containsExactly(history)
     }
 
     @Test
     fun insertHistoryList_returnsTrue() = runTest {
-        val board = createDummyBoard()
-        val history = createDummyHistory(1)
+        val firstHistory = createDummyHistory(boardDao.insert(createDummyBoard()))
+        val secondHistory = createDummyHistory(boardDao.insert(createDummyBoard()))
 
-        boardDao.insert(board)
-        historyDao.insert(history)
+        historyDao.insert(firstHistory)
+        historyDao.insert(secondHistory)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            historyDao.getAll().collect {
-                assertThat(it).isEqualTo(history)
-                latch.countDown()
-            }
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(historyDao.getAll().first()).containsExactly(firstHistory, secondHistory)
     }
 }

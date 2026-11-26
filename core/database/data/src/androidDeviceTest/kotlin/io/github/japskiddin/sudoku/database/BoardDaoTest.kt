@@ -8,15 +8,11 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.utils.createDummyBoard
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -46,13 +42,6 @@ class BoardDaoTest {
 
         boardDao.insert(board)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            val insertedBoard = boardDao.get(uid)
-            assertThat(insertedBoard).isEqualTo(board)
-            latch.countDown()
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(boardDao.get(uid)).isEqualTo(board)
     }
 }

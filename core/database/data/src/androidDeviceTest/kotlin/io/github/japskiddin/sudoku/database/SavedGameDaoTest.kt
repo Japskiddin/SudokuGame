@@ -10,15 +10,12 @@ import io.github.japskiddin.sudoku.database.dao.BoardDao
 import io.github.japskiddin.sudoku.database.dao.SavedGameDao
 import io.github.japskiddin.sudoku.database.utils.createDummyBoard
 import io.github.japskiddin.sudoku.database.utils.createDummySavedGame
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -57,14 +54,7 @@ class SavedGameDaoTest {
 
         savedGameDao.insert(savedGame)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            val insertedSavedGame = savedGameDao.get(uid)
-            assertThat(insertedSavedGame).isEqualTo(savedGame)
-            latch.countDown()
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(savedGameDao.get(uid)).isEqualTo(savedGame)
     }
 
     @Test
@@ -75,14 +65,7 @@ class SavedGameDaoTest {
         savedGameDao.insert(savedGame)
         savedGameDao.delete(savedGame)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            val insertedSavedGame = savedGameDao.get(uid)
-            assertThat(insertedSavedGame).isNull()
-            latch.countDown()
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(savedGameDao.get(uid)).isNull()
     }
 
     @Test
@@ -107,15 +90,7 @@ class SavedGameDaoTest {
 
         savedGameDao.insert(savedGame)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            savedGameDao.getLast().collect {
-                assertThat(it).isEqualTo(savedGame)
-                latch.countDown()
-            }
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(savedGameDao.getLast().first()).isEqualTo(savedGame)
     }
 
     @Test
@@ -134,14 +109,6 @@ class SavedGameDaoTest {
         savedGameDao.insert(activeSavedGame)
         savedGameDao.insert(completedSavedGame)
 
-        val latch = CountDownLatch(1)
-        val job = async(Dispatchers.IO) {
-            savedGameDao.getLast().collect {
-                assertThat(it).isEqualTo(activeSavedGame)
-                latch.countDown()
-            }
-        }
-        latch.await()
-        job.cancelAndJoin()
+        assertThat(savedGameDao.getLast().first()).isEqualTo(activeSavedGame)
     }
 }
