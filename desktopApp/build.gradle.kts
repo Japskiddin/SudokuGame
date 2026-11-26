@@ -12,6 +12,7 @@ dependencies {
 }
 
 val appVersion = libs.versions.app.versionName.get()
+val appIcon = rootProject.file("shared/src/main/ic_launcher-playstore.png")
 
 tasks.processResources {
     val version = appVersion
@@ -19,10 +20,26 @@ tasks.processResources {
     filesMatching("sudoku-version.txt") {
         expand("appVersion" to version)
     }
+    from(appIcon) {
+        rename { "sudoku-icon.png" }
+    }
 }
 
 compose.desktop {
     application {
         mainClass = "io.github.japskiddin.sudoku.desktop.MainKt"
+        nativeDistributions {
+            packageName = "Sudoku"
+            packageVersion = appVersion
+            windows {
+                iconFile.set(layout.projectDirectory.file("icons/sudoku.ico"))
+            }
+            macOS {
+                iconFile.set(layout.projectDirectory.file("icons/sudoku.icns"))
+            }
+            linux {
+                iconFile.set(appIcon)
+            }
+        }
     }
 }
