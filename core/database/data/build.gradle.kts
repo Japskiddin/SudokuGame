@@ -5,6 +5,7 @@ plugins {
 }
 
 kotlin {
+    compilerOptions.freeCompilerArgs.add("-Xexpect-actual-classes")
     android {
         namespace = "io.github.japskiddin.sudoku.database"
         withDeviceTestBuilder { sourceSetTreeName = "test" }.configure {
