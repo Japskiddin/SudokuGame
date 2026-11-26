@@ -1,16 +1,16 @@
 [versions]
-agp = "9.4.1"
+agp = "9.5.3"
 kotlin = "2.4.21"
 
 androidx-annotation = "1.11.0"
 androidx-core-ktx = "1.19.1"
-androidx-lifecycle = "2.11.0"
+androidx-lifecycle = "2.11.1"
 androidx-activity = "1.13.0"
-androidx-compose-bom = "2026.09.00"
+androidx-compose-bom = "2026.11.01"
 androidx-datastore = "1.3.0"
 androidx-splashscreen = "1.2.0"
 androidx-navigation = "2.10.2"
-navigation-multiplatform = "2.10.0-rc01"
+navigation-multiplatform = "2.10.0"
 navigationevent-multiplatform = "1.1.0"
 
 kotlinx-coroutines = "1.11.0"
@@ -21,9 +21,9 @@ androidx-sqlite = "2.7.1"
 
 compose-multiplatform = "1.12.2"
 
-ksp = "2.3.13"
+ksp = "2.3.14"
 
-metro = "1.5.1"
+metro = "1.6.0"
 
 junit = "4.13.2"
 google-truth = "1.4.5"
@@ -36,7 +36,7 @@ androidx-arch-core-testing = "2.2.0"
 detekt = "1.23.8"
 detekt-rules-compose = "0.6.8"
 
-tracer = "1.4.0"
+tracer = "1.6.1"
 
 caupain = "1.10.1"
 
