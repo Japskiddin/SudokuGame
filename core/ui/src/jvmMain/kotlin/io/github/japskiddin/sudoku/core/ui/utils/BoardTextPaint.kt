@@ -2,7 +2,7 @@ package io.github.japskiddin.sudoku.core.ui.utils
 
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.skiaCanvas
 import androidx.compose.ui.graphics.toArgb
 import org.jetbrains.skia.Font
 import org.jetbrains.skia.FontMgr
@@ -26,6 +26,6 @@ public actual class BoardTextPaint actual constructor(color: Color, textSize: Fl
     public actual fun textHeight(text: String): Float = font.measureText(text).height
 
     public actual fun drawText(canvas: Canvas, text: String, x: Float, y: Float) {
-        canvas.nativeCanvas.drawString(text, x, y, font, paint)
+        canvas.skiaCanvas.drawString(text, x, y, font, paint)
     }
 }
