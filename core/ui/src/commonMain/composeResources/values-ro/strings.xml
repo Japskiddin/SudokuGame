@@ -5,6 +5,8 @@
     <string name="settings">Setări</string>
     <string name="history">Istorie</string>
     <string name="continue_game">Continua</string>
+    <string name="game_menu">Meniu</string>
+    <string name="exit_game">Ieșire</string>
     <string name="preparing_game_please_wait">Pregătirea jocului. Va rugam asteptati…</string>
     <string name="err_generate_sudoku">Nu s-a putut crea jocul. Vă rugăm să încercați din nou.</string>
     <string name="you_already_started_game">Ai început deja jocul. Dacă începeți un joc nou, precedentul va fi pierdut.</string>

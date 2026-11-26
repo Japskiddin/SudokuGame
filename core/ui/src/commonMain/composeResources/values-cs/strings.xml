@@ -5,6 +5,8 @@
     <string name="settings">Nastavení</string>
     <string name="history">Dějiny</string>
     <string name="continue_game">Pokračovat</string>
+    <string name="game_menu">Nabídka</string>
+    <string name="exit_game">Ukončit</string>
     <string name="preparing_game_please_wait">Příprava hry. Čekejte prosím…</string>
     <string name="err_generate_sudoku">Hru se nepodařilo vytvořit. Zkuste to prosím znovu.</string>
     <string name="you_already_started_game">Už jste začali hru. Pokud spustíte novou hru, předchozí bude ztracena.</string>

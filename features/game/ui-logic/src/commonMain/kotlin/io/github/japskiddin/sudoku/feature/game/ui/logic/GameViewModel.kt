@@ -51,6 +51,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions", "LongParameterList")
@@ -105,7 +107,10 @@ public class GameViewModel(
     )
     private val gameState = MutableStateFlow(GameState.Initial)
 
+    private val progressMutex = Mutex()
     private var timerJob: Job? = null
+    private var isScreenResumed = false
+    private var isExiting = false
     private var boardUid: Long = -1L
 
     public val uiState: StateFlow<UiState> = combine(
@@ -135,7 +140,8 @@ public class GameViewModel(
 
             else -> UiState.Game(
                 gameState = gameState.toGameUiState(),
-                preferencesState = preferencesUiState
+                preferencesState = preferencesUiState,
+                isMenuOpen = gameState.isMenuOpen,
             )
         }
     }.stateIn(
@@ -157,17 +163,13 @@ public class GameViewModel(
             is UiAction.Undo -> undoBoardHistory()
             is UiAction.Redo -> redoBoardHistory()
             is UiAction.Note -> notesBoard()
-            is UiAction.ResumeGame -> resumeGame()
-            is UiAction.PauseGame -> pauseGame()
-            is UiAction.ShowSettings -> appNavigator.tryNavigateTo(Destination.Settings())
-            is UiAction.Exit -> appNavigator.tryNavigateBack()
-            is UiAction.Back -> onBackPressed()
+            is UiAction.ScreenResumed -> onScreenResumed()
+            is UiAction.ScreenPaused -> onScreenPaused()
+            is UiAction.ShowMenu -> showMenu()
+            is UiAction.DismissMenu -> dismissMenu()
+            is UiAction.ShowSettings -> showSettings()
+            is UiAction.Exit -> exitGame()
         }
-    }
-
-    private fun onBackPressed() {
-        saveGame()
-        appNavigator.tryNavigateBack()
     }
 
     @Suppress("LongMethod")
@@ -242,12 +244,18 @@ public class GameViewModel(
 
             saveGame()
             gameHistoryManager = GameHistoryManager(gameState.value.toGameHistory())
-            startTimer()
+            updateTimer()
         }
     }
 
-    private fun startTimer() {
-        stopTimer()
+    private fun updateTimer() {
+        val state = gameState.value
+        if (!isScreenResumed || state.status != GameState.Status.PLAYING || state.isMenuOpen || isExiting) {
+            stopTimer()
+            return
+        }
+        if (timerJob != null) return
+
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(TIMER_DELAY.milliseconds)
@@ -363,34 +371,85 @@ public class GameViewModel(
         }
     }
 
-    private fun resumeGame() {
-        startTimer()
+    private fun onScreenResumed() {
+        isScreenResumed = true
+        updateTimer()
     }
 
-    private fun pauseGame() {
-        selectBoardCell(BoardCell.Empty)
-        stopTimer()
+    private fun onScreenPaused() {
+        isScreenResumed = false
+        updateTimer()
+
+        val state = gameState.value
+        if (state.status == GameState.Status.PLAYING && !state.isMenuOpen && !isExiting) {
+            selectBoardCell(BoardCell.Empty)
+            saveGame()
+        }
+    }
+
+    private fun showMenu() {
+        val state = gameState.value
+        if (state.status != GameState.Status.PLAYING || state.isMenuOpen || isExiting) return
+
+        gameState.update { it.copy(isMenuOpen = true) }
+        updateTimer()
         saveGame()
+    }
+
+    private fun dismissMenu() {
+        gameState.update { it.copy(isMenuOpen = false) }
+        updateTimer()
+    }
+
+    private fun showSettings() {
+        if (!gameState.value.isMenuOpen || isExiting) return
+
+        isScreenResumed = false
+        dismissMenu()
+        appNavigator.tryNavigateTo(Destination.Settings())
+    }
+
+    private fun exitGame() {
+        if (isExiting) return
+
+        isExiting = true
+        stopTimer()
+        val state = gameState.value
+        gameState.update { it.copy(isMenuOpen = false) }
+        viewModelScope.launch {
+            if (state.status == GameState.Status.PLAYING) {
+                persistGame(state)
+            }
+            appNavigator.navigateBack()
+        }
     }
 
     private fun addToHistory(status: GameStatus) {
         val state = gameState.value
         viewModelScope.launch {
-            addToHistoryUseCase.invoke(
-                uid = boardUid,
-                board = state.board.convertToString(),
-                notes = state.notes.convertToString(),
-                time = state.time,
-                actions = state.actions,
-                mistakes = state.mistakes,
-                status = status,
-            )
+            progressMutex.withLock {
+                addToHistoryUseCase.invoke(
+                    uid = boardUid,
+                    board = state.board.convertToString(),
+                    notes = state.notes.convertToString(),
+                    time = state.time,
+                    actions = state.actions,
+                    mistakes = state.mistakes,
+                    status = status,
+                )
+            }
         }
     }
 
     private fun saveGame() {
         val state = gameState.value
         viewModelScope.launch {
+            persistGame(state)
+        }
+    }
+
+    private suspend fun persistGame(state: GameState) {
+        progressMutex.withLock {
             saveGameUseCase.invoke(
                 uid = boardUid,
                 board = state.board.convertToString(),

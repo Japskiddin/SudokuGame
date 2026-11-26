@@ -5,6 +5,8 @@
     <string name="settings">设置</string>
     <string name="history">历史</string>
     <string name="continue_game">继续</string>
+    <string name="game_menu">菜单</string>
+    <string name="exit_game">退出</string>
     <string name="preparing_game_please_wait">正在准备游戏。请稍候…</string>
     <string name="err_generate_sudoku">创建游戏失败。请重试。</string>
     <string name="you_already_started_game">您已经开始游戏。如果开始新游戏，之前的将会丢失。</string>

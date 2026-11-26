@@ -5,6 +5,8 @@
     <string name="settings">सेटिंग्स</string>
     <string name="history">इतिहास</string>
     <string name="continue_game">जारी रखें</string>
+    <string name="game_menu">मेनू</string>
+    <string name="exit_game">बाहर निकलें</string>
     <string name="preparing_game_please_wait">गेम तैयार कर रहा हूँ। कृपया प्रतीक्षा करें…</string>
     <string name="err_generate_sudoku">गेम बनाने में विफल। कृपया फिर से प्रयास करें।</string>
     <string name="you_already_started_game">आपने पहले ही गेम शुरू कर दिया है। यदि आप नया गेम शुरू करते हैं, तो पिछला गेम खो जाएगा।</string>

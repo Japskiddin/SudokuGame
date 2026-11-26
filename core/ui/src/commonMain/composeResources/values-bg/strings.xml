@@ -5,6 +5,8 @@
     <string name="settings">Настройки</string>
     <string name="history">История</string>
     <string name="continue_game">Продължи</string>
+    <string name="game_menu">Меню</string>
+    <string name="exit_game">Изход</string>
     <string name="preparing_game_please_wait">Подготовка на играта. моля изчакайте…</string>
     <string name="err_generate_sudoku">Неуспешно създаване на игра. Моля, опитайте отново.</string>
     <string name="you_already_started_game">Вече започнахте играта. Ако започнете нова игра, предишната ще бъде загубена.</string>

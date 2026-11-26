@@ -5,6 +5,8 @@
     <string name="settings">సెట్టింగ్‌లు</string>
     <string name="history">చరిత్ర</string>
     <string name="continue_game">కొనసాగించు</string>
+    <string name="game_menu">మెనూ</string>
+    <string name="exit_game">నిష్క్రమించు</string>
     <string name="preparing_game_please_wait">ఆటను సిద్ధం చేస్తోంది. దయచేసి వేచి ఉండండి…</string>
     <string name="err_generate_sudoku">ఆటను సృష్టించడంలో విఫలమైంది. దయచేసి మళ్ళీ ప్రయత్నించండి.</string>
     <string name="you_already_started_game">మీరు ఇప్పటికే ఆటను ప్రారంభించారు. మీరు కొత్త ఆటను ప్రారంభిస్తే, మునుపటిది పోతుంది.</string>

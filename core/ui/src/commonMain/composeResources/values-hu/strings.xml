@@ -5,6 +5,8 @@
     <string name="settings">Beállítások elemre</string>
     <string name="history">Történelem</string>
     <string name="continue_game">Folytatás</string>
+    <string name="game_menu">Menü</string>
+    <string name="exit_game">Kilépés</string>
     <string name="preparing_game_please_wait">A játék előkészítése. Kérjük, várjon…</string>
     <string name="err_generate_sudoku">Nem sikerült létrehozni a játékot. Kérjük, próbálja újra.</string>
     <string name="you_already_started_game">Már elkezdted a játékot. Ha új játékot indít, az előző elvész.</string>

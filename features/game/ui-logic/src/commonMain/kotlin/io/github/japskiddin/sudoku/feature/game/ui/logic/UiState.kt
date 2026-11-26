@@ -12,7 +12,8 @@ public sealed interface UiState {
 
     public data class Game(
         public val gameState: GameUiState = GameUiState.Initial,
-        public val preferencesState: PreferencesUiState = PreferencesUiState.Initial
+        public val preferencesState: PreferencesUiState = PreferencesUiState.Initial,
+        public val isMenuOpen: Boolean = false,
     ) : UiState
 
     public data class Result(

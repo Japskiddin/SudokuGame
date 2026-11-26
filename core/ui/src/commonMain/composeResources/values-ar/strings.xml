@@ -5,6 +5,8 @@
     <string name="settings">الإعدادات</string>
     <string name="history">التاريخ</string>
     <string name="continue_game">متابعة</string>
+    <string name="game_menu">القائمة</string>
+    <string name="exit_game">خروج</string>
     <string name="preparing_game_please_wait">جارٍ تحضير اللعبة. يُرجى الانتظار…</string>
     <string name="err_generate_sudoku">فشل إنشاء اللعبة. يُرجى المحاولة مرة أخرى.</string>
     <string name="you_already_started_game">لقد بدأت اللعبة بالفعل. إذا بدأت لعبة جديدة، فستفقد اللعبة السابقة.</string>

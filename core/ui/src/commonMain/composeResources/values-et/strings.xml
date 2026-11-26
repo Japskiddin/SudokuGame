@@ -5,6 +5,8 @@
     <string name="settings">Seaded</string>
     <string name="history">Ajalugu</string>
     <string name="continue_game">Jätka</string>
+    <string name="game_menu">Menüü</string>
+    <string name="exit_game">Välju</string>
     <string name="preparing_game_please_wait">Mängu ettevalmistamine. Palun oota…</string>
     <string name="err_generate_sudoku">Mängu loomine ebaõnnestus. Palun proovi uuesti.</string>
     <string name="you_already_started_game">Olete juba mängu alustanud. Kui alustate uut mängu, läheb eelmine kaotsi.</string>

@@ -5,6 +5,8 @@
     <string name="settings">Inställningar</string>
     <string name="history">Historia</string>
     <string name="continue_game">Fortsätta</string>
+    <string name="game_menu">Meny</string>
+    <string name="exit_game">Avsluta</string>
     <string name="preparing_game_please_wait">Förbereder spelet. Vänligen vänta…</string>
     <string name="err_generate_sudoku">Det gick inte att skapa spelet. Försök igen.</string>
     <string name="you_already_started_game">Du har redan börjat spelet. Om du startar ett nytt spel, kommer tidigare att gå förlorade.</string>

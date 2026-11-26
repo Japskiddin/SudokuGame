@@ -20,7 +20,8 @@ internal data class GameState(
     val mistakes: Int,
     val time: Long,
     val status: Status,
-    val error: GameError
+    val error: GameError,
+    val isMenuOpen: Boolean = false,
 ) {
     internal enum class Status {
         LOADING,

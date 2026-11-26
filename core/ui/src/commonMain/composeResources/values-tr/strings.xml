@@ -5,6 +5,8 @@
     <string name="settings">Ayarlar</string>
     <string name="history">Geçmiş</string>
     <string name="continue_game">Devam et</string>
+    <string name="game_menu">Menü</string>
+    <string name="exit_game">Çıkış</string>
     <string name="preparing_game_please_wait">Oyun hazırlanıyor. Lütfen bekleyin…</string>
     <string name="err_generate_sudoku">Oyun oluşturulamadı. Lütfen tekrar deneyin.</string>
     <string name="you_already_started_game">Oyuna zaten başladınız. Yeni bir oyun başlatırsanız, önceki oyun kaybolacaktır.</string>

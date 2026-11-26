@@ -5,6 +5,8 @@
     <string name="settings">Asetukset</string>
     <string name="history">Historia</string>
     <string name="continue_game">Jatkaa</string>
+    <string name="game_menu">Valikko</string>
+    <string name="exit_game">Poistu</string>
     <string name="preparing_game_please_wait">Pelin valmistelu. Odota…</string>
     <string name="err_generate_sudoku">Pelin luominen epäonnistui. Yritä uudelleen.</string>
     <string name="you_already_started_game">Olet jo aloittanut pelin. Jos aloitat uuden pelin, edellinen menetetään.</string>

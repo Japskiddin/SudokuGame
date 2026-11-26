@@ -5,6 +5,8 @@
     <string name="settings">Pengaturan</string>
     <string name="history">Riwayat</string>
     <string name="continue_game">Lanjutkan</string>
+    <string name="game_menu">Menu</string>
+    <string name="exit_game">Keluar</string>
     <string name="preparing_game_please_wait">Menyiapkan permainan. Harap tunggu…</string>
     <string name="err_generate_sudoku">Gagal membuat permainan. Harap coba lagi.</string>
     <string name="you_already_started_game">Anda sudah memulai permainan. Jika Anda memulai permainan baru, permainan sebelumnya akan hilang.</string>

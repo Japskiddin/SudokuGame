@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.keepScreenOn
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -42,6 +43,7 @@ import io.github.japskiddin.sudoku.core.model.GameStatus
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.BackHandler
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
+import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.core.ui.component.LifecycleEventListener
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.resources.app_name
@@ -49,18 +51,19 @@ import io.github.japskiddin.sudoku.core.ui.resources.close
 import io.github.japskiddin.sudoku.core.ui.resources.congratulations
 import io.github.japskiddin.sudoku.core.ui.resources.current_actions
 import io.github.japskiddin.sudoku.core.ui.resources.current_mistakes
+import io.github.japskiddin.sudoku.core.ui.resources.game_menu
 import io.github.japskiddin.sudoku.core.ui.resources.game_over
 import io.github.japskiddin.sudoku.core.ui.resources.ic_close
 import io.github.japskiddin.sudoku.core.ui.resources.level_creation
 import io.github.japskiddin.sudoku.core.ui.resources.logo
 import io.github.japskiddin.sudoku.core.ui.resources.play_time
-import io.github.japskiddin.sudoku.core.ui.resources.settings
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.core.ui.utils.supportsKeepScreenOn
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
+import io.github.japskiddin.sudoku.feature.game.ui.component.GameMenuContent
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.InputPanel
 import io.github.japskiddin.sudoku.feature.game.ui.component.ToolPanel
@@ -70,7 +73,7 @@ import io.github.japskiddin.sudoku.feature.game.ui.logic.PreferencesUiState
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.game.ui.logic.UiState
 import io.github.japskiddin.sudoku.feature.game.ui.resources.Res
-import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_menu_settings
+import io.github.japskiddin.sudoku.feature.game.ui.resources.ic_game_menu
 import io.github.japskiddin.sudoku.feature.game.ui.utils.ToolAction
 import io.github.japskiddin.sudoku.feature.game.ui.utils.getSampleBoardForPreview
 import org.jetbrains.compose.resources.painterResource
@@ -84,11 +87,13 @@ public fun GameScreen() {
 
 @Composable
 private fun GameScreen(viewModel: GameViewModel) {
-    BackHandler {
-        viewModel.onAction(UiAction.Back)
-    }
-
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val isMenuOpen = (state as? UiState.Game)?.isMenuOpen == true
+    val dismissMenu = { viewModel.onAction(UiAction.DismissMenu) }
+
+    BackHandler {
+        if (isMenuOpen) dismissMenu() else viewModel.onAction(UiAction.Exit)
+    }
 
     GameScreenContent(
         state = state,
@@ -105,24 +110,25 @@ private fun GameScreen(viewModel: GameViewModel) {
             viewModel.onAction(uiAction)
         },
         onCloseGame = { viewModel.onAction(UiAction.Exit) },
-        onSettingsClick = { viewModel.onAction(UiAction.ShowSettings) },
+        onMenuClick = { viewModel.onAction(UiAction.ShowMenu) },
     )
 
-    LifecycleEventListener {
-        when (it) {
-            Lifecycle.Event.ON_RESUME -> {
-                if (state is UiState.Game) {
-                    viewModel.onAction(UiAction.ResumeGame)
-                }
-            }
+    GameDialog(
+        showDialog = isMenuOpen,
+        onDismiss = dismissMenu,
+    ) {
+        GameMenuContent(
+            onContinue = dismissMenu,
+            onSettings = { viewModel.onAction(UiAction.ShowSettings) },
+            onExit = { viewModel.onAction(UiAction.Exit) },
+        )
+    }
 
-            Lifecycle.Event.ON_PAUSE -> {
-                if (state is UiState.Game) {
-                    viewModel.onAction(UiAction.PauseGame)
-                }
-            }
-
-            else -> {}
+    LifecycleEventListener { event ->
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> viewModel.onAction(UiAction.ScreenResumed)
+            Lifecycle.Event.ON_PAUSE -> viewModel.onAction(UiAction.ScreenPaused)
+            else -> Unit
         }
     }
 }
@@ -134,7 +140,7 @@ private fun GameScreenContent(
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
     onCloseGame: () -> Unit,
-    onSettingsClick: () -> Unit,
+    onMenuClick: () -> Unit,
 ) {
     val screenModifier = Modifier
         .fillMaxSize()
@@ -145,7 +151,7 @@ private fun GameScreenContent(
             onSelectCell = onSelectBoardCell,
             onInputCell = onInputCell,
             onToolClick = onToolClick,
-            onSettingsClick = onSettingsClick,
+            onMenuClick = onMenuClick,
             modifier = screenModifier
         )
 
@@ -178,7 +184,7 @@ private fun Game(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
-    onSettingsClick: () -> Unit,
+    onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val gameState = state.gameState
@@ -206,7 +212,7 @@ private fun Game(
                 onSelectCell = onSelectCell,
                 onInputCell = onInputCell,
                 onToolClick = onToolClick,
-                onSettingsClick = onSettingsClick,
+                onMenuClick = onMenuClick,
                 modifier = gameModifier,
             )
         } else {
@@ -217,7 +223,7 @@ private fun Game(
                 onSelectCell = onSelectCell,
                 onInputCell = onInputCell,
                 onToolClick = onToolClick,
-                onSettingsClick = onSettingsClick,
+                onMenuClick = onMenuClick,
                 modifier = gameModifier,
             )
         }
@@ -232,7 +238,7 @@ private fun LandscapeGame(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
-    onSettingsClick: () -> Unit,
+    onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -256,9 +262,9 @@ private fun LandscapeGame(
         Column(
             modifier = Modifier.fillMaxHeight()
         ) {
-            GameMenu(
+            GameMenuButton(
                 modifier = Modifier.align(Alignment.End),
-                onSettingsClick = onSettingsClick,
+                onMenuClick = onMenuClick,
             )
             Spacer(modifier = Modifier.height(6.dp))
             InfoPanel(
@@ -296,7 +302,7 @@ private fun PortraitGame(
     onSelectCell: (BoardCell) -> Unit,
     onInputCell: (Int) -> Unit,
     onToolClick: (ToolAction) -> Unit,
-    onSettingsClick: () -> Unit,
+    onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -304,9 +310,9 @@ private fun PortraitGame(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        GameMenu(
+        GameMenuButton(
             modifier = Modifier.align(Alignment.End),
-            onSettingsClick = onSettingsClick,
+            onMenuClick = onMenuClick,
         )
         Spacer(modifier = Modifier.height(6.dp))
         InfoPanel(
@@ -344,22 +350,18 @@ private fun PortraitGame(
 }
 
 @Composable
-private fun GameMenu(
+private fun GameMenuButton(
     modifier: Modifier = Modifier,
-    onSettingsClick: () -> Unit,
+    onMenuClick: () -> Unit,
 ) {
-    Row(
+    Image(
         modifier = modifier
-    ) {
-        Image(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(36.dp)
-                .clickable { onSettingsClick() },
-            painter = painterResource(resource = Res.drawable.ic_menu_settings),
-            contentDescription = stringResource(resource = CoreUiRes.string.settings)
-        )
-    }
+            .clip(CircleShape)
+            .size(36.dp)
+            .clickable(role = Role.Button, onClick = onMenuClick),
+        painter = painterResource(resource = Res.drawable.ic_game_menu),
+        contentDescription = stringResource(resource = CoreUiRes.string.game_menu),
+    )
 }
 
 @Composable
@@ -491,7 +493,7 @@ private fun GameContentPreview(
             onInputCell = { _ -> },
             onToolClick = {},
             onCloseGame = {},
-            onSettingsClick = {},
+            onMenuClick = {},
         )
     }
 }

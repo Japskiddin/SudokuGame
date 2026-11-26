@@ -5,6 +5,8 @@
     <string name="settings">Configurações</string>
     <string name="history">Histórico</string>
     <string name="continue_game">Continuar</string>
+    <string name="game_menu">Menu</string>
+    <string name="exit_game">Sair</string>
     <string name="preparing_game_please_wait">Preparando o jogo. Aguarde…</string>
     <string name="err_generate_sudoku">Falha ao criar o jogo. Tente novamente.</string>
     <string name="you_already_started_game">Você já iniciou o jogo. Se você iniciar um novo jogo, o anterior será perdido.</string>

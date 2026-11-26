@@ -10,9 +10,10 @@ public sealed interface UiAction {
     public data object Undo : UiAction
     public data object Redo : UiAction
     public data object Note : UiAction
-    public data object ResumeGame : UiAction
-    public data object PauseGame : UiAction
+    public data object ScreenResumed : UiAction
+    public data object ScreenPaused : UiAction
+    public data object ShowMenu : UiAction
+    public data object DismissMenu : UiAction
     public data object ShowSettings : UiAction
     public data object Exit : UiAction
-    public data object Back : UiAction
 }

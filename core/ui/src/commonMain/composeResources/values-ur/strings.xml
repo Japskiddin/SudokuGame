@@ -5,6 +5,8 @@
     <string name="settings">ترتیبات</string>
     <string name="history">تاریخ</string>
     <string name="continue_game">جاری رکھیں</string>
+    <string name="game_menu">مینو</string>
+    <string name="exit_game">باہر نکلیں</string>
     <string name="preparing_game_please_wait">کھیل کی تیاری۔ براہ کرم انتظار کریں…</string>
     <string name="err_generate_sudoku">گیم بنانے میں ناکام۔ براہ کرم دوبارہ کوشش کریں۔</string>
     <string name="you_already_started_game">آپ نے کھیل شروع کر دیا ہے۔ اگر آپ نیا گیم شروع کرتے ہیں، تو پچھلا کھیل کھو جائے گا۔</string>

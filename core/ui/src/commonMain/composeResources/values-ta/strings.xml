@@ -5,6 +5,8 @@
     <string name="settings">அமைப்புகள்</string>
     <string name="history">வரலாறு</string>
     <string name="continue_game">தொடரவும்</string>
+    <string name="game_menu">பட்டி</string>
+    <string name="exit_game">வெளியேறு</string>
     <string name="preparing_game_please_wait">விளையாட்டைத் தயாரிக்கிறது. தயவுசெய்து காத்திருக்கவும்…</string>
     <string name="err_generate_sudoku">விளையாட்டை உருவாக்க முடியவில்லை. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.</string>
     <string name="you_already_started_game">நீங்கள் ஏற்கனவே விளையாட்டைத் தொடங்கிவிட்டீர்கள். நீங்கள் ஒரு புதிய விளையாட்டைத் தொடங்கினால், முந்தையது இழக்கப்படும்.</string>

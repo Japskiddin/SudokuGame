@@ -5,6 +5,8 @@
     <string name="settings">Подешавања</string>
     <string name="history">Историја</string>
     <string name="continue_game">Настави</string>
+    <string name="game_menu">Мени</string>
+    <string name="exit_game">Излаз</string>
     <string name="preparing_game_please_wait">Припрема игре. Молимо сачекајте…</string>
     <string name="err_generate_sudoku">Прављење игре није успело. Покушајте поново.</string>
     <string name="you_already_started_game">Већ сте започели игру. Ако започнете нову игру, претходна ће бити изгубљена.</string>
