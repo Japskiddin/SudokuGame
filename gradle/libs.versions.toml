@@ -42,7 +42,7 @@ caupain = "1.10.1"
 
 # Used directly in gradle plugins
 
-android-minSdk = "24"
+android-minSdk = "26"
 android-compileSdk = "37"
 android-targetSdk = "37"
 

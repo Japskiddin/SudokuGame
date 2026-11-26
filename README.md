@@ -12,7 +12,7 @@ Requirements:
 - JDK 21.
 - Android SDK with platform 37 installed. Set `sdk.dir` in the untracked
   `local.properties` file, or configure `ANDROID_HOME`.
-- An Android device/emulator running API 24 or newer to run the Android app.
+- An Android device/emulator running API 26 or newer to run the Android app.
 
 Use the checked-in Gradle wrapper; a separate Gradle installation is unnecessary.
 The first build downloads dependencies from the configured repositories.
