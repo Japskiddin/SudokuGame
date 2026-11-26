@@ -78,6 +78,7 @@ public class HomeViewModel(
             is UiAction.ContinueGame -> continueCurrentGame()
             is UiAction.ShowSettings -> showSettings()
             is UiAction.ShowHistory -> showHistory()
+            UiAction.ShowAbout -> appNavigator.tryNavigateTo(Destination.About(), isSingleTop = true)
             is UiAction.PrepareNewGame -> prepareNewGame(action.mode)
             is UiAction.CloseError -> closeError()
         }

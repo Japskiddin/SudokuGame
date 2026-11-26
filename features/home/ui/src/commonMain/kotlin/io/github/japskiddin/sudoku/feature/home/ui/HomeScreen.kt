@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +40,7 @@ import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.GameDialog
 import io.github.japskiddin.sudoku.core.ui.component.Loading
 import io.github.japskiddin.sudoku.core.ui.component.OutlineText
+import io.github.japskiddin.sudoku.core.ui.resources.about
 import io.github.japskiddin.sudoku.core.ui.resources.app_name
 import io.github.japskiddin.sudoku.core.ui.resources.close
 import io.github.japskiddin.sudoku.core.ui.resources.continue_game
@@ -60,6 +63,7 @@ import io.github.japskiddin.sudoku.feature.home.ui.logic.UiAction
 import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
 import io.github.japskiddin.sudoku.feature.home.ui.resources.Res
 import io.github.japskiddin.sudoku.feature.home.ui.resources.home_background
+import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_about
 import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_history
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -79,6 +83,7 @@ private fun HomeScreen(viewModel: HomeViewModel) {
         onContinueButtonClick = { viewModel.onAction(UiAction.ContinueGame) },
         onSettingsButtonClick = { viewModel.onAction(UiAction.ShowSettings) },
         onHistoryButtonClick = { viewModel.onAction(UiAction.ShowHistory) },
+        onAboutButtonClick = { viewModel.onAction(UiAction.ShowAbout) },
         onPrepareGame = { mode ->
             viewModel.onAction(
                 UiAction.PrepareNewGame(mode)
@@ -96,6 +101,7 @@ private fun HomeScreenContent(
     onContinueButtonClick: () -> Unit,
     onHistoryButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
+    onAboutButtonClick: () -> Unit,
     onPrepareGame: (GameMode) -> Unit,
     onErrorClose: () -> Unit,
 ) {
@@ -110,7 +116,8 @@ private fun HomeScreenContent(
             onPrepareGame = onPrepareGame,
             onContinueButtonClick = onContinueButtonClick,
             onHistoryButtonClick = onHistoryButtonClick,
-            onSettingsButtonClick = onSettingsButtonClick
+            onSettingsButtonClick = onSettingsButtonClick,
+            onAboutButtonClick = onAboutButtonClick
         )
 
         is UiState.Error -> Error(
@@ -135,6 +142,7 @@ private fun Menu(
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onHistoryButtonClick: () -> Unit,
+    onAboutButtonClick: () -> Unit,
     onPrepareGame: (GameMode) -> Unit,
     modifier: Modifier = Modifier,
     screenWidthPercent: Float = .8f,
@@ -204,7 +212,8 @@ private fun Menu(
                     onStartButtonClick = onStartButtonClick,
                     onContinueButtonClick = onContinueButtonClick,
                     onSettingsButtonClick = onSettingsButtonClick,
-                    onHistoryButtonClick = onHistoryButtonClick
+                    onHistoryButtonClick = onHistoryButtonClick,
+                    onAboutButtonClick = onAboutButtonClick
                 )
             } else {
                 MenuPortrait(
@@ -213,7 +222,8 @@ private fun Menu(
                     onStartButtonClick = onStartButtonClick,
                     onContinueButtonClick = onContinueButtonClick,
                     onSettingsButtonClick = onSettingsButtonClick,
-                    onHistoryButtonClick = onHistoryButtonClick
+                    onHistoryButtonClick = onHistoryButtonClick,
+                    onAboutButtonClick = onAboutButtonClick
                 )
             }
 
@@ -234,6 +244,7 @@ private fun Menu(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun MenuLandscape(
     isShowContinueButton: Boolean,
@@ -241,6 +252,7 @@ private fun MenuLandscape(
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onHistoryButtonClick: () -> Unit,
+    onAboutButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -257,7 +269,7 @@ private fun MenuLandscape(
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
         ) {
             if (isShowContinueButton) {
                 GameButton(
@@ -280,10 +292,17 @@ private fun MenuLandscape(
                 icon = painterResource(resource = CoreUiRes.drawable.ic_settings),
                 text = stringResource(resource = CoreUiRes.string.settings)
             ) { onSettingsButtonClick() }
+            Spacer(modifier = Modifier.height(12.dp))
+            GameButton(
+                icon = painterResource(resource = Res.drawable.ic_about),
+                text = stringResource(resource = CoreUiRes.string.about),
+                onClick = onAboutButtonClick
+            )
         }
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun MenuPortrait(
     isShowContinueButton: Boolean,
@@ -291,10 +310,11 @@ private fun MenuPortrait(
     onContinueButtonClick: () -> Unit,
     onSettingsButtonClick: () -> Unit,
     onHistoryButtonClick: () -> Unit,
+    onAboutButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center
     ) {
         OutlineText(
@@ -326,6 +346,12 @@ private fun MenuPortrait(
             icon = painterResource(resource = CoreUiRes.drawable.ic_settings),
             text = stringResource(resource = CoreUiRes.string.settings)
         ) { onSettingsButtonClick() }
+        Spacer(modifier = Modifier.height(12.dp))
+        GameButton(
+            icon = painterResource(resource = Res.drawable.ic_about),
+            text = stringResource(resource = CoreUiRes.string.about),
+            onClick = onAboutButtonClick
+        )
     }
 }
 
@@ -374,6 +400,7 @@ private fun HomeContentPreview(
             onContinueButtonClick = {},
             onHistoryButtonClick = {},
             onSettingsButtonClick = {},
+            onAboutButtonClick = {},
             onPrepareGame = { _ -> },
             onErrorClose = {}
         )

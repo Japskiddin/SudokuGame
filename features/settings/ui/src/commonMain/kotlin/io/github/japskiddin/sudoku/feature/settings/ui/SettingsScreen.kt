@@ -24,9 +24,7 @@ import dev.zacsweers.metrox.viewmodel.metroViewModel
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
 import io.github.japskiddin.sudoku.core.ui.component.AppBar
 import io.github.japskiddin.sudoku.core.ui.component.BackHandler
-import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.component.HorizontalDivider
-import io.github.japskiddin.sudoku.core.ui.resources.about
 import io.github.japskiddin.sudoku.core.ui.resources.highlight_cells_with_errors
 import io.github.japskiddin.sudoku.core.ui.resources.highlight_selected_cell
 import io.github.japskiddin.sudoku.core.ui.resources.highlight_selected_cell_desc
@@ -131,10 +129,6 @@ private fun SettingsContent(
                 onUpdateHighlightSimilarCells = { onAction(UiAction.UpdateHighlightSimilarCells(it)) },
                 onUpdateShowRemainingNumbers = { onAction(UiAction.UpdateShowRemainingNumbers(it)) },
                 onUpdateHighlightSelectedCell = { onAction(UiAction.UpdateHighlightSelectedCell(it)) },
-            )
-            GameButton(
-                text = stringResource(resource = CoreUiRes.string.about),
-                onClick = { onAction(UiAction.OpenAbout) },
             )
         }
     }
