@@ -1,0 +1,13 @@
+<resources>
+    <string name="onboarding_rules_title">Найдите недостающие числа</string>
+    <string name="onboarding_rules_description">Заполните поле так, чтобы каждое число встречалось один раз в каждой строке, столбце и блоке.</string>
+    <string name="onboarding_notes_title">Проверяйте догадки</string>
+    <string name="onboarding_notes_description">Отмечайте возможные числа в клетках с помощью заметок. Если захотите попробовать другой вариант, отмените ход.</string>
+    <string name="onboarding_progress_title">Играйте в своём темпе</string>
+    <string name="onboarding_progress_description">Выберите размер поля и сложность. Сделайте перерыв в любой момент и вернитесь к партии позже.</string>
+    <string name="onboarding_skip">Пропустить</string>
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_finish">Играть в судоку</string>
+    <string name="onboarding_page">Слайд %1$d из %2$d</string>
+    <string name="onboarding_save_failed">Не удалось сохранить прохождение. Попробуйте ещё раз.</string>
+</resources>

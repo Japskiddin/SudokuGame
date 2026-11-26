@@ -64,6 +64,7 @@ public fun GameButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
+                enabled = enabled,
                 onClick = onClick
             )
             .drawBorder(

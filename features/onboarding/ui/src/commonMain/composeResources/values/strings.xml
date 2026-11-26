@@ -1,0 +1,13 @@
+<resources>
+    <string name="onboarding_rules_title">Find the missing numbers</string>
+    <string name="onboarding_rules_description">Fill the grid so that each row, column, and box contains every number once.</string>
+    <string name="onboarding_notes_title">Try out your ideas</string>
+    <string name="onboarding_notes_description">Use Notes to mark possible numbers in a cell. Undo a move whenever you want to try a different one.</string>
+    <string name="onboarding_progress_title">Play at your own pace</string>
+    <string name="onboarding_progress_description">Pick a grid size and difficulty. Take a break whenever you like and resume from where you left off.</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_finish">Play Sudoku</string>
+    <string name="onboarding_page">Slide %1$d of %2$d</string>
+    <string name="onboarding_save_failed">Couldn’t save your progress. Try again.</string>
+</resources>

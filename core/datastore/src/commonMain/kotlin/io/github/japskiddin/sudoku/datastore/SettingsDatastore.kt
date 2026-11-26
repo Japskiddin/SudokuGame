@@ -26,6 +26,17 @@ public class SettingsDatastore(private val dataStore: DataStore<Preferences>) {
     private val saveGameModeKey = booleanPreferencesKey(KEY_SAVE_GAME_MODE)
     private val gameModeDifficultyKey = intPreferencesKey(KEY_GAME_MODE_DIFFICULTY)
     private val gameModeTypeKey = intPreferencesKey(KEY_GAME_MODE_TYPE)
+    private val onboardingCompletedKey = booleanPreferencesKey(KEY_ONBOARDING_COMPLETED)
+
+    public val isOnboardingCompleted: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[onboardingCompletedKey] ?: false
+    }
+
+    public suspend fun completeOnboarding() {
+        dataStore.edit { preferences ->
+            preferences[onboardingCompletedKey] = true
+        }
+    }
 
     public suspend fun setMistakesLimit(enabled: Boolean) {
         dataStore.edit { preferences ->
@@ -174,6 +185,7 @@ public class SettingsDatastore(private val dataStore: DataStore<Preferences>) {
         private const val KEY_SAVE_GAME_MODE = "save_game_mode"
         private const val KEY_GAME_MODE_DIFFICULTY = "game_mode_difficulty"
         private const val KEY_GAME_MODE_TYPE = "game_mode_type"
+        private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
 
         private const val DEFAULT_MISTAKES_LIMIT = true
         private const val DEFAULT_SHOW_TIMER = true

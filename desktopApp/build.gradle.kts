@@ -31,6 +31,8 @@ compose.desktop {
         nativeDistributions {
             packageName = "Sudoku"
             packageVersion = appVersion
+            // DataStore's protobuf serializer uses sun.misc.Unsafe on the JVM.
+            modules("jdk.unsupported")
             windows {
                 iconFile.set(layout.projectDirectory.file("icons/sudoku.ico"))
             }

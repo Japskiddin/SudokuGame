@@ -57,6 +57,7 @@ include(
     ":features:settings:domain",
     ":features:about:ui",
     ":features:about:ui-logic",
+    ":features:onboarding:ui",
     ":features:history:ui",
     ":features:history:ui-logic",
     ":features:history:domain",

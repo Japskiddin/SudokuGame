@@ -13,6 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class SettingsDatastoreJvmTest {
     @Test
@@ -30,11 +31,14 @@ class SettingsDatastoreJvmTest {
         )
         try {
             val settings = create(firstJob)
+            assertFalse(settings.isOnboardingCompleted.first())
+            settings.completeOnboarding()
             settings.setShowTimer(false)
             settings.setGameMode(mode)
             firstJob.cancelAndJoin()
 
             val reopened = create(secondJob)
+            assertTrue(reopened.isOnboardingCompleted.first())
             assertFalse(reopened.isShowTimer.first())
             assertEquals(mode, reopened.gameMode.first())
             reopened.setSaveGameMode(false)
