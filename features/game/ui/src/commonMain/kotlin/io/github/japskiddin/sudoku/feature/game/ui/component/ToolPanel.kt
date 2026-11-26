@@ -79,9 +79,9 @@ internal fun ToolPanel(
 
 @Composable
 private fun ToolPanelContent(
-    modifier: Modifier = Modifier,
     showDescription: Boolean,
     onShowDialog: () -> Unit,
+    modifier: Modifier = Modifier,
     onToolClick: (ToolAction) -> Unit
 ) {
     Row(

@@ -194,7 +194,9 @@ Test reports live under each module's `build/reports/tests/`; Detekt reports liv
 under `build/reports/detekt/` in the corresponding module.
 
 The [CI workflow](.github/workflows/check-build.yml) runs Detekt, JVM tests and
-the Android debug build on JDK 21 for each push.
+the Android debug build on JDK 21 for each push. Detekt scans the Kotlin source
+sets of both launchers and the multiplatform modules. Its configuration extends
+the standard rules with ktlint and Compose Rules.
 
 ## License
 

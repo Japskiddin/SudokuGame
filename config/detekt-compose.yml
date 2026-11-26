@@ -1,0 +1,8 @@
+Compose:
+  active: true
+  CompositionLocalAllowlist:
+    active: true
+    allowedCompositionLocals: 'LocalColors,LocalTypography,LocalRippleConfiguration,LocalContentColor,LocalAppVersion'
+  # Event-only controls use trailing callbacks as part of their existing API.
+  LambdaParameterEventTrailing:
+    active: false

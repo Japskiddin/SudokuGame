@@ -200,9 +200,9 @@ public interface SwitchColors {
     public fun borderColor(enabled: Boolean): State<Color>
 }
 
-private object SwitchDefaults {
+public object SwitchDefaults {
     @Composable
-    fun colors(
+    public fun colors(
         checkedTrackColor: Color = SudokuTheme.colors.switchCheckedTrack,
         uncheckedTrackColor: Color = SudokuTheme.colors.switchUncheckedTrack,
         checkThumbColor: Color = SudokuTheme.colors.switchCheckedThumb,

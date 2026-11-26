@@ -47,7 +47,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.history_placeholder
 import io.github.japskiddin.sudoku.core.ui.resources.play_time
 import io.github.japskiddin.sudoku.core.ui.resources.started_at
 import io.github.japskiddin.sudoku.core.ui.resources.status
-import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
+import io.github.japskiddin.sudoku.core.ui.utils.PreviewSudoku
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.history.ui.components.HistoryGameBoard
@@ -337,8 +337,7 @@ private fun GameplayInformation(
     }
 }
 
-@Suppress("UnusedPrivateMember")
-@SudokuPreview
+@PreviewSudoku
 @Composable
 private fun HistoryContentPreview() {
     @Suppress("MagicNumber")

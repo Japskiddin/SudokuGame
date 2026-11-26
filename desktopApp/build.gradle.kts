@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.app.compose)
     alias(libs.plugins.app.di)
+    alias(libs.plugins.app.detekt)
 }
 
 dependencies {

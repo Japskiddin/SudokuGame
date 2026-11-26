@@ -163,9 +163,9 @@ public interface GameButtonColors {
     public fun contentColor(enabled: Boolean): State<Color>
 }
 
-private object GameButtonDefaults {
+public object GameButtonDefaults {
     @Composable
-    fun colors(
+    public fun colors(
         foregroundNormalColor: Color = SudokuTheme.colors.gameButtonForegroundNormal,
         foregroundPressedColor: Color = SudokuTheme.colors.gameButtonForegroundPressed,
         backgroundNormalColor: Color = SudokuTheme.colors.gameButtonBackgroundNormal,

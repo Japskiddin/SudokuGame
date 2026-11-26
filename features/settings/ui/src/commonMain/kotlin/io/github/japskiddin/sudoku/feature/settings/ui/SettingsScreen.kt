@@ -43,7 +43,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.settings_section_general
 import io.github.japskiddin.sudoku.core.ui.resources.show_remaining_numbers
 import io.github.japskiddin.sudoku.core.ui.resources.show_remaining_numbers_desc
 import io.github.japskiddin.sudoku.core.ui.resources.show_timer
-import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
+import io.github.japskiddin.sudoku.core.ui.utils.PreviewSudoku
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.supportsKeepScreenOn
 import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
@@ -267,29 +267,20 @@ private fun TitleSection(
     title: String,
     modifier: Modifier = Modifier
 ) {
-    BasicText(
-        modifier = modifier.padding(
-            start = 12.dp,
-            end = 12.dp
-        ),
-        text = title,
-        style = SudokuTheme.typography.settingsSection.copy(
-            color = SudokuTheme.colors.onPrimary,
-        ),
-    )
-    Spacer(modifier = modifier.height(6.dp))
-    HorizontalDivider(
-        modifier = modifier.padding(
-            start = 12.dp,
-            end = 12.dp
-        ),
-        color = SudokuTheme.colors.onPrimary.copy(alpha = 0.6f)
-    )
-    Spacer(modifier = modifier.height(6.dp))
+    Column(modifier = modifier.padding(horizontal = 12.dp)) {
+        BasicText(
+            text = title,
+            style = SudokuTheme.typography.settingsSection.copy(
+                color = SudokuTheme.colors.onPrimary,
+            ),
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        HorizontalDivider(color = SudokuTheme.colors.onPrimary.copy(alpha = 0.6f))
+        Spacer(modifier = Modifier.height(6.dp))
+    }
 }
 
-@Suppress("UnusedPrivateMember")
-@SudokuPreview
+@PreviewSudoku
 @Composable
 private fun SettingsContentPreview(
     @PreviewParameter(SettingsStateProvider::class) state: UiState

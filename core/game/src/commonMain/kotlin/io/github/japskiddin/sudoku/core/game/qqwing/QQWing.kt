@@ -115,9 +115,6 @@ public class QQWing(
     public var difficulty: GameDifficulty =
         GameDifficulty.UNSPECIFIED
 
-    /**
-     * Create a new Sudoku board
-     */
     init {
         gameType = type
         this.difficulty = difficulty

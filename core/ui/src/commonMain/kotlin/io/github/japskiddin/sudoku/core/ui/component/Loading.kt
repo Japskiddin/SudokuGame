@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.japskiddin.sudoku.core.designsystem.theme.SudokuTheme
-import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
+import io.github.japskiddin.sudoku.core.ui.utils.PreviewSudoku
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -78,8 +78,7 @@ private fun LoadingContent(
     }
 }
 
-@Suppress("UnusedPrivateMember")
-@SudokuPreview
+@PreviewSudoku
 @Composable
 private fun LoadingPreview() {
     SudokuTheme {

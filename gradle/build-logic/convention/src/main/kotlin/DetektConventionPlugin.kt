@@ -1,8 +1,9 @@
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.extensions.DetektExtension
+import dev.detekt.gradle.extensions.FailOnSeverity
 import io.github.japskiddin.android.core.buildlogic.detektPlugins
 import io.github.japskiddin.android.core.buildlogic.libs
 import io.github.japskiddin.android.core.buildlogic.plugins
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -19,22 +20,26 @@ class DetektConventionPlugin : Plugin<Project> {
             tasks.named<Detekt>("detekt") {
                 setSource(fileTree("src") { include("**/*.kt") })
                 reports {
-                    xml.required.set(true)
+                    checkstyle.required.set(true)
                     html.required.set(true)
-                    txt.required.set(true)
                     sarif.required.set(true)
-                    md.required.set(true)
+                    markdown.required.set(true)
                 }
             }
 
             extensions.configure<DetektExtension> {
                 config.setFrom(rootProject.files("config/default-detekt-config.yml"))
+                buildUponDefaultConfig.set(true)
+                failOnSeverity.set(FailOnSeverity.Info)
             }
 
             dependencies {
                 detektPlugins(libs.detekt.formatting)
             }
             pluginManager.withPlugin(libs.plugins.compose.compiler.get().pluginId) {
+                extensions.configure<DetektExtension> {
+                    config.from(rootProject.file("config/detekt-compose.yml"))
+                }
                 dependencies {
                     detektPlugins(libs.detekt.rules.compose)
                 }

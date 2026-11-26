@@ -48,7 +48,7 @@ internal fun CheckableSettingsItem(
                 )
             }
         }
-        Spacer(modifier.width(12.dp))
+        Spacer(Modifier.width(12.dp))
         Switch(checked = checked) { checked ->
             onCheckedChange(checked)
         }

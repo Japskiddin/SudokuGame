@@ -47,7 +47,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.preparing_game_please_wait
 import io.github.japskiddin.sudoku.core.ui.resources.settings
 import io.github.japskiddin.sudoku.core.ui.resources.start_game
 import io.github.japskiddin.sudoku.core.ui.utils.LocalAppVersion
-import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
+import io.github.japskiddin.sudoku.core.ui.utils.PreviewSudoku
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.feature.home.ui.components.ContinueDialogContent
@@ -361,8 +361,7 @@ private fun Error(
     }
 }
 
-@Suppress("UnusedPrivateMember")
-@SudokuPreview
+@PreviewSudoku
 @Composable
 private fun HomeContentPreview(
     @PreviewParameter(HomeStateProvider::class) state: UiState

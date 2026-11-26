@@ -33,7 +33,7 @@ androidx-test-runner = "1.7.0"
 androidx-test-espresso-core = "3.7.0"
 androidx-arch-core-testing = "2.2.0"
 
-detekt = "1.23.8"
+detekt = "2.0.0-alpha.6"
 detekt-rules-compose = "0.6.8"
 
 tracer = "1.6.1"
@@ -132,7 +132,7 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 # endregion
 
 # region Detekt
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-formatting = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 detekt-rules-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-rules-compose" }
 # endregion
 
@@ -155,7 +155,7 @@ compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "androidx-room" }
-detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-gradle-plugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref = "metro" }
 # endregion
 
@@ -193,7 +193,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
 tracer = { id = "ru.ok.tracer", version.ref = "tracer" }
 caupain = { id = "com.deezer.caupain", version.ref = "caupain" }
 

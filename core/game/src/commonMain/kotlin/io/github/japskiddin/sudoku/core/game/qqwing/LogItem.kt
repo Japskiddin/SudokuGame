@@ -36,9 +36,6 @@ public class LogItem {
      */
     public var round: Int = 0
         private set
-    /**
-     * Get the type of this log item.
-     */
 
     /**
      * The type of log message that will determine the message printed.
@@ -50,12 +47,9 @@ public class LogItem {
      * Value that was set by the operation (or zero for no value)
      */
     private var value = 0
-    /**
-     * Get the position (0-80) on the board or -1 if no position
-     */
 
     /**
-     * position on the board at which the value (if any) was set.
+     * The position on the board where the value was set, or -1 if there is no position.
      */
     public var position: Int = 0
         private set

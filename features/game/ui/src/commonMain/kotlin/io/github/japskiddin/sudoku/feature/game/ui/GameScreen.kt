@@ -57,7 +57,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.ic_close
 import io.github.japskiddin.sudoku.core.ui.resources.level_creation
 import io.github.japskiddin.sudoku.core.ui.resources.logo
 import io.github.japskiddin.sudoku.core.ui.resources.play_time
-import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
+import io.github.japskiddin.sudoku.core.ui.utils.PreviewSudoku
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
 import io.github.japskiddin.sudoku.core.ui.utils.supportsKeepScreenOn
@@ -480,8 +480,7 @@ private fun Result(
     }
 }
 
-@Suppress("UnusedPrivateMember")
-@SudokuPreview
+@PreviewSudoku
 @Composable
 private fun GameContentPreview(
     @PreviewParameter(UiStateProvider::class) state: UiState,
