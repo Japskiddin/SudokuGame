@@ -250,7 +250,8 @@ public class GameViewModel(
 
     private fun updateTimer() {
         val state = gameState.value
-        if (!isScreenResumed || state.status != GameState.Status.PLAYING || state.isMenuOpen || isExiting) {
+        val isPaused = !isScreenResumed || state.isMenuOpen
+        if (isPaused || state.status != GameState.Status.PLAYING || isExiting) {
             stopTimer()
             return
         }
