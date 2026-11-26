@@ -53,6 +53,20 @@ class BoardListTest {
     }
 
     @Test
+    fun toBoardList_rejectsDataLargerThanTheBoard() {
+        assertThrows(BoardParseException::class.java) {
+            "0".repeat(37).toBoardList(GameType.DEFAULT6X6)
+        }
+    }
+
+    @Test
+    fun toBoardList_rejectsInvalidDigits() {
+        assertThrows(BoardParseException::class.java) {
+            "?".toBoardList(GameType.DEFAULT6X6)
+        }
+    }
+
+    @Test
     fun toBoardList_throwsForEmptyString() {
         assertThrows(BoardParseException::class.java) {
             "".toBoardList(GameType.DEFAULT9X9)

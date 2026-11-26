@@ -1,13 +1,18 @@
 package io.github.japskiddin.sudoku.feature.history.ui.logic.utils
 
+import io.github.japskiddin.sudoku.core.common.BoardParseException
 import io.github.japskiddin.sudoku.core.model.toBoardList
 import io.github.japskiddin.sudoku.core.model.toImmutable
 import io.github.japskiddin.sudoku.feature.history.domain.usecase.CombinedHistory
 import io.github.japskiddin.sudoku.feature.history.ui.logic.HistoryUI
 
-internal fun CombinedHistory.toHistoryUI(): HistoryUI {
+internal fun CombinedHistory.toHistoryUIOrNull(): HistoryUI? {
     val gameType = this.board.type
-    val board = this.savedGame.board.toBoardList(gameType).toImmutable()
+    val board = try {
+        this.savedGame.board.toBoardList(gameType).toImmutable()
+    } catch (_: BoardParseException) {
+        return null
+    }
     return HistoryUI(
         uid = this.history.uid,
         time = this.history.time,

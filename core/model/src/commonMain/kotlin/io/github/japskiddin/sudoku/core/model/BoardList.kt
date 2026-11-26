@@ -35,6 +35,10 @@ public fun String.toBoardList(
     }
 
     val size = gameType.size
+    if (length > size * size) {
+        throw BoardParseException(message = "Board data exceeds the dimensions of ${gameType.title}")
+    }
+
     val listBoard = List(size) { row ->
         List(size) { col ->
             BoardCell(row, col, 0)
@@ -84,4 +88,5 @@ public fun BoardList.convertToString(
     return sb.toString()
 }
 
-private fun boardDigitToInt(char: Char): Int = char.digitToInt(RADIX)
+private fun boardDigitToInt(char: Char): Int = char.digitToIntOrNull(RADIX)
+    ?: throw BoardParseException(message = "Invalid board digit: $char")

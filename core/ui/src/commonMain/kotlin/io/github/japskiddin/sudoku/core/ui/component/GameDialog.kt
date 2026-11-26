@@ -2,7 +2,9 @@ package io.github.japskiddin.sudoku.core.ui.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,11 +18,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,21 +43,11 @@ public fun GameDialog(
     onDismiss: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    var showAnimatedDialog by remember { mutableStateOf(false) }
+    val visibility = updateTransition(targetState = showDialog, label = "Dialog visibility")
 
-    LaunchedEffect(showDialog) {
-        if (showDialog) showAnimatedDialog = true
-    }
-
-    if (showAnimatedDialog) {
+    if (showDialog || visibility.currentState) {
         GameDialogWindow(onDismiss = onDismiss) {
-            GameDialogContent(
-                showDialog = showDialog,
-                onDismiss = onDismiss,
-                onDispose = { showAnimatedDialog = false }
-            ) {
-                content()
-            }
+            GameDialogContent(visibility = visibility, onDismiss = onDismiss, content = content)
         }
     }
 }
@@ -63,15 +55,11 @@ public fun GameDialog(
 @Composable
 @Suppress("LongMethod")
 private fun GameDialogContent(
-    showDialog: Boolean,
+    visibility: Transition<Boolean>,
     onDismiss: () -> Unit,
-    onDispose: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    DisposableEffect(Unit) {
-        onDispose { onDispose() }
-    }
-
+    val dismiss by rememberUpdatedState(onDismiss)
     val contentWidth = if (isLandscape()) {
         DialogWidthPercentLandscape
     } else {
@@ -82,12 +70,8 @@ private fun GameDialogContent(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        var animateIn by remember { mutableStateOf(false) }
-
-        LaunchedEffect(Unit) { animateIn = true }
-
-        AnimatedVisibility(
-            visible = animateIn && showDialog,
+        visibility.AnimatedVisibility(
+            visible = { it },
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
@@ -97,13 +81,13 @@ private fun GameDialogContent(
                     .background(Color.Black.copy(alpha = .5f))
                     .pointerInput(Unit) {
                         detectTapGestures {
-                            onDismiss()
+                            dismiss()
                         }
                     }
             )
         }
-        AnimatedVisibility(
-            visible = animateIn && showDialog,
+        visibility.AnimatedVisibility(
+            visible = { it },
             enter = fadeIn(spring(stiffness = Spring.StiffnessHigh)) + scaleIn(
                 initialScale = .8f,
                 animationSpec = spring(
