@@ -19,13 +19,12 @@ import io.github.japskiddin.sudoku.core.model.GameDifficulty
 import io.github.japskiddin.sudoku.core.model.GameMode
 import io.github.japskiddin.sudoku.core.model.GameType
 import io.github.japskiddin.sudoku.core.ui.component.GameButton
+import io.github.japskiddin.sudoku.core.ui.resources.Res
+import io.github.japskiddin.sudoku.core.ui.resources.ic_start
 import io.github.japskiddin.sudoku.core.ui.resources.start
-import io.github.japskiddin.sudoku.feature.home.ui.resources.Res
-import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_start
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
 
 @Composable
 @Suppress("LongMethod")
@@ -95,7 +94,7 @@ internal fun DifficultyDialogContent(
         )
         Spacer(modifier = Modifier.height(24.dp))
         GameButton(
-            text = stringResource(resource = CoreUiRes.string.start),
+            text = stringResource(resource = Res.string.start),
             icon = painterResource(resource = Res.drawable.ic_start)
         ) {
             onConfirm(

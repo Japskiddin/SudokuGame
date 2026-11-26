@@ -10,7 +10,11 @@ import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.resources.Res
 import io.github.japskiddin.sudoku.core.ui.resources.continue_game
 import io.github.japskiddin.sudoku.core.ui.resources.exit_game
+import io.github.japskiddin.sudoku.core.ui.resources.ic_close
+import io.github.japskiddin.sudoku.core.ui.resources.ic_settings
+import io.github.japskiddin.sudoku.core.ui.resources.ic_start
 import io.github.japskiddin.sudoku.core.ui.resources.settings
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -24,14 +28,17 @@ internal fun GameMenuContent(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         GameButton(
+            icon = painterResource(resource = Res.drawable.ic_start),
             text = stringResource(resource = Res.string.continue_game),
             onClick = onContinue,
         )
         GameButton(
+            icon = painterResource(resource = Res.drawable.ic_settings),
             text = stringResource(resource = Res.string.settings),
             onClick = onSettings,
         )
         GameButton(
+            icon = painterResource(resource = Res.drawable.ic_close),
             text = stringResource(resource = Res.string.exit_game),
             onClick = onExit,
         )

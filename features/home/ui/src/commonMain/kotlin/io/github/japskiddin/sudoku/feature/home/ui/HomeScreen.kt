@@ -43,6 +43,8 @@ import io.github.japskiddin.sudoku.core.ui.resources.close
 import io.github.japskiddin.sudoku.core.ui.resources.continue_game
 import io.github.japskiddin.sudoku.core.ui.resources.history
 import io.github.japskiddin.sudoku.core.ui.resources.ic_close
+import io.github.japskiddin.sudoku.core.ui.resources.ic_settings
+import io.github.japskiddin.sudoku.core.ui.resources.ic_start
 import io.github.japskiddin.sudoku.core.ui.resources.preparing_game_please_wait
 import io.github.japskiddin.sudoku.core.ui.resources.settings
 import io.github.japskiddin.sudoku.core.ui.resources.start_game
@@ -58,8 +60,6 @@ import io.github.japskiddin.sudoku.feature.home.ui.logic.UiState
 import io.github.japskiddin.sudoku.feature.home.ui.resources.Res
 import io.github.japskiddin.sudoku.feature.home.ui.resources.home_background
 import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_history
-import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_settings
-import io.github.japskiddin.sudoku.feature.home.ui.resources.ic_start
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import io.github.japskiddin.sudoku.core.ui.resources.Res as CoreUiRes
@@ -260,13 +260,13 @@ private fun MenuLandscape(
         ) {
             if (isShowContinueButton) {
                 GameButton(
-                    icon = painterResource(resource = Res.drawable.ic_start),
+                    icon = painterResource(resource = CoreUiRes.drawable.ic_start),
                     text = stringResource(resource = CoreUiRes.string.continue_game)
                 ) { onContinueButtonClick() }
                 Spacer(modifier = Modifier.height(12.dp))
             }
             GameButton(
-                icon = painterResource(resource = Res.drawable.ic_start),
+                icon = painterResource(resource = CoreUiRes.drawable.ic_start),
                 text = stringResource(resource = CoreUiRes.string.start_game)
             ) { onStartButtonClick() }
             Spacer(modifier = Modifier.height(12.dp))
@@ -276,7 +276,7 @@ private fun MenuLandscape(
             ) { onHistoryButtonClick() }
             Spacer(modifier = Modifier.height(12.dp))
             GameButton(
-                icon = painterResource(resource = Res.drawable.ic_settings),
+                icon = painterResource(resource = CoreUiRes.drawable.ic_settings),
                 text = stringResource(resource = CoreUiRes.string.settings)
             ) { onSettingsButtonClick() }
         }
@@ -306,13 +306,13 @@ private fun MenuPortrait(
         Spacer(modifier = Modifier.height(36.dp))
         if (isShowContinueButton) {
             GameButton(
-                icon = painterResource(resource = Res.drawable.ic_start),
+                icon = painterResource(resource = CoreUiRes.drawable.ic_start),
                 text = stringResource(resource = CoreUiRes.string.continue_game)
             ) { onContinueButtonClick() }
             Spacer(modifier = Modifier.height(36.dp))
         }
         GameButton(
-            icon = painterResource(resource = Res.drawable.ic_start),
+            icon = painterResource(resource = CoreUiRes.drawable.ic_start),
             text = stringResource(resource = CoreUiRes.string.start_game)
         ) { onStartButtonClick() }
         Spacer(modifier = Modifier.height(12.dp))
@@ -322,7 +322,7 @@ private fun MenuPortrait(
         ) { onHistoryButtonClick() }
         Spacer(modifier = Modifier.height(12.dp))
         GameButton(
-            icon = painterResource(resource = Res.drawable.ic_settings),
+            icon = painterResource(resource = CoreUiRes.drawable.ic_settings),
             text = stringResource(resource = CoreUiRes.string.settings)
         ) { onSettingsButtonClick() }
     }
