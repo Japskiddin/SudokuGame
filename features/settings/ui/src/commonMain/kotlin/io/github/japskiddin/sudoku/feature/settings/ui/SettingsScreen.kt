@@ -45,6 +45,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.show_remaining_numbers_desc
 import io.github.japskiddin.sudoku.core.ui.resources.show_timer
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
+import io.github.japskiddin.sudoku.core.ui.utils.supportsKeepScreenOn
 import io.github.japskiddin.sudoku.feature.settings.ui.components.CheckableSettingsItem
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.SettingsViewModel
 import io.github.japskiddin.sudoku.feature.settings.ui.logic.UiAction
@@ -181,12 +182,14 @@ private fun SectionGeneral(
         title = stringResource(resource = CoreUiRes.string.settings_section_general),
         modifier = modifier,
     )
-    CheckableSettingsItem(
-        title = stringResource(resource = CoreUiRes.string.keep_screen_on),
-        description = stringResource(resource = CoreUiRes.string.keep_screen_on_desc),
-        onCheckedChange = onUpdateKeepScreenOn,
-        checked = isKeepScreenOn
-    )
+    if (supportsKeepScreenOn) {
+        CheckableSettingsItem(
+            title = stringResource(resource = CoreUiRes.string.keep_screen_on),
+            description = stringResource(resource = CoreUiRes.string.keep_screen_on_desc),
+            onCheckedChange = onUpdateKeepScreenOn,
+            checked = isKeepScreenOn
+        )
+    }
     CheckableSettingsItem(
         title = stringResource(resource = CoreUiRes.string.save_last_game_mode),
         description = stringResource(resource = CoreUiRes.string.save_last_game_mode_desc),

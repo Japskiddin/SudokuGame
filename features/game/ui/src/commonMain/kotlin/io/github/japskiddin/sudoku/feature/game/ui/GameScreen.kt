@@ -58,6 +58,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.settings
 import io.github.japskiddin.sudoku.core.ui.utils.SudokuPreview
 import io.github.japskiddin.sudoku.core.ui.utils.isLandscape
 import io.github.japskiddin.sudoku.core.ui.utils.panelBackground
+import io.github.japskiddin.sudoku.core.ui.utils.supportsKeepScreenOn
 import io.github.japskiddin.sudoku.core.ui.utils.toFormattedTime
 import io.github.japskiddin.sudoku.feature.game.ui.component.GameBoard
 import io.github.japskiddin.sudoku.feature.game.ui.component.InfoPanel
@@ -183,7 +184,7 @@ private fun Game(
     val gameState = state.gameState
     val preferencesState = state.preferencesState
 
-    val wakeModifier = if (preferencesState.isKeepScreenOn) {
+    val wakeModifier = if (supportsKeepScreenOn && preferencesState.isKeepScreenOn) {
         Modifier.keepScreenOn()
     } else {
         Modifier
