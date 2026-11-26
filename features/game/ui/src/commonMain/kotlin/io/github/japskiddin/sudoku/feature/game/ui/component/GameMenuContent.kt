@@ -11,8 +11,8 @@ import io.github.japskiddin.sudoku.core.ui.resources.Res
 import io.github.japskiddin.sudoku.core.ui.resources.continue_game
 import io.github.japskiddin.sudoku.core.ui.resources.exit_game
 import io.github.japskiddin.sudoku.core.ui.resources.ic_close
+import io.github.japskiddin.sudoku.core.ui.resources.ic_continue
 import io.github.japskiddin.sudoku.core.ui.resources.ic_settings
-import io.github.japskiddin.sudoku.core.ui.resources.ic_start
 import io.github.japskiddin.sudoku.core.ui.resources.settings
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -28,7 +28,7 @@ internal fun GameMenuContent(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         GameButton(
-            icon = painterResource(resource = Res.drawable.ic_start),
+            icon = painterResource(resource = Res.drawable.ic_continue),
             text = stringResource(resource = Res.string.continue_game),
             onClick = onContinue,
         )

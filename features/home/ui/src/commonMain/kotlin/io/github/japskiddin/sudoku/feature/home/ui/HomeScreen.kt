@@ -43,6 +43,7 @@ import io.github.japskiddin.sudoku.core.ui.resources.close
 import io.github.japskiddin.sudoku.core.ui.resources.continue_game
 import io.github.japskiddin.sudoku.core.ui.resources.history
 import io.github.japskiddin.sudoku.core.ui.resources.ic_close
+import io.github.japskiddin.sudoku.core.ui.resources.ic_continue
 import io.github.japskiddin.sudoku.core.ui.resources.ic_settings
 import io.github.japskiddin.sudoku.core.ui.resources.ic_start
 import io.github.japskiddin.sudoku.core.ui.resources.preparing_game_please_wait
@@ -260,7 +261,7 @@ private fun MenuLandscape(
         ) {
             if (isShowContinueButton) {
                 GameButton(
-                    icon = painterResource(resource = CoreUiRes.drawable.ic_start),
+                    icon = painterResource(resource = CoreUiRes.drawable.ic_continue),
                     text = stringResource(resource = CoreUiRes.string.continue_game)
                 ) { onContinueButtonClick() }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -306,7 +307,7 @@ private fun MenuPortrait(
         Spacer(modifier = Modifier.height(36.dp))
         if (isShowContinueButton) {
             GameButton(
-                icon = painterResource(resource = CoreUiRes.drawable.ic_start),
+                icon = painterResource(resource = CoreUiRes.drawable.ic_continue),
                 text = stringResource(resource = CoreUiRes.string.continue_game)
             ) { onContinueButtonClick() }
             Spacer(modifier = Modifier.height(36.dp))

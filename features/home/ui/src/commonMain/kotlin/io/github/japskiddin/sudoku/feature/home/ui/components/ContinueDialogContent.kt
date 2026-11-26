@@ -16,7 +16,7 @@ import io.github.japskiddin.sudoku.core.ui.component.GameButton
 import io.github.japskiddin.sudoku.core.ui.resources.Res
 import io.github.japskiddin.sudoku.core.ui.resources.continue_game
 import io.github.japskiddin.sudoku.core.ui.resources.do_you_want_to_continue
-import io.github.japskiddin.sudoku.core.ui.resources.ic_start
+import io.github.japskiddin.sudoku.core.ui.resources.ic_continue
 import io.github.japskiddin.sudoku.core.ui.resources.you_already_started_game
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -46,7 +46,7 @@ internal fun ContinueDialogContent(
         )
         Spacer(modifier = Modifier.height(24.dp))
         GameButton(
-            icon = painterResource(resource = Res.drawable.ic_start),
+            icon = painterResource(resource = Res.drawable.ic_continue),
             text = stringResource(resource = Res.string.continue_game)
         ) {
             onConfirm()
