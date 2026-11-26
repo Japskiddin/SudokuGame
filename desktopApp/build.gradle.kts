@@ -11,9 +11,18 @@ dependencies {
     implementation(compose.desktop.currentOs)
 }
 
+val appVersion = libs.versions.app.versionName.get()
+
+tasks.processResources {
+    val version = appVersion
+    inputs.property("appVersion", version)
+    filesMatching("sudoku-version.txt") {
+        expand("appVersion" to version)
+    }
+}
+
 compose.desktop {
     application {
-        jvmArgs += "-Dsudoku.version=${libs.versions.app.versionName.get()}"
         mainClass = "io.github.japskiddin.sudoku.desktop.MainKt"
     }
 }

@@ -9,6 +9,11 @@ import io.github.japskiddin.sudoku.game.SudokuApp
 import io.github.japskiddin.sudoku.game.di.AppGraph
 import java.io.File
 
+private object DesktopVersion {
+    val name: String = checkNotNull(javaClass.getResourceAsStream("/sudoku-version.txt"))
+        .bufferedReader().use { it.readText().trim() }
+}
+
 fun main() {
     val dataDirectory = File(System.getProperty("user.home"), ".sudoku").apply {
         check(isDirectory || mkdirs()) { "Cannot create Sudoku data directory: $this" }
@@ -19,7 +24,7 @@ fun main() {
     )
     application {
         Window(onCloseRequest = ::exitApplication, title = "Sudoku") {
-            SudokuApp(graph = graph, version = System.getProperty("sudoku.version", "Sudoku"))
+            SudokuApp(graph = graph, version = DesktopVersion.name)
         }
     }
 }

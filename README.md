@@ -63,7 +63,7 @@ with Android and JVM targets. `androidApp` and `desktopApp` are platform launche
 | --- | --- |
 | `:shared` | `SudokuApp`, main screen/ViewModel, navigation host, Metro `AppGraph`, repository/DAO bindings and the shared ViewModel factory. Assembles all feature layers. |
 | `:androidApp` | `Application`, `MainActivity`, splash screen, Android graph creation, manifest, launcher resources, signing, shrinking and Tracer configuration. Supplies Android database and DataStore instances to the shared graph. |
-| `:desktopApp` | JVM `main`, Compose desktop window and graph creation using files in `~/.sudoku`. Supplies the application version through a JVM property. |
+| `:desktopApp` | JVM `main`, Compose desktop window and graph creation using files in `~/.sudoku`. Reads the application version from a build-generated resource. |
 
 ### Core modules
 
