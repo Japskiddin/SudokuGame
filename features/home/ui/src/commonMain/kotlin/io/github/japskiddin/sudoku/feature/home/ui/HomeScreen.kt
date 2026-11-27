@@ -259,25 +259,28 @@ private fun MenuLandscape(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OutlineText(
-            modifier = Modifier.weight(1f),
-            text = stringResource(resource = CoreUiRes.string.app_name),
-            textStyle = SudokuTheme.typography.appTitle,
-            fillColor = Color.White,
-            outlineColor = Color.Black,
-            outlineWidth = 6.dp
-        )
-        Spacer(modifier = Modifier.width(12.dp))
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
         ) {
+            OutlineText(
+                text = stringResource(resource = CoreUiRes.string.app_name),
+                textStyle = SudokuTheme.typography.appTitle,
+                fillColor = Color.White,
+                outlineColor = Color.Black,
+                outlineWidth = 6.dp
+            )
             if (isShowContinueButton) {
+                Spacer(modifier = Modifier.height(12.dp))
                 GameButton(
                     icon = painterResource(resource = CoreUiRes.drawable.ic_continue),
                     text = stringResource(resource = CoreUiRes.string.continue_game)
                 ) { onContinueButtonClick() }
-                Spacer(modifier = Modifier.height(12.dp))
             }
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(
+            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
+        ) {
             GameButton(
                 icon = painterResource(resource = CoreUiRes.drawable.ic_start),
                 text = stringResource(resource = CoreUiRes.string.start_game)
