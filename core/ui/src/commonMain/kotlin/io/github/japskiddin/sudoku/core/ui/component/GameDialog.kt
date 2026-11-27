@@ -16,6 +16,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -88,6 +89,7 @@ private fun GameDialogContent(
         }
         visibility.AnimatedVisibility(
             visible = { it },
+            modifier = Modifier.safeDrawingPadding(),
             enter = fadeIn(spring(stiffness = Spring.StiffnessHigh)) + scaleIn(
                 initialScale = .8f,
                 animationSpec = spring(

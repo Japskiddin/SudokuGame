@@ -16,6 +16,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.navigationevent.compose.multiplatform)
         }
+        androidMain.dependencies {
+            implementation(libs.androidx.core.ktx)
+        }
     }
 }
 
