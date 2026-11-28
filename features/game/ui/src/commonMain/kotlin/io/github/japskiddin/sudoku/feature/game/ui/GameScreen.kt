@@ -200,6 +200,7 @@ private fun Game(
         modifier = Modifier
             .then(modifier)
             .then(wakeModifier)
+            .pauseOnEscape(onMenuClick)
             .safeDrawingPadding()
             .padding(12.dp)
     ) {
