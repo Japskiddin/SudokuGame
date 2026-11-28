@@ -3,4 +3,4 @@ package io.github.japskiddin.sudoku.feature.onboarding.ui
 import androidx.compose.runtime.Composable
 
 @Composable
-internal expect fun OnboardingSystemBars()
+internal expect fun OnboardingSystemBars(darkIcons: Boolean)

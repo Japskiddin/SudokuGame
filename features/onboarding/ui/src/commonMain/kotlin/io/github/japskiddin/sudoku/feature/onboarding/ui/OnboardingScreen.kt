@@ -29,7 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -73,7 +73,7 @@ private data class Slide(
 )
 
 private const val IllustrationAspectRatio = 5f / 3f
-private val OnboardingBackground = Color(0xFFFFF6EB)
+private const val DarkSystemBarIconsLuminance = 0.179f
 
 private val slides = listOf(
     Slide(Res.drawable.onboarding_rules, Res.string.onboarding_rules_title, Res.string.onboarding_rules_description),
@@ -92,7 +92,8 @@ public fun OnboardingScreen(
     onFinish: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OnboardingSystemBars()
+    val background = SudokuTheme.colors.background
+    OnboardingSystemBars(darkIcons = background.luminance() > DarkSystemBarIconsLuminance)
     val pager = rememberPagerState(pageCount = { slides.size })
     val scope = rememberCoroutineScope()
     val page = pager.currentPage
@@ -100,7 +101,7 @@ public fun OnboardingScreen(
 
     Column(
         modifier = modifier.fillMaxSize()
-            .background(OnboardingBackground)
+            .background(background)
             .safeDrawingPadding()
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -127,7 +128,7 @@ public fun OnboardingScreen(
 
 @Composable
 private fun OnboardingHeader(enabled: Boolean, onSkip: () -> Unit) {
-    val brandColor = SudokuTheme.colors.gameButtonBackgroundNormal
+    val brandColor = SudokuTheme.colors.gameButtonBackgroundPressed
     Row(
         modifier = Modifier.widthIn(max = 880.dp).fillMaxWidth().padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -230,7 +231,7 @@ private fun OnboardingFooter(
     action: StringResource,
     onAdvance: () -> Unit,
 ) {
-    val color = SudokuTheme.colors.gameButtonBackgroundNormal
+    val color = SudokuTheme.colors.gameButtonBackgroundPressed
     val pageDescription = stringResource(Res.string.onboarding_page, page + 1, slides.size)
 
     Column(
